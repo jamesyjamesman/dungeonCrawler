@@ -8,18 +8,17 @@ public class Main {
         Player newPlayer = new Player(playerName);
         System.out.println("Your character's name is: " + newPlayer.name);
 
-        Room newRoom = new Room();
-        newRoom.description = "Coolbeans";
-        System.out.println("Room description: " + newRoom.description);
-
-        TrapRoom newTrapRoom = new TrapRoom();
-        newTrapRoom.description = "Oh no! There's a bunch of stalagmites that fall from the ceiling when you enter!";
+        TrapRoom currentRoom = RoomInit.trapRoomInit();
+        
+        System.out.println("You find yourself in a cave. There's only one tunnel that leads anywhere.");
+        System.out.println(currentRoom.appearance);
         System.out.println("Would you like to go into the next room? (y/n)");
+
         String answer = lineScanner.nextLine();
         if (answer.equals("y")) {
-            System.out.println(newTrapRoom.description);
-            System.out.println("You took " + newTrapRoom.damageDealt + " points of damage!");
-            newPlayer.currentHealth -= newTrapRoom.damageDealt;
+            System.out.println(currentRoom.description);
+            System.out.println("You took " + currentRoom.damageDealt + " points of damage!");
+            newPlayer.currentHealth -= currentRoom.damageDealt;
             System.out.println("You now have " + newPlayer.currentHealth + " health!");
         } else {
             System.out.println("Boring!");
