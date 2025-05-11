@@ -26,4 +26,9 @@ public class Player {
             this.currentHealth = this.maxHealth;
         }
     }
-}
+
+    public void changeMaxHealth(int health) {
+            this.maxHealth += health;
+            this.currentHealth += health;
+        }
+    }
