@@ -15,9 +15,9 @@ public class Main {
     }
 
     public static void gameLoop(Player playerCharacter, Room currentRoom, ArrayList<Room> rooms) {
-        Scanner lineScanner = new Scanner(System.in);
+        Scanner promptScanner = new Scanner(System.in);
         while (true) {
-            currentRoom.doEvents(playerCharacter);
+            currentRoom.completeRoomActions(playerCharacter);
 
             System.out.println("Where would you like to go?");
 
@@ -26,7 +26,18 @@ public class Main {
                 System.out.println((i + 1) + ". " + currentRoom.exits.get(i).appearance);
             }
 
-            int response = Integer.parseInt(lineScanner.nextLine()) - 1;
+            //this acts a little funky sometimes?
+            String promptResponse = promptScanner.nextLine();
+            while (true) {
+            if (promptResponse.equals("status")) {
+                playerCharacter.checkStatus(playerCharacter);
+            } else {
+                break;
+                }
+            promptResponse = promptScanner.nextLine();
+            }
+
+            int response = Integer.parseInt(promptResponse) - 1;
             Room nextRoom = currentRoom.exits.get(response);
             currentRoom.exits.clear();
             currentRoom = nextRoom;
@@ -36,9 +47,5 @@ public class Main {
     public static Room roomRandomizer(ArrayList<Room> rooms) {
         return rooms.get(new Random().nextInt(rooms.size()));
         //room should be removed from list
-    }
-    public static void checkStatus(Player playerCharacter) {
-        System.out.println("Current player status:");
-        System.out.println("Health: " + playerCharacter.currentHealth + "/" + playerCharacter.maxHealth);
     }
 }
