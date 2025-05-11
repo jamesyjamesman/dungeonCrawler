@@ -23,13 +23,14 @@ public class Main {
             currentRoom.completeRoomActions(playerCharacter);
 
             System.out.println("Where would you like to go?");
+            System.out.println("You see " + currentRoom.numExits + " exit" + pluralChecker(currentRoom.numExits) + ".");
 
             for (int i = 0; i < currentRoom.numExits; i++) {
                 currentRoom.exits.add(roomRandomizer(rooms));
                 System.out.println((i + 1) + ". " + currentRoom.exits.get(i).appearance);
             }
 
-            String promptResponse = commandListener(playerCharacter, promptScanner.nextLine());
+            String promptResponse = inputHelper(playerCharacter, promptScanner.nextLine());
 
             int response = Integer.parseInt(promptResponse) - 1;
             Room nextRoom = currentRoom.exits.get(response);
@@ -39,12 +40,14 @@ public class Main {
         doDeathSequence(playerCharacter);
     }
 
-    public static String commandListener(Player player, String input) {
+    public static String inputHelper(Player player, String input) {
         //this acts a little funky sometimes?
         Scanner promptScanner = new Scanner(System.in);
         while (true) {
             if (input.equals("status")) {
                 player.checkStatus();
+            } else if (input.equals("help")) {
+                commandList();
             } else {
                 return input;
             }
@@ -62,5 +65,19 @@ public class Main {
         System.out.println("GAME OVER!");
         // statistical summary (at least player stats, e.g. status).
         exit(0);
+    }
+
+    public static void commandList() {
+        System.out.println("List of commands:");
+        System.out.println("help: checks this command.");
+        System.out.println("status: checks player's status and statistics.");
+    }
+
+    public static String pluralChecker(int plurality) {
+        if (plurality == 1) {
+            return "";
+        } else {
+            return "s";
+        }
     }
 }
