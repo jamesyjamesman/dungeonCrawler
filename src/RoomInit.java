@@ -22,26 +22,36 @@ public class RoomInit {
         Room startRoom = new Room();
             startRoom.id = 0;
             startRoom.numExits = 1;
-            startRoom.description = "You find yourself in an empty room, clearly a cave of sorts. You see " + startRoom.numExits + " exit" + (startRoom.numExits == 1 ? "" : "s") + ".";
+            startRoom.description = "You find yourself in an empty room, clearly a cave of sorts.";
             startRoom.appearance = "You see what appears to be a familiar room.";
             normalRoomList.add(startRoom);
         return normalRoomList;
     }
 
     public static ArrayList<TrapRoom> trapRoomInit() {
-        TrapRoom stalactiteRoom = new TrapRoom();
-        stalactiteRoom.id = 1;
-        stalactiteRoom.description = "You walk into the room, and a dank smell hits you like a ton of bricks. Looking upwards, you notice some dangerously long stalactites hanging from the ceiling, water dripping down from them onto you. You take a step forward, and your foot hits a tripwire. You hear a loud *CRACK*, and a chunk of stalactite falls, hitting you in the shoulder.";
-        stalactiteRoom.appearance = "You think you can smell a faint mustiness, and water dripping. It's dark.";
-        stalactiteRoom.damageDealt = 5;
-        stalactiteRoom.numExits = 3;
-        trapRoomList.add(stalactiteRoom);
+
+            TrapRoom stalactiteRoom = new TrapRoom();
+            stalactiteRoom.id = 1;
+            stalactiteRoom.description = "You walk into the room, and a dank smell hits you like a ton of bricks. Looking upwards, you notice some dangerously long stalactites hanging from the ceiling, water dripping down from them onto you. You take a step forward, and your foot hits a tripwire. You hear a loud *CRACK*, and a chunk of stalactite falls, hitting you in the shoulder.";
+            stalactiteRoom.appearance = "You think you can smell a faint mustiness, and water dripping. It's dark.";
+            stalactiteRoom.damageDealt = 5;
+            stalactiteRoom.numExits = 3;
+            trapRoomList.add(stalactiteRoom);
+
+            TrapRoom pitRoom = new TrapRoom();
+            pitRoom.id = 5;
+            pitRoom.description = "You slowly walk into to a room. The ground creaks beneath your feet. Suddenly, the flooring cracks and shatters, tumbling you down onto a pit of spikes. Luckily, you land between the spikes, suffering only minor cuts and bruises. You're not sure how to get back up, but you notice a single passageway at the bottom of the pit.";
+            pitRoom.appearance = "It looks like a completely normal room from here.";
+            pitRoom.damageDealt = 3;
+            pitRoom.numExits = 1;
+            trapRoomList.add(pitRoom);
+
         return trapRoomList;
     }
     public static ArrayList<EnemyRoom> enemyRoomInit() {
 
         ArrayList<MageEnemy> enemyList = EnemyInit.enemyInit();
-        MageEnemy currentEnemy = enemyList.get(0);
+        MageEnemy currentEnemy = enemyList.getFirst();
 
         EnemyRoom goblinRoom = new EnemyRoom();
         goblinRoom.id = 2;
