@@ -1,0 +1,36 @@
+import java.util.Random;
+import java.util.Scanner;
+
+public class ItemRoom extends Room {
+    String itemName;
+    int healthRestored;
+    public ItemRoom() {
+        super();
+        this.itemName = "";
+        this.healthRestored = 0;
+    }
+
+    @Override
+    public void completeRoomActions(Player player) {
+        super.completeRoomActions(player);
+
+        this.healthRestored = new Random().nextInt(-3, 5);
+
+        Scanner lineScanner = new Scanner(System.in);
+        System.out.println("Would you like to take the " + itemName + "? (y/n)");
+        String response = lineScanner.nextLine();
+        if (response.equals("no") || response.equals("n")) {
+            System.out.println("You chose to forgo the loot...");
+            return;
+        }
+
+        //obviously this would have to change if the item is not always consumable
+        if (this.healthRestored < 0) {
+            System.out.println("Yuck! The " + itemName + " was terrible... You lost " + this.healthRestored * -1 + " health.");
+            player.takeDamage(this.healthRestored * -1);
+        } else {
+            player.heal(this.healthRestored);
+            System.out.println("Yum! That " + itemName + " was great! You replenished " + this.healthRestored + " health.");
+        }
+    }
+}
