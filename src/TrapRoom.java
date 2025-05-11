@@ -6,8 +6,8 @@ public class TrapRoom extends Room {
     }
 
     @Override
-    public void doEvents(Player player) {
-        super.doEvents(player);
+    public void completeRoomActions(Player player) {
+        super.completeRoomActions(player);
         System.out.println("You took " + this.damageDealt + " damage!");
         player.currentHealth -= this.damageDealt;
     }

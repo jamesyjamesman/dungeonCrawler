@@ -14,7 +14,7 @@ public class Room {
         this.numExits = 2;
     }
 
-    public void doEvents(Player player) {
+    public void completeRoomActions(Player player) {
         System.out.println(this.description);
     }
 }

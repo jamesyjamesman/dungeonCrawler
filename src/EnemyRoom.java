@@ -10,8 +10,8 @@ public class EnemyRoom extends Room {
     }
 
     @Override
-    public void doEvents(Player player) {
-        super.doEvents(player);
+    public void completeRoomActions(Player player) {
+        super.completeRoomActions(player);
         System.out.println(this.battleInitiationMessage);
         System.out.println("You took " + this.enemies.size() * 3 + " damage!");
         player.currentHealth -= this.enemies.size() * 3;
