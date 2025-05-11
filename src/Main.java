@@ -1,36 +1,44 @@
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Welcome to the simulation! Enter your character's name.");
+        System.out.println("Welcome to the simulation!");
+
+        Player playerCharacter = PlayerInit.playerInit();
+        ArrayList<Room> rooms = RoomInit.roomInit();
+
+        Room firstRoom = rooms.getFirst();
+
+        gameLoop(playerCharacter, firstRoom, rooms);
+    }
+
+    public static void gameLoop(Player playerCharacter, Room currentRoom, ArrayList<Room> rooms) {
         Scanner lineScanner = new Scanner(System.in);
-        String playerName = lineScanner.nextLine();
-        Player newPlayer = new Player(playerName);
-        System.out.println("Your character's name is: " + newPlayer.name);
+        while (true) {
+            currentRoom.doEvents(playerCharacter);
 
-        ArrayList<TrapRoom> trapRooms = RoomInit.trapRoomInit();
-        TrapRoom firstOption = trapRooms.get(0);
+            System.out.println("Where would you like to go?");
 
-        ArrayList<EnemyRoom> enemyRooms = RoomInit.enemyRoomInit();
-        EnemyRoom secondOption = enemyRooms.get(0);
+            for (int i = 0; i < currentRoom.numExits; i++) {
+                currentRoom.exits.add(roomRandomizer(rooms));
+                System.out.println((i + 1) + ". " + currentRoom.exits.get(i).appearance);
+            }
 
-        System.out.println("You find yourself in a cave. There's two tunnels.");
-        System.out.println("For the first option, " + firstOption.appearance);
-        System.out.println("For the second option, " + secondOption.appearance);
-        System.out.println("Would you like to go into the first room? (y/n)");
-
-        String answer = lineScanner.nextLine();
-        if (answer.equals("y")) {
-            System.out.println(firstOption.description);
-            System.out.println("You took " + firstOption.damageDealt + " points of damage!");
-            newPlayer.currentHealth -= firstOption.damageDealt;
-            System.out.println("You now have " + newPlayer.currentHealth + " health!");
-        } else {
-            System.out.println(secondOption.description);
-            System.out.println(secondOption.battleInitiationMessage);
-            System.out.println("You took " + secondOption.enemies.get(0).damage + " points of damage!");
+            int response = Integer.parseInt(lineScanner.nextLine()) - 1;
+            Room nextRoom = currentRoom.exits.get(response);
+            currentRoom.exits.clear();
+            currentRoom = nextRoom;
         }
+    }
 
+    public static Room roomRandomizer(ArrayList<Room> rooms) {
+        return rooms.get(new Random().nextInt(rooms.size()));
+        //room should be removed from list
+    }
+    public static void checkStatus(Player playerCharacter) {
+        System.out.println("Current player status:");
+        System.out.println("Health: " + playerCharacter.currentHealth + "/" + playerCharacter.maxHealth);
     }
 }
