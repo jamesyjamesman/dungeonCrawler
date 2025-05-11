@@ -29,7 +29,7 @@ public class Player {
             System.out.println((i+1) + ". " + this.inventory.get(i).name + ": " + this.inventory.get(i).description);
         }
 
-        System.out.println("Would you like to use an item? Input the appropriate number to use it, or exit to return to gameplay.");
+        System.out.println("Would you like to use an item?\nInput the appropriate number to use it, or exit to return to gameplay.");
         String response = Main.inputHelper(this, lineScanner.nextLine());
 
         if (response.equals("exit")) {

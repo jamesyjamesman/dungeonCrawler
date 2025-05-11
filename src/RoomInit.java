@@ -40,7 +40,7 @@ public class RoomInit {
             Room manyExits = new Room();
             manyExits.id = 8;
             manyExits.numExits = 10;
-            manyExits.description = "Wow! this must be the heart of the system or something. There's so many different exits!";
+            manyExits.description = "Wow! this must be the heart of the system or something.\nThere's so many different exits!";
             normalRoomList.add(manyExits);
 
         return normalRoomList;
@@ -50,7 +50,7 @@ public class RoomInit {
 
             TrapRoom stalactiteRoom = new TrapRoom();
             stalactiteRoom.id = 1;
-            stalactiteRoom.description = "You walk into the room, and a dank smell hits you like a ton of bricks. Looking upwards, you notice some dangerously long stalactites hanging from the ceiling, water dripping down from them onto you. You take a step forward, and your foot hits a tripwire. You hear a loud *CRACK*, and a chunk of stalactite falls, hitting you in the shoulder.";
+            stalactiteRoom.description = "You walk into the room, and a dank smell hits you like a ton of bricks.\nLooking upwards, you notice some dangerously long stalactites hanging from the ceiling, water dripping down from them onto you.\nYou take a step forward, and your foot hits a tripwire.\nYou hear a loud *CRACK*, and a chunk of stalactite falls, hitting you in the shoulder.";
             stalactiteRoom.appearance = "You think you can smell a faint mustiness, and water dripping. It's dark.";
             stalactiteRoom.damageDealt = 5;
             stalactiteRoom.numExits = 3;
@@ -58,7 +58,7 @@ public class RoomInit {
 
             TrapRoom pitRoom = new TrapRoom();
             pitRoom.id = 5;
-            pitRoom.description = "You slowly walk into to a room. The ground creaks beneath your feet. Suddenly, the flooring cracks and shatters, tumbling you down onto a pit of spikes. Luckily, you land between the spikes, suffering only minor cuts and bruises. You're not sure how to get back up, but you notice a single passageway at the bottom of the pit.";
+            pitRoom.description = "You slowly walk into to a room. The ground creaks beneath your feet.\nSuddenly, the flooring cracks and shatters, tumbling you down onto a pit of spikes.\nLuckily, you land between the spikes, suffering only minor cuts and bruises.\nYou're not sure how to get back up, but you notice a single passageway at the bottom of the pit.";
             pitRoom.damageDealt = 3;
             pitRoom.numExits = 1;
             trapRoomList.add(pitRoom);
@@ -98,7 +98,7 @@ public class RoomInit {
             chocolateRoom.item = itemList.get(indexFinder(itemList, "Torpedo Chocolate Bar™"));
             chocolateRoom.id = 4;
             chocolateRoom.numExits = 1;
-            chocolateRoom.description = "It couldn't be... Lost after all this time... But you found it, in a dank cave... The legendary " + chocolateRoom.item.name + "!!!!";
+            chocolateRoom.description = "It couldn't be... Lost after all this time... But you found it, in a dank cave...\nThe legendary " + chocolateRoom.item.name + "!!!!";
             chocolateRoom.appearance = "There's a positively delightful aroma emanating from this passageway.";
             itemRoomList.add(chocolateRoom);
         return itemRoomList;

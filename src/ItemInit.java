@@ -11,14 +11,14 @@ public class ItemInit {
     public static ArrayList<HealthItem> healthItemInit() {
             HealthItem apple = new HealthItem();
             apple.name = "Apple";
-            apple.description = "An apple you found in the cave system. It doesn't seem too fresh.";
+            apple.description = "An apple you found in the cave system.\nIt doesn't seem too fresh.";
             apple.restorationRange[0] = -3;
             apple.restorationRange[1] = 5;
             healthItemList.add(apple);
 
             HealthItem chocolate = new HealthItem();
             chocolate.name = "Torpedo Chocolate Bar™";
-            chocolate.description = "A legendary chocolate bar thought to be long-lost. You're salivating just looking at it.";
+            chocolate.description = "A legendary chocolate bar thought to be long-lost.\nYou're salivating just looking at it.";
             chocolate.restorationRange[0] = 5;
             chocolate.restorationRange[1] = 15;
             chocolate.maxHealthChange = 3;
