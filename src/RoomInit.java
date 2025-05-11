@@ -19,12 +19,29 @@ public class RoomInit {
     }
 
     public static ArrayList<Room> normalRoomInit() {
-        Room startRoom = new Room();
+            Room startRoom = new Room();
             startRoom.id = 0;
-            startRoom.numExits = 1;
+            startRoom.numExits = 2;
             startRoom.description = "You find yourself in an empty room, clearly a cave of sorts.";
             startRoom.appearance = "You see what appears to be a familiar room.";
             normalRoomList.add(startRoom);
+
+            Room threeExits = new Room();
+            threeExits.id = 6;
+            threeExits.numExits = 3;
+            normalRoomList.add(threeExits);
+
+            Room fourExits = new Room();
+            fourExits.id = 7;
+            fourExits.numExits = 4;
+            normalRoomList.add(fourExits);
+
+            Room manyExits = new Room();
+            manyExits.id = 8;
+            manyExits.numExits = 10;
+            manyExits.description = "Wow! this must be the heart of the system or something. There's so many different exits!";
+            normalRoomList.add(manyExits);
+
         return normalRoomList;
     }
 
@@ -41,7 +58,6 @@ public class RoomInit {
             TrapRoom pitRoom = new TrapRoom();
             pitRoom.id = 5;
             pitRoom.description = "You slowly walk into to a room. The ground creaks beneath your feet. Suddenly, the flooring cracks and shatters, tumbling you down onto a pit of spikes. Luckily, you land between the spikes, suffering only minor cuts and bruises. You're not sure how to get back up, but you notice a single passageway at the bottom of the pit.";
-            pitRoom.appearance = "It looks like a completely normal room from here.";
             pitRoom.damageDealt = 3;
             pitRoom.numExits = 1;
             trapRoomList.add(pitRoom);
