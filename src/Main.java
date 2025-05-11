@@ -41,17 +41,15 @@ public class Main {
     }
 
     public static String inputHelper(Player player, String input) {
-        //this acts a little funky sometimes?
         Scanner promptScanner = new Scanner(System.in);
         while (true) {
-            if (input.equals("status")) {
-                player.checkStatus();
-            } else if (input.equals("help")) {
-                commandList();
-            } else if (input.equals("inventory")) {
-                player.checkInventory();
-            } else {
-                return input;
+            switch (input) {
+                case "status" -> player.checkStatus();
+                case "help" -> commandList();
+                case "inventory" -> player.checkInventory();
+                default -> {
+                    return input;
+                }
             }
             input = promptScanner.nextLine();
         }
