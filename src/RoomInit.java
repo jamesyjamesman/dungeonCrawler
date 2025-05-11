@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+
 public class RoomInit {
         static ArrayList<TrapRoom> trapRoomList = new ArrayList<>();
         static ArrayList<EnemyRoom> enemyRoomList = new ArrayList<>();
@@ -83,10 +84,10 @@ public class RoomInit {
 
     public static ArrayList<ItemRoom> itemRoomInit() {
 
+        ArrayList<Item> itemList = ItemInit.itemInit();
+
             ItemRoom appleRoom = new ItemRoom();
-            appleRoom.itemName = "apple";
-            appleRoom.restorationRange[0] = -3;
-            appleRoom.restorationRange[1] = 5;
+            appleRoom.item = itemList.get(indexFinder(itemList, "Apple"));
             appleRoom.id = 3;
             appleRoom.numExits = 3;
             appleRoom.description = "You enter the room. It's empty, except for a small apple on a pedestal.";
@@ -94,15 +95,21 @@ public class RoomInit {
             itemRoomList.add(appleRoom);
 
             ItemRoom chocolateRoom = new ItemRoom();
-            chocolateRoom.itemName = "Torpedo Chocolate Bar™";
-            chocolateRoom.restorationRange[0] = 5;
-            chocolateRoom.restorationRange[1] = 15;
-            chocolateRoom.maxHealthChange = 3;
+            chocolateRoom.item = itemList.get(indexFinder(itemList, "Torpedo Chocolate Bar™"));
             chocolateRoom.id = 4;
             chocolateRoom.numExits = 1;
-            chocolateRoom.description = "It couldn't be... Lost after all this time... But you found it, in a dank cave... The legendary " + chocolateRoom.itemName + "!!!!";
+            chocolateRoom.description = "It couldn't be... Lost after all this time... But you found it, in a dank cave... The legendary " + chocolateRoom.item.name + "!!!!";
             chocolateRoom.appearance = "There's a positively delightful aroma emanating from this passageway.";
             itemRoomList.add(chocolateRoom);
         return itemRoomList;
+
+    }
+    public static int indexFinder(ArrayList<Item> list, String targetName) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).name.equals(targetName)) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

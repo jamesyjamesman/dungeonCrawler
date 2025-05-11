@@ -6,6 +6,9 @@ public class PlayerInit {
         Scanner lineScanner = new Scanner(System.in);
         String playerName = lineScanner.nextLine();
         Player playerCharacter = new Player(playerName);
+        if (playerCharacter.name.equals("status")) {
+            System.out.println("Very funny...");
+        }
         System.out.println("Your character's name is: " + playerCharacter.name);
         return playerCharacter;
     }
