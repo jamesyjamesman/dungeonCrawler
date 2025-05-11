@@ -4,14 +4,17 @@ public class RoomInit {
         static ArrayList<TrapRoom> trapRoomList = new ArrayList<>();
         static ArrayList<EnemyRoom> enemyRoomList = new ArrayList<>();
         static ArrayList<Room> normalRoomList = new ArrayList<>();
+        static ArrayList<ItemRoom> itemRoomList = new ArrayList<>();
         static ArrayList<Room> roomList = new ArrayList<>();
     public static ArrayList<Room> roomInit() {
         ArrayList<TrapRoom> trapRooms = trapRoomInit();
         ArrayList<EnemyRoom> enemyRooms = enemyRoomInit();
         ArrayList<Room> normalRooms = normalRoomInit();
+        ArrayList<ItemRoom> itemRooms = itemRoomInit();
         roomList.addAll(normalRooms);
         roomList.addAll(trapRooms);
         roomList.addAll(enemyRooms);
+        roomList.addAll(itemRooms);
         return roomList;
     }
 
@@ -29,7 +32,7 @@ public class RoomInit {
         TrapRoom stalactiteRoom = new TrapRoom();
         stalactiteRoom.id = 1;
         stalactiteRoom.description = "You walk into the room, and a dank smell hits you like a ton of bricks. Looking upwards, you notice some dangerously long stalactites hanging from the ceiling, water dripping down from them onto you. You take a step forward, and your foot hits a tripwire. You hear a loud *CRACK*, and a chunk of stalactite falls, hitting you in the shoulder.";
-        stalactiteRoom.appearance = "You think you can small a faint mustiness, and water dripping. It's dark.";
+        stalactiteRoom.appearance = "You think you can smell a faint mustiness, and water dripping. It's dark.";
         stalactiteRoom.damageDealt = 5;
         stalactiteRoom.numExits = 3;
         trapRoomList.add(stalactiteRoom);
@@ -50,5 +53,17 @@ public class RoomInit {
         goblinRoom.enemies.add(currentEnemy);
         enemyRoomList.add(goblinRoom);
         return enemyRoomList;
+    }
+
+    public static ArrayList<ItemRoom> itemRoomInit() {
+
+        ItemRoom appleRoom = new ItemRoom();
+        appleRoom.itemName = "apple";
+        appleRoom.id = 3;
+        appleRoom.numExits = 3;
+        appleRoom.description = "You enter the room. It's empty, except for a small apple on a pedestal.";
+        appleRoom.appearance = "You can't see much, but you can smell a faintly sweet scent coming from the doorway.";
+        itemRoomList.add(appleRoom);
+        return itemRoomList;
     }
 }
