@@ -1,10 +1,13 @@
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import static java.lang.System.exit;
 
 public class Main {
     public static void main(String[] args) {
         System.out.println("Welcome to the simulation!");
+        System.out.println("You will be presented choices on where you would like to proceed. Choose carefully!");
+        System.out.println("You can type 'status' into the console at any time to see your status.");
 
         Player playerCharacter = PlayerInit.playerInit();
         ArrayList<Room> rooms = RoomInit.roomInit();
@@ -30,7 +33,7 @@ public class Main {
             String promptResponse = promptScanner.nextLine();
             while (true) {
             if (promptResponse.equals("status")) {
-                playerCharacter.checkStatus(playerCharacter);
+                playerCharacter.checkStatus();
             } else {
                 break;
                 }
@@ -46,6 +49,14 @@ public class Main {
 
     public static Room roomRandomizer(ArrayList<Room> rooms) {
         return rooms.get(new Random().nextInt(rooms.size()));
-        //room should be removed from list
+        //room should be removed from list, or at least prevented from being put more than once in a particular room.
+    }
+
+    public static void doDeathSequence(Player player) {
+        System.out.println("\"Ack! It's too much for me!\" " + player.name + " exclaims.");
+        System.out.println(player.name + " falls to their knees... then to the ground.");
+        System.out.println("GAME OVER!");
+        // statistical summary (at least player stats, e.g. status).
+        exit(0);
     }
 }
