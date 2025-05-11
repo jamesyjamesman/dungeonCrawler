@@ -73,8 +73,8 @@ public class Main {
         System.out.println("status: checks player's status and statistics.");
     }
 
-    public static String pluralChecker(int plurality) {
-        if (plurality == 1) {
+    public static String pluralChecker(int numThings) {
+        if (numThings == 1) {
             return "";
         } else {
             return "s";
