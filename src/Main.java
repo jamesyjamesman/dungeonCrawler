@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Welcome to the simulation!");
         System.out.println("You will be presented choices on where you would like to proceed. Choose carefully!");
-        System.out.println("You can type 'status' into the console at any time to see your status.");
+        System.out.println("You can type commands into the console at any time. Try 'help' to see a list of commands.");
 
         Player playerCharacter = PlayerInit.playerInit();
         ArrayList<Room> rooms = RoomInit.roomInit();
