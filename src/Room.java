@@ -7,8 +7,8 @@ public class Room {
     ArrayList<Room> exits;
     int numExits;
     public Room() {
-        this.appearance = "";
-        this.description = "";
+        this.appearance = "It looks like a completely normal from here.";
+        this.description = "It's completely empty.";
         this.id = 0;
         this.exits = new ArrayList<>();
         this.numExits = 2;
