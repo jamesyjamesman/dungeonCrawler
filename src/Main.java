@@ -29,16 +29,7 @@ public class Main {
                 System.out.println((i + 1) + ". " + currentRoom.exits.get(i).appearance);
             }
 
-            //this acts a little funky sometimes?
-            String promptResponse = promptScanner.nextLine();
-            while (true) {
-            if (promptResponse.equals("status")) {
-                playerCharacter.checkStatus();
-            } else {
-                break;
-                }
-            promptResponse = promptScanner.nextLine();
-            }
+            String promptResponse = commandListener(playerCharacter, promptScanner.nextLine());
 
             int response = Integer.parseInt(promptResponse) - 1;
             Room nextRoom = currentRoom.exits.get(response);
@@ -47,6 +38,18 @@ public class Main {
         }
     }
 
+    public static String commandListener(Player player, String input) {
+        //this acts a little funky sometimes?
+        Scanner promptScanner = new Scanner(System.in);
+        while (true) {
+            if (input.equals("status")) {
+                player.checkStatus();
+            } else {
+                return input;
+            }
+            input = promptScanner.nextLine();
+        }
+    }
     public static Room roomRandomizer(ArrayList<Room> rooms) {
         return rooms.get(new Random().nextInt(rooms.size()));
         //room should be removed from list, or at least prevented from being put more than once in a particular room.
