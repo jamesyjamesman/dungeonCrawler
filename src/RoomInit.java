@@ -57,15 +57,26 @@ public class RoomInit {
 
     public static ArrayList<ItemRoom> itemRoomInit() {
 
-        ItemRoom appleRoom = new ItemRoom();
-        appleRoom.itemName = "apple";
-        appleRoom.restorationRange[0] = -3;
-        appleRoom.restorationRange[1] = 5;
-        appleRoom.id = 3;
-        appleRoom.numExits = 3;
-        appleRoom.description = "You enter the room. It's empty, except for a small apple on a pedestal.";
-        appleRoom.appearance = "You can't see much, but you can smell a faintly sweet scent coming from the doorway.";
-        itemRoomList.add(appleRoom);
+            ItemRoom appleRoom = new ItemRoom();
+            appleRoom.itemName = "apple";
+            appleRoom.restorationRange[0] = -3;
+            appleRoom.restorationRange[1] = 5;
+            appleRoom.id = 3;
+            appleRoom.numExits = 3;
+            appleRoom.description = "You enter the room. It's empty, except for a small apple on a pedestal.";
+            appleRoom.appearance = "You can't see much, but you can smell a faintly sweet scent coming from the doorway.";
+            itemRoomList.add(appleRoom);
+
+            ItemRoom chocolateRoom = new ItemRoom();
+            chocolateRoom.itemName = "Torpedo Chocolate Bar™";
+            chocolateRoom.restorationRange[0] = 5;
+            chocolateRoom.restorationRange[1] = 15;
+            chocolateRoom.maxHealthChange = 3;
+            chocolateRoom.id = 4;
+            chocolateRoom.numExits = 1;
+            chocolateRoom.description = "It couldn't be... Lost after all this time... But you found it, in a dank cave... The legendary " + chocolateRoom.itemName + "!!!!";
+            chocolateRoom.appearance = "There's a positively delightful aroma emanating from this passageway.";
+            itemRoomList.add(chocolateRoom);
         return itemRoomList;
     }
 }
