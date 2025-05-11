@@ -19,7 +19,7 @@ public class Main {
 
     public static void gameLoop(Player playerCharacter, Room currentRoom, ArrayList<Room> rooms) {
         Scanner promptScanner = new Scanner(System.in);
-        while (true) {
+        while (playerCharacter.currentHealth > 0) {
             currentRoom.completeRoomActions(playerCharacter);
 
             System.out.println("Where would you like to go?");
@@ -36,6 +36,7 @@ public class Main {
             currentRoom.exits.clear();
             currentRoom = nextRoom;
         }
+        doDeathSequence(playerCharacter);
     }
 
     public static String commandListener(Player player, String input) {
