@@ -22,7 +22,7 @@ public class ItemRoom extends Room {
 
         Scanner lineScanner = new Scanner(System.in);
         System.out.println("Would you like to take the " + itemName + "? (y/n)");
-        String response = Main.commandListener(player, lineScanner.nextLine());
+        String response = Main.inputHelper(player, lineScanner.nextLine());
         if (response.equals("no") || response.equals("n")) {
             System.out.println("You chose to forgo the loot...");
             return;
@@ -35,9 +35,7 @@ public class ItemRoom extends Room {
         } else {
             if (this.maxHealthChange != 0) {
                 System.out.println("Wow! A surge of power courses through you... your maximum health has increased by " + this.maxHealthChange + "!");
-                //this should probably be a method on the player class
-                player.maxHealth += this.maxHealthChange;
-                player.currentHealth += this.maxHealthChange;
+                player.changeMaxHealth(this.maxHealthChange);
             }
             player.heal(this.healthRestored);
             System.out.println("Yum! That " + itemName + " was great! You replenished " + this.healthRestored + " health.");
