@@ -48,6 +48,8 @@ public class Main {
                 player.checkStatus();
             } else if (input.equals("help")) {
                 commandList();
+            } else if (input.equals("inventory")) {
+                player.checkInventory();
             } else {
                 return input;
             }
@@ -71,6 +73,7 @@ public class Main {
         System.out.println("List of commands:");
         System.out.println("help: checks this command.");
         System.out.println("status: checks player's status and statistics.");
+        System.out.println("inventory: shows the contents of the player's inventory.");
     }
 
     public static String pluralChecker(int numThings) {
