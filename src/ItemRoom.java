@@ -1,44 +1,24 @@
-import java.util.Random;
 import java.util.Scanner;
 
 public class ItemRoom extends Room {
-    String itemName;
-    int healthRestored;
-    int[] restorationRange;
-    int maxHealthChange;
+    Item item;
     public ItemRoom() {
         super();
-        this.itemName = "";
-        this.healthRestored = 0;
-        this.restorationRange = new int[2];
-        this.maxHealthChange = 0;
+        this.item = new Item();
     }
 
     @Override
     public void completeRoomActions(Player player) {
         super.completeRoomActions(player);
 
-        this.healthRestored = new Random().nextInt(this.restorationRange[0], this.restorationRange[1]);
-
         Scanner lineScanner = new Scanner(System.in);
-        System.out.println("Would you like to take the " + itemName + "? (y/n)");
+        System.out.println("Would you like to take the " + this.item.name + "? (y/n)");
         String response = Main.inputHelper(player, lineScanner.nextLine());
         if (response.equals("no") || response.equals("n")) {
             System.out.println("You chose to forgo the loot...");
             return;
         }
-
-        //obviously this would have to change if the item is not always consumable
-        if (this.healthRestored < 0) {
-            System.out.println("Yuck! The " + itemName + " was terrible... You lost " + this.healthRestored * -1 + " health.");
-            player.takeDamage(this.healthRestored * -1);
-        } else {
-            if (this.maxHealthChange != 0) {
-                System.out.println("Wow! A surge of power courses through you... your maximum health has increased by " + this.maxHealthChange + "!");
-                player.changeMaxHealth(this.maxHealthChange);
-            }
-            player.heal(this.healthRestored);
-            System.out.println("Yum! That " + itemName + " was great! You replenished " + this.healthRestored + " health.");
-        }
+        System.out.println("You stash the " + this.item.name + " in your bag.");
+        player.addItemToInventory(this.item);
     }
 }
