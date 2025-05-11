@@ -4,17 +4,19 @@ import java.util.Scanner;
 public class ItemRoom extends Room {
     String itemName;
     int healthRestored;
+    int[] restorationRange;
     public ItemRoom() {
         super();
         this.itemName = "";
         this.healthRestored = 0;
+        this.restorationRange = new int[2];
     }
 
     @Override
     public void completeRoomActions(Player player) {
         super.completeRoomActions(player);
 
-        this.healthRestored = new Random().nextInt(-3, 5);
+        this.healthRestored = new Random().nextInt(this.restorationRange[0], this.restorationRange[1]);
 
         Scanner lineScanner = new Scanner(System.in);
         System.out.println("Would you like to take the " + itemName + "? (y/n)");

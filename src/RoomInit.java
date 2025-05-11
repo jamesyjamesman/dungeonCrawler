@@ -59,6 +59,8 @@ public class RoomInit {
 
         ItemRoom appleRoom = new ItemRoom();
         appleRoom.itemName = "apple";
+        appleRoom.restorationRange[0] = -3;
+        appleRoom.restorationRange[1] = 5;
         appleRoom.id = 3;
         appleRoom.numExits = 3;
         appleRoom.description = "You enter the room. It's empty, except for a small apple on a pedestal.";
