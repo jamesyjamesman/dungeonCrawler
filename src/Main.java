@@ -46,7 +46,7 @@ public class Main {
             switch (input) {
                 case "status" -> player.checkStatus();
                 case "help" -> commandList();
-                case "inventory" -> player.checkInventory();
+                case "inventory" -> player.checkInventory(false);
                 default -> {
                     return input;
                 }
@@ -63,7 +63,8 @@ public class Main {
         System.out.println("\"Ack! It's too much for me!\" " + player.name + " exclaims.");
         System.out.println(player.name + " falls to their knees... then to the ground.");
         System.out.println("GAME OVER!");
-        // statistical summary (at least player stats, e.g. status).
+        System.out.println();
+        endStatistics(player);
         exit(0);
     }
 
@@ -80,5 +81,12 @@ public class Main {
         } else {
             return "s";
         }
+    }
+
+    public static void endStatistics(Player player) {
+        System.out.println("Player statistics:");
+        System.out.println("Maximum health: " + player.maxHealth);
+        System.out.println("Inventory:");
+        player.checkInventory(true);
     }
 }
