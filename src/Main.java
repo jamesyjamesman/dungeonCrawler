@@ -29,6 +29,8 @@ public class Main {
                 currentRoom.exits.add(roomRandomizer(rooms));
                 System.out.println((i + 1) + ". " + currentRoom.exits.get(i).appearance);
             }
+            System.out.println();
+            playerCharacter.useRelics(currentRoom);
 
             while (true) {
                 String promptResponse = inputHelper(playerCharacter, promptScanner.nextLine());
@@ -61,6 +63,7 @@ public class Main {
                 case "status" -> player.checkStatus();
                 case "help" -> commandList();
                 case "inventory" -> player.checkInventory(false);
+                case "relics" -> player.checkRelics(false);
                 default -> {
                     return input;
                 }
@@ -87,6 +90,7 @@ public class Main {
         System.out.println("help: checks this command.");
         System.out.println("status: checks player's status and statistics.");
         System.out.println("inventory: shows the contents of the player's inventory.");
+        System.out.println("relics: shows a list of equipped relics.");
     }
 
     public static String pluralChecker(int numThings) {
@@ -102,5 +106,7 @@ public class Main {
         System.out.println("Maximum health: " + player.maxHealth);
         System.out.println("Inventory:");
         player.checkInventory(true);
+        System.out.println("Relics:");
+        player.checkRelics(true);
     }
 }
