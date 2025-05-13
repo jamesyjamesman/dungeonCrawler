@@ -1,4 +1,4 @@
-public class Item {
+public abstract class Item {
     String description;
     String name;
     public Item() {
@@ -6,7 +6,5 @@ public class Item {
         this.name = "";
     }
 
-    public void useItem(Player player) {
-
-    }
+    public abstract void useItem(Player player);
 }
