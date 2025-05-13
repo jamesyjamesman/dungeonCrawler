@@ -25,6 +25,15 @@ public class HealthItem extends Item{
             player.heal(this.healthRestored);
             System.out.println("Yum! That " + this.name + " was great! You replenished " + this.healthRestored + " health.");
         }
-        player.inventory.remove(this);
+
+        int itemIndex = player.findItemInInventory(this);
+        if (itemIndex == -1) {
+            System.out.println("Error! This code should not be reachable (HealthItem.java)");
+        }
+        if (player.inventory.get(itemIndex).size() == 1) {
+            player.inventory.remove(itemIndex);
+        } else {
+            player.inventory.get(itemIndex).remove(this);
+        }
     }
 }
