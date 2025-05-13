@@ -22,8 +22,12 @@ public class HealthItem extends Item{
                 System.out.println("Wow! A surge of power courses through you... your maximum health has increased by " + this.maxHealthChange + "!");
                 player.changeMaxHealth(this.maxHealthChange);
             }
-            player.heal(this.healthRestored);
-            System.out.println("Yum! That " + this.name + " was great! You replenished " + this.healthRestored + " health.");
+            int amountHealed = player.heal(this.healthRestored);
+            if (amountHealed != 0) {
+                System.out.println("Yum! That " + this.name + " was great! You replenished " + amountHealed + " health.");
+            } else {
+                System.out.println("That " + this.name + " was delicious! ...but you don't feel any healthier.");
+            }
         }
 
         int itemIndex = player.findItemInInventory(this);

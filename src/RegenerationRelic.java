@@ -9,8 +9,11 @@ public class RegenerationRelic extends Relic {
     @Override
     public void useRelic(Player player, Room room) {
         if (new Random().nextInt(4) == 0) {
-        player.heal(new Random().nextInt(1,4));
-        System.out.println("Your Relic of Regeneration healed you!");
+        int amountHealed = player.heal(new Random().nextInt(1,4));
+        if (amountHealed != 0) {
+            System.out.println("Your Relic of Regeneration healed you for " + amountHealed + " health!");
+        }
+
         }
     }
 }

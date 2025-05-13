@@ -115,11 +115,14 @@ public class Player {
             Main.doDeathSequence(this);
         }
     }
-    public void heal(int health) {
+    public int heal(int health) {
         this.currentHealth += health;
         if (this.currentHealth > this.maxHealth) {
+            int healthHealed = health - (this.currentHealth - this.maxHealth);
             this.currentHealth = this.maxHealth;
+            return healthHealed;
         }
+        return health;
     }
 
     public void changeMaxHealth(int health) {
