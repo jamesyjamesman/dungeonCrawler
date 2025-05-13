@@ -30,12 +30,26 @@ public class Main {
                 System.out.println((i + 1) + ". " + currentRoom.exits.get(i).appearance);
             }
 
-            String promptResponse = inputHelper(playerCharacter, promptScanner.nextLine());
-
-            int response = Integer.parseInt(promptResponse) - 1;
-            Room nextRoom = currentRoom.exits.get(response);
-            currentRoom.exits.clear();
-            currentRoom = nextRoom;
+            while (true) {
+                String promptResponse = inputHelper(playerCharacter, promptScanner.nextLine());
+                int response;
+                Room nextRoom;
+                try {
+                    response = Integer.parseInt(promptResponse) - 1;
+                } catch(NumberFormatException e) {
+                    System.out.println("Invalid response.");
+                    continue;
+                }
+                try {
+                    nextRoom = currentRoom.exits.get(response);
+                } catch(IndexOutOfBoundsException e) {
+                    System.out.println("Invalid exit!");
+                    continue;
+                }
+                currentRoom.exits.clear();
+                currentRoom = nextRoom;
+                break;
+            }
         }
         doDeathSequence(playerCharacter);
     }
