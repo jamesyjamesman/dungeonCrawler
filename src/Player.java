@@ -6,11 +6,13 @@ public class Player {
     int maxHealth;
     int currentHealth;
     ArrayList<ArrayList<Item>> inventory;
+    ArrayList<Relic> equippedRelics;
     public Player(String newName) {
         this.name = newName;
         this.maxHealth = 20;
         this.currentHealth = 20;
         this.inventory = new ArrayList<>();
+        this.equippedRelics = new ArrayList<>();
     }
 
     public void addItemToInventory(Item item) {
@@ -29,8 +31,9 @@ public class Player {
         if (this.inventory.isEmpty()) {
             if (death) {
                 System.out.println("Wow! Not leaving anything for the next person...");
+            } else {
+                System.out.println("Your inventory is empty!");
             }
-            System.out.println("Your inventory is empty!");
             return;
         }
 
@@ -56,7 +59,40 @@ public class Player {
         }
 
         inventory.get(Integer.parseInt(response) - 1).getFirst().useItem(this);
+    }
 
+    //this is very dry but i wasn't sure how to use checkInventory due to the different types
+    public void checkRelics(boolean death) {
+
+        if (this.equippedRelics.isEmpty()) {
+            if (death) {
+                System.out.println("Too good for those darn relics, eh?");
+            } else {
+                System.out.println("Your relic pouch is empty!");
+            }
+            return;
+        }
+
+        Scanner lineScanner = new Scanner(System.in);
+        for (int i = 0; i < this.equippedRelics.size(); i++) {
+            System.out.println((i+1) + ". " + this.equippedRelics.get(i).name + ": "
+                    + this.equippedRelics.get(i).description);
+            System.out.println();
+        }
+
+        if (death) {
+            return;
+        }
+
+        System.out.println("Would you like to unequip a relic?\nInput the appropriate number to do so, or exit to return to gameplay.");
+        String response = Main.inputHelper(this, lineScanner.nextLine());
+
+        if (response.equals("exit")) {
+            System.out.println("You shut your relic pouch.");
+            return;
+        }
+
+        inventory.get(Integer.parseInt(response) - 1).getFirst().useItem(this);
     }
 
     public int findItemInInventory(Item item) {
@@ -90,4 +126,10 @@ public class Player {
             this.maxHealth += health;
             this.currentHealth += health;
         }
+
+    public void useRelics(Room room) {
+        for (Relic equippedRelic : this.equippedRelics) {
+            equippedRelic.useRelic(this, room);
+        }
     }
+}
