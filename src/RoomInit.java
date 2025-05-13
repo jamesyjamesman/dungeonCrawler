@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class RoomInit {
@@ -85,6 +86,7 @@ public class RoomInit {
     public static ArrayList<ItemRoom> itemRoomInit() {
 
         ArrayList<Item> itemList = ItemInit.itemInit();
+        ArrayList<Relic> relicList = RelicInit.relicInit();
 
             ItemRoom appleRoom = new ItemRoom();
             appleRoom.item = itemList.get(indexFinder(itemList, "Apple"));
@@ -101,6 +103,16 @@ public class RoomInit {
             chocolateRoom.description = "It couldn't be... Lost after all this time... But you found it, in a dank cave...\nThe legendary " + chocolateRoom.item.name + "!!!!";
             chocolateRoom.appearance = "There's a positively delightful aroma emanating from this passageway.";
             itemRoomList.add(chocolateRoom);
+
+            ItemRoom relicRoom = new ItemRoom();
+            //this might not work! Additionally, it shouldn't be possible to get the same relic twice.
+            relicRoom.item = relicList.get(new Random().nextInt(relicList.size()));
+            relicRoom.id = 9;
+            relicRoom.description = "You walk into a room, and are bewildered by the ornate furnishings in the room. " + "Ornate walls, cushy furniture, the like!\n" +
+                    "In the center of the room stands an equally ornate pedestal with a shining " + relicRoom.item.name + " sitting on the top.";
+            relicRoom.appearance = "You get bougie vibes from this one.";
+            itemRoomList.add(relicRoom);
+
         return itemRoomList;
 
     }
