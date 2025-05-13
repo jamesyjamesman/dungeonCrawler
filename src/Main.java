@@ -31,7 +31,16 @@ public class Main {
 
             for (int i = 0; i < currentRoom.numExits; i++) {
                 currentRoom.exits.add(roomRandomizer(rooms));
-                System.out.println((i + 1) + ". " + currentRoom.exits.get(i).appearance);
+
+                int foresightIndex = playerCharacter.equippedRelicIndex("Relic of Foresight");
+
+                System.out.print((i + 1) + ". " + currentRoom.exits.get(i).appearance);
+                if (foresightIndex != -1) {
+                    ForesightRelic foresightRelic = (ForesightRelic) playerCharacter.equippedRelics.get(foresightIndex);
+                    System.out.println(" (" + foresightRelic.findNumExits(currentRoom, i) + " exits)");
+                } else {
+                    System.out.println();
+                }
             }
             System.out.println();
             playerCharacter.useRelics(currentRoom);
