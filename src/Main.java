@@ -18,8 +18,12 @@ public class Main {
     }
 
     public static void gameLoop(Player playerCharacter, Room currentRoom, ArrayList<Room> rooms) {
+        ArrayList<Relic> relicList = RelicInit.relicInit();
         Scanner promptScanner = new Scanner(System.in);
         while (playerCharacter.currentHealth > 0) {
+
+            roomChecker(currentRoom, rooms, relicList);
+
             currentRoom.completeRoomActions(playerCharacter);
 
             System.out.println("Where would you like to go?");
@@ -54,6 +58,19 @@ public class Main {
             }
         }
         doDeathSequence(playerCharacter);
+    }
+
+    public static void roomChecker(Room currentRoom, ArrayList<Room> rooms, ArrayList<Relic> relicList) {
+
+        if (currentRoom.id == 9) {
+            ItemRoom newRoom = (ItemRoom) currentRoom;
+            Relic newRelic = relicList.get(new Random().nextInt(relicList.size()));
+            relicList.remove(newRelic);
+            if (relicList.isEmpty()) {
+                rooms.remove(currentRoom);
+            }
+            newRoom.changeItem(newRelic);
+        }
     }
 
     public static String inputHelper(Player player, String input) {
