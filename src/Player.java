@@ -92,7 +92,7 @@ public class Player {
             return;
         }
 
-        inventory.get(Integer.parseInt(response) - 1).getFirst().useItem(this);
+        equippedRelics.get(Integer.parseInt(response) - 1).useItem(this);
     }
 
     public int findItemInInventory(Item item) {
