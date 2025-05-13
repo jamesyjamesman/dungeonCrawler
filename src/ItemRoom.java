@@ -4,7 +4,7 @@ public class ItemRoom extends Room {
     Item item;
     public ItemRoom() {
         super();
-        this.item = new Item();
+        this.item = null;
     }
 
     @Override
