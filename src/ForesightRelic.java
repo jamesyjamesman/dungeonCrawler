@@ -6,9 +6,9 @@ public class ForesightRelic extends Relic {
 
     @Override
     public void useRelic(Player player, Room room) {
-        System.out.println("Ability: Relic of Foresight");
-        for (int i = 0; i < room.numExits; i++) {
-            System.out.println("Room " + (i+1) + " has " + room.exits.get(i).numExits + " exits.");
-        }
+
+    }
+    public int findNumExits(Room room, int index) {
+        return room.exits.get(index).numExits;
     }
 }
