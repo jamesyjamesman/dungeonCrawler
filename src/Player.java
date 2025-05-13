@@ -39,10 +39,12 @@ public class Player {
 
         Scanner lineScanner = new Scanner(System.in);
         for (int i = 0; i < this.inventory.size(); i++) {
-            System.out.println((i+1) + ". " + this.inventory.get(i).getFirst().name
-                    //perhaps: hide amount if amount = 1
-                    + " (x" + this.inventory.get(i).size() + ")" + ": "
-                    + this.inventory.get(i).getFirst().description);
+            //Displays amount of items in parentheses (e.g. (x2)) if the amount is greater than 1
+            String amount = (this.inventory.get(i).size() > 1) ? " (x" + this.inventory.get(i).size() + ")" : "";
+
+            System.out.println((i+1) + ". " + this.inventory.get(i).getFirst().name +
+                    amount
+                    + ": " + this.inventory.get(i).getFirst().description);
             System.out.println();
         }
 
@@ -99,6 +101,15 @@ public class Player {
         for (int i = 0; i < this.inventory.size(); i++) {
             if (this.inventory.get(i).getFirst().equals(item)) {
                 return i;
+            }
+        }
+        return -1;
+    }
+
+    public int equippedRelicIndex(String relicName) {
+        for (Relic equippedRelic : this.equippedRelics) {
+            if (equippedRelic.name.equals(relicName)) {
+                return this.equippedRelics.indexOf(equippedRelic);
             }
         }
         return -1;
