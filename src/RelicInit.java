@@ -10,6 +10,9 @@ public class RelicInit {
         Relic foresight = new ForesightRelic();
         relicList.add(foresight);
 
+        Relic regeneration = new RegenerationRelic();
+        relicList.add(regeneration);
+
         return relicList;
     }
 }
