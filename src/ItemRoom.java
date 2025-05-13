@@ -21,4 +21,7 @@ public class ItemRoom extends Room {
         System.out.println("You stash the " + this.item.name + " in your bag.");
         player.addItemToInventory(this.item);
     }
+    public void changeItem(Item item) {
+        this.item = item;
+    }
 }
