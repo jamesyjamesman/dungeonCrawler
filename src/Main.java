@@ -72,13 +72,16 @@ public class Main {
 
     public static void roomChecker(Room currentRoom, ArrayList<Room> rooms, ArrayList<Relic> relicList) {
 
-        if (currentRoom.id == 9) {
+        if (currentRoom.id == 9 || currentRoom.id == 10) {
             ItemRoom newRoom = (ItemRoom) currentRoom;
             Relic newRelic = relicList.get(new Random().nextInt(relicList.size()));
-            //this does not allow players to obtain a relic if they deny taking it.
+            //this does not allow players to ever obtain a relic if they deny taking it.
             relicList.remove(newRelic);
             if (relicList.isEmpty()) {
                 rooms.remove(currentRoom);
+            }
+            if (newRoom.id == 10) {
+                newRelic.cursed = true;
             }
             newRoom.changeItem(newRelic);
         }
