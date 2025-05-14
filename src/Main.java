@@ -37,7 +37,8 @@ public class Main {
                 System.out.print((i + 1) + ". " + currentRoom.exits.get(i).appearance);
                 if (foresightIndex != -1) {
                     ForesightRelic foresightRelic = (ForesightRelic) playerCharacter.equippedRelics.get(foresightIndex);
-                    System.out.println(" (" + foresightRelic.findNumExits(currentRoom, i) + " exits)");
+                    int numExits = foresightRelic.findNumExits(currentRoom, i);
+                    System.out.println(" (" + numExits + " exit" + pluralChecker(numExits) + ")");
                 } else {
                     System.out.println();
                 }
