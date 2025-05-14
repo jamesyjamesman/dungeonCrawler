@@ -15,5 +15,6 @@ public class RegenerationRelic extends Relic {
         }
 
         }
+        super.useRelic(player, room);
     }
 }
