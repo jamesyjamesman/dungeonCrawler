@@ -16,5 +16,6 @@ public class Room {
 
     public void completeRoomActions(Player player) {
         System.out.println(this.description);
+        player.roomsTraversed += 1;
     }
 }

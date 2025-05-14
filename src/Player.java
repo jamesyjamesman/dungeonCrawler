@@ -5,6 +5,7 @@ public class Player {
     String name;
     int maxHealth;
     int currentHealth;
+    int roomsTraversed;
     ArrayList<ArrayList<Item>> inventory;
     ArrayList<Relic> equippedRelics;
     public Player(String newName) {
@@ -13,6 +14,7 @@ public class Player {
         this.currentHealth = 20;
         this.inventory = new ArrayList<>();
         this.equippedRelics = new ArrayList<>();
+        this.roomsTraversed = 0;
     }
 
     public void addItemToInventory(Item item) {

@@ -74,6 +74,7 @@ public class Main {
         if (currentRoom.id == 9) {
             ItemRoom newRoom = (ItemRoom) currentRoom;
             Relic newRelic = relicList.get(new Random().nextInt(relicList.size()));
+            //this does not allow players to obtain a relic if they deny taking it.
             relicList.remove(newRelic);
             if (relicList.isEmpty()) {
                 rooms.remove(currentRoom);
@@ -129,6 +130,7 @@ public class Main {
 
     public static void endStatistics(Player player) {
         System.out.println("Player statistics:");
+        System.out.println("You died on room #" + player.roomsTraversed + ".");
         System.out.println("Maximum health: " + player.maxHealth);
         System.out.println("Inventory:");
         player.checkInventory(true);
