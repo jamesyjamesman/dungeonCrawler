@@ -109,6 +109,13 @@ public class RoomInit {
             relicRoom.appearance = "You get bougie vibes from this one.";
             itemRoomList.add(relicRoom);
 
+            ItemRoom corpseRoom = new ItemRoom();
+            corpseRoom.id = 10;
+            corpseRoom.description = "You walk into an empty room... except for the skeleton in the corner.";
+            corpseRoom.appearance = "You think you catch of whiff of something... not good.";
+            itemRoomList.add(corpseRoom);
+
+
         return itemRoomList;
 
     }
