@@ -92,6 +92,7 @@ public class Main {
                 case "help" -> commandList();
                 case "inventory" -> player.checkInventory(false);
                 case "relics" -> player.checkRelics(false);
+                case "kill" -> player.takeDamage(1000);
                 default -> {
                     return input;
                 }
