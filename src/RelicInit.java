@@ -13,6 +13,9 @@ public class RelicInit {
         Relic regeneration = new RegenerationRelic();
         relicList.add(regeneration);
 
+        Relic cursed = new CurseRelic();
+        relicList.add(cursed);
+
         return relicList;
     }
 }
