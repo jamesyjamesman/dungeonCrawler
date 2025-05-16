@@ -25,7 +25,6 @@ public class Main {
             roomChecker(currentRoom, rooms, relicList);
 
             currentRoom.completeRoomActions(playerCharacter);
-
             System.out.println("Where would you like to go?");
             System.out.println("You see " + currentRoom.numExits + " exit" + pluralChecker(currentRoom.numExits) + ".");
 
