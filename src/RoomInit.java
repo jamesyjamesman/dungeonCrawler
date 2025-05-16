@@ -67,18 +67,27 @@ public class RoomInit {
     }
     public static ArrayList<EnemyRoom> enemyRoomInit() {
 
-        ArrayList<MageEnemy> enemyList = EnemyInit.enemyInit();
-        MageEnemy currentEnemy = enemyList.getFirst();
+        ArrayList<Enemy> enemyList = EnemyInit.enemyInit();
+        Enemy currentEnemy = enemyList.getFirst();
 
-        EnemyRoom goblinRoom = new EnemyRoom();
-        goblinRoom.id = 2;
-        goblinRoom.numExits = 4;
-        goblinRoom.description = "You enter the ro- *A goblin attacks!*";
-        goblinRoom.battleInitiationMessage = "The goblin pulls out a small wooden wand, casting sparks at you!";
-        goblinRoom.appearance = "You can't see much, but you can hear some echoing chatter.";
-        goblinRoom.enemies = new ArrayList<>();
-        goblinRoom.enemies.add(currentEnemy);
-        enemyRoomList.add(goblinRoom);
+            EnemyRoom goblinRoom = new EnemyRoom();
+            goblinRoom.id = 2;
+            goblinRoom.numExits = 4;
+            goblinRoom.description = "You enter the room... Waking up a goblin in a tattered cloak. It wearily blinks, before jumping up.";
+            goblinRoom.battleInitiationMessage = "The goblin pulls out a small wooden wand, ready to cast spells at you!";
+            goblinRoom.appearance = "You can't see much, but you can hear some echoing chatter.";
+            goblinRoom.enemies.add(currentEnemy);
+            enemyRoomList.add(goblinRoom);
+
+            EnemyRoom ambushRoom = new EnemyRoom();
+            ambushRoom.id = 11;
+            ambushRoom.numExits = 3;
+            ambushRoom.description = "You enter the ro-";
+            ambushRoom.battleInitiationMessage = "Oh no! a goblin and orc were waiting for you, catching you by surprise!";
+            ambushRoom.enemies.add(enemyList.get(1));
+            ambushRoom.enemies.add(enemyList.get(2));
+            enemyRoomList.add(ambushRoom);
+
         return enemyRoomList;
     }
 
