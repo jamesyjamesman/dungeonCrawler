@@ -4,12 +4,12 @@ public class EnemyInit {
     static ArrayList<MageEnemy> MageEnemyList = new ArrayList<>();
     public static ArrayList<MageEnemy> enemyInit() {
         MageEnemy goblinMage = new MageEnemy();
-        goblinMage.health = 15;
+        goblinMage.currentHealth = 9;
         goblinMage.currentMana = 100;
         goblinMage.maxMana = 100;
         goblinMage.damageType = "magic";
         goblinMage.species = "goblin";
-        goblinMage.damage = 3;
+        goblinMage.damage = 2;
         MageEnemyList.add(goblinMage);
         return MageEnemyList;
     }
