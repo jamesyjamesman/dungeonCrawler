@@ -6,6 +6,7 @@ public class Player {
     int maxHealth;
     int currentHealth;
     int roomsTraversed;
+    int damage;
     ArrayList<ArrayList<Item>> inventory;
     ArrayList<Relic> equippedRelics;
     public Player(String newName) {
@@ -15,6 +16,15 @@ public class Player {
         this.inventory = new ArrayList<>();
         this.equippedRelics = new ArrayList<>();
         this.roomsTraversed = 0;
+        this.damage = 3;
+    }
+
+    public boolean attack(Enemy enemy) {
+        int totalDamage = this.damage;
+        System.out.println("The " + enemy.species + " took " + totalDamage + " damage!");
+        return enemy.takeDamage(totalDamage);
+
+        //will get more complex with weapons, etc.
     }
 
     public void addItemToInventory(Item item) {
@@ -120,6 +130,7 @@ public class Player {
     public void checkStatus() {
         System.out.println("Current player status:");
         System.out.println("Health: " + this.currentHealth + "/" + this.maxHealth);
+        System.out.println("Total damage output: " + this.damage);
     }
     public void takeDamage(int damage) {
         this.currentHealth -= damage;
