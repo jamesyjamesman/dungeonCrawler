@@ -65,6 +65,7 @@ public class RoomInit {
 
         return trapRoomList;
     }
+
     public static ArrayList<EnemyRoom> enemyRoomInit() {
 
         ArrayList<Enemy> enemyList = EnemyInit.enemyInit();
@@ -112,6 +113,7 @@ public class RoomInit {
             itemRoomList.add(chocolateRoom);
 
             ItemRoom relicRoom = new ItemRoom();
+            //item added later
             relicRoom.id = 9;
             relicRoom.description = "You walk into a room, and are bewildered by the ornate furnishings in the room. " + "Ornate walls, cushy furniture, the like!\n" +
                     "In the center of the room stands an equally ornate pedestal with a shining relic sitting on the top.";
@@ -119,10 +121,18 @@ public class RoomInit {
             itemRoomList.add(relicRoom);
 
             ItemRoom corpseRoom = new ItemRoom();
+            //item added later
             corpseRoom.id = 10;
             corpseRoom.description = "You walk into an empty room... except for the skeleton in the corner.";
-            corpseRoom.appearance = "You think you catch of whiff of something... not good.";
+            corpseRoom.appearance = "You think you catch a whiff of something... not good.";
             itemRoomList.add(corpseRoom);
+
+            ItemRoom randomRoom = new ItemRoom();
+            //item added later
+            randomRoom.id = 12;
+            randomRoom.description = "You walk into a room. It's empty, except for something on the ground.";
+            randomRoom.numExits = 3;
+            itemRoomList.add(randomRoom);
 
 
         return itemRoomList;

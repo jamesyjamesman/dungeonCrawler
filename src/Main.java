@@ -10,7 +10,7 @@ public class Main {
         System.out.println("You can type commands into the console at any time. Try 'help' to see a list of commands.");
 
         Player playerCharacter = PlayerInit.playerInit();
-        ArrayList<Room> rooms = RoomInit.roomInit(playerCharacter);
+        ArrayList<Room> rooms = RoomInit.roomInit();
 
         Room firstRoom = rooms.getFirst();
 
