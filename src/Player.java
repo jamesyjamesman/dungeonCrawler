@@ -37,7 +37,7 @@ public class Player {
             this.inventory.get(itemIndex).add(item);
         }
     }
-
+    //can cause index out of bounds
     public void checkInventory(boolean death) {
 
         if (this.inventory.isEmpty()) {
@@ -65,14 +65,14 @@ public class Player {
         }
 
         System.out.println("Would you like to use an item?\nInput the appropriate number to use it, or exit to return to gameplay.");
-        String response = Main.inputHelper(this, lineScanner.nextLine());
+        int response = Main.responseHandler(this, 1, this.inventory.size());
 
-        if (response.equals("exit")) {
+        if (response == -1) {
             System.out.println("You exit your inventory.");
             return;
         }
 
-        inventory.get(Integer.parseInt(response) - 1).getFirst().useItem(this);
+        inventory.get(response - 1).getFirst().useItem(this);
     }
 
     //this is very dry but i wasn't sure how to use checkInventory due to the different types
@@ -99,14 +99,14 @@ public class Player {
         }
 
         System.out.println("Would you like to unequip a relic?\nInput the appropriate number to do so, or exit to return to gameplay.");
-        String response = Main.inputHelper(this, lineScanner.nextLine());
+        int response = Main.responseHandler(this, 1, this.equippedRelics.size());
 
-        if (response.equals("exit")) {
+        if (response == -1) {
             System.out.println("You shut your relic pouch.");
             return;
         }
 
-        equippedRelics.get(Integer.parseInt(response) - 1).useItem(this);
+        equippedRelics.get(response - 1).useItem(this);
     }
 
     public int findItemInInventory(Item item) {
