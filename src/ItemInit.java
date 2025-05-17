@@ -2,10 +2,13 @@ import java.util.ArrayList;
 
 public class ItemInit {
     static ArrayList<HealthItem> healthItemList = new ArrayList<>();
+    static ArrayList<BuffItem> buffItemList = new ArrayList<>();
     static ArrayList<Item> itemList = new ArrayList<>();
     public static ArrayList<Item> itemInit() {
         ArrayList<HealthItem> healthItems = healthItemInit();
+        ArrayList<BuffItem> buffItems = buffItemInit();
         itemList.addAll(healthItems);
+        itemList.addAll(buffItems);
         return itemList;
     }
     public static ArrayList<HealthItem> healthItemInit() {
@@ -26,5 +29,17 @@ public class ItemInit {
 
         return healthItemList;
 
+    }
+
+    public static ArrayList<BuffItem> buffItemInit() {
+            BuffItem healthBuff = new HealthBuffItem();
+            healthBuff.setBounds(1, 4);
+            buffItemList.add(healthBuff);
+
+            BuffItem damageBuff = new DamageBuffItem();
+            damageBuff.setBounds(1, 3);
+            buffItemList.add(damageBuff);
+
+        return buffItemList;
     }
 }
