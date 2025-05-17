@@ -1,3 +1,7 @@
+package Main.Item;
+
+import Main.Player;
+
 public abstract class Item {
     String description;
     String name;

@@ -1,3 +1,10 @@
+package Main.Room;
+
+import Main.Item.Item;
+import Main.Item.Relic;
+import Main.Main;
+import Main.Player;
+
 import java.util.Scanner;
 
 public class ItemRoom extends Room {

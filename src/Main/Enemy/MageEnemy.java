@@ -1,3 +1,5 @@
+package Main.Enemy;
+
 public class MageEnemy extends Enemy {
     int maxMana;
     int currentMana;

@@ -1,3 +1,7 @@
+package Main.Initialization;
+
+import Main.Player;
+
 import java.util.Scanner;
 
 public class PlayerInit {

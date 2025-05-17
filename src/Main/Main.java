@@ -1,3 +1,14 @@
+package Main;
+
+import Main.Initialization.ItemInit;
+import Main.Initialization.PlayerInit;
+import Main.Initialization.RelicInit;
+import Main.Initialization.RoomInit;
+import Main.Item.ForesightRelic;
+import Main.Item.Item;
+import Main.Item.Relic;
+import Main.Room.Room;
+
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;

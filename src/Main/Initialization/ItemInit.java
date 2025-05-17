@@ -1,3 +1,7 @@
+package Main.Initialization;
+
+import Main.Item.*;
+
 import java.util.ArrayList;
 
 public class ItemInit {

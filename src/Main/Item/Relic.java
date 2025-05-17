@@ -1,3 +1,8 @@
+package Main.Item;
+
+import Main.Player;
+import Main.Room.Room;
+
 import java.util.Random;
 
 public abstract class Relic extends Item{

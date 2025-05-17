@@ -1,3 +1,10 @@
+package Main;
+
+import Main.Enemy.Enemy;
+import Main.Item.Item;
+import Main.Item.Relic;
+import Main.Room.Room;
+
 import java.util.ArrayList;
 import static java.lang.System.exit;
 
@@ -223,5 +230,8 @@ public class Player {
     }
     public String getName() {
         return this.name;
+    }
+    public void incrementRoomsTraversed() {
+        this.roomsTraversed += 1;
     }
 }

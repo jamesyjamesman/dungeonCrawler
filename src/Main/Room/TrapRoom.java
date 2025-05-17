@@ -1,3 +1,7 @@
+package Main.Room;
+
+import Main.Player;
+
 public class TrapRoom extends Room {
     int damageDealt;
     public TrapRoom() {

@@ -1,3 +1,7 @@
+package Main.Item;
+
+import Main.Player;
+
 import java.util.Random;
 
 public class HealthItem extends Item{
@@ -5,7 +9,7 @@ public class HealthItem extends Item{
     int restorationLowerBound;
     int restorationUpperBound;
     int maxHealthChange;
-    HealthItem() {
+    public HealthItem() {
         this.healthRestored = 0;
         this.maxHealthChange = 0;
         this.restorationLowerBound = 0;

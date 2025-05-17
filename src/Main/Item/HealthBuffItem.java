@@ -1,3 +1,7 @@
+package Main.Item;
+
+import Main.Player;
+
 public class HealthBuffItem extends BuffItem {
     public HealthBuffItem() {
         this.statType = "maximum health";

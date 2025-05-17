@@ -1,3 +1,10 @@
+package Main.Initialization;
+
+import Main.Item.CurseRelic;
+import Main.Item.ForesightRelic;
+import Main.Item.RegenerationRelic;
+import Main.Item.Relic;
+
 import java.util.ArrayList;
 
 public class RelicInit {

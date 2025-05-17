@@ -1,3 +1,9 @@
+package Main.Room;
+
+import Main.Battle;
+import Main.Enemy.Enemy;
+import Main.Player;
+
 import java.util.ArrayList;
 
 public class EnemyRoom extends Room {

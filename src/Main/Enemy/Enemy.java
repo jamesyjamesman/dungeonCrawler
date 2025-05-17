@@ -1,3 +1,7 @@
+package Main.Enemy;
+
+import Main.Player;
+
 public class Enemy {
     int maxHealth;
     int currentHealth;

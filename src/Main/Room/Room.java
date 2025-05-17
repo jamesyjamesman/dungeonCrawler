@@ -1,3 +1,7 @@
+package Main.Room;
+
+import Main.Player;
+
 import java.util.ArrayList;
 
 public class Room {
@@ -16,7 +20,7 @@ public class Room {
 
     public void completeRoomActions(Player player) {
         System.out.println(this.description);
-        player.roomsTraversed += 1;
+        player.incrementRoomsTraversed();
     }
 
     public void setId(int id) {

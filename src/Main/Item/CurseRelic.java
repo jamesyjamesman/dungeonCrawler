@@ -1,3 +1,5 @@
+package Main.Item;
+
 import java.util.Random;
 
 public class CurseRelic extends Relic {

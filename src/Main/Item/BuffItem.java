@@ -1,3 +1,7 @@
+package Main.Item;
+
+import Main.Player;
+
 import java.util.Random;
 
 public abstract class BuffItem extends Item {

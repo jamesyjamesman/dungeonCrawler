@@ -1,3 +1,7 @@
+package Main.Item;
+
+import Main.Room.Room;
+
 public class ForesightRelic extends Relic {
     public ForesightRelic() {
         this.name = "Relic of Foresight";

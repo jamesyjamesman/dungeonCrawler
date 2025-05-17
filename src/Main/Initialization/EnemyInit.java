@@ -1,3 +1,8 @@
+package Main.Initialization;
+
+import Main.Enemy.Enemy;
+import Main.Enemy.MageEnemy;
+
 import java.util.ArrayList;
 
 public class EnemyInit {

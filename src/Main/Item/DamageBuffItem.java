@@ -1,3 +1,7 @@
+package Main.Item;
+
+import Main.Player;
+
 public class DamageBuffItem extends BuffItem {
     public DamageBuffItem() {
         this.statType = "damage";
