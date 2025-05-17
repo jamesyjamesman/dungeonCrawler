@@ -87,8 +87,8 @@ public class Player {
         }
 
         for (int i = 0; i < this.equippedRelics.size(); i++) {
-            System.out.println((i+1) + ". " + this.equippedRelics.get(i).name + ": "
-                    + this.equippedRelics.get(i).description);
+            System.out.println((i+1) + ". " + this.equippedRelics.get(i).getName() + ": "
+                    + this.equippedRelics.get(i).getDescription());
             System.out.println();
         }
 
