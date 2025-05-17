@@ -53,9 +53,9 @@ public class Player {
             //Displays amount of items in parentheses (e.g. (x2)) if the amount is greater than 1
             String amount = (this.inventory.get(i).size() > 1) ? " (x" + this.inventory.get(i).size() + ")" : "";
 
-            System.out.println((i+1) + ". " + this.inventory.get(i).getFirst().name +
+            System.out.println((i+1) + ". " + this.inventory.get(i).getFirst().getName() +
                     amount
-                    + ": " + this.inventory.get(i).getFirst().description);
+                    + ": " + this.inventory.get(i).getFirst().getDescription());
             System.out.println();
         }
 
