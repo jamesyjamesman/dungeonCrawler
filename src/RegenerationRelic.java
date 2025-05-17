@@ -12,8 +12,7 @@ public class RegenerationRelic extends Relic {
         int amountHealed = player.heal(new Random().nextInt(1,4));
         if (amountHealed != 0) {
             System.out.println("Your Relic of Regeneration healed you for " + amountHealed + " health!");
-        }
-
+            }
         }
         super.useRelic(player, room);
     }

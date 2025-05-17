@@ -21,26 +21,28 @@ public class RoomInit {
 
     public static ArrayList<Room> normalRoomInit() {
             Room startRoom = new Room();
-            startRoom.id = 0;
-            startRoom.numExits = 2;
-            startRoom.description = "You find yourself in an empty room, clearly a cave of sorts.";
-            startRoom.appearance = "You see what appears to be a familiar room.";
+            startRoom.setId(0);
+            startRoom.setNumExits(2);
+            startRoom.setDescription("An empty room.");
+            startRoom.setAppearance("For some reason, it invokes a sense of nostalgia.");
             normalRoomList.add(startRoom);
 
             Room threeExits = new Room();
-            threeExits.id = 6;
-            threeExits.numExits = 3;
+            threeExits.setId(6);
+            threeExits.setNumExits(3);
             normalRoomList.add(threeExits);
 
             Room fourExits = new Room();
-            fourExits.id = 7;
-            fourExits.numExits = 4;
+            fourExits.setId(7);
+            fourExits.setNumExits(4);
             normalRoomList.add(fourExits);
 
             Room manyExits = new Room();
-            manyExits.id = 8;
-            manyExits.numExits = 10;
-            manyExits.description = "Wow! this must be the heart of the system or something.\nThere's so many different exits!";
+            manyExits.setId(8);
+            manyExits.setNumExits(10);
+            manyExits.setDescription("""
+                    Wow! this must be the heart of the system or something.
+                    There's so many different exits!""");
             normalRoomList.add(manyExits);
 
         return normalRoomList;
@@ -49,18 +51,26 @@ public class RoomInit {
     public static ArrayList<TrapRoom> trapRoomInit() {
 
             TrapRoom stalactiteRoom = new TrapRoom();
-            stalactiteRoom.id = 1;
-            stalactiteRoom.description = "You walk into the room, and a dank smell hits you like a ton of bricks.\nLooking upwards, you notice some dangerously long stalactites hanging from the ceiling, water dripping down from them onto you.\nYou take a step forward, and your foot hits a tripwire.\nYou hear a loud *CRACK*, and a chunk of stalactite falls, hitting you in the shoulder.";
-            stalactiteRoom.appearance = "You think you can smell a faint mustiness, and water dripping. It's dark.";
-            stalactiteRoom.damageDealt = 5;
-            stalactiteRoom.numExits = 3;
+            stalactiteRoom.setId(1);
+            stalactiteRoom.setNumExits(3);
+            stalactiteRoom.setDescription("""
+                    You walk into the room, and a dank smell hits you like a ton of bricks.
+                    Looking upwards, you notice some dangerously long stalactites hanging from the ceiling, water dripping down from them onto you.
+                    You take a step forward, and your foot hits a tripwire.
+                    You hear a loud *CRACK*, and a chunk of stalactite falls, hitting you in the shoulder.""");
+            stalactiteRoom.setAppearance("You think you can smell a faint mustiness, and water dripping. It's dark.");
+            stalactiteRoom.setDamageDealt(5);
             trapRoomList.add(stalactiteRoom);
 
             TrapRoom pitRoom = new TrapRoom();
-            pitRoom.id = 5;
-            pitRoom.description = "You slowly walk into to a room. The ground creaks beneath your feet.\nSuddenly, the flooring cracks and shatters, tumbling you down onto a pit of spikes.\nLuckily, you land between the spikes, suffering only minor cuts and bruises.\nYou're not sure how to get back up, but you notice a single passageway at the bottom of the pit.";
-            pitRoom.damageDealt = 3;
-            pitRoom.numExits = 1;
+            pitRoom.setId(5);
+            pitRoom.setDescription("""
+                    You slowly walk into to a room. The ground creaks beneath your feet.
+                    Suddenly, the flooring cracks and shatters, tumbling you down onto a pit of spikes.
+                    Luckily, you land between the spikes, suffering only minor cuts and bruises.
+                    You're not sure how to get back up, but you notice a single passageway at the bottom of the pit.""");
+            pitRoom.setDamageDealt(3);
+            pitRoom.setNumExits(1);
             trapRoomList.add(pitRoom);
 
         return trapRoomList;
@@ -69,24 +79,23 @@ public class RoomInit {
     public static ArrayList<EnemyRoom> enemyRoomInit() {
 
         ArrayList<Enemy> enemyList = EnemyInit.enemyInit();
-        Enemy currentEnemy = enemyList.getFirst();
 
             EnemyRoom goblinRoom = new EnemyRoom();
-            goblinRoom.id = 2;
-            goblinRoom.numExits = 4;
-            goblinRoom.description = "You enter the room... Waking up a goblin in a tattered cloak. It wearily blinks, before jumping up.";
-            goblinRoom.battleInitiationMessage = "The goblin pulls out a small wooden wand, ready to cast spells at you!";
-            goblinRoom.appearance = "You can't see much, but you can hear some echoing chatter.";
-            goblinRoom.enemies.add(currentEnemy);
+            goblinRoom.setId(2);
+            goblinRoom.setNumExits(4);
+            goblinRoom.setDescription("You enter the room... Waking up a goblin in a tattered cloak. It wearily blinks, before jumping up.");
+            goblinRoom.setBattleInitiationMessage("The goblin pulls out a small wooden wand, ready to cast spells at you!");
+            goblinRoom.setAppearance("You can't see much, but you can hear some echoing chatter.");
+            goblinRoom.enemies.add(enemyList.getFirst());
             enemyRoomList.add(goblinRoom);
 
             EnemyRoom ambushRoom = new EnemyRoom();
-            ambushRoom.id = 11;
-            ambushRoom.numExits = 3;
-            ambushRoom.description = "You enter the ro-";
-            ambushRoom.battleInitiationMessage = "Oh no! a goblin and orc were waiting for you, catching you by surprise!";
-            ambushRoom.enemies.add(enemyList.get(1));
-            ambushRoom.enemies.add(enemyList.get(2));
+            ambushRoom.setId(11);
+            ambushRoom.setNumExits(3);
+            ambushRoom.setDescription("You enter the ro-");
+            ambushRoom.setBattleInitiationMessage("Oh no! a goblin and orc were waiting for you, catching you by surprise!");
+            ambushRoom.addEnemies(enemyList.get(1));
+            ambushRoom.addEnemies(enemyList.get(2));
             enemyRoomList.add(ambushRoom);
 
         return enemyRoomList;
@@ -97,41 +106,42 @@ public class RoomInit {
         ArrayList<Item> itemList = ItemInit.itemInit();
 
             ItemRoom appleRoom = new ItemRoom();
-            appleRoom.item = itemList.get(indexFinder(itemList, "Apple"));
-            appleRoom.id = 3;
-            appleRoom.numExits = 3;
-            appleRoom.description = "You enter the room. It's empty, except for a small apple on a pedestal.";
-            appleRoom.appearance = "You can't see much, but you can smell a faintly sweet scent coming from the doorway.";
+            appleRoom.setItem(itemList.get(indexFinder(itemList, "Apple")));
+            appleRoom.setId(3);
+            appleRoom.setNumExits(3);
+            appleRoom.setDescription("You enter the room. It's empty, except for a small apple on a pedestal.");
+            appleRoom.setAppearance("You can't see much, but you can smell a faintly sweet scent coming from the doorway.");
             itemRoomList.add(appleRoom);
 
             ItemRoom chocolateRoom = new ItemRoom();
-            chocolateRoom.item = itemList.get(indexFinder(itemList, "Torpedo Chocolate Bar™"));
-            chocolateRoom.id = 4;
-            chocolateRoom.numExits = 1;
-            chocolateRoom.description = "It couldn't be... Lost after all this time... But you found it, in a dank cave...\nThe legendary " + chocolateRoom.item.name + "!!!!";
-            chocolateRoom.appearance = "There's a positively delightful aroma emanating from this passageway.";
+            chocolateRoom.setItem(itemList.get(indexFinder(itemList, "Torpedo Chocolate Bar™")));
+            chocolateRoom.setId(4);
+            chocolateRoom.setNumExits(1);
+            chocolateRoom.setDescription("It couldn't be... Lost after all this time... But you found it, in a dank cave...\nThe legendary " + chocolateRoom.item.name + "!!!!");
+            chocolateRoom.setAppearance("There's a positively delightful aroma emanating from this passageway.");
             itemRoomList.add(chocolateRoom);
 
             ItemRoom relicRoom = new ItemRoom();
             //item added later
-            relicRoom.id = 9;
-            relicRoom.description = "You walk into a room, and are bewildered by the ornate furnishings in the room. " + "Ornate walls, cushy furniture, the like!\n" +
-                    "In the center of the room stands an equally ornate pedestal with a shining relic sitting on the top.";
-            relicRoom.appearance = "You get bougie vibes from this one.";
+            relicRoom.setId(9);
+            relicRoom.setDescription("""
+                    You walk into a room, and are bewildered by the ornate furnishings in the room. Ornate walls, cushy furniture, the like!
+                    In the center of the room stands an equally ornate pedestal with a shining relic sitting on the top.""");
+            relicRoom.setAppearance("This room emits fanciness like you've never known.");
             itemRoomList.add(relicRoom);
 
             ItemRoom corpseRoom = new ItemRoom();
             //item added later
-            corpseRoom.id = 10;
-            corpseRoom.description = "You walk into an empty room... except for the skeleton in the corner.";
-            corpseRoom.appearance = "You think you catch a whiff of something... not good.";
+            corpseRoom.setId(10);
+            corpseRoom.setDescription("You walk into an empty room... except for the skeleton in the corner.");
+            corpseRoom.setAppearance("You think you catch a whiff of something... not good.");
             itemRoomList.add(corpseRoom);
 
             ItemRoom randomRoom = new ItemRoom();
             //item added later
-            randomRoom.id = 12;
-            randomRoom.description = "You walk into a room. It's empty, except for something on the ground.";
-            randomRoom.numExits = 3;
+            randomRoom.setId(12);
+            randomRoom.setDescription("You walk into a room. It's empty, except for something on the ground.");
+            randomRoom.setNumExits(3);
             itemRoomList.add(randomRoom);
 
 

@@ -74,12 +74,12 @@ public class Main {
             if (newRoom.id == 10) {
                 newRelic.cursed = true;
             }
-            newRoom.changeItem(newRelic);
+            newRoom.setItem(newRelic);
         }
         if (currentRoom.id == 12) {
             ItemRoom newRoom = (ItemRoom) currentRoom;
             Item item = itemList.get(new Random().nextInt(itemList.size()));
-            newRoom.changeItem(item);
+            newRoom.setItem(item);
         }
     }
     //can still crash if exit is entered in some scenarios

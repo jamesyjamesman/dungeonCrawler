@@ -18,4 +18,21 @@ public class Room {
         System.out.println(this.description);
         player.roomsTraversed += 1;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    public void setExits(ArrayList<Room> exits) {
+        this.exits = exits;
+    }
+    public void setAppearance(String appearance) {
+        this.appearance = appearance;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public void setNumExits(int numExits) {
+        this.numExits = numExits;
+    }
+
 }

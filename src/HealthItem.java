@@ -2,17 +2,19 @@ import java.util.Random;
 
 public class HealthItem extends Item{
     int healthRestored;
-    int[] restorationRange;
+    int restorationLowerBound;
+    int restorationUpperBound;
     int maxHealthChange;
     HealthItem() {
         this.healthRestored = 0;
-        this.restorationRange = new int[2];
         this.maxHealthChange = 0;
+        this.restorationLowerBound = 0;
+        this.restorationUpperBound = 0;
     }
 
     @Override
     public void useItem(Player player) {
-        this.healthRestored = new Random().nextInt(this.restorationRange[0], this.restorationRange[1]);
+        this.healthRestored = new Random().nextInt(this.restorationLowerBound, this.restorationUpperBound);
 
         if (this.healthRestored < 0) {
             System.out.println("Yuck! The " + this.name + " was terrible... You lost " + this.healthRestored * -1 + " health.");
@@ -30,5 +32,13 @@ public class HealthItem extends Item{
             }
         }
         super.discardItem(player);
+    }
+
+    public void setRestorationRange(int lowerBound, int upperBound) {
+        this.restorationLowerBound = lowerBound;
+        this.restorationUpperBound = upperBound;
+    }
+    public void setMaxHealthChange(int maxHealthChange) {
+        this.maxHealthChange = maxHealthChange;
     }
 }

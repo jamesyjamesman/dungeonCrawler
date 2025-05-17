@@ -16,12 +16,18 @@ public class EnemyRoom extends Room {
         super.completeRoomActions(player);
         System.out.println(this.battleInitiationMessage);
         Battle.battleLoop(player, this);
-        for (int i = 0; i < this.defeatedEnemies.size(); i++) {
-            this.enemies.add(this.defeatedEnemies.get(i));
-            this.enemies.get(i).reset();
-        }
+        addEnemies(this.defeatedEnemies);
+        for (Enemy enemy : this.enemies) {enemy.reset();}
         this.defeatedEnemies.clear();
     }
-
+    public void addEnemies(ArrayList<Enemy> enemies) {
+        this.enemies.addAll(enemies);
+    }
+    public void addEnemies(Enemy enemy) {
+        this.enemies.add(enemy);
+    }
+    public void setBattleInitiationMessage(String battleInitiationMessage) {
+        this.battleInitiationMessage = battleInitiationMessage;
+    }
 
 }

@@ -19,4 +19,11 @@ public abstract class Item {
             player.inventory.get(itemIndex).remove(this);
         }
     }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
 }

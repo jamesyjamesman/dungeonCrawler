@@ -26,12 +26,26 @@ public class Enemy {
     }
 
     public void attack(Player player) {
-        player.takeDamage(this.damage);
         System.out.println("The " + this.species + " attacked you, dealing " + this.damage + " damage!");
+        player.takeDamage(this.damage);
         //will get more complex with weapons, etc.
     }
 
     public void reset() {
         this.currentHealth = this.maxHealth;
+    }
+
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+        this.currentHealth = this.maxHealth;
+    }
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+    public void setSpecies(String species) {
+        this.species = species;
+    }
+    public void setDamageType(String damageType) {
+        this.damageType = damageType;
     }
 }

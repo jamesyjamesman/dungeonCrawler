@@ -7,6 +7,7 @@ public abstract class Relic extends Item{
         this.equipped = false;
         this.cursed = new Random().nextInt(5) == 0;
     }
+
     public void useRelic(Player player, Room room) {
         if (this.cursed) {
             int amountDamage = new Random().nextInt(5);
@@ -43,5 +44,9 @@ public abstract class Relic extends Item{
 
     public boolean isCursed() {
         return this.cursed;
+    }
+
+    public void setCursed(boolean cursed) {
+        this.cursed = cursed;
     }
 }

@@ -43,7 +43,7 @@ public class ItemRoom extends Room {
         }
         System.out.println("You stash the " + this.item.name + " in your bag.");
     }
-    public void changeItem(Item item) {
+    public void setItem(Item item) {
         this.item = item;
     }
 }

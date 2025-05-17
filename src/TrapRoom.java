@@ -11,4 +11,7 @@ public class TrapRoom extends Room {
         System.out.println("You took " + this.damageDealt + " damage!");
         player.takeDamage(this.damageDealt);
     }
+    public void setDamageDealt(int damageDealt) {
+        this.damageDealt = damageDealt;
+    }
 }

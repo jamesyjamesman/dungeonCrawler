@@ -13,18 +13,16 @@ public class ItemInit {
     }
     public static ArrayList<HealthItem> healthItemInit() {
             HealthItem apple = new HealthItem();
-            apple.name = "Apple";
-            apple.description = "An apple you found in the cave system.\nIt doesn't seem too fresh.";
-            apple.restorationRange[0] = -3;
-            apple.restorationRange[1] = 5;
+            apple.setName("Apple");
+            apple.setDescription("An apple you found in the cave system.\nIt doesn't seem too fresh.");
+            apple.setRestorationRange(-3, 5);
             healthItemList.add(apple);
 
             HealthItem chocolate = new HealthItem();
-            chocolate.name = "Torpedo Chocolate Bar™";
-            chocolate.description = "A legendary chocolate bar thought to be long-lost.\nYou're salivating just looking at it.";
-            chocolate.restorationRange[0] = 5;
-            chocolate.restorationRange[1] = 15;
-            chocolate.maxHealthChange = 3;
+            chocolate.setName("Torpedo Chocolate Bar™");
+            chocolate.setDescription("A legendary chocolate bar thought to be long-lost.\nYou're salivating just looking at it.");
+            chocolate.setRestorationRange(5, 15);
+            chocolate.setMaxHealthChange(3);
             healthItemList.add(chocolate);
 
         return healthItemList;
