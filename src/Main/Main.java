@@ -19,46 +19,7 @@ public class Main {
 
         Room firstRoom = rooms.getFirst();
 
-        gameLoop(playerCharacter, firstRoom, rooms);
-    }
-
-    public static void gameLoop(Player playerCharacter, Room currentRoom, ArrayList<Room> rooms) {
-        ArrayList<Relic> relicList = RelicInit.relicInit();
-        //this shouldn't be here
-        ArrayList<Item> itemList = ItemInit.itemInit();
-        while (playerCharacter.getCurrentHealth() > 0) {
-
-            roomChecker(currentRoom, rooms, relicList, itemList);
-
-            currentRoom.completeRoomActions(playerCharacter);
-            System.out.println("Where would you like to go?");
-            System.out.println("You see " + currentRoom.getNumExits() + " exit" + pluralChecker(currentRoom.getNumExits()) + ".");
-
-            for (int i = 0; i < currentRoom.getNumExits(); i++) {
-                currentRoom.addExit(roomRandomizer(rooms));
-
-                int foresightIndex = playerCharacter.equippedRelicIndex("Relic of Foresight");
-
-                System.out.print((i + 1) + ". " + currentRoom.getExits().get(i).getAppearance());
-                if (foresightIndex != -1) {
-                    ForesightRelic foresightRelic = (ForesightRelic) playerCharacter.getEquippedRelics().get(foresightIndex);
-                    int numExits = foresightRelic.findNumExits(currentRoom, i);
-                    System.out.println(" (" + numExits + " exit" + pluralChecker(numExits) + ")");
-                } else {
-                    System.out.println();
-                }
-            }
-            System.out.println();
-            playerCharacter.useRelics(currentRoom);
-
-            int response = responseHandler(playerCharacter, 1, currentRoom.getExits().size()) - 1;
-            Room nextRoom = currentRoom.getExits().get(response);
-            currentRoom.getExits().clear();
-            currentRoom = nextRoom;
-
-
-        }
-        playerCharacter.doDeathSequence();
+        Game.gameLoop(playerCharacter, firstRoom, rooms);
     }
 
     public static void roomChecker(Room currentRoom, ArrayList<Room> rooms, ArrayList<Relic> relicList, ArrayList<Item> itemList) {
