@@ -10,7 +10,7 @@ public class Main {
         System.out.println("You can type commands into the console at any time. Try 'help' to see a list of commands.");
 
         Player playerCharacter = PlayerInit.playerInit();
-        ArrayList<Room> rooms = RoomInit.roomInit();
+        ArrayList<Room> rooms = RoomInit.roomInit(playerCharacter);
 
         Room firstRoom = rooms.getFirst();
 
@@ -19,10 +19,11 @@ public class Main {
 
     public static void gameLoop(Player playerCharacter, Room currentRoom, ArrayList<Room> rooms) {
         ArrayList<Relic> relicList = RelicInit.relicInit();
-        Scanner promptScanner = new Scanner(System.in);
+        //this shouldn't be here
+        ArrayList<Item> itemList = ItemInit.itemInit();
         while (playerCharacter.currentHealth > 0) {
 
-            roomChecker(currentRoom, rooms, relicList);
+            roomChecker(currentRoom, rooms, relicList, itemList);
 
             currentRoom.completeRoomActions(playerCharacter);
             System.out.println("Where would you like to go?");
@@ -45,31 +46,17 @@ public class Main {
             System.out.println();
             playerCharacter.useRelics(currentRoom);
 
-            while (true) {
-                String promptResponse = inputHelper(playerCharacter, promptScanner.nextLine());
-                int response;
-                Room nextRoom;
-                try {
-                    response = Integer.parseInt(promptResponse) - 1;
-                } catch(NumberFormatException e) {
-                    System.out.println("Invalid response.");
-                    continue;
-                }
-                try {
-                    nextRoom = currentRoom.exits.get(response);
-                } catch(IndexOutOfBoundsException e) {
-                    System.out.println("Invalid exit!");
-                    continue;
-                }
-                currentRoom.exits.clear();
-                currentRoom = nextRoom;
-                break;
-            }
+            int response = responseHandler(playerCharacter, 1, currentRoom.exits.size()) - 1;
+            Room nextRoom = currentRoom.exits.get(response);
+            currentRoom.exits.clear();
+            currentRoom = nextRoom;
+
+
         }
         doDeathSequence(playerCharacter);
     }
 
-    public static void roomChecker(Room currentRoom, ArrayList<Room> rooms, ArrayList<Relic> relicList) {
+    public static void roomChecker(Room currentRoom, ArrayList<Room> rooms, ArrayList<Relic> relicList, ArrayList<Item> itemList) {
 
         if (currentRoom.id == 9 || currentRoom.id == 10) {
             ItemRoom newRoom = (ItemRoom) currentRoom;
@@ -77,16 +64,48 @@ public class Main {
             //this does not allow players to ever obtain a relic if they deny taking it.
             relicList.remove(newRelic);
             if (relicList.isEmpty()) {
-                rooms.remove(currentRoom);
+                for (int i = 0; i < rooms.size(); i++) {
+                    Room checkRoom = rooms.get(i);
+                    if (checkRoom.id == 9 || checkRoom.id == 10) {
+                        rooms.remove(checkRoom);
+                    }
+                }
             }
             if (newRoom.id == 10) {
                 newRelic.cursed = true;
             }
             newRoom.changeItem(newRelic);
         }
+        if (currentRoom.id == 12) {
+            ItemRoom newRoom = (ItemRoom) currentRoom;
+            Item item = itemList.get(new Random().nextInt(itemList.size()));
+            newRoom.changeItem(item);
+        }
+    }
+    //can still crash if exit is entered in some scenarios
+    public static int responseHandler(Player player, int lowerBound, int upperBound) {
+        Scanner promptScanner = new Scanner(System.in);
+        while (true) {
+            String promptResponse = checkForCommands(player, promptScanner.nextLine());
+            if (promptResponse.equals("exit")) {
+                return -1;
+            }
+            int response;
+            try {
+                response = Integer.parseInt(promptResponse);
+            } catch(NumberFormatException e) {
+                System.out.println("Invalid response!");
+                continue;
+            }
+            if (response > upperBound || response < lowerBound) {
+                System.out.println("Out of bounds!");
+                continue;
+            }
+            return response;
+        }
     }
 
-    public static String inputHelper(Player player, String input) {
+    public static String checkForCommands(Player player, String input) {
         Scanner promptScanner = new Scanner(System.in);
         while (true) {
             switch (input) {
@@ -131,7 +150,7 @@ public class Main {
             return "s";
         }
     }
-
+// if player died from food, it will not show that item as being consumed
     public static void endStatistics(Player player) {
         System.out.println("Player statistics:");
         System.out.println("You died on room #" + player.roomsTraversed + ".");
