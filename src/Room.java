@@ -22,8 +22,8 @@ public class Room {
     public void setId(int id) {
         this.id = id;
     }
-    public void setExits(ArrayList<Room> exits) {
-        this.exits = exits;
+    public void addExit(Room exit) {
+        this.exits.add(exit);
     }
     public void setAppearance(String appearance) {
         this.appearance = appearance;

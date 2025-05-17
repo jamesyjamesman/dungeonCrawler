@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Player {
     String name;
@@ -49,7 +48,6 @@ public class Player {
             return;
         }
 
-        Scanner lineScanner = new Scanner(System.in);
         for (int i = 0; i < this.inventory.size(); i++) {
             //Displays amount of items in parentheses (e.g. (x2)) if the amount is greater than 1
             String amount = (this.inventory.get(i).size() > 1) ? " (x" + this.inventory.get(i).size() + ")" : "";
@@ -75,7 +73,7 @@ public class Player {
         inventory.get(response - 1).getFirst().useItem(this);
     }
 
-    //this is very dry but i wasn't sure how to use checkInventory due to the different types
+    //this is very dry, but I wasn't sure how to use checkInventory due to the different types
     public void checkRelics(boolean death) {
 
         if (this.equippedRelics.isEmpty()) {
@@ -87,7 +85,6 @@ public class Player {
             return;
         }
 
-        Scanner lineScanner = new Scanner(System.in);
         for (int i = 0; i < this.equippedRelics.size(); i++) {
             System.out.println((i+1) + ". " + this.equippedRelics.get(i).name + ": "
                     + this.equippedRelics.get(i).description);

@@ -30,7 +30,7 @@ public class Main {
             System.out.println("You see " + currentRoom.numExits + " exit" + pluralChecker(currentRoom.numExits) + ".");
 
             for (int i = 0; i < currentRoom.numExits; i++) {
-                currentRoom.exits.add(roomRandomizer(rooms));
+                currentRoom.addExit(roomRandomizer(rooms));
 
                 int foresightIndex = playerCharacter.equippedRelicIndex("Relic of Foresight");
 
@@ -72,7 +72,7 @@ public class Main {
                 }
             }
             if (newRoom.id == 10) {
-                newRelic.cursed = true;
+                newRelic.setCursed(true);
             }
             newRoom.setItem(newRelic);
         }
