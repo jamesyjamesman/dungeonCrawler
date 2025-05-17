@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
-import static java.lang.System.exit;
 
 public class Main {
     public static void main(String[] args) {
@@ -21,22 +20,22 @@ public class Main {
         ArrayList<Relic> relicList = RelicInit.relicInit();
         //this shouldn't be here
         ArrayList<Item> itemList = ItemInit.itemInit();
-        while (playerCharacter.currentHealth > 0) {
+        while (playerCharacter.getCurrentHealth() > 0) {
 
             roomChecker(currentRoom, rooms, relicList, itemList);
 
             currentRoom.completeRoomActions(playerCharacter);
             System.out.println("Where would you like to go?");
-            System.out.println("You see " + currentRoom.numExits + " exit" + pluralChecker(currentRoom.numExits) + ".");
+            System.out.println("You see " + currentRoom.getNumExits() + " exit" + pluralChecker(currentRoom.getNumExits()) + ".");
 
-            for (int i = 0; i < currentRoom.numExits; i++) {
+            for (int i = 0; i < currentRoom.getNumExits(); i++) {
                 currentRoom.addExit(roomRandomizer(rooms));
 
                 int foresightIndex = playerCharacter.equippedRelicIndex("Relic of Foresight");
 
-                System.out.print((i + 1) + ". " + currentRoom.exits.get(i).appearance);
+                System.out.print((i + 1) + ". " + currentRoom.getExits().get(i).getAppearance());
                 if (foresightIndex != -1) {
-                    ForesightRelic foresightRelic = (ForesightRelic) playerCharacter.equippedRelics.get(foresightIndex);
+                    ForesightRelic foresightRelic = (ForesightRelic) playerCharacter.getEquippedRelics().get(foresightIndex);
                     int numExits = foresightRelic.findNumExits(currentRoom, i);
                     System.out.println(" (" + numExits + " exit" + pluralChecker(numExits) + ")");
                 } else {
@@ -46,19 +45,19 @@ public class Main {
             System.out.println();
             playerCharacter.useRelics(currentRoom);
 
-            int response = responseHandler(playerCharacter, 1, currentRoom.exits.size()) - 1;
-            Room nextRoom = currentRoom.exits.get(response);
-            currentRoom.exits.clear();
+            int response = responseHandler(playerCharacter, 1, currentRoom.getExits().size()) - 1;
+            Room nextRoom = currentRoom.getExits().get(response);
+            currentRoom.getExits().clear();
             currentRoom = nextRoom;
 
 
         }
-        doDeathSequence(playerCharacter);
+        playerCharacter.doDeathSequence();
     }
 
     public static void roomChecker(Room currentRoom, ArrayList<Room> rooms, ArrayList<Relic> relicList, ArrayList<Item> itemList) {
 
-        if (currentRoom.id == 9 || currentRoom.id == 10) {
+        if (currentRoom.getId() == 9 || currentRoom.getId() == 10) {
             ItemRoom newRoom = (ItemRoom) currentRoom;
             Relic newRelic = relicList.get(new Random().nextInt(relicList.size()));
             //this does not allow players to ever obtain a relic if they deny taking it.
@@ -66,17 +65,17 @@ public class Main {
             if (relicList.isEmpty()) {
                 for (int i = 0; i < rooms.size(); i++) {
                     Room checkRoom = rooms.get(i);
-                    if (checkRoom.id == 9 || checkRoom.id == 10) {
+                    if (checkRoom.getId() == 9 || checkRoom.getId() == 10) {
                         rooms.remove(checkRoom);
                     }
                 }
             }
-            if (newRoom.id == 10) {
+            if (newRoom.getId() == 10) {
                 newRelic.setCursed(true);
             }
             newRoom.setItem(newRelic);
         }
-        if (currentRoom.id == 12) {
+        if (currentRoom.getId() == 12) {
             ItemRoom newRoom = (ItemRoom) currentRoom;
             Item item = itemList.get(new Random().nextInt(itemList.size()));
             newRoom.setItem(item);
@@ -126,15 +125,6 @@ public class Main {
         //room should be removed from list, or at least prevented from being put more than once in a particular room.
     }
 
-    public static void doDeathSequence(Player player) {
-        System.out.println("\"Ack! It's too much for me!\" " + player.name + " exclaims.");
-        System.out.println(player.name + " falls to their knees... then to the ground.");
-        System.out.println("GAME OVER!");
-        System.out.println();
-        endStatistics(player);
-        exit(0);
-    }
-
     public static void commandList() {
         System.out.println("List of commands:");
         System.out.println("help: checks this command.");
@@ -149,15 +139,5 @@ public class Main {
         } else {
             return "s";
         }
-    }
-// if player died from food, it will not show that item as being consumed
-    public static void endStatistics(Player player) {
-        System.out.println("Player statistics:");
-        System.out.println("You died on room #" + player.roomsTraversed + ".");
-        System.out.println("Maximum health: " + player.maxHealth);
-        System.out.println("Inventory:");
-        player.checkInventory(true);
-        System.out.println("Relics:");
-        player.checkRelics(true);
     }
 }

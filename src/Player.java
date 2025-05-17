@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import static java.lang.System.exit;
 
 public class Player {
     String name;
@@ -20,7 +21,7 @@ public class Player {
 
     public boolean attack(Enemy enemy) {
         int totalDamage = this.damage;
-        System.out.println("The " + enemy.species + " took " + totalDamage + " damage!");
+        System.out.println("The " + enemy.getSpecies() + " took " + totalDamage + " damage!");
         return enemy.takeDamage(totalDamage);
 
         //will get more complex with weapons, etc.
@@ -133,7 +134,7 @@ public class Player {
         this.currentHealth -= damage;
         if (this.currentHealth < 0) {
             this.currentHealth = 0;
-            Main.doDeathSequence(this);
+            doDeathSequence();
         }
     }
     public int heal(int health) {
@@ -155,5 +156,35 @@ public class Player {
         for (Relic equippedRelic : this.equippedRelics) {
             equippedRelic.useRelic(this, room);
         }
+    }
+
+    public void doDeathSequence() {
+        System.out.println("\"Ack! It's too much for me!\" " + getName() + " exclaims.");
+        System.out.println(getName() + " falls to their knees... then to the ground.");
+        System.out.println("GAME OVER!");
+        System.out.println();
+        endStatistics();
+        exit(0);
+    }
+
+    // if player died from food, it will not show that item as being consumed
+    public void endStatistics() {
+        System.out.println("Player statistics:");
+        System.out.println("You died on room #" + this.roomsTraversed + ".");
+        System.out.println("Maximum health: " + this.maxHealth);
+        System.out.println("Inventory:");
+        checkInventory(true);
+        System.out.println("Relics:");
+        checkRelics(true);
+    }
+
+    public int getCurrentHealth() {
+        return this.currentHealth;
+    }
+    public ArrayList<Relic> getEquippedRelics() {
+        return this.equippedRelics;
+    }
+    public String getName() {
+        return this.name;
     }
 }

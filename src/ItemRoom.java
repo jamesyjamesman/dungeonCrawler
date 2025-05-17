@@ -17,11 +17,11 @@ public class ItemRoom extends Room {
         if (this.id == 10) {
             System.out.println("Would you like to ...look through the corpse? (y/n)");
         } else {
-            System.out.println("Would you like to take the " + this.item.name + "? (y/n)");
+            System.out.println("Would you like to take the " + this.item.getName() + "? (y/n)");
         }
         if (player.equippedRelicIndex("Relic of Curse Detection") > -1) {
             if (this.item instanceof Relic checkRelic && checkRelic.isCursed()) {
-                    System.out.println("Warning! The " + this.item.name + " is cursed!");
+                    System.out.println("Warning! The " + this.item.getName() + " is cursed!");
             }
         }
         String response = Main.checkForCommands(player, lineScanner.nextLine());
@@ -33,15 +33,15 @@ public class ItemRoom extends Room {
         player.addItemToInventory(this.item);
 
         if (this.item instanceof Relic) {
-            System.out.println("Would you like to equip the " + this.item.name + " now? (y/n)");
+            System.out.println("Would you like to equip the " + this.item.getName() + " now? (y/n)");
             response = Main.checkForCommands(player, lineScanner.nextLine());
             if (response.equals("yes") || response.equals("y")) {
                 this.item.useItem(player);
-                System.out.println("The " + this.item.name + " has been equipped!");
+                System.out.println("The " + this.item.getName() + " has been equipped!");
                 return;
             }
         }
-        System.out.println("You stash the " + this.item.name + " in your bag.");
+        System.out.println("You stash the " + this.item.getName() + " in your bag.");
     }
     public void setItem(Item item) {
         this.item = item;

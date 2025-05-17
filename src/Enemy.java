@@ -45,6 +45,9 @@ public class Enemy {
     public void setSpecies(String species) {
         this.species = species;
     }
+    public String getSpecies() {
+        return this.species;
+    }
     public void setDamageType(String damageType) {
         this.damageType = damageType;
     }

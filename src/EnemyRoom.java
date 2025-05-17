@@ -16,6 +16,10 @@ public class EnemyRoom extends Room {
         super.completeRoomActions(player);
         System.out.println(this.battleInitiationMessage);
         Battle.battleLoop(player, this);
+        reset();
+    }
+
+    public void reset() {
         addEnemies(this.defeatedEnemies);
         for (Enemy enemy : this.enemies) {enemy.reset();}
         this.defeatedEnemies.clear();
@@ -25,6 +29,15 @@ public class EnemyRoom extends Room {
     }
     public void addEnemies(Enemy enemy) {
         this.enemies.add(enemy);
+    }
+    public void removeEnemies(Enemy enemy) {
+        this.enemies.remove(enemy);
+    }
+    public void addDefeatedEnemies(Enemy enemy) {
+        this.defeatedEnemies.add(enemy);
+    }
+    public ArrayList<Enemy> getEnemies() {
+        return this.enemies;
     }
     public void setBattleInitiationMessage(String battleInitiationMessage) {
         this.battleInitiationMessage = battleInitiationMessage;

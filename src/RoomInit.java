@@ -86,7 +86,7 @@ public class RoomInit {
             goblinRoom.setDescription("You enter the room... Waking up a goblin in a tattered cloak. It wearily blinks, before jumping up.");
             goblinRoom.setBattleInitiationMessage("The goblin pulls out a small wooden wand, ready to cast spells at you!");
             goblinRoom.setAppearance("You can't see much, but you can hear some echoing chatter.");
-            goblinRoom.enemies.add(enemyList.getFirst());
+            goblinRoom.addEnemies(enemyList.getFirst());
             enemyRoomList.add(goblinRoom);
 
             EnemyRoom ambushRoom = new EnemyRoom();
@@ -150,7 +150,7 @@ public class RoomInit {
     }
     public static int indexFinder(ArrayList<Item> list, String targetName) {
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).name.equals(targetName)) {
+            if (list.get(i).getName().equals(targetName)) {
                 return i;
             }
         }

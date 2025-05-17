@@ -23,7 +23,9 @@ public abstract class Item {
     public void setDescription(String description) {
         this.description = description;
     }
+    public String getDescription() {return this.description;}
     public void setName(String name) {
         this.name = name;
     }
+    public String getName() {return this.name;}
 }

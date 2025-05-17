@@ -22,17 +22,29 @@ public class Room {
     public void setId(int id) {
         this.id = id;
     }
+    public int getId() {
+        return this.id;
+    }
     public void addExit(Room exit) {
         this.exits.add(exit);
     }
+    public ArrayList<Room> getExits() {
+        return this.exits;
+    }
     public void setAppearance(String appearance) {
         this.appearance = appearance;
+    }
+    public String getAppearance() {
+        return this.appearance;
     }
     public void setDescription(String description) {
         this.description = description;
     }
     public void setNumExits(int numExits) {
         this.numExits = numExits;
+    }
+    public int getNumExits() {
+        return this.numExits;
     }
 
 }
