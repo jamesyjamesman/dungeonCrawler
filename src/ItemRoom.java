@@ -24,7 +24,7 @@ public class ItemRoom extends Room {
                     System.out.println("Warning! The " + this.item.name + " is cursed!");
             }
         }
-        String response = Main.inputHelper(player, lineScanner.nextLine());
+        String response = Main.checkForCommands(player, lineScanner.nextLine());
         if (response.equals("no") || response.equals("n")) {
             System.out.println("You chose to forgo the loot...");
             return;
@@ -34,7 +34,7 @@ public class ItemRoom extends Room {
 
         if (this.item instanceof Relic) {
             System.out.println("Would you like to equip the " + this.item.name + " now? (y/n)");
-            response = Main.inputHelper(player, lineScanner.nextLine());
+            response = Main.checkForCommands(player, lineScanner.nextLine());
             if (response.equals("yes") || response.equals("y")) {
                 this.item.useItem(player);
                 System.out.println("The " + this.item.name + " has been equipped!");
