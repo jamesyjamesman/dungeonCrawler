@@ -117,7 +117,9 @@ public class RoomInit {
             chocolateRoom.setItem(itemList.get(indexFinder(itemList, "Torpedo Chocolate Bar™")));
             chocolateRoom.setId(4);
             chocolateRoom.setNumExits(1);
-            chocolateRoom.setDescription("It couldn't be... Lost after all this time... But you found it, in a dank cave...\nThe legendary " + chocolateRoom.item.name + "!!!!");
+            chocolateRoom.setDescription("""
+                    It couldn't be... Lost after all this time... But you found it, in a dank cave...
+                    The legendary Torpedo Chocolate Bar™!!!!""");
             chocolateRoom.setAppearance("There's a positively delightful aroma emanating from this passageway.");
             itemRoomList.add(chocolateRoom);
 

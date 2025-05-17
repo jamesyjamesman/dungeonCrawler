@@ -5,6 +5,6 @@ public class ForesightRelic extends Relic {
     }
 
     public int findNumExits(Room room, int index) {
-        return room.exits.get(index).numExits;
+        return room.getExits().get(index).getNumExits();
     }
 }

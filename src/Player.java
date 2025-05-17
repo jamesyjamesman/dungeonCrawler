@@ -118,7 +118,7 @@ public class Player {
 
     public int equippedRelicIndex(String relicName) {
         for (Relic equippedRelic : this.equippedRelics) {
-            if (equippedRelic.name.equals(relicName)) {
+            if (equippedRelic.getName().equals(relicName)) {
                 return this.equippedRelics.indexOf(equippedRelic);
             }
         }
@@ -156,6 +156,26 @@ public class Player {
         for (Relic equippedRelic : this.equippedRelics) {
             equippedRelic.useRelic(this, room);
         }
+    }
+
+    public void equipRelic(Relic relic) {
+        relic.setEquipped(true);
+        this.equippedRelics.add(relic);
+        int relicIndex = this.findItemInInventory(relic);
+        this.inventory.remove(relicIndex);
+        if (relic.isCursed()) {
+            System.out.println("Oh no! the " + relic.getName() + " was cursed!");
+        }
+    }
+
+    public void unequipRelic(Relic relic){
+        if (relic.isCursed()) {
+            System.out.println("The relic is welded to you painfully. You can't remove it!");
+            return;
+        }
+        relic.setEquipped(false);
+        getEquippedRelics().remove(relic);
+        addItemToInventory(relic);
     }
 
     public void doDeathSequence() {

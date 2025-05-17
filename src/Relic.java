@@ -18,28 +18,8 @@ public abstract class Relic extends Item{
 
     @Override
     public void useItem(Player player) {
-        if(this.equipped) {unequipRelic(player);}
-        else {equipRelic(player);}
-    }
-
-    public void equipRelic(Player player){
-        this.equipped = true;
-        player.equippedRelics.add(this);
-        int relicIndex = player.findItemInInventory(this);
-        player.inventory.remove(relicIndex);
-        if (this.cursed) {
-            System.out.println("Oh no! the " + this.name + " was cursed!");
-        }
-    }
-
-    public void unequipRelic(Player player){
-        if (this.cursed) {
-            System.out.println("The relic is welded to you painfully. You can't remove it!");
-            return;
-        }
-        this.equipped = false;
-        player.equippedRelics.remove(this);
-        player.addItemToInventory(this);
+        if(this.equipped) {player.unequipRelic(this);}
+        else {player.equipRelic(this);}
     }
 
     public boolean isCursed() {
@@ -48,5 +28,8 @@ public abstract class Relic extends Item{
 
     public void setCursed(boolean cursed) {
         this.cursed = cursed;
+    }
+    public void setEquipped(boolean equipped) {
+        this.equipped = equipped;
     }
 }
