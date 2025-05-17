@@ -1,6 +1,6 @@
-package Main.Item;
+package main.item;
 
-import Main.Player;
+import main.Player;
 
 import java.util.Random;
 

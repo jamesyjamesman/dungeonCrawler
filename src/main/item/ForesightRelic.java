@@ -1,6 +1,6 @@
-package Main.Item;
+package main.item;
 
-import Main.Room.Room;
+import main.room.Room;
 
 public class ForesightRelic extends Relic {
     public ForesightRelic() {

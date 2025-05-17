@@ -1,7 +1,7 @@
-package Main.Initialization;
+package main.initialization;
 
-import Main.Enemy.Enemy;
-import Main.Enemy.MageEnemy;
+import main.enemy.Enemy;
+import main.enemy.MageEnemy;
 
 import java.util.ArrayList;
 

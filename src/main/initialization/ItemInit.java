@@ -1,6 +1,6 @@
-package Main.Initialization;
+package main.initialization;
 
-import Main.Item.*;
+import main.item.*;
 
 import java.util.ArrayList;
 

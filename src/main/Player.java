@@ -1,9 +1,9 @@
-package Main;
+package main;
 
-import Main.Enemy.Enemy;
-import Main.Item.Item;
-import Main.Item.Relic;
-import Main.Room.Room;
+import main.enemy.Enemy;
+import main.item.Item;
+import main.item.Relic;
+import main.room.Room;
 
 import java.util.ArrayList;
 import static java.lang.System.exit;

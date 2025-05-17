@@ -1,8 +1,8 @@
-package Main.Room;
+package main.room;
 
-import Main.Battle;
-import Main.Enemy.Enemy;
-import Main.Player;
+import main.Battle;
+import main.enemy.Enemy;
+import main.Player;
 
 import java.util.ArrayList;
 

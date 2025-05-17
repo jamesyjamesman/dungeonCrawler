@@ -1,4 +1,4 @@
-package Main.Enemy;
+package main.enemy;
 
 public class MageEnemy extends Enemy {
     int maxMana;

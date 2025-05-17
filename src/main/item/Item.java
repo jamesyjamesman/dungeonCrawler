@@ -1,6 +1,6 @@
-package Main.Item;
+package main.item;
 
-import Main.Player;
+import main.Player;
 
 public abstract class Item {
     String description;

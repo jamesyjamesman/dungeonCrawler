@@ -1,6 +1,6 @@
-package Main.Item;
+package main.item;
 
-import Main.Player;
+import main.Player;
 
 public class DamageBuffItem extends BuffItem {
     public DamageBuffItem() {

@@ -1,7 +1,7 @@
-package Main;
+package main;
 
-import Main.Enemy.Enemy;
-import Main.Room.EnemyRoom;
+import main.enemy.Enemy;
+import main.room.EnemyRoom;
 
 import java.util.Scanner;
 

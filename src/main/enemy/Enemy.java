@@ -1,6 +1,6 @@
-package Main.Enemy;
+package main.enemy;
 
-import Main.Player;
+import main.Player;
 
 public class Enemy {
     int maxHealth;

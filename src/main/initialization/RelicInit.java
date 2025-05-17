@@ -1,9 +1,9 @@
-package Main.Initialization;
+package main.initialization;
 
-import Main.Item.CurseRelic;
-import Main.Item.ForesightRelic;
-import Main.Item.RegenerationRelic;
-import Main.Item.Relic;
+import main.item.CurseRelic;
+import main.item.ForesightRelic;
+import main.item.RegenerationRelic;
+import main.item.Relic;
 
 import java.util.ArrayList;
 

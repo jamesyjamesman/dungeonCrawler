@@ -1,8 +1,8 @@
-package Main.Initialization;
+package main.initialization;
 
-import Main.Enemy.Enemy;
-import Main.Item.Item;
-import Main.Room.*;
+import main.enemy.Enemy;
+import main.item.Item;
+import main.room.*;
 
 import java.util.ArrayList;
 

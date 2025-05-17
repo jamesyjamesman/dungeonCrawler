@@ -1,8 +1,8 @@
-package Main;
+package main;
 
-import Main.Initialization.*;
-import Main.Item.*;
-import Main.Room.*;
+import main.initialization.*;
+import main.item.*;
+import main.room.*;
 
 import java.util.ArrayList;
 

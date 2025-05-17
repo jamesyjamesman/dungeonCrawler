@@ -1,9 +1,9 @@
-package Main.Room;
+package main.room;
 
-import Main.Item.Item;
-import Main.Item.Relic;
-import Main.Main;
-import Main.Player;
+import main.item.Item;
+import main.item.Relic;
+import main.Main;
+import main.Player;
 
 import java.util.Scanner;
 

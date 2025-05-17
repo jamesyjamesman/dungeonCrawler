@@ -1,6 +1,6 @@
-package Main.Room;
+package main.room;
 
-import Main.Player;
+import main.Player;
 
 import java.util.ArrayList;
 

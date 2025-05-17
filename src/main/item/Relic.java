@@ -1,7 +1,7 @@
-package Main.Item;
+package main.item;
 
-import Main.Player;
-import Main.Room.Room;
+import main.Player;
+import main.room.Room;
 
 import java.util.Random;
 

@@ -1,6 +1,6 @@
-package Main.Initialization;
+package main.initialization;
 
-import Main.Player;
+import main.Player;
 
 import java.util.Scanner;
 
