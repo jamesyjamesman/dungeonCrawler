@@ -4,6 +4,7 @@ public class EnemyInit {
     static ArrayList<Enemy> enemyList = new ArrayList<>();
     public static ArrayList<Enemy> enemyInit() {
             MageEnemy goblinMage = new MageEnemy();
+            goblinMage.maxHealth = 7;
             goblinMage.currentHealth = 7;
             goblinMage.currentMana = 100;
             goblinMage.maxMana = 100;
@@ -13,12 +14,14 @@ public class EnemyInit {
             enemyList.add(goblinMage);
 
             Enemy goblin = new Enemy();
+            goblin.maxHealth = 8;
             goblin.currentHealth = 8;
             goblin.species = "goblin";
             goblin.damage = 1;
             enemyList.add(goblin);
 
             Enemy orc = new Enemy();
+            orc.maxHealth = 12;
             orc.currentHealth = 12;
             orc.species = "orc";
             orc.damage = 2;
