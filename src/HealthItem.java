@@ -29,15 +29,6 @@ public class HealthItem extends Item{
                 System.out.println("That " + this.name + " was delicious! ...but you don't feel any healthier.");
             }
         }
-
-        int itemIndex = player.findItemInInventory(this);
-        if (itemIndex == -1) {
-            System.out.println("Error! This code should not be reachable (HealthItem.java)");
-        }
-        if (player.inventory.get(itemIndex).size() == 1) {
-            player.inventory.remove(itemIndex);
-        } else {
-            player.inventory.get(itemIndex).remove(this);
-        }
+        super.discardItem(player);
     }
 }
