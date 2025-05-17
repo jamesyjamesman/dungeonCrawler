@@ -6,6 +6,6 @@ public class DamageBuffItem extends BuffItem {
     @Override
     public void useItem(Player player) {
         super.useItem(player);
-        player.damage += this.amountChanged;
+        player.increaseDamage(this.amountChanged);
     }
 }
