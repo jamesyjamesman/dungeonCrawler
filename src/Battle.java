@@ -8,13 +8,14 @@ public class Battle {
         while (!room.enemies.isEmpty()) {
             System.out.println("It's your turn! What would you like to attack?");
             readEnemies(room);
-            String response = Main.inputHelper(player, scanner.nextLine());
+            String response = Main.checkForCommands(player, scanner.nextLine());
             //can crash
             int enemyIndex = Integer.parseInt(response) - 1;
             Enemy enemy = room.enemies.get(enemyIndex);
             boolean enemyIsDead = player.attack(enemy);
             if (enemyIsDead) {
                 System.out.println("The " + enemy.species + " died!");
+                room.defeatedEnemies.add(enemy);
                 room.enemies.remove(enemy);
             }
 
