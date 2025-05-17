@@ -31,7 +31,7 @@ public class HealthItem extends Item{
                 System.out.println("That " + this.name + " was delicious! ...but you don't feel any healthier.");
             }
         }
-        super.discardItem(player);
+        player.discardItem(this);
     }
 
     public void setRestorationRange(int lowerBound, int upperBound) {

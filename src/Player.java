@@ -37,6 +37,19 @@ public class Player {
             this.inventory.get(itemIndex).add(item);
         }
     }
+
+    public void discardItem(Item item) {
+        int itemIndex = findItemInInventory(item);
+        if (itemIndex == -1) {
+            System.out.println("Error! This code should not be reachable (Item.java)");
+        }
+        if (this.inventory.get(itemIndex).size() == 1) {
+            this.inventory.remove(itemIndex);
+        } else {
+            this.inventory.get(itemIndex).remove(item);
+        }
+    }
+
     //can cause index out of bounds
     public void checkInventory(boolean death) {
 
@@ -151,6 +164,10 @@ public class Player {
             this.maxHealth += health;
             this.currentHealth += health;
         }
+
+    public void increaseDamage(int damageIncrease) {
+        this.damage += damageIncrease;
+    }
 
     public void useRelics(Room room) {
         for (Relic equippedRelic : this.equippedRelics) {

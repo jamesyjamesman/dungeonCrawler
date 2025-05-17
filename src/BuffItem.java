@@ -19,7 +19,7 @@ public abstract class BuffItem extends Item {
         randomizeAmountChanged();
         System.out.println("You crack open the can, plug your nose, and manage to force its contents down your throat.");
         System.out.println("You're not sure how, but your " + this.statType + " increased by " + this.amountChanged + ".");
-        super.discardItem(player);
+        player.discardItem(this);
     }
 
     //sets amount changed from the lower bound to the upper bound - 1
