@@ -1,4 +1,5 @@
 public class Enemy {
+    int maxHealth;
     int currentHealth;
     int damage;
     int armor;
@@ -6,6 +7,7 @@ public class Enemy {
     String species;
     String damageType;
     public Enemy() {
+        this.maxHealth = 0;
         this.currentHealth = 0;
         this.damage = 0;
         this.armor = 0;
@@ -27,5 +29,9 @@ public class Enemy {
         player.takeDamage(this.damage);
         System.out.println("The " + this.species + " attacked you, dealing " + this.damage + " damage!");
         //will get more complex with weapons, etc.
+    }
+
+    public void reset() {
+        this.currentHealth = this.maxHealth;
     }
 }
