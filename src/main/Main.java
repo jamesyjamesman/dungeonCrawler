@@ -24,13 +24,13 @@ public class Main {
     //this needs a refactor
     public static void roomChecker(Room currentRoom, ArrayList<Room> rooms, ArrayList<Relic> relicList, ArrayList<Item> itemList) {
 
-        if (currentRoom.getId() == 9 || currentRoom.getId() == 10) {
+        if (currentRoom.getType() == RoomType.RELIC) {
             ItemRoom newRoom = (ItemRoom) currentRoom;
             Relic newRelic = relicList.get(new Random().nextInt(relicList.size()));
             //this does not allow players to ever obtain a relic if they deny taking it.
             relicList.remove(newRelic);
             if (relicList.isEmpty()) {
-                Game.removeRelicRooms(rooms);
+                Game.deactivateRelicRooms(rooms);
             }
             if (newRoom.getId() == 10) {
                 newRelic.setCursed(true);
@@ -91,10 +91,6 @@ public class Main {
             }
             input = promptScanner.nextLine();
         }
-    }
-    public static Room roomRandomizer(ArrayList<Room> rooms) {
-        return rooms.get(new Random().nextInt(rooms.size()));
-        //room should be removed from list, or at least prevented from being put more than once in a particular room.
     }
 
     public static void commandList() {
