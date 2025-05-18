@@ -66,6 +66,7 @@ public class RoomInit {
                     You hear a loud *CRACK*, and a chunk of stalactite falls, hitting you in the shoulder.""");
             stalactiteRoom.setAppearance("You think you can smell a faint mustiness, and water dripping. It's dark.");
             stalactiteRoom.setDamageDealt(5);
+            stalactiteRoom.setType(RoomType.TRAP);
             trapRoomList.add(stalactiteRoom);
 
             TrapRoom pitRoom = new TrapRoom();
@@ -77,6 +78,7 @@ public class RoomInit {
                     You're not sure how to get back up, but you notice a single passageway at the bottom of the pit.""");
             pitRoom.setDamageDealt(3);
             pitRoom.setNumExits(1);
+            pitRoom.setType(RoomType.TRAP);
             trapRoomList.add(pitRoom);
 
         return trapRoomList;
@@ -93,6 +95,7 @@ public class RoomInit {
             goblinRoom.setBattleInitiationMessage("The goblin pulls out a small wooden wand, ready to cast spells at you!");
             goblinRoom.setAppearance("You can't see much, but you can hear some echoing chatter.");
             goblinRoom.addEnemies(enemyList.getFirst());
+            goblinRoom.setType(RoomType.ENEMY);
             enemyRoomList.add(goblinRoom);
 
             EnemyRoom ambushRoom = new EnemyRoom();
@@ -102,6 +105,7 @@ public class RoomInit {
             ambushRoom.setBattleInitiationMessage("Oh no! a goblin and orc were waiting for you, catching you by surprise!");
             ambushRoom.addEnemies(enemyList.get(1));
             ambushRoom.addEnemies(enemyList.get(2));
+            ambushRoom.setType(RoomType.ENEMY);
             enemyRoomList.add(ambushRoom);
 
         return enemyRoomList;
@@ -117,6 +121,7 @@ public class RoomInit {
             appleRoom.setNumExits(3);
             appleRoom.setDescription("You enter the room. It's empty, except for a small apple on a pedestal.");
             appleRoom.setAppearance("You can't see much, but you can smell a faintly sweet scent coming from the doorway.");
+            appleRoom.setType(RoomType.ITEM);
             itemRoomList.add(appleRoom);
 
             ItemRoom chocolateRoom = new ItemRoom();
@@ -127,6 +132,7 @@ public class RoomInit {
                     It couldn't be... Lost after all this time... But you found it, in a dank cave...
                     The legendary Torpedo Chocolate Bar™!!!!""");
             chocolateRoom.setAppearance("There's a positively delightful aroma emanating from this passageway.");
+            chocolateRoom.setType(RoomType.ITEM);
             itemRoomList.add(chocolateRoom);
 
             ItemRoom relicRoom = new ItemRoom();
@@ -136,6 +142,7 @@ public class RoomInit {
                     You walk into a room, and are bewildered by the ornate furnishings in the room. Ornate walls, cushy furniture, the like!
                     In the center of the room stands an equally ornate pedestal with a shining relic sitting on the top.""");
             relicRoom.setAppearance("This room emits fanciness like you've never known.");
+            relicRoom.setType(RoomType.RELIC);
             itemRoomList.add(relicRoom);
 
             ItemRoom corpseRoom = new ItemRoom();
@@ -143,6 +150,7 @@ public class RoomInit {
             corpseRoom.setId(10);
             corpseRoom.setDescription("You walk into an empty room... except for the skeleton in the corner.");
             corpseRoom.setAppearance("You think you catch a whiff of something... not good.");
+            corpseRoom.setType(RoomType.RELIC);
             itemRoomList.add(corpseRoom);
 
             ItemRoom randomRoom = new ItemRoom();
@@ -150,6 +158,7 @@ public class RoomInit {
             randomRoom.setId(12);
             randomRoom.setDescription("You walk into a room. It's empty, except for something on the ground.");
             randomRoom.setNumExits(3);
+            randomRoom.setType(RoomType.ITEM);
             itemRoomList.add(randomRoom);
 
 
