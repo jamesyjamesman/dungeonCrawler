@@ -58,7 +58,7 @@ public class Player {
     }
 
     //can cause index out of bounds
-    public void checkInventory(boolean death) {
+    public boolean checkInventory(boolean death) {
 
         if (this.inventory.isEmpty()) {
             if (death) {
@@ -66,7 +66,7 @@ public class Player {
             } else {
                 System.out.println("Your inventory is empty!");
             }
-            return;
+            return true;
         }
 
         for (int i = 0; i < this.inventory.size(); i++) {
@@ -78,24 +78,11 @@ public class Player {
                     + ": " + this.inventory.get(i).getFirst().getDescription());
             System.out.println();
         }
-
-        if (death) {
-            return;
-        }
-
-        System.out.println("Would you like to use an item?\nInput the appropriate number to use it, or exit to return to gameplay.");
-        int response = Main.responseHandler(this, 1, this.inventory.size());
-
-        if (response == -1) {
-            System.out.println("You exit your inventory.");
-            return;
-        }
-
-        inventory.get(response - 1).getFirst().useItem(this);
+        return false;
     }
 
     //this is very dry, but I wasn't sure how to use checkInventory due to the different types
-    public void checkRelics(boolean death) {
+    public boolean checkRelics(boolean death) {
 
         if (this.equippedRelics.isEmpty()) {
             if (death) {
@@ -103,7 +90,7 @@ public class Player {
             } else {
                 System.out.println("Your relic pouch is empty!");
             }
-            return;
+            return true;
         }
 
         for (int i = 0; i < this.equippedRelics.size(); i++) {
@@ -111,20 +98,7 @@ public class Player {
                     + this.equippedRelics.get(i).getDescription());
             System.out.println();
         }
-
-        if (death) {
-            return;
-        }
-
-        System.out.println("Would you like to unequip a relic?\nInput the appropriate number to do so, or exit to return to gameplay.");
-        int response = Main.responseHandler(this, 1, this.equippedRelics.size());
-
-        if (response == -1) {
-            System.out.println("You shut your relic pouch.");
-            return;
-        }
-
-        equippedRelics.get(response - 1).useItem(this);
+        return false;
     }
 
     public int findItemInInventory(Item item) {
@@ -230,6 +204,9 @@ public class Player {
     }
     public String getName() {
         return this.name;
+    }
+    public ArrayList<ArrayList<Item>> getInventory() {
+        return this.inventory;
     }
     public void incrementRoomsTraversed() {
         this.roomsTraversed += 1;

@@ -53,9 +53,6 @@ public class Main {
         Scanner promptScanner = new Scanner(System.in);
         while (true) {
             String promptResponse = checkForCommands(player, promptScanner.nextLine());
-            if (promptResponse.equals("exit")) {
-                return -1;
-            }
             int response;
             try {
                 response = Integer.parseInt(promptResponse);
@@ -77,9 +74,9 @@ public class Main {
             switch (input) {
                 case "status" -> player.checkStatus();
                 case "help" -> commandList();
-                case "inventory" -> player.checkInventory(false);
-                case "relics" -> player.checkRelics(false);
-                case "kill" -> player.takeDamage(1000);
+                case "inventory" -> Menu.inventoryLoop(player);
+                case "relics" -> Menu.relicLoop(player);
+                case "kill" -> player.takeDamage(1000000);
                 default -> {
                     return input;
                 }
