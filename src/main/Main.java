@@ -21,7 +21,7 @@ public class Main {
 
         Game.gameLoop(playerCharacter, firstRoom, rooms);
     }
-
+    //this needs a refactor
     public static void roomChecker(Room currentRoom, ArrayList<Room> rooms, ArrayList<Relic> relicList, ArrayList<Item> itemList) {
 
         if (currentRoom.getId() == 9 || currentRoom.getId() == 10) {
@@ -30,12 +30,7 @@ public class Main {
             //this does not allow players to ever obtain a relic if they deny taking it.
             relicList.remove(newRelic);
             if (relicList.isEmpty()) {
-                for (int i = 0; i < rooms.size(); i++) {
-                    Room checkRoom = rooms.get(i);
-                    if (checkRoom.getId() == 9 || checkRoom.getId() == 10) {
-                        rooms.remove(checkRoom);
-                    }
-                }
+                Game.removeRelicRooms(rooms);
             }
             if (newRoom.getId() == 10) {
                 newRelic.setCursed(true);

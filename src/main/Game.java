@@ -45,4 +45,14 @@ public class Game {
         }
         playerCharacter.doDeathSequence();
     }
+
+    //why doesnt this work???
+    public static void removeRelicRooms(ArrayList<Room> rooms) {
+        for (int i = 0; i < rooms.size(); i++) {
+            Room checkRoom = rooms.get(i);
+            if (checkRoom.getId() == 10 || checkRoom.getId() == 9) {
+                rooms.remove(checkRoom);
+            }
+        }
+    }
 }
