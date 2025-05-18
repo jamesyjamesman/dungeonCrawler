@@ -43,7 +43,6 @@ public class Main {
             newRoom.setItem(item);
         }
     }
-    //can still crash if exit is entered in some scenarios
     public static int responseHandler(Player player, int lowerBound, int upperBound) {
         Scanner promptScanner = new Scanner(System.in);
         while (true) {

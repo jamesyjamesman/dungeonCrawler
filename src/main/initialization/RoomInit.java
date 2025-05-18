@@ -1,5 +1,6 @@
 package main.initialization;
 
+import main.enemy.Boss;
 import main.enemy.Enemy;
 import main.item.Item;
 import main.room.*;
@@ -12,16 +13,19 @@ public class RoomInit {
         static ArrayList<EnemyRoom> enemyRoomList = new ArrayList<>();
         static ArrayList<Room> normalRoomList = new ArrayList<>();
         static ArrayList<ItemRoom> itemRoomList = new ArrayList<>();
+        static ArrayList<BossRoom> bossRoomList = new ArrayList<>();
         static ArrayList<Room> roomList = new ArrayList<>();
     public static ArrayList<Room> roomInit() {
         ArrayList<TrapRoom> trapRooms = trapRoomInit();
         ArrayList<EnemyRoom> enemyRooms = enemyRoomInit();
         ArrayList<Room> normalRooms = normalRoomInit();
         ArrayList<ItemRoom> itemRooms = itemRoomInit();
+        ArrayList<BossRoom> bossRooms = bossRoomInit();
         roomList.addAll(normalRooms);
         roomList.addAll(trapRooms);
         roomList.addAll(enemyRooms);
         roomList.addAll(itemRooms);
+        roomList.addAll(bossRooms);
         return roomList;
     }
 
@@ -109,6 +113,23 @@ public class RoomInit {
             enemyRoomList.add(ambushRoom);
 
         return enemyRoomList;
+    }
+
+    public static ArrayList<BossRoom> bossRoomInit() {
+        ArrayList<Boss> bossList = EnemyInit.bossInit();
+
+            BossRoom slimeBossRoom = new BossRoom();
+            slimeBossRoom.setRoomsRequired(20);
+            slimeBossRoom.setNumExits(5);
+            slimeBossRoom.setId(13);
+            slimeBossRoom.setAppearance("An unfamiliar room with blue goop coating the entrance. It smells strongly of fruit.");
+            slimeBossRoom.addEnemies(bossList.getFirst());
+            slimeBossRoom.setDescription("You walk into the room, blue slime squishing under your feet. A large blue slime sits in the center of the room.");
+            slimeBossRoom.setBattleInitiationMessage("The massive slime starts vibrating intensely, and then launches at you.");
+            slimeBossRoom.setType(RoomType.BOSS);
+            bossRoomList.add(slimeBossRoom);
+
+        return bossRoomList;
     }
 
     public static ArrayList<ItemRoom> itemRoomInit() {
