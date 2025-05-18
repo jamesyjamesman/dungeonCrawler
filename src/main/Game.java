@@ -5,6 +5,8 @@ import main.item.*;
 import main.room.*;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class Game {
     public static void gameLoop(Player playerCharacter, Room currentRoom, ArrayList<Room> rooms) {
@@ -20,7 +22,7 @@ public class Game {
             System.out.println("You see " + currentRoom.getNumExits() + " exit" + Main.pluralChecker(currentRoom.getNumExits()) + ".");
 
             for (int i = 0; i < currentRoom.getNumExits(); i++) {
-                currentRoom.addExit(Main.roomRandomizer(rooms));
+                currentRoom.addExit(getRandomActiveRoom(rooms));
 
                 int foresightIndex = playerCharacter.equippedRelicIndex("Relic of Foresight");
 
@@ -46,22 +48,19 @@ public class Game {
         playerCharacter.doDeathSequence();
     }
 
-    //this is so bad
-    public static void removeRelicRooms(ArrayList<Room> rooms) {
-        Room room1 = null;
-        Room room2 = null;
+    public static void deactivateRelicRooms(ArrayList<Room> rooms) {
         for (Room checkRoom : rooms) {
-            int roomId = checkRoom.getId();
-            if (roomId == 10 || roomId == 9) {
-                System.out.println(roomId);
-                if (room1 == null) {
-                    room1 = checkRoom;
-                } else {
-                    room2 = checkRoom;
+            if (checkRoom.getType() == RoomType.RELIC) {
+                checkRoom.setActive(false);
                 }
             }
         }
-        rooms.remove(room1);
-        rooms.remove(room2);
+
+    public static Room getRandomActiveRoom(ArrayList<Room> rooms) {
+        List<Room> activeRooms = rooms.stream()
+                .filter(Room::getActive)
+                .toList();
+        return activeRooms.get(new Random().nextInt(activeRooms.size()));
     }
 }
+
