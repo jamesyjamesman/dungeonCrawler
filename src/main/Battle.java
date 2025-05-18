@@ -3,19 +3,14 @@ package main;
 import main.enemy.Enemy;
 import main.room.EnemyRoom;
 
-import java.util.Scanner;
-
 public class Battle {
 
     public static void battleLoop(Player player, EnemyRoom room) {
         System.out.println("The battle has begun!");
-        Scanner scanner = new Scanner(System.in);
         while (!room.getEnemies().isEmpty()) {
             System.out.println("It's your turn! What would you like to attack?");
             readEnemies(room);
-            String response = Main.checkForCommands(player, scanner.nextLine());
-            //can crash
-            int enemyIndex = Integer.parseInt(response) - 1;
+            int enemyIndex = Main.responseHandler(player, 1, room.getEnemies().size()) - 1;
             Enemy enemy = room.getEnemies().get(enemyIndex);
             boolean enemyIsDead = player.attack(enemy);
             if (enemyIsDead) {
