@@ -5,8 +5,6 @@ import main.item.Relic;
 import main.Main;
 import main.Player;
 
-import java.util.Scanner;
-
 public class ItemRoom extends Room {
     Item item;
     public ItemRoom() {
@@ -17,8 +15,6 @@ public class ItemRoom extends Room {
     @Override
     public void completeRoomActions(Player player) {
         super.completeRoomActions(player);
-
-        Scanner lineScanner = new Scanner(System.in);
 
         //this should be defined on the object itself but because the item isn't defined initially it crashes, which is not great.
         if (this.id == 10) {
@@ -31,8 +27,8 @@ public class ItemRoom extends Room {
                     System.out.println("Warning! The " + this.item.getName() + " is cursed!");
             }
         }
-        String response = Main.checkForCommands(player, lineScanner.nextLine());
-        if (response.equals("no") || response.equals("n")) {
+        String response = Main.yesOrNo();
+        if (response.equals("n")) {
             System.out.println("You chose to forgo the loot...");
             return;
         }
@@ -41,8 +37,8 @@ public class ItemRoom extends Room {
 
         if (this.item instanceof Relic) {
             System.out.println("Would you like to equip the " + this.item.getName() + " now? (y/n)");
-            response = Main.checkForCommands(player, lineScanner.nextLine());
-            if (response.equals("yes") || response.equals("y")) {
+            response = Main.yesOrNo();
+            if (response.equals("y")) {
                 this.item.useItem(player);
                 System.out.println("The " + this.item.getName() + " has been equipped!");
                 return;
