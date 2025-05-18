@@ -6,4 +6,5 @@ public enum RoomType {
     ITEM,
     RELIC,
     TRAP,
+    BOSS,
 }
