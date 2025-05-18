@@ -47,7 +47,7 @@ public class Main {
     public static int responseHandler(Player player, int lowerBound, int upperBound) {
         Scanner promptScanner = new Scanner(System.in);
         while (true) {
-            String promptResponse = checkForCommands(player, promptScanner.nextLine());
+            String promptResponse = checkForCommands(player, promptScanner.nextLine().toLowerCase());
             int response;
             try {
                 response = Integer.parseInt(promptResponse);
@@ -62,6 +62,19 @@ public class Main {
             return response;
         }
     }
+    public static String yesOrNo() {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            String response = scanner.nextLine().toLowerCase();
+            if (response.equals("y") || response.equals("yes")) {
+                return "y";
+            } else if (response.equals("n") || response.equals("no")) {
+                return "n";
+            }
+            System.out.println("Invalid response!");
+        }
+
+    }
 
     public static String checkForCommands(Player player, String input) {
         Scanner promptScanner = new Scanner(System.in);
@@ -69,7 +82,7 @@ public class Main {
             switch (input) {
                 case "status" -> player.checkStatus();
                 case "help" -> commandList();
-                case "inventory" -> Menu.inventoryLoop(player);
+                case "inventory", "inv" -> Menu.inventoryLoop(player);
                 case "relics" -> Menu.relicLoop(player);
                 case "kill" -> player.takeDamage(1000000);
                 default -> {
@@ -88,7 +101,7 @@ public class Main {
         System.out.println("List of commands:");
         System.out.println("help: checks this command.");
         System.out.println("status: checks player's status and statistics.");
-        System.out.println("inventory: shows the contents of the player's inventory.");
+        System.out.println("inventory (inv): shows the contents of the player's inventory.");
         System.out.println("relics: shows a list of equipped relics.");
     }
 
