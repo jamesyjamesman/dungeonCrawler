@@ -10,12 +10,18 @@ public class Room {
     int id;
     ArrayList<Room> exits;
     int numExits;
+    boolean active;
+    RoomType type;
+
+
     public Room() {
         this.appearance = "It looks like a completely normal room from here.";
         this.description = "It's completely empty.";
         this.id = 0;
         this.exits = new ArrayList<>();
         this.numExits = 2;
+        this.active = true;
+        this.type = RoomType.NORMAL;
     }
 
     public void completeRoomActions(Player player) {
@@ -23,6 +29,18 @@ public class Room {
         player.incrementRoomsTraversed();
     }
 
+    public RoomType getType() {
+        return type;
+    }
+    public void setType(RoomType type) {
+        this.type = type;
+    }
+    public boolean getActive() {
+        return this.active;
+    }
+    public void setActive(boolean active) {
+        this.active = active;
+    }
     public void setId(int id) {
         this.id = id;
     }
