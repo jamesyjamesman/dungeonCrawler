@@ -123,10 +123,11 @@ public class Player {
         System.out.println("Current player status:");
         System.out.println("Health: " + this.currentHealth + "/" + this.maxHealth);
         System.out.println("Total damage output: " + this.damage);
+        System.out.println("Rooms traveled: " + this.roomsTraversed);
     }
     public void takeDamage(int damage) {
         this.currentHealth -= damage;
-        if (this.currentHealth < 0) {
+        if (this.currentHealth <= 0) {
             this.currentHealth = 0;
             doDeathSequence();
         }
@@ -210,5 +211,8 @@ public class Player {
     }
     public void incrementRoomsTraversed() {
         this.roomsTraversed += 1;
+    }
+    public int getRoomsTraversed() {
+        return this.roomsTraversed;
     }
 }
