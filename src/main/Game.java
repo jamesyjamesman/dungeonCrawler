@@ -18,6 +18,7 @@ public class Game {
             Main.roomChecker(currentRoom, rooms, relicList, itemList);
 
             currentRoom.completeRoomActions(playerCharacter);
+            activateBossRooms(rooms, playerCharacter);
             System.out.println("Where would you like to go?");
             System.out.println("You see " + currentRoom.getNumExits() + " exit" + Main.pluralChecker(currentRoom.getNumExits()) + ".");
 
@@ -61,6 +62,12 @@ public class Game {
                 .filter(Room::getActive)
                 .toList();
         return activeRooms.get(new Random().nextInt(activeRooms.size()));
+    }
+
+    public static void activateBossRooms(ArrayList<Room> rooms, Player player) {
+        rooms.stream()
+            .filter(room -> room.getType() == RoomType.BOSS)
+            .forEach(room -> ((BossRoom) room).setActiveIfRooms(player));
     }
 }
 
