@@ -26,11 +26,12 @@ public class Player {
         this.damage = 3;
     }
 
-    public boolean attack(Enemy enemy) {
+    public void attack(Enemy enemy) {
         int totalDamage = this.damage;
-        System.out.println("The " + enemy.getSpecies() + " took " + totalDamage + " damage!");
-        return enemy.takeDamage(totalDamage);
-
+        int damageDealt = enemy.takeDamage(totalDamage);
+        if (damageDealt > 0) {
+            System.out.println("The " + enemy.getSpecies() + " took " + totalDamage + " damage!");
+        }
         //will get more complex with weapons, etc.
     }
 
