@@ -4,7 +4,7 @@ import main.Player;
 
 public class DamageBuffItem extends BuffItem {
     public DamageBuffItem() {
-        this.statType = "damage";
+        this.statType = "attack damage";
     }
 
     @Override

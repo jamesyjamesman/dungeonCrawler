@@ -43,13 +43,13 @@ public class SlimeBoss extends Boss {
             return;
         }
         int damage;
-        int randomChoice = new Random().nextInt(3);
+        int randomChoice = new Random().nextInt(5);
 
-        if (randomChoice == 0) {
+        if (randomChoice < 2) { //40%
             damage = slimeLaunchAttack();
-        } else if (randomChoice == 1) {
+        } else if (randomChoice < 4) { //40%
             damage = slimeChargeAttack();
-        } else {
+        } else { //20%
             damage = slimeWait();
         }
         if (damage > 0) {
@@ -81,7 +81,7 @@ public class SlimeBoss extends Boss {
         String response = Main.yesOrNo();
         if (response.equals("y")) {
             player.addItemToInventory(slimeRelic);
-            System.out.println("Would you like to equip it now?");
+            System.out.println("Would you like to equip it now? (y/n)");
             response = Main.yesOrNo();
             if (response.equals("y")) {
                 slimeRelic.useItem(player);
