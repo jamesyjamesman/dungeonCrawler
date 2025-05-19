@@ -1,7 +1,6 @@
 package main.initialization;
 
-import main.enemy.Boss;
-import main.enemy.Enemy;
+import main.enemy.*;
 import main.enemy.MageEnemy;
 
 import java.util.ArrayList;
@@ -35,7 +34,7 @@ public class EnemyInit {
         return enemyList;
     }
     public static ArrayList<Boss> bossInit() {
-            Boss slimeBoss = new Boss();
+            Boss slimeBoss = new SlimeBoss();
             slimeBoss.setMaxHealth(30);
             slimeBoss.setSpecies("slime");
             slimeBoss.setDamage(3);
