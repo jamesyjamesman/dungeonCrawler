@@ -2,6 +2,8 @@ package main.enemy;
 
 import main.Player;
 
+import java.util.Random;
+
 public class Enemy {
     int maxHealth;
     int currentHealth;
@@ -20,16 +22,22 @@ public class Enemy {
         this.damageType = "";
     }
 
-    public boolean takeDamage(int damage) {
+    public int takeDamage(int damage) {
+        int oldHealth = this.currentHealth;
         this.currentHealth -= damage;
         if (this.currentHealth < 0) {
             this.currentHealth = 0;
-            return true;
+            return oldHealth;
         }
-        return false;
+        return damage;
     }
 
     public void attack(Player player) {
+        if (player.equippedRelicIndex("Relic of Bounciness") > -1
+            && new Random().nextInt(4) == 0) {
+                System.out.println("The attack from the " + this.species + " bounced right off!");
+                return;
+        }
         System.out.println("The " + this.species + " attacked you, dealing " + this.damage + " damage!");
         player.takeDamage(this.damage);
         //will get more complex with weapons, etc.
@@ -54,5 +62,8 @@ public class Enemy {
     }
     public void setDamageType(String damageType) {
         this.damageType = damageType;
+    }
+    public int getCurrentHealth() {
+        return this.currentHealth;
     }
 }
