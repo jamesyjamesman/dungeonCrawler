@@ -1,10 +1,13 @@
 package main.enemy;
 
-public class Boss extends Enemy {
+import main.Player;
+import main.item.Relic;
+
+public abstract class Boss extends Enemy {
     public Boss() {
     }
 
-    public void bossAbilities() {
-
-    }
+    public abstract void bossAbilities();
+    public abstract Relic initializeBossRelic();
+    public abstract void death(Player player);
 }
