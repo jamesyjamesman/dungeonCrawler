@@ -1,5 +1,6 @@
 package main;
 
+import main.enemy.Boss;
 import main.enemy.Enemy;
 import main.room.EnemyRoom;
 
@@ -12,11 +13,15 @@ public class Battle {
             readEnemies(room);
             int enemyIndex = Main.responseHandler(player, 1, room.getEnemies().size()) - 1;
             Enemy enemy = room.getEnemies().get(enemyIndex);
-            boolean enemyIsDead = player.attack(enemy);
+            player.attack(enemy);
+            boolean enemyIsDead = enemy.getCurrentHealth() == 0;
             if (enemyIsDead) {
                 System.out.println("The " + enemy.getSpecies() + " died!");
                 room.addDefeatedEnemies(enemy);
                 room.removeEnemies(enemy);
+                if (enemy instanceof Boss) {
+                    ((Boss) enemy).death(player);
+                }
             }
 
             //enemies attack player
