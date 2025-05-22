@@ -55,6 +55,21 @@ public class RoomInit {
                     There's so many different exits!""");
             normalRoomList.add(manyExits);
 
+            //there is a chance that someone might not want to leave, and be forced if this is the only exit.
+            Room endRoom = new Room();
+            endRoom.setId(9001);
+            endRoom.setNumExits(1);
+            endRoom.setDescription("""
+        At last, your journey is over. A simple room, with just an old wooden staircase upwards.
+        You can smell fresh air for the first time in a while. You don't hesitate to rush up the stairs, and find yourself
+        in an old wine cellar. You head up further, finding yourself in a rustic bar.
+        Before anyone has a chance to say anything, you dash out the door, raising your arms, feeling the sun on your shoulders.
+        Freedom.""");
+            endRoom.setAppearance("You get the sense your journey is finally over.");
+            endRoom.setRoomsRequired(100);
+            endRoom.setActive(false);
+            normalRoomList.add(endRoom);
+
         return normalRoomList;
     }
 
