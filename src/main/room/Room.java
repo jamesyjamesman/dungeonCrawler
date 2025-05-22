@@ -12,7 +12,7 @@ public class Room {
     int numExits;
     boolean active;
     RoomType type;
-
+    int roomsRequired;
 
     public Room() {
         this.appearance = "It looks like a completely normal room from here.";
@@ -22,6 +22,7 @@ public class Room {
         this.numExits = 2;
         this.active = true;
         this.type = RoomType.NORMAL;
+        this.roomsRequired = 0;
     }
 
     public void completeRoomActions(Player player) {
@@ -67,6 +68,17 @@ public class Room {
     }
     public int getNumExits() {
         return this.numExits;
+    }
+    public void setRoomsRequired(int roomsRequired) {
+        this.roomsRequired = roomsRequired;
+    }
+    public int getRoomsRequired() {
+        return roomsRequired;
+    }
+    public void roomActivator(Player player) {
+        if (player.getRoomsTraversed() >= getRoomsRequired()) {
+            this.active = true;
+        }
     }
 
 }

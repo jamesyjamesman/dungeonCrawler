@@ -3,18 +3,16 @@ package main.room;
 import main.Player;
 
 public class BossRoom extends EnemyRoom {
-    int roomsRequired;
     boolean completed;
     public BossRoom() {
-        this.roomsRequired = 0;
         this.active = false;
         this.completed = false;
     }
-    public void setActiveIfRooms(Player player) {
+
+    @Override
+    public void roomActivator(Player player) {
         if (this.completed) {return;}
-        if (player.getRoomsTraversed() >= getRoomsRequired()) {
-            this.active = true;
-        }
+        super.roomActivator(player);
     }
 
     @Override
@@ -22,12 +20,5 @@ public class BossRoom extends EnemyRoom {
         super.completeRoomActions(player);
         this.active = false;
         this.completed = true;
-    }
-
-    public void setRoomsRequired(int roomsRequired) {
-        this.roomsRequired = roomsRequired;
-    }
-    public int getRoomsRequired() {
-        return roomsRequired;
     }
 }
