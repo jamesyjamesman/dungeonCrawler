@@ -26,7 +26,7 @@ public class ItemInit {
             chocolate.setName("Torpedo Chocolate Bar™");
             chocolate.setDescription("A legendary chocolate bar thought to be long-lost.\nYou're salivating just looking at it.");
             chocolate.setRestorationRange(5, 15);
-            chocolate.setMaxHealthChange(3);
+            chocolate.setAddedAbsorption(3);
             healthItemList.add(chocolate);
 
         return healthItemList;
