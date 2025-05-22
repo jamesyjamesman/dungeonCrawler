@@ -42,6 +42,10 @@ public class ItemInit {
             damageBuff.setBounds(1, 3);
             buffItemList.add(damageBuff);
 
+            BuffItem unBuff = new UnBuffItem();
+            unBuff.setBounds(2, 7);
+            buffItemList.add(unBuff);
+
         return buffItemList;
     }
 }
