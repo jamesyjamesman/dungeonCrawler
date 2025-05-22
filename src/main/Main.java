@@ -22,9 +22,9 @@ public class Main {
         Game.gameLoop(playerCharacter, firstRoom, rooms);
     }
     //this needs a refactor
-    //potential solution: create a relicroom class that extends itemroom, then make that portion of this a method on that.
-    //otherwise, that portion could just be a method on itemroom with the check as well.
-    //add a boolean to itemrooms to indicate whether its item should be randomized or not, then make
+    //potential solution: create a relicRoom class that extends itemRoom, then make that portion of this a method on that.
+    //otherwise, that portion could just be a method on itemRoom with the check as well.
+    //add a boolean to itemRooms to indicate whether its item should be randomized or not, then make
     //a method to do so on the room itself.
     public static void roomChecker(Room currentRoom, ArrayList<Room> rooms, ArrayList<Relic> relicList, ArrayList<Item> itemList) {
 

@@ -16,6 +16,7 @@ public class Player {
     int damage;
     ArrayList<ArrayList<Item>> inventory;
     ArrayList<Relic> equippedRelics;
+    int absorption;
     public Player(String newName) {
         this.name = newName;
         this.maxHealth = 20;
@@ -24,6 +25,7 @@ public class Player {
         this.equippedRelics = new ArrayList<>();
         this.roomsTraversed = 0;
         this.damage = 3;
+        this.absorption = 0;
     }
 
     public void attack(Enemy enemy) {
@@ -122,11 +124,18 @@ public class Player {
 
     public void checkStatus() {
         System.out.println("Current player status:");
-        System.out.println("Health: " + this.currentHealth + "/" + this.maxHealth);
+        System.out.println("Health: " + (this.currentHealth + this.absorption) + "/" + this.maxHealth);
         System.out.println("Total damage output: " + this.damage);
         System.out.println("Rooms traveled: " + this.roomsTraversed);
     }
     public void takeDamage(int damage) {
+        if (this.absorption > 0) {
+            this.absorption -= damage;
+            if (this.absorption < 0) {
+                damage = -this.absorption;
+                this.absorption = 0;
+            }
+        }
         this.currentHealth -= damage;
         if (this.currentHealth <= 0) {
             this.currentHealth = 0;
@@ -215,5 +224,8 @@ public class Player {
     }
     public int getRoomsTraversed() {
         return this.roomsTraversed;
+    }
+    public void addAbsorption(int extraAbsorption) {
+        this.absorption += extraAbsorption;
     }
 }
