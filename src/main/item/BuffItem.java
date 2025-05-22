@@ -22,7 +22,6 @@ public abstract class BuffItem extends Item {
     public void useItem(Player player) {
         randomizeAmountChanged();
         System.out.println("You crack open the can, plug your nose, and manage to force its contents down your throat.");
-        System.out.println("You're not sure how, but your " + this.statType + " increased by " + this.amountChanged + ".");
         player.discardItem(this);
     }
 

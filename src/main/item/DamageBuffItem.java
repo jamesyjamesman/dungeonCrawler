@@ -10,6 +10,7 @@ public class DamageBuffItem extends BuffItem {
     @Override
     public void useItem(Player player) {
         super.useItem(player);
+        System.out.println("You're not sure how, but your " + this.statType + " increased by " + this.amountChanged + ".");
         player.increaseDamage(this.amountChanged);
     }
 }
