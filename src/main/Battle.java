@@ -10,7 +10,7 @@ public class Battle {
         System.out.println("The battle has begun!");
         while (!room.getEnemies().isEmpty()) {
             System.out.println("It's your turn! What would you like to attack?");
-            readEnemies(room);
+            readEnemies(room, player);
             int enemyIndex = Main.responseHandler(player, 1, room.getEnemies().size()) - 1;
             Enemy enemy = room.getEnemies().get(enemyIndex);
             player.attack(enemy);
@@ -32,11 +32,17 @@ public class Battle {
         }
     }
 
-    public static void readEnemies(EnemyRoom room) {
+    public static void readEnemies(EnemyRoom room, Player player) {
         for (int i = 0; i < room.getEnemies().size(); i++) {
-            String species = room.getEnemies().get(i).getSpecies();
+            Enemy enemy = room.getEnemies().get(i);
+            String species = enemy.getSpecies();
             String speciesCapitalized = species.substring(0, 1).toUpperCase() + species.substring(1);
-            System.out.println((i+1) + ". " + speciesCapitalized);
+            System.out.print((i+1) + ". " + speciesCapitalized);
+            if (player.equippedRelicIndex("Relic of Enemy Information") > -1) {
+                System.out.println(" (" + enemy.getCurrentHealth() + "/" + enemy.getMaxHealth() + " HP)");
+            } else {
+                System.out.println();
+            }
         }
     }
 }

@@ -66,4 +66,5 @@ public class Enemy {
     public int getCurrentHealth() {
         return this.currentHealth;
     }
+    public int getMaxHealth(){return this.maxHealth;}
 }

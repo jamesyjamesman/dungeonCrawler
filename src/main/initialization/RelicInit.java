@@ -1,9 +1,6 @@
 package main.initialization;
 
-import main.item.CurseRelic;
-import main.item.ForesightRelic;
-import main.item.RegenerationRelic;
-import main.item.Relic;
+import main.item.*;
 
 import java.util.ArrayList;
 
@@ -22,6 +19,9 @@ public class RelicInit {
 
         Relic cursed = new CurseRelic();
         relicList.add(cursed);
+
+        Relic enemy = new EnemyRelic();
+        relicList.add(enemy);
 
         return relicList;
     }
