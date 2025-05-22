@@ -190,7 +190,7 @@ public class Player {
     // if player died from food, it will not show that item as being consumed
     public void endStatistics() {
         System.out.println("Player statistics:");
-        System.out.println("You died on room #" + this.roomsTraversed + ".");
+        System.out.println("Rooms completed: " + this.roomsTraversed + ".");
         System.out.println("Maximum health: " + this.maxHealth);
         System.out.println("Inventory:");
         checkInventory(true);
