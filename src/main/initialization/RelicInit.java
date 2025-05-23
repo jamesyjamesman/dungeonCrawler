@@ -23,6 +23,9 @@ public class RelicInit {
         Relic enemy = new EnemyRelic();
         relicList.add(enemy);
 
+        Relic absorption = new ShieldingRelic();
+        relicList.add(absorption);
+
         return relicList;
     }
 }
