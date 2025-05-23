@@ -25,28 +25,12 @@ public class Game {
 
             activateRooms(rooms, playerCharacter);
             ArrayList<Room> activeRooms = new ArrayList<>(getRandomActiveRooms(rooms));
+            String exitString = createExitsString(playerCharacter, activeRooms, currentRoom);
 
-            System.out.println("Where would you like to go?");
-            System.out.println("You see " + currentRoom.getNumExits() + " exit" + Main.pluralChecker(currentRoom.getNumExits()) + ".");
-
-            for (int i = 0; i < currentRoom.getNumExits(); i++) {
-                currentRoom.addExit(getWeightedRoom(activeRooms));
-
-                int foresightIndex = playerCharacter.equippedRelicIndex("Relic of Foresight");
-
-                System.out.print((i + 1) + ". " + currentRoom.getExits().get(i).getAppearance());
-                if (foresightIndex != -1) {
-                    ForesightRelic foresightRelic = (ForesightRelic) playerCharacter.getEquippedRelics().get(foresightIndex);
-                    int numExits = foresightRelic.findNumExits(currentRoom, i);
-                    System.out.println(" (" + numExits + " exit" + Main.pluralChecker(numExits) + ")");
-                } else {
-                    System.out.println();
-                }
-            }
-            System.out.println();
+            System.out.println(exitString);
             playerCharacter.useRelics(currentRoom);
 
-            int response = Main.responseHandler(playerCharacter, 1, currentRoom.getExits().size()) - 1;
+            int response = Main.responseHandler(playerCharacter, exitString, 1, currentRoom.getExits().size()) - 1;
             Room nextRoom = currentRoom.getExits().get(response);
             currentRoom.getExits().clear();
             currentRoom = nextRoom;
@@ -54,6 +38,28 @@ public class Game {
 
         }
         playerCharacter.doDeathSequence();
+    }
+
+    public static String createExitsString(Player player, ArrayList<Room> activeRooms, Room room) {
+        String output = "";
+        output = output.concat("Where would you like to go?\n");
+        output = output.concat("You see " + room.getNumExits() + " exit" + Main.pluralChecker(room.getNumExits()) + ".\n");
+
+        for (int i = 0; i < room.getNumExits(); i++) {
+            room.addExit(getWeightedRoom(activeRooms));
+
+            int foresightIndex = player.equippedRelicIndex("Relic of Foresight");
+
+            output = output.concat((i + 1) + ". " + room.getExits().get(i).getAppearance());
+            if (foresightIndex != -1) {
+                ForesightRelic foresightRelic = (ForesightRelic) player.getEquippedRelics().get(foresightIndex);
+                int numExits = foresightRelic.findNumExits(room, i);
+                output = output.concat(" (" + numExits + " exit" + Main.pluralChecker(numExits) + ")\n");
+            } else {
+                output = output.concat("\n");
+            }
+        }
+        return output;
     }
 
     public static void deactivateRelicRooms(ArrayList<Room> rooms) {

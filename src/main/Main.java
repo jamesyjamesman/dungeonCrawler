@@ -47,10 +47,10 @@ public class Main {
             newRoom.setItem(item);
         }
     }
-    public static int responseHandler(Player player, int lowerBound, int upperBound) {
+    public static int responseHandler(Player player, String repeatString, int lowerBound, int upperBound) {
         Scanner promptScanner = new Scanner(System.in);
         while (true) {
-            String promptResponse = checkForCommands(player, promptScanner.nextLine().toLowerCase());
+            String promptResponse = checkForCommands(player, repeatString, promptScanner.nextLine().toLowerCase());
             int response;
             try {
                 response = Integer.parseInt(promptResponse);
@@ -79,14 +79,20 @@ public class Main {
 
     }
 
-    public static String checkForCommands(Player player, String input) {
+    public static String checkForCommands(Player player, String exitString, String input) {
         Scanner promptScanner = new Scanner(System.in);
         while (true) {
             switch (input) {
                 case "status" -> player.checkStatus();
                 case "help" -> commandList();
-                case "inventory", "inv" -> Menu.inventoryLoop(player);
-                case "relics" -> Menu.relicLoop(player);
+                case "inventory", "inv" -> {
+                    Menu.inventoryLoop(player);
+                    System.out.println(exitString);
+                }
+                case "relics" -> {
+                    Menu.relicLoop(player);
+                    System.out.println(exitString);
+                }
                 case "kill" -> player.takeDamage(1000000);
                 default -> {
                     return input;
