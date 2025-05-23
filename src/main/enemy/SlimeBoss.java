@@ -76,19 +76,12 @@ public class SlimeBoss extends Boss {
     public void death(Player player) {
         Relic slimeRelic = initializeBossRelic();
         System.out.println("Wow! You defeated the slime boss! Lucky for you, it seems to have dropped something!");
-        //this should be a function somewhere
-        System.out.println("Would you like to add the " + slimeRelic.getName() + " to your inventory? (y/n)");
+        System.out.println("Would you like to take the " + slimeRelic.getName() + "? (y/n)");
         String response = Main.yesOrNo();
         if (response.equals("y")) {
-            player.addItemToInventory(slimeRelic);
-            System.out.println("Would you like to equip it now? (y/n)");
-            response = Main.yesOrNo();
-            if (response.equals("y")) {
-                slimeRelic.useItem(player);
-                System.out.println("The " + slimeRelic.getName() + " was equipped!");
-            }
+            player.itemPickup(slimeRelic);
         } else {
-            System.out.println("Really...?");
+            System.out.println("Really?");
         }
     }
 }
