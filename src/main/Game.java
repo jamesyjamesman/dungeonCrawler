@@ -24,11 +24,13 @@ public class Game {
             }
 
             activateRooms(rooms, playerCharacter);
+            ArrayList<Room> activeRooms = new ArrayList<>(getRandomActiveRooms(rooms));
+
             System.out.println("Where would you like to go?");
             System.out.println("You see " + currentRoom.getNumExits() + " exit" + Main.pluralChecker(currentRoom.getNumExits()) + ".");
 
             for (int i = 0; i < currentRoom.getNumExits(); i++) {
-                currentRoom.addExit(getRandomActiveRoom(rooms));
+                currentRoom.addExit(getWeightedRoom(activeRooms));
 
                 int foresightIndex = playerCharacter.equippedRelicIndex("Relic of Foresight");
 
@@ -62,11 +64,28 @@ public class Game {
             }
         }
 
-    public static Room getRandomActiveRoom(ArrayList<Room> rooms) {
-        List<Room> activeRooms = rooms.stream()
+    public static List<Room> getRandomActiveRooms(ArrayList<Room> rooms) {
+        return rooms.stream()
                 .filter(Room::getActive)
                 .toList();
-        return activeRooms.get(new Random().nextInt(activeRooms.size()));
+    }
+
+    //could have off-by-one error
+    public static Room getWeightedRoom(ArrayList<Room> activeRooms) {
+        int totalWeight = 0;
+        for (Room room : activeRooms) {
+            totalWeight += room.getSelectionWeight();
+        }
+        int randomWeight = new Random().nextInt(totalWeight);
+        for (Room room : activeRooms) {
+            int weight = room.getSelectionWeight();
+                randomWeight -= weight;
+                if (randomWeight < 0) {
+                    return room;
+                }
+        }
+        System.out.println("This code should be inaccessible!");
+        return null;
     }
 
     public static void activateRooms(ArrayList<Room> rooms, Player player) {

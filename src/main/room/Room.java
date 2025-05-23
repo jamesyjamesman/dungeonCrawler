@@ -13,6 +13,7 @@ public class Room {
     boolean active;
     RoomType type;
     int roomsRequired;
+    int selectionWeight;
 
     public Room() {
         this.appearance = "It looks like a completely normal room from here.";
@@ -23,6 +24,7 @@ public class Room {
         this.active = true;
         this.type = RoomType.NORMAL;
         this.roomsRequired = 0;
+        this.selectionWeight = 10;
     }
 
     public void completeRoomActions(Player player) {
@@ -79,6 +81,12 @@ public class Room {
         if (player.getRoomsTraversed() >= getRoomsRequired()) {
             this.active = true;
         }
+    }
+    public int getSelectionWeight() {
+        return selectionWeight;
+    }
+    public void setSelectionWeight(int selectionWeight) {
+        this.selectionWeight = selectionWeight;
     }
 
 }
