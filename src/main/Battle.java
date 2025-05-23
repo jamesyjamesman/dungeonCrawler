@@ -11,6 +11,7 @@ public class Battle {
         while (!room.getEnemies().isEmpty()) {
             System.out.println("It's your turn! What would you like to attack?");
             String enemyString = readEnemies(room, player);
+            System.out.println(enemyString);
             int enemyIndex = Main.responseHandler(player, enemyString, 1, room.getEnemies().size()) - 1;
             Enemy enemy = room.getEnemies().get(enemyIndex);
             player.attack(enemy);
