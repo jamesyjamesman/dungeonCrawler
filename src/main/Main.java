@@ -94,7 +94,12 @@ public class Main {
                     Menu.relicLoop(player);
                     System.out.println(exitString);
                 }
+                //debug commands
                 case "kill" -> player.takeDamage(1000000);
+                case "godmode" -> {
+                    player.increaseDamage(1000);
+                    player.addAbsorption(100000);
+                }
                 default -> {
                     return input;
                 }
