@@ -71,7 +71,8 @@ public class Game {
 
     public static void activateRooms(ArrayList<Room> rooms, Player player) {
         rooms.stream()
-                .filter(room -> !room.getActive())
+                .filter(room -> !room.getActive() ||
+                        room.getType() != RoomType.RELIC)
                 .forEach(room -> room.roomActivator(player));
     }
 
