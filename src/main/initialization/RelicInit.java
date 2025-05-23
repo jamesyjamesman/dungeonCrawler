@@ -26,6 +26,9 @@ public class RelicInit {
         Relic absorption = new ShieldingRelic();
         relicList.add(absorption);
 
+        Relic holding = new HoldingRelic();
+        relicList.add(holding);
+
         return relicList;
     }
 }
