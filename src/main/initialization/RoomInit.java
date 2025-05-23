@@ -35,6 +35,7 @@ public class RoomInit {
             startRoom.setNumExits(2);
             startRoom.setDescription("An empty room.");
             startRoom.setAppearance("For some reason, it invokes a sense of nostalgia.");
+            startRoom.setSelectionWeight(5);
             normalRoomList.add(startRoom);
 
             Room threeExits = new Room();
@@ -53,6 +54,7 @@ public class RoomInit {
             manyExits.setDescription("""
                     Wow! this must be the heart of the system or something.
                     There's so many different exits!""");
+            manyExits.setSelectionWeight(5);
             normalRoomList.add(manyExits);
 
             //there is a chance that someone might not want to leave, and be forced if this is the only exit.
@@ -68,6 +70,7 @@ public class RoomInit {
             endRoom.setAppearance("You get the sense your journey is finally over.");
             endRoom.setRoomsRequired(100);
             endRoom.setActive(false);
+            endRoom.setSelectionWeight(1);
             normalRoomList.add(endRoom);
 
         return normalRoomList;
@@ -86,6 +89,7 @@ public class RoomInit {
             stalactiteRoom.setAppearance("You think you can smell a faint mustiness, and water dripping. It's dark.");
             stalactiteRoom.setDamageDealt(5);
             stalactiteRoom.setType(RoomType.TRAP);
+            stalactiteRoom.setSelectionWeight(8);
             trapRoomList.add(stalactiteRoom);
 
             TrapRoom pitRoom = new TrapRoom();
@@ -126,6 +130,7 @@ public class RoomInit {
             ambushRoom.addEnemies(enemyList.get(2));
             ambushRoom.setType(RoomType.ENEMY);
             enemyRoomList.add(ambushRoom);
+            ambushRoom.setSelectionWeight(9);
 
         return enemyRoomList;
     }
@@ -142,6 +147,7 @@ public class RoomInit {
             slimeBossRoom.setDescription("You walk into the room, blue slime squishing under your feet. A large blue slime sits in the center of the room.");
             slimeBossRoom.setBattleInitiationMessage("The massive slime starts vibrating intensely, and then launches at you.");
             slimeBossRoom.setType(RoomType.BOSS);
+            slimeBossRoom.setSelectionWeight(5);
             bossRoomList.add(slimeBossRoom);
 
         return bossRoomList;
@@ -158,6 +164,7 @@ public class RoomInit {
             appleRoom.setDescription("You enter the room. It's empty, except for a small apple on a pedestal.");
             appleRoom.setAppearance("You can't see much, but you can smell a faintly sweet scent coming from the doorway.");
             appleRoom.setType(RoomType.ITEM);
+            appleRoom.setSelectionWeight(8);
             itemRoomList.add(appleRoom);
 
             ItemRoom chocolateRoom = new ItemRoom();
@@ -169,6 +176,7 @@ public class RoomInit {
                     The legendary Torpedo Chocolate Bar™!!!!""");
             chocolateRoom.setAppearance("There's a positively delightful aroma emanating from this passageway.");
             chocolateRoom.setType(RoomType.ITEM);
+            chocolateRoom.setSelectionWeight(3);
             itemRoomList.add(chocolateRoom);
 
             ItemRoom relicRoom = new ItemRoom();
@@ -179,6 +187,7 @@ public class RoomInit {
                     In the center of the room stands an equally ornate pedestal with a shining relic sitting on the top.""");
             relicRoom.setAppearance("This room emits fanciness like you've never known.");
             relicRoom.setType(RoomType.RELIC);
+            relicRoom.setSelectionWeight(2);
             itemRoomList.add(relicRoom);
 
             ItemRoom corpseRoom = new ItemRoom();
@@ -187,6 +196,7 @@ public class RoomInit {
             corpseRoom.setDescription("You walk into an empty room... except for the skeleton in the corner.");
             corpseRoom.setAppearance("You think you catch a whiff of something... not good.");
             corpseRoom.setType(RoomType.RELIC);
+            corpseRoom.setSelectionWeight(4);
             itemRoomList.add(corpseRoom);
 
             ItemRoom randomRoom = new ItemRoom();
@@ -195,6 +205,7 @@ public class RoomInit {
             randomRoom.setDescription("You walk into a room. It's empty, except for something on the ground.");
             randomRoom.setNumExits(3);
             randomRoom.setType(RoomType.ITEM);
+            randomRoom.setSelectionWeight(6);
             itemRoomList.add(randomRoom);
 
 
