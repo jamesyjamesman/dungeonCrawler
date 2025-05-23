@@ -39,7 +39,40 @@ public class Player {
         //will get more complex with weapons, etc.
     }
 
-    public void addItemToInventory(Item item) {
+    public void itemPickup(Item item) {
+        if (calculateInventorySize() >= this.inventoryCap) {
+            System.out.println("Your inventory is full!");
+            System.out.println("Would you like to use or discard an item? (y/n)");
+            String response = Main.yesOrNo();
+            if (response.equals("y")) {
+                Menu.inventoryLoop(this);
+                if (calculateInventorySize() >= this.inventoryCap) {
+                    System.out.println("Your inventory is still full... The " + item.getName() + " remains where it was.");
+                    return;
+                }
+            } else {
+                return;
+            }
+        }
+        addItemToInventory(item);
+
+        if (item instanceof Relic) {
+            System.out.println("Would you like to equip the " + item.getName() + " now? (y/n)");
+            String response = Main.yesOrNo();
+            if (response.equals("y")) {
+                item.useItem(this);
+                System.out.println("The " + item.getName() + " has been equipped!");
+                return;
+            }
+        }
+        System.out.println("You stash the " + item.getName() + " in your bag.");
+    }
+
+    public boolean addItemToInventory(Item item) {
+        if (calculateInventorySize() >= this.inventoryCap) {
+            System.out.println("Your inventory is full!");
+            return true;
+        }
         int itemIndex = findItemInInventory(item);
         if (itemIndex == -1) {
             ArrayList<Item> newItem = new ArrayList<>();
@@ -48,6 +81,15 @@ public class Player {
         } else {
             this.inventory.get(itemIndex).add(item);
         }
+        return false;
+    }
+
+    public int calculateInventorySize() {
+        int totalSize = 0;
+        for (ArrayList<Item> items : this.inventory) {
+            totalSize += items.size();
+        }
+        return totalSize;
     }
 
     public void discardItem(Item item) {
@@ -83,6 +125,7 @@ public class Player {
                     + ": " + this.inventory.get(i).getFirst().getDescription());
             System.out.println();
         }
+        System.out.println("Remaining inventory space: " + (this.inventoryCap - calculateInventorySize()));
         return false;
     }
 
@@ -129,6 +172,7 @@ public class Player {
         System.out.println("Health: " + (this.currentHealth + this.absorption) + "/" + this.maxHealth);
         System.out.println("Total damage output: " + this.damage);
         System.out.println("Rooms traveled: " + this.roomsTraversed);
+        System.out.println("Inventory capacity: " + this.inventoryCap);
     }
     public void takeDamage(int damage) {
         if (this.absorption > 0) {
@@ -136,6 +180,8 @@ public class Player {
             if (this.absorption < 0) {
                 damage = -this.absorption;
                 this.absorption = 0;
+            } else {
+                return;
             }
         }
         this.currentHealth -= damage;
@@ -184,9 +230,16 @@ public class Player {
             System.out.println("The relic is welded to you painfully. You can't remove it!");
             return;
         }
+
+        boolean inventoryFull = addItemToInventory(relic);
+        if (inventoryFull) {
+            System.out.println("The relic could not be unequipped!");
+            return;
+        }
         relic.setEquipped(false);
+        System.out.println("The " + relic.getName() + " was unequipped!");
         getEquippedRelics().remove(relic);
-        addItemToInventory(relic);
+
     }
 
     public void doDeathSequence() {
