@@ -32,19 +32,7 @@ public class ItemRoom extends Room {
             System.out.println("You chose to forgo the loot...");
             return;
         }
-
-        player.addItemToInventory(this.item);
-
-        if (this.item instanceof Relic) {
-            System.out.println("Would you like to equip the " + this.item.getName() + " now? (y/n)");
-            response = Main.yesOrNo();
-            if (response.equals("y")) {
-                this.item.useItem(player);
-                System.out.println("The " + this.item.getName() + " has been equipped!");
-                return;
-            }
-        }
-        System.out.println("You stash the " + this.item.getName() + " in your bag.");
+        player.itemPickup(this.item);
     }
     public void setItem(Item item) {
         this.item = item;
