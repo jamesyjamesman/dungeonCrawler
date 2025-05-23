@@ -1,4 +1,4 @@
-package main.item;
+package main.item.relic;
 
 import main.Player;
 import main.room.Room;
@@ -7,8 +7,8 @@ import java.util.Random;
 
 public class RegenerationRelic extends Relic {
     public RegenerationRelic() {
-        this.name = "Relic of Regeneration";
-        this.description = "This mystical artifact will heal you on occasion.";
+        setName("Relic of Regeneration");
+        setDescription("This mystical artifact will heal you on occasion.");
     }
 
     @Override

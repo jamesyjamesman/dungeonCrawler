@@ -1,7 +1,7 @@
 package main.room;
 
 import main.item.Item;
-import main.item.Relic;
+import main.item.relic.Relic;
 import main.Main;
 import main.Player;
 

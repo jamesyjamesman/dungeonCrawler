@@ -1,11 +1,11 @@
-package main.item;
+package main.item.relic;
 
 import main.room.Room;
 
 public class ForesightRelic extends Relic {
     public ForesightRelic() {
-        this.name = "Relic of Foresight";
-        this.description = "An interesting artifact that allows you to tell how many exits the next room has.";
+        setName("Relic of Foresight");
+        setDescription("An interesting artifact that allows you to tell how many exits the next room has.");
     }
 
     public int findNumExits(Room room, int index) {

@@ -1,11 +1,12 @@
-package main.item;
+package main.item.relic;
 
 import main.Player;
+import main.item.Item;
 import main.room.Room;
 
 import java.util.Random;
 
-public abstract class Relic extends Item{
+public abstract class Relic extends Item {
     boolean equipped;
     boolean cursed;
     public Relic(){
@@ -16,7 +17,7 @@ public abstract class Relic extends Item{
     public void useRelic(Player player, Room room) {
         if (this.cursed) {
             int amountDamage = new Random().nextInt(5);
-            System.out.println("Your cursed " + this.name + " caused 1 damage!");
+            System.out.println("Your cursed " + getName() + " caused 1 damage!");
             player.takeDamage(amountDamage);
         }
     }

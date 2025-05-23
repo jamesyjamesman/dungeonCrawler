@@ -2,6 +2,7 @@ package main;
 
 import main.initialization.*;
 import main.item.*;
+import main.item.relic.Relic;
 import main.room.*;
 
 import java.util.ArrayList;

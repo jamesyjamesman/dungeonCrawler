@@ -2,7 +2,7 @@ package main;
 
 import main.enemy.Enemy;
 import main.item.Item;
-import main.item.Relic;
+import main.item.relic.Relic;
 import main.room.Room;
 
 import java.util.ArrayList;
@@ -17,6 +17,7 @@ public class Player {
     ArrayList<ArrayList<Item>> inventory;
     ArrayList<Relic> equippedRelics;
     int absorption;
+    int inventoryCap;
     public Player(String newName) {
         this.name = newName;
         this.maxHealth = 20;
@@ -26,6 +27,7 @@ public class Player {
         this.roomsTraversed = 0;
         this.damage = 3;
         this.absorption = 0;
+        this.inventoryCap = 10;
     }
 
     public void attack(Enemy enemy) {
@@ -227,5 +229,11 @@ public class Player {
     }
     public void addAbsorption(int extraAbsorption) {
         this.absorption += extraAbsorption;
+    }
+    public int getInventoryCap() {
+        return this.inventoryCap;
+    }
+    public void changeInventoryCap(int capChange) {
+        this.inventoryCap += capChange;
     }
 }

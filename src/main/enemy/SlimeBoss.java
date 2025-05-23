@@ -2,8 +2,8 @@ package main.enemy;
 
 import main.Main;
 import main.Player;
-import main.item.Relic;
-import main.item.SlimeRelic;
+import main.item.relic.Relic;
+import main.item.relic.SlimeRelic;
 
 import java.util.Random;
 

@@ -1,7 +1,7 @@
 package main.enemy;
 
 import main.Player;
-import main.item.Relic;
+import main.item.relic.Relic;
 
 public abstract class Boss extends Enemy {
     public Boss() {

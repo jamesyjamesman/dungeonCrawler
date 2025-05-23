@@ -1,6 +1,6 @@
 package main.initialization;
 
-import main.item.*;
+import main.item.relic.*;
 
 import java.util.ArrayList;
 

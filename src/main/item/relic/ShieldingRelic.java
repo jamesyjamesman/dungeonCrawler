@@ -1,4 +1,4 @@
-package main.item;
+package main.item.relic;
 
 import main.Player;
 import main.room.Room;
@@ -7,8 +7,8 @@ import java.util.Random;
 
 public class ShieldingRelic extends Relic {
     public ShieldingRelic() {
-        this.name = "Relic of Shielding";
-        this.description = "A shimmering relic that gives a constant source of shielding.";
+        setName("Relic of Shielding");
+        setDescription("A shimmering relic that gives a constant source of shielding.");
     }
 
     @Override
