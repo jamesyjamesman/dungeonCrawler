@@ -29,6 +29,9 @@ public class RelicInit {
         Relic holding = new HoldingRelic();
         relicList.add(holding);
 
+        Relic relics = new RelicRelic();
+        relicList.add(relics);
+
         return relicList;
     }
 }

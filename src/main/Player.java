@@ -18,6 +18,7 @@ public class Player {
     ArrayList<Relic> equippedRelics;
     int absorption;
     int inventoryCap;
+    int relicCap;
     public Player(String newName) {
         this.name = newName;
         this.maxHealth = 20;
@@ -28,6 +29,7 @@ public class Player {
         this.damage = 3;
         this.absorption = 0;
         this.inventoryCap = 10;
+        this.relicCap = 3;
     }
 
     public void attack(Enemy enemy) {
@@ -56,7 +58,7 @@ public class Player {
         }
         addItemToInventory(item);
 
-        if (item instanceof Relic) {
+        if (item instanceof Relic && getEquippedRelics().size() < this.relicCap) {
             System.out.println("Would you like to equip the " + item.getName() + " now? (y/n)");
             String response = Main.yesOrNo();
             if (response.equals("y")) {
@@ -146,6 +148,7 @@ public class Player {
                     + this.equippedRelics.get(i).getDescription());
             System.out.println();
         }
+        System.out.println("Remaining relic pouch space: " + (this.relicCap - getEquippedRelics().size()));
         return false;
     }
 
@@ -216,6 +219,10 @@ public class Player {
     }
 
     public void equipRelic(Relic relic) {
+        if (getEquippedRelics().size() >= this.relicCap) {
+            System.out.println("You cannot equip any more relics!");
+            return;
+        }
         relic.setEquipped(true);
         this.equippedRelics.add(relic);
         int relicIndex = this.findItemInInventory(relic);
@@ -288,5 +295,11 @@ public class Player {
     }
     public void changeInventoryCap(int capChange) {
         this.inventoryCap += capChange;
+    }
+    public int getRelicCap() {
+        return this.relicCap;
+    }
+    public void changeRelicCap(int relicCap) {
+        this.relicCap += relicCap;
     }
 }
