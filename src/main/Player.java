@@ -218,10 +218,10 @@ public class Player {
         }
     }
 
-    public void equipRelic(Relic relic) {
+    public boolean equipRelic(Relic relic) {
         if (getEquippedRelics().size() >= this.relicCap) {
             System.out.println("You cannot equip any more relics!");
-            return;
+            return false;
         }
         relic.setEquipped(true);
         this.equippedRelics.add(relic);
@@ -230,23 +230,24 @@ public class Player {
         if (relic.isCursed()) {
             System.out.println("Oh no! the " + relic.getName() + " was cursed!");
         }
+        return true;
     }
 
-    public void unequipRelic(Relic relic){
+    public boolean unequipRelic(Relic relic){
         if (relic.isCursed()) {
             System.out.println("The relic is welded to you painfully. You can't remove it!");
-            return;
+            return false;
         }
 
         boolean inventoryFull = addItemToInventory(relic);
         if (inventoryFull) {
             System.out.println("The relic could not be unequipped!");
-            return;
+            return false;
         }
         relic.setEquipped(false);
         System.out.println("The " + relic.getName() + " was unequipped!");
         getEquippedRelics().remove(relic);
-
+        return true;
     }
 
     public void doDeathSequence() {
