@@ -1,6 +1,7 @@
 package main.room;
 
 import main.Player;
+import static java.lang.System.exit;
 
 public class EndingRoom extends Room {
     public EndingRoom() {
@@ -11,5 +12,6 @@ public class EndingRoom extends Room {
         super.completeRoomActions(player);
         System.out.println("You survived long enough to escape! You win!");
         player.endStatistics();
+        exit(0);
     }
 }

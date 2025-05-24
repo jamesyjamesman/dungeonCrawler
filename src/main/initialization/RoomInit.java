@@ -117,6 +117,7 @@ public class RoomInit {
             ambushRoom.addEnemies(enemyList.get(2));
             ambushRoom.setType(RoomType.ENEMY);
             ambushRoom.setSelectionWeight(8);
+            ambushRoom.setActive(false);
             ambushRoom.setRoomsRequired(10);
             enemyRoomList.add(ambushRoom);
 
@@ -152,7 +153,7 @@ public class RoomInit {
             appleRoom.setDescription("You enter the room. It's empty, except for a small apple on a pedestal.");
             appleRoom.setAppearance("You can't see much, but you can smell a faintly sweet scent coming from the doorway.");
             appleRoom.setType(RoomType.ITEM);
-            appleRoom.setSelectionWeight(8);
+            appleRoom.setSelectionWeight(7);
             itemRoomList.add(appleRoom);
 
             ItemRoom chocolateRoom = new ItemRoom();

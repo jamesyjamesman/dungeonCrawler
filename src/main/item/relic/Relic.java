@@ -16,8 +16,10 @@ public abstract class Relic extends Item {
 
     public void useRelic(Player player, Room room) {
         if (this.cursed) {
-            int amountDamage = new Random().nextInt(5);
-            System.out.println("Your cursed " + getName() + " caused 1 damage!");
+            int amountDamage = new Random().nextInt(4);
+            if (amountDamage > 0) {
+                System.out.println("Your cursed " + getName() + " caused " + amountDamage + " damage!");
+            }
             player.takeDamage(amountDamage);
         }
     }
