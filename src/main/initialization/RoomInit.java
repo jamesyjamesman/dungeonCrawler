@@ -116,8 +116,9 @@ public class RoomInit {
             ambushRoom.addEnemies(enemyList.get(1));
             ambushRoom.addEnemies(enemyList.get(2));
             ambushRoom.setType(RoomType.ENEMY);
+            ambushRoom.setSelectionWeight(8);
+            ambushRoom.setRoomsRequired(10);
             enemyRoomList.add(ambushRoom);
-            ambushRoom.setSelectionWeight(9);
 
         return enemyRoomList;
     }
@@ -224,7 +225,7 @@ public class RoomInit {
             waterRoom.setNumExits(4);
             waterRoom.setDescription("You walk into the room, and see a fountain with flowing water. The water is almost luminescent.");
             waterRoom.setAppearance("You can hear rushing water, but that's about it.");
-            waterRoom.setSelectionWeight(2);
+            waterRoom.setSelectionWeight(3);
             waterRoom.setType(RoomType.SPECIAL);
             specialRoomList.add(waterRoom);
 

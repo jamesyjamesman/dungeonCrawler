@@ -19,7 +19,7 @@ public class ItemInit {
             HealthItem apple = new HealthItem();
             apple.setName("Apple");
             apple.setDescription("An apple you found in the cave system.\nIt doesn't seem too fresh.");
-            apple.setRestorationRange(-2, 6);
+            apple.setRestorationRange(-1, 6);
             healthItemList.add(apple);
 
             HealthItem chocolate = new HealthItem();

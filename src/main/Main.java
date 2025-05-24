@@ -38,7 +38,7 @@ public class Main {
                 Game.deactivateRelicRooms(rooms);
             }
             if (newRoom.getId() == 10) {
-                newRelic.setCursed(true);
+                newRelic.setCursed(new Random().nextInt(5) != 0);
             }
             newRoom.setItem(newRelic);
         }
