@@ -2,8 +2,8 @@ package main.item;
 
 import main.Player;
 
-public class StorageBuffItem extends BuffItem {
-    public StorageBuffItem() {
+public class InventoryBuffItem extends BuffItem {
+    public InventoryBuffItem() {
         this.statType = "inventory capacity";
     }
     @Override

@@ -46,9 +46,13 @@ public class ItemInit {
             unBuff.setBounds(2, 7);
             buffItemList.add(unBuff);
 
-            BuffItem storageBuff = new StorageBuffItem();
-            storageBuff.setBounds(1, 3);
-            buffItemList.add(storageBuff);
+            BuffItem inventoryBuff = new InventoryBuffItem();
+            inventoryBuff.setBounds(1, 3);
+            buffItemList.add(inventoryBuff);
+
+            BuffItem relicBuff = new RelicPouchBuffItem();
+            relicBuff.setBounds(0, 2);
+            buffItemList.add(relicBuff);
 
         return buffItemList;
     }
