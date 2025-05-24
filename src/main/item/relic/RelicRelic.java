@@ -17,12 +17,14 @@ public class RelicRelic extends Relic {
                 System.out.println("Unequip " + relicsOverCapacity + " relics to remove this relic.");
                 return;
             }
-            player.unequipRelic(this);
-            player.changeRelicCap(-3);
+            if (player.unequipRelic(this)) {
+                player.changeRelicCap(-3);
+            }
         }
         else {
-            player.equipRelic(this);
-            player.changeRelicCap(3);
+            if (player.equipRelic(this)) {
+                player.changeRelicCap(3);
+            }
         }
     }
 }

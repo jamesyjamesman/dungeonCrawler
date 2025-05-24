@@ -17,12 +17,14 @@ public class HoldingRelic extends Relic {
                 System.out.println("Remove " + itemsOverCapacity + " items from your inventory to remove this relic.");
                 return;
             }
-            player.unequipRelic(this);
+            if (player.unequipRelic(this)) {
             player.changeInventoryCap(-10);
+            }
         }
         else {
-            player.equipRelic(this);
-            player.changeInventoryCap(10);
+            if (player.equipRelic(this)) {
+                player.changeInventoryCap(10);
+            }
         }
     }
 }
