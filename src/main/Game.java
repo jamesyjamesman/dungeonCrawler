@@ -21,10 +21,6 @@ public class Game {
 
             currentRoom.completeRoomActions(playerCharacter);
 
-            if (currentRoom.getId() == 9001) {
-                win(playerCharacter);
-            }
-
             activateRooms(rooms, playerCharacter);
             ArrayList<Room> activeRooms = new ArrayList<>(getRandomActiveRooms(rooms));
             String exitString = createExitsString(playerCharacter, activeRooms, currentRoom);
@@ -101,11 +97,6 @@ public class Game {
                 .filter(room -> !room.getActive())
                 .filter(room -> room.getType() != RoomType.RELIC)
                 .forEach(room -> room.roomActivator(player));
-    }
-
-    public static void win(Player player) {
-        System.out.println("You survived long enough to escape! You win!");
-        player.endStatistics();
     }
 }
 
