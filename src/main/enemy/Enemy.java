@@ -10,6 +10,7 @@ public class Enemy {
     int damage;
     int armor;
     int evasiveness;
+    int experienceDropped;
     String species;
     String damageType;
     public Enemy() {
@@ -18,6 +19,7 @@ public class Enemy {
         this.damage = 0;
         this.armor = 0;
         this.evasiveness = 0;
+        this.experienceDropped = 0;
         this.species = "";
         this.damageType = "";
     }
@@ -67,4 +69,6 @@ public class Enemy {
         return this.currentHealth;
     }
     public int getMaxHealth(){return this.maxHealth;}
+    public void setExperienceDropped(int experienceDropped) {this.experienceDropped = experienceDropped;}
+    public int getExperienceDropped() {return this.experienceDropped;}
 }

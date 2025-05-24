@@ -6,6 +6,7 @@ import main.item.relic.Relic;
 import main.room.Room;
 
 import java.util.ArrayList;
+
 import static java.lang.System.exit;
 
 public class Player {
@@ -19,6 +20,9 @@ public class Player {
     int absorption;
     int inventoryCap;
     int relicCap;
+    int level;
+    int experience;
+    int expToNextLevel;
     public Player(String newName) {
         this.name = newName;
         this.maxHealth = 20;
@@ -30,6 +34,9 @@ public class Player {
         this.absorption = 0;
         this.inventoryCap = 10;
         this.relicCap = 3;
+        this.level = 1;
+        this.experience = 0;
+        this.expToNextLevel = 10;
     }
 
     public void attack(Enemy enemy) {
@@ -172,6 +179,7 @@ public class Player {
 
     public void checkStatus() {
         System.out.println("Current player status:");
+        System.out.println("Level " + this.level + " (" + this.experience + "/" + this.expToNextLevel + " exp)");
         System.out.println("Health: " + (this.currentHealth + this.absorption) + "/" + this.maxHealth);
         System.out.println("Total damage output: " + this.damage);
         System.out.println("Rooms traveled: " + this.roomsTraversed);
@@ -181,7 +189,7 @@ public class Player {
         if (this.absorption > 0) {
             this.absorption -= damage;
             if (this.absorption < 0) {
-                damage = -this.absorption;
+                damage = -1 * this.absorption;
                 this.absorption = 0;
             } else {
                 return;
@@ -270,6 +278,78 @@ public class Player {
         checkRelics(true);
     }
 
+    public void checkLevelUp() {
+        if (this.experience >= this.expToNextLevel && this.level < 10) {
+            levelUp();
+        }
+    }
+    public void levelUp() {
+        this.experience -= this.expToNextLevel;
+        this.expToNextLevel = (int) Math.round(this.expToNextLevel * 1.2);
+        this.level += 1;
+        System.out.println("You leveled up!");
+        levelUpEffects(this.level);
+        checkLevelUp();
+    }
+
+    public void levelUpEffects(int newLevel) {
+        int maxHealthChange = 0;
+        int inventoryCapChange = 0;
+        int damageChange = 0;
+        int relicCapChange = 0;
+        switch (newLevel) {
+            case 2:
+                maxHealthChange = 1;
+                break;
+            case 3:
+                maxHealthChange = 2;
+                inventoryCapChange = 1;
+                break;
+            case 4, 7:
+                damageChange = 1;
+                break;
+            case 5:
+                maxHealthChange = 2;
+                relicCapChange = 1;
+                break;
+            case 6:
+                maxHealthChange = 3;
+                inventoryCapChange = 2;
+                break;
+            case 8:
+                inventoryCapChange = 2;
+                relicCapChange = 1;
+                break;
+            case 9:
+                maxHealthChange = 4;
+                break;
+            case 10:
+                maxHealthChange = 5;
+                damageChange = 2;
+                relicCapChange = 2;
+                inventoryCapChange = 3;
+                this.expToNextLevel = 100000000;
+                System.out.println("You're at the maximum level!");
+                break;
+        }
+        if (maxHealthChange != 0) {
+            System.out.println("Your maximum health increased by " + maxHealthChange + "!");
+            changeMaxHealth(maxHealthChange);
+        }
+        if (inventoryCapChange != 0) {
+            System.out.println("Your inventory size increased by " + inventoryCapChange + "!");
+            changeInventoryCap(inventoryCapChange);
+        }
+        if (damageChange != 0) {
+            System.out.println("Your attack damage increased by " + damageChange + "!");
+            increaseDamage(damageChange);
+        }
+        if (relicCapChange != 0) {
+            System.out.println("Your relic pouch capacity increased by " + relicCapChange + "!");
+            changeRelicCap(relicCapChange);
+        }
+    }
+
     public int getCurrentHealth() {
         return this.currentHealth;
     }
@@ -302,5 +382,8 @@ public class Player {
     }
     public void changeRelicCap(int relicCap) {
         this.relicCap += relicCap;
+    }
+    public void changeExperience(int addedExp) {
+        this.experience += addedExp;
     }
 }

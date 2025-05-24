@@ -17,18 +17,21 @@ public class EnemyInit {
 //            goblinMage.currentMana = 100;
 //            goblinMage.maxMana = 100;
             goblinMage.setDamageType("magic");
+            goblinMage.setExperienceDropped(3);
             enemyList.add(goblinMage);
 
             Enemy goblin = new Enemy();
             goblin.setMaxHealth(8);
             goblin.setSpecies("goblin");
             goblin.setDamage(1);
+            goblin.setExperienceDropped(3);
             enemyList.add(goblin);
 
             Enemy orc = new Enemy();
             orc.setMaxHealth(12);
             orc.setSpecies("orc");
             orc.setDamage(2);
+            orc.setExperienceDropped(7);
             enemyList.add(orc);
 
         return enemyList;
@@ -38,6 +41,7 @@ public class EnemyInit {
             slimeBoss.setMaxHealth(30);
             slimeBoss.setSpecies("slime");
             slimeBoss.setDamage(3);
+            slimeBoss.setExperienceDropped(30);
             bossList.add(slimeBoss);
 
         return bossList;

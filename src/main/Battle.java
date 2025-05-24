@@ -17,6 +17,8 @@ public class Battle {
             player.attack(enemy);
             boolean enemyIsDead = enemy.getCurrentHealth() == 0;
             if (enemyIsDead) {
+                player.changeExperience(enemy.getExperienceDropped());
+                player.checkLevelUp();
                 System.out.println("The " + enemy.getSpecies() + " died!");
                 room.addDefeatedEnemies(enemy);
                 room.removeEnemies(enemy);
