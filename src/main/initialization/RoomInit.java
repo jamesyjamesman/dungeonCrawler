@@ -14,6 +14,7 @@ public class RoomInit {
         static ArrayList<Room> normalRoomList = new ArrayList<>();
         static ArrayList<ItemRoom> itemRoomList = new ArrayList<>();
         static ArrayList<BossRoom> bossRoomList = new ArrayList<>();
+        static ArrayList<Room> specialRoomList = new ArrayList<>();
         static ArrayList<Room> roomList = new ArrayList<>();
     public static ArrayList<Room> roomInit() {
         ArrayList<TrapRoom> trapRooms = trapRoomInit();
@@ -21,11 +22,13 @@ public class RoomInit {
         ArrayList<Room> normalRooms = normalRoomInit();
         ArrayList<ItemRoom> itemRooms = itemRoomInit();
         ArrayList<BossRoom> bossRooms = bossRoomInit();
+        ArrayList<Room> specialRooms = specialRoomInit();
         roomList.addAll(normalRooms);
         roomList.addAll(trapRooms);
         roomList.addAll(enemyRooms);
         roomList.addAll(itemRooms);
         roomList.addAll(bossRooms);
+        roomList.addAll(specialRooms);
         return roomList;
     }
 
@@ -56,22 +59,6 @@ public class RoomInit {
                     There's so many different exits!""");
             manyExits.setSelectionWeight(5);
             normalRoomList.add(manyExits);
-
-            //there is a chance that someone might not want to leave, and be forced if this is the only exit.
-            Room endRoom = new Room();
-            endRoom.setId(9001);
-            endRoom.setNumExits(1);
-            endRoom.setDescription("""
-        At last, your journey is over. A simple room, with just an old wooden staircase upwards.
-        You can smell fresh air for the first time in a while. You don't hesitate to rush up the stairs, and find yourself
-        in an old wine cellar. You head up further, finding yourself in a rustic bar.
-        Before anyone has a chance to say anything, you dash out the door, raising your arms, feeling the sun on your shoulders.
-        Freedom.""");
-            endRoom.setAppearance("You get the sense your journey is finally over.");
-            endRoom.setRoomsRequired(100);
-            endRoom.setActive(false);
-            endRoom.setSelectionWeight(1);
-            normalRoomList.add(endRoom);
 
         return normalRoomList;
     }
@@ -212,6 +199,38 @@ public class RoomInit {
         return itemRoomList;
 
     }
+
+    public static ArrayList<Room> specialRoomInit() {
+
+            //there is a chance that someone might not want to leave, and be forced if this is the only exit.
+            Room endRoom = new EndingRoom();
+            endRoom.setId(9001);
+            endRoom.setNumExits(1);
+            endRoom.setDescription("""
+            At last, your journey is over. A simple room, with just an old wooden staircase upwards.
+            You can smell fresh air for the first time in a while. You don't hesitate to rush up the stairs, and find yourself
+            in an old wine cellar. You head up further, finding yourself in a rustic bar.
+            Before anyone has a chance to say anything, you dash out the door, raising your arms, feeling the sun on your shoulders.
+            Freedom.""");
+            endRoom.setAppearance("You get the sense your journey is finally over.");
+            endRoom.setRoomsRequired(100);
+            endRoom.setActive(false);
+            endRoom.setSelectionWeight(1);
+            endRoom.setType(RoomType.SPECIAL);
+            specialRoomList.add(endRoom);
+
+            Room waterRoom = new PureWaterRoom();
+            waterRoom.setId(9002);
+            waterRoom.setNumExits(4);
+            waterRoom.setDescription("You walk into the room, and see a fountain with flowing water. The water is almost luminescent.");
+            waterRoom.setAppearance("You can hear rushing water, but that's about it.");
+            waterRoom.setSelectionWeight(2);
+            waterRoom.setType(RoomType.SPECIAL);
+            specialRoomList.add(waterRoom);
+
+        return specialRoomList;
+    }
+
     public static int indexFinder(ArrayList<Item> list, String targetName) {
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getName().equals(targetName)) {
