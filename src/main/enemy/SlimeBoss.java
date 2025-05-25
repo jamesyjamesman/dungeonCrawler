@@ -10,28 +10,22 @@ import java.util.Random;
 
 public class SlimeBoss extends Boss {
     public SlimeBoss() {
-
-    }
-
-    @Override
-    public void bossAbilities() {
-
     }
 
     public int slimeLaunchAttack() {
         int damage = this.damage + 1;
-        System.out.println("The slime launches a slimeball at you, hitting you square in the face!");
+        System.out.println(Main.colorString("The slime launches a slimeball at you, hitting you square in the face!", DialogueType.BATTLE));
         return damage;
     }
 
     public int slimeChargeAttack() {
         int damage = this.damage - 1;
-        System.out.println("The slime jumps at you, knocking you down!");
+        System.out.println(Main.colorString("The slime jumps at you, knocking you down!", DialogueType.BATTLE));
         return damage;
     }
 
     public int slimeWait() {
-        System.out.println("The slime is taking a break.");
+        System.out.println(Main.colorString("The slime is taking a break.", DialogueType.BATTLE));
         return 0;
     }
 
@@ -40,7 +34,7 @@ public class SlimeBoss extends Boss {
     public void attack(Player player) {
         if (player.equippedRelicIndex("Relic of Bounciness") > -1
                 && new Random().nextInt(4) == 0) {
-            System.out.println("The attack from the " + this.species + " bounced right off!");
+            System.out.println(Main.colorString("The attack from the " + this.species + " bounced right off!", DialogueType.BATTLE));
             return;
         }
         int damage;
@@ -62,7 +56,7 @@ public class SlimeBoss extends Boss {
     @Override
     public int takeDamage(int damage) {
         if (new Random().nextInt(5) == 0) {
-            System.out.println("Your attack bounced off of the slime's squishy exterior!");
+            System.out.println(Main.colorString("Your attack bounced off of the slime's squishy exterior!", DialogueType.BATTLE));
             return 0;
         }
         return super.takeDamage(damage);
@@ -71,18 +65,5 @@ public class SlimeBoss extends Boss {
     @Override
     public Relic initializeBossRelic() {
         return new SlimeRelic();
-    }
-
-    @Override
-    public void death(Player player) {
-        Relic slimeRelic = initializeBossRelic();
-        System.out.println("Wow! You defeated the slime boss! Lucky for you, it seems to have dropped something!");
-        System.out.println("Would you like to take the " + slimeRelic.getName() + "? (y/n)");
-        String response = Main.yesOrNo();
-        if (response.equals("y")) {
-            player.itemPickup(slimeRelic);
-        } else {
-            System.out.println("Really...?");
-        }
     }
 }
