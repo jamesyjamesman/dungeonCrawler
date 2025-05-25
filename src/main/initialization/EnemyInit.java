@@ -44,6 +44,13 @@ public class EnemyInit {
             slimeBoss.setExperienceDropped(30);
             bossList.add(slimeBoss);
 
+            Boss minotaurBoss = new MinotaurBoss();
+            minotaurBoss.setMaxHealth(50);
+            minotaurBoss.setSpecies("minotaur");
+            minotaurBoss.setDamage(5);
+            minotaurBoss.setExperienceDropped(100);
+            bossList.add(minotaurBoss);
+
         return bossList;
     }
 }

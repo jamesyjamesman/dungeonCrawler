@@ -139,6 +139,17 @@ public class RoomInit {
             slimeBossRoom.setSelectionWeight(5);
             bossRoomList.add(slimeBossRoom);
 
+            BossRoom minotaurBossRoom = new BossRoom();
+            minotaurBossRoom.setRoomsRequired(50);
+            minotaurBossRoom.setNumExits(4);
+            minotaurBossRoom.setId(100);
+            minotaurBossRoom.addEnemies(bossList.get(1));
+            minotaurBossRoom.setDescription("A massive minotaur stands silently in the center of the room.");
+            minotaurBossRoom.setBattleInitiationMessage("Before you can do anything, it opens its blood red eyes, glaring at you.");
+            minotaurBossRoom.setType(RoomType.BOSS);
+            minotaurBossRoom.setSelectionWeight(4);
+            bossRoomList.add(minotaurBossRoom);
+
         return bossRoomList;
     }
 
