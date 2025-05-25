@@ -17,7 +17,7 @@ public class RelicInit {
         Relic regeneration = new RegenerationRelic();
         relicList.add(regeneration);
 
-        Relic cursed = new CurseRelic();
+        Relic cursed = new CurseDetectionRelic();
         relicList.add(cursed);
 
         Relic enemy = new EnemyRelic();

@@ -18,11 +18,19 @@ public abstract class Relic extends Item {
 
     public void useRelic(Player player, Room room) {
         if (this.cursed) {
-            int amountDamage = new Random().nextInt(4);
-            if (amountDamage > 0) {
-                System.out.println(Main.colorString("Your cursed " + getName() + " caused " + amountDamage + " damage!", DialogueType.DAMAGE));
+            if (player.equippedRelicIndex("Relic of Cursed Healing") == -1) {
+                int amountDamage = new Random().nextInt(4);
+                if (amountDamage > 0) {
+                    System.out.println(Main.colorString("Your cursed " + getName() + " caused " + amountDamage + " damage!", DialogueType.DAMAGE));
+                    player.takeDamage(amountDamage);
+                }
+            } else {
+                int amountHeal = new Random().nextInt(2);
+                if (amountHeal > 0) {
+                    System.out.println(Main.colorString("Your cursed " + getName() + " healed you for " + amountHeal + " health!", DialogueType.HEAL));
+                    player.heal(amountHeal);
+                }
             }
-            player.takeDamage(amountDamage);
         }
     }
 

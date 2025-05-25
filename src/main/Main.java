@@ -99,7 +99,6 @@ public class Main {
                 case "godmode" -> {
                     player.increaseDamage(1000);
                     player.addAbsorption(100000);
-                    player.changeExperience(10000);
                 }
                 default -> {
                     return input;
