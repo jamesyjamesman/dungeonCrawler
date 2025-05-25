@@ -18,7 +18,7 @@ public class Battle {
             if (enemyIsDead) {
                 player.changeExperience(enemy.getExperienceDropped());
                 player.checkLevelUp();
-                System.out.println(Main.colorString("The " + enemy.getSpecies() + " died!", DialogueType.BATTLE));
+                System.out.println(Main.colorString("The " + enemy.getSpecies() + " died! You got " + enemy.getExperienceDropped() + " experience!", DialogueType.BATTLE));
                 room.addDefeatedEnemies(enemy);
                 room.removeEnemies(enemy);
                 if (enemy instanceof Boss) {

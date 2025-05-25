@@ -179,7 +179,7 @@ public class Player {
 
     public void checkStatus() {
         System.out.println("Current player status:");
-        System.out.println("Level " + this.level + " (" + this.experience + "/" + this.expToNextLevel + " exp)");
+        System.out.println("Level " + this.level + (this.level < 10 ? " (" + this.experience + "/" + this.expToNextLevel + " exp)" : ""));
         System.out.println("Health: " + (this.currentHealth + this.absorption) + "/" + this.maxHealth);
         System.out.println("Total damage output: " + this.damage);
         System.out.println("Rooms traveled: " + this.roomsTraversed);
