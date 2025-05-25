@@ -1,5 +1,7 @@
 package main.item.relic;
 
+import main.DialogueType;
+import main.Main;
 import main.Player;
 import main.item.Item;
 import main.room.Room;
@@ -18,7 +20,7 @@ public abstract class Relic extends Item {
         if (this.cursed) {
             int amountDamage = new Random().nextInt(4);
             if (amountDamage > 0) {
-                System.out.println("Your cursed " + getName() + " caused " + amountDamage + " damage!");
+                System.out.println(Main.colorString("Your cursed " + getName() + " caused " + amountDamage + " damage!", DialogueType.DAMAGE));
             }
             player.takeDamage(amountDamage);
         }

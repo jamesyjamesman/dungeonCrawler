@@ -1,5 +1,7 @@
 package main.enemy;
 
+import main.DialogueType;
+import main.Main;
 import main.Player;
 
 import java.util.Random;
@@ -37,10 +39,10 @@ public class Enemy {
     public void attack(Player player) {
         if (player.equippedRelicIndex("Relic of Bounciness") > -1
             && new Random().nextInt(4) == 0) {
-                System.out.println("The attack from the " + this.species + " bounced right off!");
+                System.out.println(Main.colorString("The attack from the " + this.species + " bounced right off!", DialogueType.BATTLE));
                 return;
         }
-        System.out.println("The " + this.species + " attacked you, dealing " + this.damage + " damage!");
+        System.out.println(Main.colorString("The " + this.species + " attacked you, dealing " + this.damage + " damage!", DialogueType.DAMAGE));
         player.takeDamage(this.damage);
         //will get more complex with weapons, etc.
     }

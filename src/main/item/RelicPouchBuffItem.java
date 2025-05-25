@@ -1,5 +1,7 @@
 package main.item;
 
+import main.DialogueType;
+import main.Main;
 import main.Player;
 
 public class RelicPouchBuffItem extends BuffItem {
@@ -11,7 +13,7 @@ public class RelicPouchBuffItem extends BuffItem {
     public void useItem(Player player) {
         super.useItem(player);
         if (amountChanged > 0) {
-            System.out.println("You're not sure how, but your " + this.statType + " increased by " + this.amountChanged + ".");
+            System.out.println(Main.colorString("You're not sure how, but your " + this.statType + " increased by " + this.amountChanged + ".", DialogueType.HEAL));
         } else {
             System.out.println("Ew. That one was a dud.");
         }

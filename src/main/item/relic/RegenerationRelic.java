@@ -1,5 +1,7 @@
 package main.item.relic;
 
+import main.DialogueType;
+import main.Main;
 import main.Player;
 import main.room.Room;
 
@@ -16,7 +18,7 @@ public class RegenerationRelic extends Relic {
         if (new Random().nextInt(3) == 0) {
         int amountHealed = player.heal(new Random().nextInt(1,5));
         if (amountHealed != 0) {
-            System.out.println("Your Relic of Regeneration healed you for " + amountHealed + " health!");
+            System.out.println(Main.colorString("Your Relic of Regeneration healed you for " + amountHealed + " health!", DialogueType.HEAL));
             }
         }
         super.useRelic(player, room);

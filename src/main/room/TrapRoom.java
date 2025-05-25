@@ -1,5 +1,7 @@
 package main.room;
 
+import main.DialogueType;
+import main.Main;
 import main.Player;
 
 public class TrapRoom extends Room {
@@ -12,7 +14,7 @@ public class TrapRoom extends Room {
     @Override
     public void completeRoomActions(Player player) {
         super.completeRoomActions(player);
-        System.out.println("You took " + this.damageDealt + " damage!");
+        System.out.println(Main.colorString("You took " + this.damageDealt + " damage!", DialogueType.DAMAGE));
         player.takeDamage(this.damageDealt);
     }
     public void setDamageDealt(int damageDealt) {

@@ -1,5 +1,6 @@
 package main.enemy;
 
+import main.DialogueType;
 import main.Main;
 import main.Player;
 import main.item.relic.Relic;
@@ -53,7 +54,7 @@ public class SlimeBoss extends Boss {
             damage = slimeWait();
         }
         if (damage > 0) {
-            System.out.println("You took " + damage + " damage!");
+            System.out.println(Main.colorString("You took " + damage + " damage!", DialogueType.DAMAGE));
         }
         player.takeDamage(damage);
     }
@@ -81,7 +82,7 @@ public class SlimeBoss extends Boss {
         if (response.equals("y")) {
             player.itemPickup(slimeRelic);
         } else {
-            System.out.println("Really?");
+            System.out.println("Really...?");
         }
     }
 }

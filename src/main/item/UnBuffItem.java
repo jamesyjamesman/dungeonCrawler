@@ -1,5 +1,7 @@
 package main.item;
 
+import main.DialogueType;
+import main.Main;
 import main.Player;
 
 public class UnBuffItem extends BuffItem {
@@ -12,7 +14,7 @@ public class UnBuffItem extends BuffItem {
         System.out.println("Blegh! You think that was meatballs. At some point.");
         System.out.println("You're really not feeling too good.");
         //if I ever implement a poison mechanic it would be used here instead
-        System.out.println("You took " + this.amountChanged + " damage!");
+        System.out.println(Main.colorString("You took " + this.amountChanged + " damage!", DialogueType.DAMAGE));
         player.takeDamage(this.amountChanged);
     }
 }

@@ -43,7 +43,7 @@ public class Player {
         int totalDamage = this.damage;
         int damageDealt = enemy.takeDamage(totalDamage);
         if (damageDealt > 0) {
-            System.out.println("The " + enemy.getSpecies() + " took " + totalDamage + " damage!");
+            System.out.println(Main.colorString("The " + enemy.getSpecies() + " took " + totalDamage + " damage!", DialogueType.BATTLE));
         }
         //will get more complex with weapons, etc.
     }
@@ -118,9 +118,9 @@ public class Player {
 
         if (this.inventory.isEmpty()) {
             if (death) {
-                System.out.println("Wow! Not leaving anything for the next person...");
+                System.out.println(Main.colorString("Wow! Not leaving anything for the next person...", DialogueType.INVENTORY));
             } else {
-                System.out.println("Your inventory is empty!");
+                System.out.println(Main.colorString("Your inventory is empty!", DialogueType.INVENTORY));
             }
             return true;
         }
@@ -129,12 +129,12 @@ public class Player {
             //Displays amount of items in parentheses (e.g. (x2)) if the amount is greater than 1
             String amount = (this.inventory.get(i).size() > 1) ? " (x" + this.inventory.get(i).size() + ")" : "";
 
-            System.out.println((i+1) + ". " + this.inventory.get(i).getFirst().getName() +
+            System.out.println(Main.colorString((i+1) + ". " + this.inventory.get(i).getFirst().getName() +
                     amount
-                    + ": " + this.inventory.get(i).getFirst().getDescription());
+                    + ": " + this.inventory.get(i).getFirst().getDescription(), DialogueType.INVENTORY));
             System.out.println();
         }
-        System.out.println("Remaining inventory space: " + (this.inventoryCap - calculateInventorySize()));
+        System.out.println(Main.colorString("Remaining inventory space: " + (this.inventoryCap - calculateInventorySize()), DialogueType.INVENTORY));
         return false;
     }
 
@@ -143,19 +143,19 @@ public class Player {
 
         if (this.equippedRelics.isEmpty()) {
             if (death) {
-                System.out.println("Too good for those darn relics, eh?");
+                System.out.println(Main.colorString("Too good for those darn relics, eh?", DialogueType.INVENTORY));
             } else {
-                System.out.println("Your relic pouch is empty!");
+                System.out.println(Main.colorString("Your relic pouch is empty!", DialogueType.INVENTORY));
             }
             return true;
         }
 
         for (int i = 0; i < this.equippedRelics.size(); i++) {
-            System.out.println((i+1) + ". " + this.equippedRelics.get(i).getName() + ": "
-                    + this.equippedRelics.get(i).getDescription());
+            System.out.println(Main.colorString((i+1) + ". " + this.equippedRelics.get(i).getName() + ": "
+                    + this.equippedRelics.get(i).getDescription(), DialogueType.INVENTORY));
             System.out.println();
         }
-        System.out.println("Remaining relic pouch space: " + (this.relicCap - getEquippedRelics().size()));
+        System.out.println(Main.colorString("Remaining relic pouch space: " + (this.relicCap - getEquippedRelics().size()), DialogueType.INVENTORY));
         return false;
     }
 
@@ -270,7 +270,7 @@ public class Player {
     // if player died from food, it will not show that item as being consumed
     public void endStatistics() {
         System.out.println("Player statistics:");
-        System.out.println("Rooms completed: " + this.roomsTraversed + ".");
+        System.out.println("Rooms completed: " + this.roomsTraversed);
         System.out.println("Maximum health: " + this.maxHealth);
         System.out.println("Inventory:");
         checkInventory(true);
@@ -287,7 +287,7 @@ public class Player {
         this.experience -= this.expToNextLevel;
         this.expToNextLevel = (int) Math.round(this.expToNextLevel * 1.2);
         this.level += 1;
-        System.out.println("You leveled up!");
+        System.out.println(Main.colorString("You leveled up!", DialogueType.LEVEL));
         levelUpEffects(this.level);
         checkLevelUp();
     }
@@ -329,23 +329,23 @@ public class Player {
                 relicCapChange = 2;
                 inventoryCapChange = 3;
                 this.expToNextLevel = 100000000;
-                System.out.println("You're at the maximum level!");
+                System.out.println(Main.colorString("You're at the maximum level!", DialogueType.LEVEL));
                 break;
         }
         if (maxHealthChange != 0) {
-            System.out.println("Your maximum health increased by " + maxHealthChange + "!");
+            System.out.println(Main.colorString("Your maximum health increased by " + maxHealthChange + "!", DialogueType.LEVEL));
             changeMaxHealth(maxHealthChange);
         }
         if (inventoryCapChange != 0) {
-            System.out.println("Your inventory size increased by " + inventoryCapChange + "!");
+            System.out.println(Main.colorString("Your inventory size increased by " + inventoryCapChange + "!", DialogueType.LEVEL));
             changeInventoryCap(inventoryCapChange);
         }
         if (damageChange != 0) {
-            System.out.println("Your attack damage increased by " + damageChange + "!");
+            System.out.println(Main.colorString("Your attack damage increased by " + damageChange + "!", DialogueType.LEVEL));
             increaseDamage(damageChange);
         }
         if (relicCapChange != 0) {
-            System.out.println("Your relic pouch capacity increased by " + relicCapChange + "!");
+            System.out.println(Main.colorString("Your relic pouch capacity increased by " + relicCapChange + "!", DialogueType.LEVEL));
             changeRelicCap(relicCapChange);
         }
     }
@@ -370,6 +370,9 @@ public class Player {
     }
     public void addAbsorption(int extraAbsorption) {
         this.absorption += extraAbsorption;
+    }
+    public int getAbsorption() {
+        return this.absorption;
     }
     public int getInventoryCap() {
         return this.inventoryCap;

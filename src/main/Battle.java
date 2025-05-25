@@ -7,10 +7,9 @@ import main.room.EnemyRoom;
 public class Battle {
 
     public static void battleLoop(Player player, EnemyRoom room) {
-        System.out.println("The battle has begun!");
+        System.out.println(Main.colorString("The battle has begun!", DialogueType.BATTLE));
         while (!room.getEnemies().isEmpty()) {
-            System.out.println("It's your turn! What would you like to attack?");
-            String enemyString = readEnemies(room, player);
+            String enemyString = Main.colorString("It's your turn! What would you like to attack?\n" + readEnemies(room, player), DialogueType.BATTLE);
             System.out.println(enemyString);
             int enemyIndex = Main.responseHandler(player, enemyString, 1, room.getEnemies().size()) - 1;
             Enemy enemy = room.getEnemies().get(enemyIndex);
@@ -19,7 +18,7 @@ public class Battle {
             if (enemyIsDead) {
                 player.changeExperience(enemy.getExperienceDropped());
                 player.checkLevelUp();
-                System.out.println("The " + enemy.getSpecies() + " died!");
+                System.out.println(Main.colorString("The " + enemy.getSpecies() + " died!", DialogueType.BATTLE));
                 room.addDefeatedEnemies(enemy);
                 room.removeEnemies(enemy);
                 if (enemy instanceof Boss) {

@@ -23,7 +23,7 @@ public class Game {
 
             activateRooms(rooms, playerCharacter);
             ArrayList<Room> activeRooms = new ArrayList<>(getRandomActiveRooms(rooms));
-            String exitString = createExitsString(playerCharacter, activeRooms, currentRoom);
+            String exitString = Main.colorString(createExitsString(playerCharacter, activeRooms, currentRoom), DialogueType.NAVIGATION);
 
             System.out.println(exitString);
             playerCharacter.useRelics(currentRoom);
