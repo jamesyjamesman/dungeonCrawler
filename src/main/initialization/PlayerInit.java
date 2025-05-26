@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class PlayerInit {
     public static Player playerInit() {
         System.out.println("First, you'll need to name your character!\nPlease enter your character's name.");
+        System.out.print("❯ ");
         Scanner lineScanner = new Scanner(System.in);
         String playerName = lineScanner.nextLine();
         Player player = new Player(playerName);

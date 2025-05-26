@@ -184,7 +184,16 @@ public class Player {
         System.out.println("Total damage output: " + this.damage);
         System.out.println("Rooms traveled: " + this.roomsTraversed);
         System.out.println("Inventory capacity: " + this.inventoryCap);
+        printStatusLine();
     }
+
+    /**
+     * Prints out the player's current level and health as a prompt
+     */
+    public void printStatusLine() {
+        System.out.print("L" + this.level + " HP " + (this.currentHealth + this.absorption) + "/" + this.maxHealth);
+    }
+
     public void takeDamage(int damage) {
         if (this.absorption > 0) {
             this.absorption -= damage;

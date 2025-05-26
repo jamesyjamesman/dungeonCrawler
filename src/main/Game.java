@@ -28,6 +28,7 @@ public class Game {
             System.out.println(exitString);
             playerCharacter.useRelics(currentRoom);
 
+            playerCharacter.printStatusLine();
             int response = Main.responseHandler(playerCharacter, exitString, 1, currentRoom.getExits().size()) - 1;
             Room nextRoom = currentRoom.getExits().get(response);
             currentRoom.getExits().clear();
