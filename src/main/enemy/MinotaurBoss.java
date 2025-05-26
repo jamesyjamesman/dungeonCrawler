@@ -26,7 +26,7 @@ public class MinotaurBoss extends Boss {
     }
     public int healAttack() {
         System.out.println(Main.colorString("The minotaur pulls out a large chunk of meat, ripping into it!", DialogueType.BATTLE));
-        this.currentHealth += this.damage * 2;
+        this.currentHealth += (int) (this.damage * 1.5);
         return 0;
     }
     public int failedChargeAttack() {
