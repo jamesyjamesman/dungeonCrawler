@@ -179,6 +179,20 @@ public class RoomInit {
             chocolateRoom.setSelectionWeight(3);
             itemRoomList.add(chocolateRoom);
 
+            ItemRoom lavaRoom = new ItemRoom();
+            lavaRoom.setId(1001);
+            lavaRoom.setDescription("""
+                    You walk into the room. There's flowing lava coming from the ceiling and down the walls, pooling on the floor.
+                    Near one of the pools lies a freshly and perfectly cooked steak. Alright, then.""");
+            lavaRoom.setAppearance("It smells like a barbeque. There's a soft orange glow emanating from the entrance.");
+            lavaRoom.setType(RoomType.ITEM);
+            lavaRoom.setSelectionWeight(5);
+            lavaRoom.setItem(itemList.get(indexFinder(itemList, "Steak")));
+            lavaRoom.setNumExits(3);
+            itemRoomList.add(lavaRoom);
+
+
+
             ItemRoom relicRoom = new ItemRoom();
             //item added later
             relicRoom.setId(9);

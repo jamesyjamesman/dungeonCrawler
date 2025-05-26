@@ -23,11 +23,17 @@ public class ItemInit {
             healthItemList.add(apple);
 
             HealthItem chocolate = new HealthItem();
-            chocolate.setName("Torpedo Chocolate Bar™");
+            chocolate.setName("Torpedo Chocolate Bar");
             chocolate.setDescription("A legendary chocolate bar thought to be long-lost.\nYou're salivating just looking at it.");
             chocolate.setRestorationRange(5, 15);
             chocolate.setAddedAbsorption(3);
             healthItemList.add(chocolate);
+
+            HealthItem steak = new HealthItem();
+            steak.setName("Steak");
+            steak.setDescription("A perfectly cooked steak.");
+            steak.setRestorationRange(3, 9);
+            healthItemList.add(steak);
 
         return healthItemList;
 
