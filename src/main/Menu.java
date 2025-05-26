@@ -13,7 +13,7 @@ public class Menu {
 
             System.out.println("Would you like to use an item?\nInput the appropriate number to use it, or exit to return to gameplay.");
             player.printStatusLine();
-            System.out.print(" Inventory❯ ");
+            System.out.print(" Inventory> ");
             int response = responseHandler( 1, player.getInventory().size());
 
             if (response == -1) {
@@ -33,7 +33,7 @@ public class Menu {
 
             System.out.println("Would you like to unequip a relic?\nInput the appropriate number to do so, or exit to return to gameplay.");
             player.printStatusLine();
-            System.out.print(" Relics❯ ");
+            System.out.print(" Relics> ");
             int response = responseHandler(1, player.getEquippedRelics().size());
 
             if (response == -1) {
@@ -57,12 +57,12 @@ public class Menu {
                 response = Integer.parseInt(promptResponse);
             } catch (NumberFormatException e) {
                 System.out.println("Invalid response!");
-                System.out.print("❯ ");
+                System.out.print("> ");
                 continue;
             }
             if (response > upperBound || response < lowerBound) {
                 System.out.println("Out of bounds!");
-                System.out.print("❯ ");
+                System.out.print("> ");
                 continue;
             }
             return response;
