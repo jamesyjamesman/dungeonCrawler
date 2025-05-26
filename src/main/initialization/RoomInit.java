@@ -168,7 +168,7 @@ public class RoomInit {
             itemRoomList.add(appleRoom);
 
             ItemRoom chocolateRoom = new ItemRoom();
-            chocolateRoom.setItem(itemList.get(indexFinder(itemList, "Torpedo Chocolate Bar™")));
+            chocolateRoom.setItem(itemList.get(indexFinder(itemList, "Torpedo Chocolate Bar")));
             chocolateRoom.setId(4);
             chocolateRoom.setNumExits(1);
             chocolateRoom.setDescription("""
