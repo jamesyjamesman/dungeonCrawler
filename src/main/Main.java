@@ -51,6 +51,7 @@ public class Main {
     public static int responseHandler(Player player, String repeatString, int lowerBound, int upperBound) {
         Scanner promptScanner = new Scanner(System.in);
         while (true) {
+            System.out.print("❯ ");
             String promptResponse = checkForCommands(player, repeatString, promptScanner.nextLine().toLowerCase());
             int response;
             try {
@@ -68,6 +69,7 @@ public class Main {
     }
     public static String yesOrNo() {
         Scanner scanner = new Scanner(System.in);
+        System.out.print("❯ ");
         while (true) {
             String response = scanner.nextLine().toLowerCase();
             if (response.equals("y") || response.equals("yes")) {
@@ -76,6 +78,7 @@ public class Main {
                 return "n";
             }
             System.out.println("Invalid response!");
+            System.out.print("❯ ");
         }
 
     }
@@ -89,10 +92,12 @@ public class Main {
                 case "inventory", "inv" -> {
                     Menu.inventoryLoop(player);
                     System.out.println(exitString);
+                    player.printStatusLine();
                 }
                 case "relics" -> {
                     Menu.relicLoop(player);
                     System.out.println(exitString);
+                    player.printStatusLine();
                 }
                 //debug commands
                 case "kill" -> player.takeDamage(1000000);
@@ -104,6 +109,7 @@ public class Main {
                     return input;
                 }
             }
+            System.out.print("❯ ");
             input = promptScanner.nextLine();
         }
     }

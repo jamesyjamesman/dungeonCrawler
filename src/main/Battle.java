@@ -11,7 +11,10 @@ public class Battle {
         while (!room.getEnemies().isEmpty()) {
             String enemyString = Main.colorString("It's your turn! What would you like to attack?\n" + readEnemies(room, player), DialogueType.BATTLE);
             System.out.println(enemyString);
+
+            player.printStatusLine();
             int enemyIndex = Main.responseHandler(player, enemyString, 1, room.getEnemies().size()) - 1;
+
             Enemy enemy = room.getEnemies().get(enemyIndex);
             player.attack(enemy);
             boolean enemyIsDead = enemy.getCurrentHealth() == 0;
