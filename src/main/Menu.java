@@ -25,9 +25,9 @@ public class Menu {
             player.getInventory().get(response - 1).getFirst().useItem(player);
         }
     }
-    public static void relicLoop(Player player) {
+    public static void relicLoop(JFrame frame, Player player) {
         while (true) {
-            boolean relicPouchIsEmpty = player.checkRelics(false);
+            boolean relicPouchIsEmpty = player.checkRelics(frame, false);
             if (relicPouchIsEmpty) {
                 return;
             }

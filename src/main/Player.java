@@ -141,7 +141,7 @@ public class Player {
     }
 
     //this is very dry, but I wasn't sure how to use checkInventory due to the different types
-    public boolean checkRelics(boolean death) {
+    public boolean checkRelics(JFrame frame, boolean death) {
 
         if (this.equippedRelics.isEmpty()) {
             if (death) {
@@ -152,12 +152,14 @@ public class Player {
             return true;
         }
 
+        String output = "";
         for (int i = 0; i < this.equippedRelics.size(); i++) {
-            System.out.println(Main.colorString((i+1) + ". " + this.equippedRelics.get(i).getName() + ": "
-                    + this.equippedRelics.get(i).getDescription(), DialogueType.INVENTORY));
-            System.out.println();
+            output = output.concat((i+1) + ". " + this.equippedRelics.get(i).getName() + ": "
+                    + this.equippedRelics.get(i).getDescription());
+            output = output.concat("\n\n");
         }
-        System.out.println(Main.colorString("Remaining relic pouch space: " + (this.relicCap - getEquippedRelics().size()), DialogueType.INVENTORY));
+        output = output.concat("Remaining relic pouch space: " + (this.relicCap - getEquippedRelics().size()));
+        SwingRenderer.changeLabelText(frame, output, LabelType.RELICS);
         return false;
     }
 
@@ -290,7 +292,7 @@ public class Player {
         System.out.println("Inventory:");
         checkInventory(frame,true);
         System.out.println("Relics:");
-        checkRelics(true);
+        checkRelics(frame, true);
     }
 
     public void checkLevelUp() {

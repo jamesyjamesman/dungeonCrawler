@@ -27,19 +27,21 @@ public class SwingRenderer extends JFrame {
         int frameHeight = (int) frameSize.getHeight();
         int frameWidth = (int) frameSize.getWidth();
 
-        JLabel descriptionTextLabel = new JLabel("Placeholder text");
+        JLabel descriptionTextLabel = new JLabel();
         descriptionTextLabel.setName("description");
         descriptionTextLabel.setSize(200, 200);
-        descriptionTextLabel.setBorder(new LineBorder(Color.gray));
-        descriptionTextLabel.setBackground(Color.white);
+        descriptionTextLabel.setBorder(new LineBorder(Color.lightGray));
+        descriptionTextLabel.setBackground(Color.black);
+        descriptionTextLabel.setForeground(Color.white);
         descriptionTextLabel.setOpaque(true);
         layeredPane.add(descriptionTextLabel);
         layeredPane.setLayer(descriptionTextLabel, 2);
 
-        JLabel statusTextLabel = new JLabel("<html>Placeholder<br>newline!</html>");
+        JLabel statusTextLabel = new JLabel();
         statusTextLabel.setName("status");
-        statusTextLabel.setBorder(new LineBorder(Color.gray));
-        statusTextLabel.setBackground(Color.white);
+        statusTextLabel.setBorder(new LineBorder(Color.lightGray));
+        statusTextLabel.setBackground(Color.black);
+        statusTextLabel.setForeground(Color.white);
         statusTextLabel.setOpaque(true);
         int labelWidth = 300;
         int labelHeight = 200;
@@ -47,16 +49,26 @@ public class SwingRenderer extends JFrame {
         layeredPane.add(statusTextLabel);
         layeredPane.setLayer(statusTextLabel, 2);
 
-        JLabel inventoryTextLabel = new JLabel("hi!");
+        JLabel inventoryTextLabel = new JLabel();
         inventoryTextLabel.setName("inventory");
-        inventoryTextLabel.setBorder(new LineBorder(Color.gray));
-        inventoryTextLabel.setBackground(Color.white);
+        inventoryTextLabel.setBorder(new LineBorder(Color.lightGray));
+        inventoryTextLabel.setBackground(Color.black);
+        inventoryTextLabel.setForeground(Color.white);
         inventoryTextLabel.setOpaque(true);
-        labelWidth = 300;
         labelHeight = 300;
         inventoryTextLabel.setBounds(frameWidth - labelWidth, frameHeight - labelHeight - 100, labelWidth, labelHeight);
         layeredPane.add(inventoryTextLabel);
         layeredPane.setLayer(inventoryTextLabel, 2);
+
+        JLabel relicTextLabel = new JLabel();
+        relicTextLabel.setName("relics");
+        relicTextLabel.setBorder(new LineBorder(Color.lightGray));
+        relicTextLabel.setBackground(Color.black);
+        relicTextLabel.setForeground(Color.white);
+        relicTextLabel.setOpaque(true);
+        relicTextLabel.setBounds(0, frameHeight - labelHeight - 100, labelWidth, labelHeight);
+        layeredPane.add(relicTextLabel);
+        layeredPane.setLayer(relicTextLabel, 2);
 
         frame.setLayeredPane(layeredPane);
         frame.setVisible(true);
@@ -70,7 +82,7 @@ public class SwingRenderer extends JFrame {
         switch (label) {
             case STATUS -> ((JLabel) getComponentFromFrame(frame, "status")).setText(newText);
             case INVENTORY -> ((JLabel) getComponentFromFrame(frame, "inventory")).setText(newText);
-//            case RELICS ->
+            case RELICS -> ((JLabel) getComponentFromFrame(frame, "relics")).setText(newText);
 //            case BATTLE ->
 //            case NAVIGATION ->
             case DESCRIPTION -> ((JLabel) getComponentFromFrame(frame, "description")).setText(newText);

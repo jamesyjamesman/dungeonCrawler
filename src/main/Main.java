@@ -97,7 +97,7 @@ public class Main {
                     player.printStatusLine();
                 }
                 case "relics" -> {
-                    Menu.relicLoop(player);
+                    Menu.relicLoop(frame, player);
                     System.out.println(exitString);
                     player.printStatusLine();
                 }
