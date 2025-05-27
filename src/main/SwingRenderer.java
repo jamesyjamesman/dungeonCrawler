@@ -10,14 +10,20 @@ public class SwingRenderer extends JFrame {
         ImageIcon backgroundImage = new ImageIcon("assets/background.png");
         int imageWidth = backgroundImage.getIconWidth();
         int imageHeight = backgroundImage.getIconHeight();
-//        Rectangle screenSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+        Rectangle screenSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+        int screenWidth = (int) screenSize.getWidth();
+        int screenHeight = (int) screenSize.getHeight();
 
         JFrame frame = new JFrame();
+        frame.setVisible(true);
+        frame.setBackground(Color.black);
+        frame.setExtendedState(MAXIMIZED_BOTH);
         frame.setTitle("Dungeon Crawler");
-        frame.setBounds(0, 0, imageWidth, imageHeight);
+        frame.setBounds(0, 0, screenWidth, screenHeight);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         JLabel backgroundImageLabel = new JLabel(backgroundImage);
-        backgroundImageLabel.setSize(1625, 955);
+        backgroundImageLabel.setSize(imageWidth, imageHeight);
         backgroundImageLabel.setHorizontalAlignment(SwingConstants.LEFT);
         backgroundImageLabel.setName("background");
         JLayeredPane layeredPane = new JLayeredPane();
@@ -56,7 +62,7 @@ public class SwingRenderer extends JFrame {
         inventoryTextLabel.setForeground(Color.white);
         inventoryTextLabel.setOpaque(true);
         labelHeight = 300;
-        inventoryTextLabel.setBounds(frameWidth - labelWidth, frameHeight - labelHeight - 100, labelWidth, labelHeight);
+        inventoryTextLabel.setBounds(frameWidth - labelWidth, frameHeight - labelHeight, labelWidth, labelHeight);
         layeredPane.add(inventoryTextLabel);
         layeredPane.setLayer(inventoryTextLabel, 2);
 
@@ -66,12 +72,11 @@ public class SwingRenderer extends JFrame {
         relicTextLabel.setBackground(Color.black);
         relicTextLabel.setForeground(Color.white);
         relicTextLabel.setOpaque(true);
-        relicTextLabel.setBounds(0, frameHeight - labelHeight - 100, labelWidth, labelHeight);
+        relicTextLabel.setBounds(0, frameHeight - labelHeight, labelWidth, labelHeight);
         layeredPane.add(relicTextLabel);
         layeredPane.setLayer(relicTextLabel, 2);
 
         frame.setLayeredPane(layeredPane);
-        frame.setVisible(true);
 
         return frame;
     }
