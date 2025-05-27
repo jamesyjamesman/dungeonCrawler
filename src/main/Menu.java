@@ -1,11 +1,12 @@
 package main;
+import javax.swing.*;
 import java.util.Scanner;
 
 public class Menu {
 
-    public static void inventoryLoop(Player player) {
+    public static void inventoryLoop(Player player, JFrame frame) {
         while (true) {
-            boolean inventoryIsEmpty = player.checkInventory(false);
+            boolean inventoryIsEmpty = player.checkInventory(frame, false);
 
             if (inventoryIsEmpty) {
                 return;

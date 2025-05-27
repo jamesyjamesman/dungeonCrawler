@@ -15,7 +15,7 @@ public class Main {
         System.out.println("Welcome to the simulation!");
         System.out.println("You will be presented choices on where you would like to proceed. Choose carefully!");
         System.out.println("You can type commands into the console at any time. Try 'help' to see a list of commands.");
-        JFrame frame = Renderer.renderer();
+        JFrame frame = SwingRenderer.renderer();
 
         Player playerCharacter = PlayerInit.playerInit();
         ArrayList<Room> rooms = RoomInit.roomInit();
@@ -50,11 +50,11 @@ public class Main {
             newRoom.setItem(item);
         }
     }
-    public static int responseHandler(Player player, String repeatString, int lowerBound, int upperBound) {
+    public static int responseHandler(JFrame frame, Player player, String repeatString, int lowerBound, int upperBound) {
         Scanner promptScanner = new Scanner(System.in);
         while (true) {
             System.out.print("> ");
-            String promptResponse = checkForCommands(player, repeatString, promptScanner.nextLine().toLowerCase());
+            String promptResponse = checkForCommands(frame, player, repeatString, promptScanner.nextLine().toLowerCase());
             int response;
             try {
                 response = Integer.parseInt(promptResponse);
@@ -85,14 +85,14 @@ public class Main {
 
     }
 
-    public static String checkForCommands(Player player, String exitString, String input) {
+    public static String checkForCommands(JFrame frame, Player player, String exitString, String input) {
         Scanner promptScanner = new Scanner(System.in);
         while (true) {
             switch (input) {
-                case "status" -> player.checkStatus();
+                case "status" -> player.checkStatus(frame);
                 case "help" -> commandList();
                 case "inventory", "inv" -> {
-                    Menu.inventoryLoop(player);
+                    Menu.inventoryLoop(player, frame);
                     System.out.println(exitString);
                     player.printStatusLine();
                 }

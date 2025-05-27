@@ -5,6 +5,7 @@ import main.item.Item;
 import main.item.relic.Relic;
 import main.room.Room;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 import static java.lang.System.exit;
@@ -48,13 +49,13 @@ public class Player {
         //will get more complex with weapons, etc.
     }
 
-    public void itemPickup(Item item) {
+    public void itemPickup(JFrame frame, Item item) {
         if (calculateInventorySize() >= this.inventoryCap) {
             System.out.println("Your inventory is full!");
             System.out.println("Would you like to use or discard an item? (y/n)");
             String response = Main.yesOrNo();
             if (response.equals("y")) {
-                Menu.inventoryLoop(this);
+                Menu.inventoryLoop(this, frame);
                 if (calculateInventorySize() >= this.inventoryCap) {
                     System.out.println("Your inventory is still full... The " + item.getName() + " remains where it was.");
                     return;
@@ -114,7 +115,7 @@ public class Player {
     }
 
     //can cause index out of bounds
-    public boolean checkInventory(boolean death) {
+    public boolean checkInventory(JFrame frame, boolean death) {
 
         if (this.inventory.isEmpty()) {
             if (death) {
@@ -124,17 +125,18 @@ public class Player {
             }
             return true;
         }
-
+        String output = "";
         for (int i = 0; i < this.inventory.size(); i++) {
             //Displays amount of items in parentheses (e.g. (x2)) if the amount is greater than 1
             String amount = (this.inventory.get(i).size() > 1) ? " (x" + this.inventory.get(i).size() + ")" : "";
 
-            System.out.println(Main.colorString((i+1) + ". " + this.inventory.get(i).getFirst().getName() +
+            output = output.concat((i+1) + ". " + this.inventory.get(i).getFirst().getName() +
                     amount
-                    + ": " + this.inventory.get(i).getFirst().getDescription(), DialogueType.INVENTORY));
-            System.out.println();
+                    + ": " + this.inventory.get(i).getFirst().getDescription());
+            output = output.concat("\n");
         }
-        System.out.println(Main.colorString("Remaining inventory space: " + (this.inventoryCap - calculateInventorySize()), DialogueType.INVENTORY));
+        output = output.concat("Remaining inventory space: " + (this.inventoryCap - calculateInventorySize()));
+        SwingRenderer.changeLabelText(frame, output, LabelType.INVENTORY);
         return false;
     }
 
@@ -177,13 +179,17 @@ public class Player {
         return -1;
     }
 
-    public void checkStatus() {
-        System.out.println("Current player status:");
-        System.out.println("Level " + this.level + (this.level < 10 ? " (" + this.experience + "/" + this.expToNextLevel + " exp)" : ""));
-        System.out.println("Health: " + (this.currentHealth + this.absorption) + "/" + this.maxHealth);
-        System.out.println("Attack damage: " + this.damage);
-        System.out.println("Rooms traveled: " + this.roomsTraversed);
-        System.out.println("Inventory capacity: " + this.inventoryCap);
+    public void checkStatus(JFrame frame) {
+        String output = "";
+        output = output.concat("Current player status:\n");
+        output = output.concat("Level " + this.level + (this.level < 10 ? " (" + this.experience + "/" + this.expToNextLevel + " exp)" : ""));
+        output = output.concat("\n");
+        output = output.concat("Health: " + (this.currentHealth + this.absorption) + "/" + this.maxHealth + "\n");
+        output = output.concat("Attack damage: " + this.damage + "\n");
+        output = output.concat("Rooms traveled: " + this.roomsTraversed + "\n");
+        output = output.concat("Inventory capacity: " + this.inventoryCap + "\n");
+        System.out.println(output);
+        SwingRenderer.changeLabelText(frame, output, LabelType.STATUS);
         printStatusLine();
     }
 
@@ -207,7 +213,7 @@ public class Player {
         this.currentHealth -= damage;
         if (this.currentHealth <= 0) {
             this.currentHealth = 0;
-            doDeathSequence();
+            //TODO: no longer kills the player instantly! THIS IS A BUG! Player death needs to be checked during battle, now.
         }
     }
     public int heal(int health) {
@@ -267,22 +273,22 @@ public class Player {
         return true;
     }
 
-    public void doDeathSequence() {
+    public void doDeathSequence(JFrame frame) {
         System.out.println("\"Ack! It's too much for me!\" " + getName() + " exclaims.");
         System.out.println(getName() + " falls to their knees... then to the ground.");
         System.out.println("GAME OVER!");
         System.out.println();
-        endStatistics();
+        endStatistics(frame);
         exit(0);
     }
 
     // if player died from food, it will not show that item as being consumed
-    public void endStatistics() {
+    public void endStatistics(JFrame frame) {
         System.out.println("Player statistics:");
         System.out.println("Rooms completed: " + this.roomsTraversed);
         System.out.println("Maximum health: " + this.maxHealth);
         System.out.println("Inventory:");
-        checkInventory(true);
+        checkInventory(frame,true);
         System.out.println("Relics:");
         checkRelics(true);
     }

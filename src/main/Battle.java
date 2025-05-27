@@ -4,16 +4,18 @@ import main.enemy.Boss;
 import main.enemy.Enemy;
 import main.room.EnemyRoom;
 
+import javax.swing.*;
+
 public class Battle {
 
-    public static void battleLoop(Player player, EnemyRoom room) {
+    public static void battleLoop(JFrame frame, Player player, EnemyRoom room) {
         System.out.println(Main.colorString("The battle has begun!", DialogueType.BATTLE));
         while (!room.getEnemies().isEmpty()) {
             String enemyString = Main.colorString("It's your turn! What would you like to attack?\n" + readEnemies(room, player), DialogueType.BATTLE);
             System.out.println(enemyString);
 
             player.printStatusLine();
-            int enemyIndex = Main.responseHandler(player, enemyString, 1, room.getEnemies().size()) - 1;
+            int enemyIndex = Main.responseHandler(frame, player, enemyString, 1, room.getEnemies().size()) - 1;
 
             Enemy enemy = room.getEnemies().get(enemyIndex);
             player.attack(enemy);
@@ -25,7 +27,7 @@ public class Battle {
                 room.addDefeatedEnemies(enemy);
                 room.removeEnemies(enemy);
                 if (enemy instanceof Boss) {
-                    ((Boss) enemy).death(player);
+                    ((Boss) enemy).death(frame, player);
                 }
             }
 

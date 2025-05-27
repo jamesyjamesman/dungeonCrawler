@@ -22,7 +22,7 @@ public class EnemyRoom extends Room {
     public void completeRoomActions(Player player, JFrame frame) {
         super.completeRoomActions(player, frame);
         System.out.println(this.battleInitiationMessage);
-        Battle.battleLoop(player, this);
+        Battle.battleLoop(frame, player, this);
         reset();
     }
 

@@ -34,7 +34,7 @@ public class ItemRoom extends Room {
             System.out.println("You chose to forgo the loot...");
             return;
         }
-        player.itemPickup(this.item);
+        player.itemPickup(frame, this.item);
     }
     public void setItem(Item item) {
         this.item = item;

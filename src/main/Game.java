@@ -30,14 +30,14 @@ public class Game {
             playerCharacter.useRelics(currentRoom);
 
             playerCharacter.printStatusLine();
-            int response = Main.responseHandler(playerCharacter, exitString, 1, currentRoom.getExits().size()) - 1;
+            int response = Main.responseHandler(frame, playerCharacter, exitString, 1, currentRoom.getExits().size()) - 1;
             Room nextRoom = currentRoom.getExits().get(response);
             currentRoom.getExits().clear();
             currentRoom = nextRoom;
 
 
         }
-        playerCharacter.doDeathSequence();
+        playerCharacter.doDeathSequence(frame);
     }
 
     public static String createExitsString(Player player, ArrayList<Room> activeRooms, Room room) {
