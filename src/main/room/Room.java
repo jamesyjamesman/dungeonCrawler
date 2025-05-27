@@ -1,7 +1,10 @@
 package main.room;
 
+import main.LabelType;
 import main.Player;
 
+import main.Renderer;
+import javax.swing.JFrame;
 import java.util.ArrayList;
 
 public class Room {
@@ -27,7 +30,8 @@ public class Room {
         this.selectionWeight = 10;
     }
 
-    public void completeRoomActions(Player player) {
+    public void completeRoomActions(Player player, JFrame frame) {
+        Renderer.changeLabelText(frame, this.description, LabelType.DESCRIPTION);
         System.out.println(this.description);
         player.incrementRoomsTraversed();
     }

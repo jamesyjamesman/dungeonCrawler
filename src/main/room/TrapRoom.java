@@ -4,6 +4,8 @@ import main.DialogueType;
 import main.Main;
 import main.Player;
 
+import javax.swing.*;
+
 public class TrapRoom extends Room {
     int damageDealt;
     public TrapRoom() {
@@ -12,8 +14,8 @@ public class TrapRoom extends Room {
     }
 
     @Override
-    public void completeRoomActions(Player player) {
-        super.completeRoomActions(player);
+    public void completeRoomActions(Player player, JFrame frame) {
+        super.completeRoomActions(player, frame);
         System.out.println(Main.colorString("You took " + this.damageDealt + " damage!", DialogueType.DAMAGE));
         player.takeDamage(this.damageDealt);
     }

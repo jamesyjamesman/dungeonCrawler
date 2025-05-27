@@ -8,19 +8,21 @@ import main.room.*;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import javax.swing.JFrame;
 
 public class Main {
     public static void main(String[] args) {
         System.out.println("Welcome to the simulation!");
         System.out.println("You will be presented choices on where you would like to proceed. Choose carefully!");
         System.out.println("You can type commands into the console at any time. Try 'help' to see a list of commands.");
+        JFrame frame = Renderer.renderer();
 
         Player playerCharacter = PlayerInit.playerInit();
         ArrayList<Room> rooms = RoomInit.roomInit();
 
         Room firstRoom = rooms.getFirst();
 
-        Game.gameLoop(playerCharacter, firstRoom, rooms);
+        Game.gameLoop(playerCharacter, firstRoom, rooms, frame);
     }
     //this needs a refactor
     //potential solution: create a relicRoom class that extends itemRoom, then make that portion of this a method on that.

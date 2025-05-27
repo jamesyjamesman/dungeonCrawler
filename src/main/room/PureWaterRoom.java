@@ -5,6 +5,7 @@ import main.Player;
 import main.item.Item;
 import main.item.relic.Relic;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -14,8 +15,8 @@ public class PureWaterRoom extends Room {
 
     //I wanted to make it so you could purify apples to buff them and have no chance of being rotten, but I don't know if there's an easy way to do that.
     @Override
-    public void completeRoomActions(Player player) {
-        super.completeRoomActions(player);
+    public void completeRoomActions(Player player, JFrame frame) {
+        super.completeRoomActions(player, frame);
         System.out.println("You sense this fountain has some purifying properties.\n" +
                 "Would you like to cleanse a relic? (y/n)");
         String response = Main.yesOrNo();

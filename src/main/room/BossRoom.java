@@ -2,6 +2,8 @@ package main.room;
 
 import main.Player;
 
+import javax.swing.JFrame;
+
 public class BossRoom extends EnemyRoom {
     boolean completed;
     public BossRoom() {
@@ -16,8 +18,8 @@ public class BossRoom extends EnemyRoom {
     }
 
     @Override
-    public void completeRoomActions(Player player) {
-        super.completeRoomActions(player);
+    public void completeRoomActions(Player player, JFrame frame) {
+        super.completeRoomActions(player, frame);
         this.active = false;
         this.completed = true;
     }

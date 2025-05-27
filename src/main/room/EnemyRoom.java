@@ -4,6 +4,7 @@ import main.Battle;
 import main.enemy.Enemy;
 import main.Player;
 
+import javax.swing.JFrame;
 import java.util.ArrayList;
 
 public class EnemyRoom extends Room {
@@ -18,8 +19,8 @@ public class EnemyRoom extends Room {
     }
 
     @Override
-    public void completeRoomActions(Player player) {
-        super.completeRoomActions(player);
+    public void completeRoomActions(Player player, JFrame frame) {
+        super.completeRoomActions(player, frame);
         System.out.println(this.battleInitiationMessage);
         Battle.battleLoop(player, this);
         reset();

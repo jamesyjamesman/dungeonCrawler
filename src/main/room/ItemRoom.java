@@ -5,6 +5,8 @@ import main.item.relic.Relic;
 import main.Main;
 import main.Player;
 
+import javax.swing.*;
+
 public class ItemRoom extends Room {
     Item item;
     public ItemRoom() {
@@ -13,8 +15,8 @@ public class ItemRoom extends Room {
     }
 
     @Override
-    public void completeRoomActions(Player player) {
-        super.completeRoomActions(player);
+    public void completeRoomActions(Player player, JFrame frame) {
+        super.completeRoomActions(player, frame);
 
         //this should be defined on the object itself but because the item isn't defined initially it crashes, which is not great.
         if (this.id == 10) {

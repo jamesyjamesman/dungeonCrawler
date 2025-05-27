@@ -6,12 +6,13 @@ import main.item.relic.ForesightRelic;
 import main.item.relic.Relic;
 import main.room.*;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Game {
-    public static void gameLoop(Player playerCharacter, Room currentRoom, ArrayList<Room> rooms) {
+    public static void gameLoop(Player playerCharacter, Room currentRoom, ArrayList<Room> rooms, JFrame frame) {
         ArrayList<Relic> relicList = RelicInit.relicInit();
         //this shouldn't be here
         ArrayList<Item> itemList = ItemInit.itemInit();
@@ -19,7 +20,7 @@ public class Game {
 
             Main.roomChecker(currentRoom, rooms, relicList, itemList);
 
-            currentRoom.completeRoomActions(playerCharacter);
+            currentRoom.completeRoomActions(playerCharacter, frame);
 
             activateRooms(rooms, playerCharacter);
             ArrayList<Room> activeRooms = new ArrayList<>(getRandomActiveRooms(rooms));

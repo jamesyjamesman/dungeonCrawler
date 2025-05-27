@@ -1,6 +1,9 @@
 package main.room;
 
 import main.Player;
+
+import javax.swing.JFrame;
+
 import static java.lang.System.exit;
 
 public class EndingRoom extends Room {
@@ -8,8 +11,8 @@ public class EndingRoom extends Room {
     }
 
     @Override
-    public void completeRoomActions(Player player) {
-        super.completeRoomActions(player);
+    public void completeRoomActions(Player player, JFrame frame) {
+        super.completeRoomActions(player, frame);
         System.out.println("You survived long enough to escape! You win!");
         player.endStatistics();
         exit(0);
