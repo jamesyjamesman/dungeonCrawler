@@ -11,8 +11,9 @@ public class Battle {
     public static void battleLoop(JFrame frame, Player player, EnemyRoom room) {
         System.out.println(Main.colorString("The battle has begun!", DialogueType.BATTLE));
         while (!room.getEnemies().isEmpty()) {
-            String enemyString = Main.colorString("It's your turn! What would you like to attack?\n" + readEnemies(room, player), DialogueType.BATTLE);
+            String enemyString = "It's your turn! What would you like to attack?\n" + readEnemies(room, player);
             System.out.println(enemyString);
+            SwingRenderer.changeLabelText(frame, enemyString, LabelType.BATTLE);
 
             player.printStatusLine();
             int enemyIndex = Main.responseHandler(frame, player, enemyString, 1, room.getEnemies().size()) - 1;

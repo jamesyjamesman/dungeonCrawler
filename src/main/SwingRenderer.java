@@ -76,6 +76,27 @@ public class SwingRenderer extends JFrame {
         layeredPane.add(relicTextLabel);
         layeredPane.setLayer(relicTextLabel, 2);
 
+        JLabel battleTextLabel = new JLabel();
+        battleTextLabel.setName("battle");
+        battleTextLabel.setBorder(new LineBorder(Color.lightGray));
+        battleTextLabel.setBackground(Color.black);
+        battleTextLabel.setForeground(Color.white);
+        battleTextLabel.setOpaque(true);
+        labelWidth = 600;
+        battleTextLabel.setBounds(frameWidth/2 - labelWidth/2, frameHeight - labelHeight, labelWidth, labelHeight);
+        layeredPane.add(battleTextLabel);
+        layeredPane.setLayer(battleTextLabel, 2);
+
+        JLabel navigationTextLabel = new JLabel();
+        navigationTextLabel.setName("navigation");
+        navigationTextLabel.setBorder(new LineBorder(Color.lightGray));
+        navigationTextLabel.setBackground(Color.black);
+        navigationTextLabel.setForeground(Color.white);
+        navigationTextLabel.setOpaque(true);
+        navigationTextLabel.setBounds(frameWidth/2 - labelWidth/2, 0, labelWidth, labelHeight);
+        layeredPane.add(navigationTextLabel);
+        layeredPane.setLayer(navigationTextLabel, 2);
+
         frame.setLayeredPane(layeredPane);
 
         return frame;
@@ -84,14 +105,18 @@ public class SwingRenderer extends JFrame {
         newText = newText.replaceAll("\n", "<br>");
         newText = "<html>" + newText + "</html>";
 
+        String targetComponent = "";
+
         switch (label) {
-            case STATUS -> ((JLabel) getComponentFromFrame(frame, "status")).setText(newText);
-            case INVENTORY -> ((JLabel) getComponentFromFrame(frame, "inventory")).setText(newText);
-            case RELICS -> ((JLabel) getComponentFromFrame(frame, "relics")).setText(newText);
-//            case BATTLE ->
-//            case NAVIGATION ->
-            case DESCRIPTION -> ((JLabel) getComponentFromFrame(frame, "description")).setText(newText);
+            case STATUS -> targetComponent = "status";
+            case INVENTORY -> targetComponent = "inventory";
+            case RELICS -> targetComponent = "relics";
+            case BATTLE -> targetComponent = "battle";
+            case NAVIGATION -> targetComponent = "navigation";
+            case DESCRIPTION -> targetComponent = "description";
         }
+
+        ((JLabel) getComponentFromFrame(frame, targetComponent)).setText(newText);
 
     }
     public static Component getComponentFromFrame(JFrame frame, String targetComponentName) {
