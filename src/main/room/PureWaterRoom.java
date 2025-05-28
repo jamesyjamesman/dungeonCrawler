@@ -19,7 +19,7 @@ public class PureWaterRoom extends Room {
         super.completeRoomActions(player, frame);
         System.out.println("You sense this fountain has some purifying properties.\n" +
                 "Would you like to cleanse a relic? (y/n)");
-        String response = Main.yesOrNo();
+        String response = Main.yesOrNo(frame);
         if (response.equals("y")) {
             List<Relic> relics = player.getEquippedRelics().stream()
                     .filter(Relic::isCursed)

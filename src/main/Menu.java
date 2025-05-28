@@ -15,7 +15,7 @@ public class Menu {
             System.out.println("Would you like to use an item?\nInput the appropriate number to use it, or exit to return to gameplay.");
             player.printStatusLine();
             System.out.print(" Inventory> ");
-            int response = responseHandler( 1, player.getInventory().size());
+            int response = responseHandler(frame, 1, player.getInventory().size());
 
             if (response == -1) {
                 System.out.println("You exit your inventory.");
@@ -35,7 +35,7 @@ public class Menu {
             System.out.println("Would you like to unequip a relic?\nInput the appropriate number to do so, or exit to return to gameplay.");
             player.printStatusLine();
             System.out.print(" Relics> ");
-            int response = responseHandler(1, player.getEquippedRelics().size());
+            int response = responseHandler(frame, 1, player.getEquippedRelics().size());
 
             if (response == -1) {
                 System.out.println("You shut your relic pouch.");
@@ -46,16 +46,25 @@ public class Menu {
         }
     }
 
-    public static int responseHandler(int lowerBound, int upperBound) {
-        Scanner promptScanner = new Scanner(System.in);
+    public static int responseHandler(JFrame frame, int lowerBound, int upperBound) {
+        String originalResponse = SwingRenderer.getTempText(frame).toLowerCase();
+        String newResponse;
+        boolean once = false;
         while (true) {
-            String promptResponse = promptScanner.nextLine();
-            if (promptResponse.equals("exit")) {
+            newResponse = SwingRenderer.getTempText(frame).toLowerCase();
+            if (newResponse.isEmpty()) {
+                continue;
+            }
+            if (once && newResponse.equals(originalResponse)) {
+                continue;
+            }
+            once = true;
+            if (newResponse.equals("exit")) {
                 return -1;
             }
             int response;
             try {
-                response = Integer.parseInt(promptResponse);
+                response = Integer.parseInt(newResponse);
             } catch (NumberFormatException e) {
                 System.out.println("Invalid response!");
                 System.out.print("> ");

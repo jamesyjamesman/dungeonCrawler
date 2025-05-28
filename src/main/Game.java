@@ -27,7 +27,7 @@ public class Game {
             String exitString = createExitsString(playerCharacter, activeRooms, currentRoom);
 
             System.out.println(exitString);
-            SwingRenderer.changeLabelText(frame, exitString, LabelType.NAVIGATION);
+            SwingRenderer.changeLabelText(frame, exitString, LabelType.USER_QUESTION);
             playerCharacter.useRelics(currentRoom);
 
             playerCharacter.printStatusLine();

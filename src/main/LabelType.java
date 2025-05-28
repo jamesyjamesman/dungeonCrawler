@@ -3,7 +3,7 @@ package main;
 public enum LabelType {
     STATUS,
     DESCRIPTION,
-    NAVIGATION,
+    USER_QUESTION,
     BATTLE,
     INVENTORY,
     RELICS,

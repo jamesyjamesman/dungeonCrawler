@@ -17,7 +17,7 @@ public class Main {
         System.out.println("You can type commands into the console at any time. Try 'help' to see a list of commands.");
         JFrame frame = SwingRenderer.renderer();
 
-        Player playerCharacter = PlayerInit.playerInit();
+        Player playerCharacter = PlayerInit.playerInit(frame);
         ArrayList<Room> rooms = RoomInit.roomInit();
 
         Room firstRoom = rooms.getFirst();
@@ -51,10 +51,20 @@ public class Main {
         }
     }
     public static int responseHandler(JFrame frame, Player player, String repeatString, int lowerBound, int upperBound) {
-        Scanner promptScanner = new Scanner(System.in);
+        String originalResponse = SwingRenderer.getTempText(frame).toLowerCase();
+        String newResponse;
+        boolean once = false;
         while (true) {
+            newResponse = SwingRenderer.getTempText(frame).toLowerCase();
+            if (newResponse.isEmpty()) {
+                continue;
+            }
+            if (once && newResponse.equals(originalResponse)) {
+                continue;
+            }
+            once = true;
             System.out.print("> ");
-            String promptResponse = checkForCommands(frame, player, repeatString, promptScanner.nextLine().toLowerCase());
+            String promptResponse = checkForCommands(frame, player, repeatString, newResponse);
             int response;
             try {
                 response = Integer.parseInt(promptResponse);
@@ -69,18 +79,25 @@ public class Main {
             return response;
         }
     }
-    public static String yesOrNo() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("> ");
+    public static String yesOrNo(JFrame frame) {
+        String originalResponse = SwingRenderer.getTempText(frame).toLowerCase();
+        String newResponse;
+        boolean once = false;
         while (true) {
-            String response = scanner.nextLine().toLowerCase();
-            if (response.equals("y") || response.equals("yes")) {
+            newResponse = SwingRenderer.getTempText(frame).toLowerCase();
+            if (newResponse.isEmpty()) {
+                continue;
+            }
+            if (once && newResponse.equals(originalResponse)) {
+                continue;
+            }
+            once = true;
+            if (newResponse.equals("y") || newResponse.equals("yes")) {
                 return "y";
-            } else if (response.equals("n") || response.equals("no")) {
+            } else if (newResponse.equals("n") || newResponse.equals("no")) {
                 return "n";
             }
             System.out.println("Invalid response!");
-            System.out.print("> ");
         }
 
     }

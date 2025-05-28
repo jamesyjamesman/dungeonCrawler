@@ -16,7 +16,7 @@ public abstract class Boss extends Enemy {
         Relic droppedRelic = initializeBossRelic();
         System.out.println("Wow! You defeated the " + this.species + " boss! Lucky for you, it seems to have dropped something!");
         System.out.println("Would you like to take the " + droppedRelic.getName() + "? (y/n)");
-        String response = Main.yesOrNo();
+        String response = Main.yesOrNo(frame);
         if (response.equals("y")) {
             player.itemPickup(frame, droppedRelic);
         } else {

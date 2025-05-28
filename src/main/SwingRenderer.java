@@ -3,6 +3,8 @@ package main;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class SwingRenderer extends JFrame {
 
@@ -87,15 +89,40 @@ public class SwingRenderer extends JFrame {
         layeredPane.add(battleTextLabel);
         layeredPane.setLayer(battleTextLabel, 2);
 
-        JLabel navigationTextLabel = new JLabel();
-        navigationTextLabel.setName("navigation");
-        navigationTextLabel.setBorder(new LineBorder(Color.lightGray));
-        navigationTextLabel.setBackground(Color.black);
-        navigationTextLabel.setForeground(Color.white);
-        navigationTextLabel.setOpaque(true);
-        navigationTextLabel.setBounds(frameWidth/2 - labelWidth/2, 0, labelWidth, labelHeight);
-        layeredPane.add(navigationTextLabel);
-        layeredPane.setLayer(navigationTextLabel, 2);
+        JLabel userQuestionTextLabel = new JLabel();
+        userQuestionTextLabel.setName("userQuestion");
+        userQuestionTextLabel.setBorder(new LineBorder(Color.lightGray));
+        userQuestionTextLabel.setBackground(Color.black);
+        userQuestionTextLabel.setForeground(Color.white);
+        userQuestionTextLabel.setOpaque(true);
+        userQuestionTextLabel.setBounds(frameWidth/2 - labelWidth/2, 0, labelWidth, labelHeight);
+        layeredPane.add(userQuestionTextLabel);
+        layeredPane.setLayer(userQuestionTextLabel, 2);
+
+
+        JLabel tempText = new JLabel();
+        tempText.setName("temp");
+        tempText.setVisible(false);
+        layeredPane.add(tempText);
+        layeredPane.setLayer(tempText, 2);
+
+        JTextField userInput = new JTextField();
+        userInput.setName("input");
+        userInput.setBorder(new LineBorder(Color.lightGray));
+        userInput.setBackground(Color.black);
+        userInput.setForeground(Color.white);
+        userInput.setOpaque(true);
+        labelHeight = 100;
+        userInput.setBounds(frameWidth/2 - labelWidth/2, frameHeight/2 - labelHeight/2, labelWidth, labelHeight);
+        userInput.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setTempText(userInput, tempText);
+            }
+        });
+
+        layeredPane.add(userInput);
+        layeredPane.setLayer(userInput, 2);
 
         frame.setLayeredPane(layeredPane);
 
@@ -112,7 +139,7 @@ public class SwingRenderer extends JFrame {
             case INVENTORY -> targetComponent = "inventory";
             case RELICS -> targetComponent = "relics";
             case BATTLE -> targetComponent = "battle";
-            case NAVIGATION -> targetComponent = "navigation";
+            case USER_QUESTION -> targetComponent = "userQuestion";
             case DESCRIPTION -> targetComponent = "description";
         }
 
@@ -127,5 +154,17 @@ public class SwingRenderer extends JFrame {
             }
         }
         return null;
+    }
+
+    public static void setTempText(JTextField userInput, JLabel temp) {
+        temp.setText(userInput.getText());
+        userInput.setText("");
+    }
+
+    public static String getTempText(JFrame frame) {
+        JLabel tempLabel = (JLabel) getComponentFromFrame(frame, "temp");
+        String output = tempLabel.getText();
+        tempLabel.setText("");
+        return output;
     }
 }

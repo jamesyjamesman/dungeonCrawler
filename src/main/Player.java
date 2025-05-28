@@ -53,7 +53,7 @@ public class Player {
         if (calculateInventorySize() >= this.inventoryCap) {
             System.out.println("Your inventory is full!");
             System.out.println("Would you like to use or discard an item? (y/n)");
-            String response = Main.yesOrNo();
+            String response = Main.yesOrNo(frame);
             if (response.equals("y")) {
                 Menu.inventoryLoop(this, frame);
                 if (calculateInventorySize() >= this.inventoryCap) {
@@ -68,7 +68,7 @@ public class Player {
 
         if (item instanceof Relic && getEquippedRelics().size() < this.relicCap) {
             System.out.println("Would you like to equip the " + item.getName() + " now? (y/n)");
-            String response = Main.yesOrNo();
+            String response = Main.yesOrNo(frame);
             if (response.equals("y")) {
                 item.useItem(this);
                 System.out.println("The " + item.getName() + " has been equipped!");
