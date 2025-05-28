@@ -39,6 +39,7 @@ public class ItemRoom extends Room {
             return;
         }
         player.itemPickup(frame, this.item);
+        player.checkInventory(frame, false);
     }
     public void setItem(Item item) {
         this.item = item;

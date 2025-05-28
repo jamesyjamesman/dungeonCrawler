@@ -53,6 +53,8 @@ public class Player {
         if (calculateInventorySize() >= this.inventoryCap) {
             System.out.println("Your inventory is full!");
             System.out.println("Would you like to use or discard an item? (y/n)");
+            SwingRenderer.changeLabelText(frame, "Your inventory is full!\nWould you like to use or discard an item? (y/n)", LabelType.USER_QUESTION);
+
             String response = Main.yesOrNo(frame);
             if (response.equals("y")) {
                 Menu.inventoryLoop(this, frame);
@@ -68,6 +70,7 @@ public class Player {
 
         if (item instanceof Relic && getEquippedRelics().size() < this.relicCap) {
             System.out.println("Would you like to equip the " + item.getName() + " now? (y/n)");
+            SwingRenderer.changeLabelText(frame, "Would you like to equip the " + item.getName() + " now? (y/n)", LabelType.USER_QUESTION);
             String response = Main.yesOrNo(frame);
             if (response.equals("y")) {
                 item.useItem(this);
@@ -134,9 +137,11 @@ public class Player {
                     amount
                     + ": " + this.inventory.get(i).getFirst().getDescription());
             output = output.concat("\n");
+            //TODO: this will repeatedly add existing items, either wipe existing ones or check if they already exist
+            SwingRenderer.addInventoryButton(frame, output, this, i);
         }
-        output = output.concat("Remaining inventory space: " + (this.inventoryCap - calculateInventorySize()));
-        SwingRenderer.changeLabelText(frame, output, LabelType.INVENTORY);
+//        output = output.concat("Remaining inventory space: " + (this.inventoryCap - calculateInventorySize()));
+//        SwingRenderer.changeLabelText(frame, output, LabelType.INVENTORY);
         return false;
     }
 

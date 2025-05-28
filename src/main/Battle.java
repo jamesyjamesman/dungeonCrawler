@@ -38,6 +38,7 @@ public class Battle {
                 enemyAttacker.attack(player);
             }
         }
+        SwingRenderer.changeLabelText(frame, "The enemies were defeated!", LabelType.BATTLE);
     }
 
     public static String readEnemies(EnemyRoom room, Player player) {

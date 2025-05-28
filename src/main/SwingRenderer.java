@@ -1,10 +1,13 @@
 package main;
 
+import main.item.Item;
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class SwingRenderer extends JFrame {
 
@@ -57,16 +60,16 @@ public class SwingRenderer extends JFrame {
         layeredPane.add(statusTextLabel);
         layeredPane.setLayer(statusTextLabel, 2);
 
-        JLabel inventoryTextLabel = new JLabel();
-        inventoryTextLabel.setName("inventory");
-        inventoryTextLabel.setBorder(new LineBorder(Color.lightGray));
-        inventoryTextLabel.setBackground(Color.black);
-        inventoryTextLabel.setForeground(Color.white);
-        inventoryTextLabel.setOpaque(true);
+        JPanel inventoryPanel = new JPanel();
+        inventoryPanel.setName("inventory");
+        inventoryPanel.setBorder(new LineBorder(Color.lightGray));
+        inventoryPanel.setBackground(Color.black);
+        inventoryPanel.setForeground(Color.white);
+        inventoryPanel.setOpaque(true);
         labelHeight = 300;
-        inventoryTextLabel.setBounds(frameWidth - labelWidth, frameHeight - labelHeight, labelWidth, labelHeight);
-        layeredPane.add(inventoryTextLabel);
-        layeredPane.setLayer(inventoryTextLabel, 2);
+        inventoryPanel.setBounds(frameWidth - labelWidth, frameHeight - labelHeight, labelWidth, labelHeight);
+        layeredPane.add(inventoryPanel);
+        layeredPane.setLayer(inventoryPanel, 1);
 
         JLabel relicTextLabel = new JLabel();
         relicTextLabel.setName("relics");
@@ -166,5 +169,23 @@ public class SwingRenderer extends JFrame {
         String output = tempLabel.getText();
         tempLabel.setText("");
         return output;
+    }
+    public static void addInventoryButton(JFrame frame, String buttonText, Player player, int itemIndex) {
+        InventoryButton newButton = new InventoryButton();
+        newButton.addActionListener(e -> useItem(frame, itemIndex, player));
+        newButton.setText(buttonText);
+        ((JPanel) frame.getLayeredPane().getComponentsInLayer(1)[0]).add(newButton);
+    }
+
+    public static void useItem(JFrame frame, int itemIndex, Player player) {
+        ArrayList<Item> items = player.getInventory().get(itemIndex);
+        if (items.size() == 1) {
+            //is the actual button being deleted? if not, memory leak?
+            JPanel panel = (JPanel) frame.getLayeredPane().getComponentsInLayer(1)[0];
+            panel.getComponent(itemIndex).setVisible(false);
+            panel.remove(itemIndex);
+        }
+        items.getFirst().useItem(player);
+        player.checkInventory(frame, false);
     }
 }

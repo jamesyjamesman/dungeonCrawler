@@ -23,7 +23,7 @@ public class HoldingRelic extends Relic {
         }
         else {
             if (player.equipRelic(this)) {
-                player.changeInventoryCap(10);
+            player.changeInventoryCap(10);
             }
         }
     }
