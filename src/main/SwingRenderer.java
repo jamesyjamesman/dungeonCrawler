@@ -71,37 +71,48 @@ public class SwingRenderer extends JFrame {
         layeredPane.add(inventoryPanel);
         layeredPane.setLayer(inventoryPanel, 1);
 
-        JLabel relicTextLabel = new JLabel();
-        relicTextLabel.setName("relics");
-        relicTextLabel.setBorder(new LineBorder(Color.lightGray));
-        relicTextLabel.setBackground(Color.black);
-        relicTextLabel.setForeground(Color.white);
-        relicTextLabel.setOpaque(true);
-        relicTextLabel.setBounds(0, frameHeight - labelHeight, labelWidth, labelHeight);
-        layeredPane.add(relicTextLabel);
-        layeredPane.setLayer(relicTextLabel, 2);
+        JPanel relicPanel = new JPanel();
+        relicPanel.setName("relics");
+        relicPanel.setBorder(new LineBorder(Color.lightGray));
+        relicPanel.setBackground(Color.black);
+        relicPanel.setForeground(Color.white);
+        relicPanel.setOpaque(true);
+        relicPanel.setBounds(frameWidth - labelWidth, frameHeight - labelHeight, labelWidth, labelHeight);
+        relicPanel.setVisible(false);
+        layeredPane.add(relicPanel);
+        layeredPane.setLayer(relicPanel, 3);
 
+        JPanel inventorySwitches = new JPanel();
+//        inventorySwitches.setBorder(new LineBorder(Color.lightGray));
+        inventorySwitches.setBackground(Color.black);
+        inventorySwitches.setForeground(Color.white);
+        inventorySwitches.setOpaque(false);
+        inventorySwitches.setBounds(frameWidth - labelWidth, frameHeight - labelHeight - 25, labelWidth, 25);
+        layeredPane.add(inventorySwitches);
+        layeredPane.setLayer(inventorySwitches, 10);
+
+        InventoryButton switchInventory = new InventoryButton();
+        switchInventory.addActionListener(_ -> makeInventoryVisible(frame));
+        switchInventory.setText("Inventory");
+        inventorySwitches.add(switchInventory);
+
+        InventoryButton switchRelics = new InventoryButton();
+        switchRelics.addActionListener(_ -> makeRelicsVisible(frame));
+        switchRelics.setText("Relics");
+        inventorySwitches.add(switchRelics);
+
+        //deprecated
         JLabel battleTextLabel = new JLabel();
+        battleTextLabel.setVisible(false);
         battleTextLabel.setName("battle");
         battleTextLabel.setBorder(new LineBorder(Color.lightGray));
         battleTextLabel.setBackground(Color.black);
         battleTextLabel.setForeground(Color.white);
         battleTextLabel.setOpaque(true);
-        labelWidth = 600;
+        labelHeight = 300;
         battleTextLabel.setBounds(frameWidth/2 - labelWidth/2, frameHeight - labelHeight, labelWidth, labelHeight);
         layeredPane.add(battleTextLabel);
         layeredPane.setLayer(battleTextLabel, 2);
-
-        JLabel userQuestionTextLabel = new JLabel();
-        userQuestionTextLabel.setName("userQuestion");
-        userQuestionTextLabel.setBorder(new LineBorder(Color.lightGray));
-        userQuestionTextLabel.setBackground(Color.black);
-        userQuestionTextLabel.setForeground(Color.white);
-        userQuestionTextLabel.setOpaque(true);
-        userQuestionTextLabel.setBounds(frameWidth/2 - labelWidth/2, 0, labelWidth, labelHeight);
-        layeredPane.add(userQuestionTextLabel);
-        layeredPane.setLayer(userQuestionTextLabel, 2);
-
 
         JLabel tempText = new JLabel();
         tempText.setName("temp");
@@ -115,25 +126,44 @@ public class SwingRenderer extends JFrame {
         userInput.setBackground(Color.black);
         userInput.setForeground(Color.white);
         userInput.setOpaque(true);
-        labelHeight = 100;
-        userInput.setBounds(frameWidth/2 - labelWidth/2, frameHeight/2 - labelHeight/2, labelWidth, labelHeight);
-        userInput.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setTempText(userInput, tempText);
-            }
-        });
-
+        int userInputHeight = 100;
+        int userInputWidth = 600;
+        userInput.setBounds(frameWidth/2 - userInputWidth/2, frameHeight - userInputHeight, userInputWidth, userInputHeight);
+        userInput.addActionListener(_ -> setTempText(userInput, tempText));
         layeredPane.add(userInput);
         layeredPane.setLayer(userInput, 2);
+
+        JLabel errorTextLabel = new JLabel();
+        errorTextLabel.setName("error");
+        errorTextLabel.setBorder(new LineBorder(Color.lightGray));
+        errorTextLabel.setBackground(Color.black);
+        errorTextLabel.setForeground(Color.white);
+        errorTextLabel.setOpaque(true);
+        int errorTextLabelWidth = 600;
+        int errorTextLabelHeight = 50;
+        errorTextLabel.setBounds(frameWidth/2 - errorTextLabelWidth/2, frameHeight - errorTextLabelHeight - userInputHeight, errorTextLabelWidth, errorTextLabelHeight);
+        layeredPane.add(errorTextLabel);
+        layeredPane.setLayer(errorTextLabel, 2);
+
+        JLabel mainTextLabel = new JLabel();
+        mainTextLabel.setName("main");
+        mainTextLabel.setBorder(new LineBorder(Color.lightGray));
+        mainTextLabel.setBackground(Color.black);
+        mainTextLabel.setForeground(Color.white);
+        mainTextLabel.setOpaque(true);
+        int mainTextLabelHeight = 300;
+        int mainTextLabelWidth = 600;
+        mainTextLabel.setBounds(frameWidth/2 - mainTextLabelWidth/2, frameHeight - mainTextLabelHeight - errorTextLabelHeight - userInputHeight, mainTextLabelWidth, mainTextLabelHeight);
+        layeredPane.add(mainTextLabel);
+        layeredPane.setLayer(mainTextLabel, 2);
+
 
         frame.setLayeredPane(layeredPane);
 
         return frame;
     }
     public static void changeLabelText(JFrame frame, String newText, LabelType label) {
-        newText = newText.replaceAll("\n", "<br>");
-        newText = "<html>" + newText + "</html>";
+        newText = HTMLifyString(newText);
 
         String targetComponent = "";
 
@@ -142,13 +172,34 @@ public class SwingRenderer extends JFrame {
             case INVENTORY -> targetComponent = "inventory";
             case RELICS -> targetComponent = "relics";
             case BATTLE -> targetComponent = "battle";
-            case USER_QUESTION -> targetComponent = "userQuestion";
+            case MAIN -> targetComponent = "main";
             case DESCRIPTION -> targetComponent = "description";
+            case ERROR -> targetComponent = "error";
         }
 
         ((JLabel) getComponentFromFrame(frame, targetComponent)).setText(newText);
 
     }
+
+    public static void makeInventoryVisible(JFrame frame) {
+        JPanel inventoryPanel = (JPanel) frame.getLayeredPane().getComponentsInLayer(1)[0];
+        JPanel relicPanel = (JPanel) frame.getLayeredPane().getComponentsInLayer(3)[0];
+        inventoryPanel.setVisible(true);
+        relicPanel.setVisible(false);
+    }
+
+    public static void makeRelicsVisible(JFrame frame) {
+        JPanel inventoryPanel = (JPanel) frame.getLayeredPane().getComponentsInLayer(1)[0];
+        JPanel relicPanel = (JPanel) frame.getLayeredPane().getComponentsInLayer(3)[0];
+        inventoryPanel.setVisible(false);
+        relicPanel.setVisible(true);
+    }
+
+    public static String HTMLifyString(String input) {
+        input = input.replaceAll("\n", "<br>");
+        return "<html>" + input + "</html>";
+    }
+
     public static Component getComponentFromFrame(JFrame frame, String targetComponentName) {
         for (int i = 0; i < frame.getLayeredPane().getComponentsInLayer(2).length; i++) {
             Component tempComponent = frame.getLayeredPane().getComponentsInLayer(2)[i];
@@ -170,22 +221,35 @@ public class SwingRenderer extends JFrame {
         tempLabel.setText("");
         return output;
     }
-    public static void addInventoryButton(JFrame frame, String buttonText, Player player, int itemIndex) {
+
+    public static void clearInventoryPanel(JFrame frame, int layer) {
+        JPanel panel = (JPanel) frame.getLayeredPane().getComponentsInLayer(layer)[0];
+        panel.removeAll();
+        panel.revalidate();
+        panel.repaint();
+    }
+    public static void addInventoryButton(JFrame frame, String buttonText, Player player, int itemIndex, int layer) {
         InventoryButton newButton = new InventoryButton();
-        newButton.addActionListener(e -> useItem(frame, itemIndex, player));
+        if (layer == 1) {
+            newButton.addActionListener(_ -> useItem(frame, itemIndex, player));
+        } else {
+            newButton.addActionListener(_ -> unequipRelic(frame, itemIndex, player));
+        }
+        buttonText = HTMLifyString(buttonText);
         newButton.setText(buttonText);
-        ((JPanel) frame.getLayeredPane().getComponentsInLayer(1)[0]).add(newButton);
+        ((JPanel) frame.getLayeredPane().getComponentsInLayer(layer)[0]).add(newButton);
     }
 
     public static void useItem(JFrame frame, int itemIndex, Player player) {
         ArrayList<Item> items = player.getInventory().get(itemIndex);
-        if (items.size() == 1) {
-            //is the actual button being deleted? if not, memory leak?
-            JPanel panel = (JPanel) frame.getLayeredPane().getComponentsInLayer(1)[0];
-            panel.getComponent(itemIndex).setVisible(false);
-            panel.remove(itemIndex);
-        }
-        items.getFirst().useItem(player);
+        items.getFirst().useItem(frame, player);
         player.checkInventory(frame, false);
+        player.checkRelics(frame, false);
+    }
+
+    public static void unequipRelic(JFrame frame, int itemIndex, Player player) {
+        player.getEquippedRelics().get(itemIndex).useItem(frame, player);
+        player.checkInventory(frame, false);
+        player.checkRelics(frame, false);
     }
 }

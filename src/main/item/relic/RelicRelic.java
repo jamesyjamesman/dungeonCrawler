@@ -2,6 +2,8 @@ package main.item.relic;
 
 import main.Player;
 
+import javax.swing.*;
+
 public class RelicRelic extends Relic {
     public RelicRelic() {
         setName("Relic of Relics");
@@ -9,7 +11,7 @@ public class RelicRelic extends Relic {
     }
 
     @Override
-    public void useItem(Player player) {
+    public void useItem(JFrame frame, Player player) {
         if (this.equipped) {
             int relicsOverCapacity = player.getEquippedRelics().size() - (player.getRelicCap() - 3);
             if (relicsOverCapacity > 0) {
@@ -22,7 +24,7 @@ public class RelicRelic extends Relic {
             }
         }
         else {
-            if (player.equipRelic(this)) {
+            if (player.equipRelic(frame, this)) {
                 player.changeRelicCap(3);
             }
         }

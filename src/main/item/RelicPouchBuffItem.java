@@ -4,14 +4,16 @@ import main.DialogueType;
 import main.Main;
 import main.Player;
 
+import javax.swing.*;
+
 public class RelicPouchBuffItem extends BuffItem {
     public RelicPouchBuffItem() {
         this.statType = "relic pouch capacity";
     }
 
     @Override
-    public void useItem(Player player) {
-        super.useItem(player);
+    public void useItem(JFrame frame, Player player) {
+        super.useItem(frame, player);
         if (amountChanged > 0) {
             System.out.println(Main.colorString("You're not sure how, but your " + this.statType + " increased by " + this.amountChanged + ".", DialogueType.HEAL));
         } else {

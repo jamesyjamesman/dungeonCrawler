@@ -53,7 +53,7 @@ public class Player {
         if (calculateInventorySize() >= this.inventoryCap) {
             System.out.println("Your inventory is full!");
             System.out.println("Would you like to use or discard an item? (y/n)");
-            SwingRenderer.changeLabelText(frame, "Your inventory is full!\nWould you like to use or discard an item? (y/n)", LabelType.USER_QUESTION);
+            SwingRenderer.changeLabelText(frame, "Your inventory is full!\nWould you like to use or discard an item? (y/n)", LabelType.MAIN);
 
             String response = Main.yesOrNo(frame);
             if (response.equals("y")) {
@@ -70,11 +70,12 @@ public class Player {
 
         if (item instanceof Relic && getEquippedRelics().size() < this.relicCap) {
             System.out.println("Would you like to equip the " + item.getName() + " now? (y/n)");
-            SwingRenderer.changeLabelText(frame, "Would you like to equip the " + item.getName() + " now? (y/n)", LabelType.USER_QUESTION);
+            SwingRenderer.changeLabelText(frame, "Would you like to equip the " + item.getName() + " now? (y/n)", LabelType.MAIN);
             String response = Main.yesOrNo(frame);
             if (response.equals("y")) {
-                item.useItem(this);
+                item.useItem(frame, this);
                 System.out.println("The " + item.getName() + " has been equipped!");
+                checkRelics(frame, false);
                 return;
             }
         }
@@ -119,7 +120,7 @@ public class Player {
 
     //can cause index out of bounds
     public boolean checkInventory(JFrame frame, boolean death) {
-
+        SwingRenderer.clearInventoryPanel(frame, 1);
         if (this.inventory.isEmpty()) {
             if (death) {
                 System.out.println(Main.colorString("Wow! Not leaving anything for the next person...", DialogueType.INVENTORY));
@@ -128,17 +129,16 @@ public class Player {
             }
             return true;
         }
-        String output = "";
         for (int i = 0; i < this.inventory.size(); i++) {
             //Displays amount of items in parentheses (e.g. (x2)) if the amount is greater than 1
             String amount = (this.inventory.get(i).size() > 1) ? " (x" + this.inventory.get(i).size() + ")" : "";
 
-            output = output.concat((i+1) + ". " + this.inventory.get(i).getFirst().getName() +
+            String output = (i+1) + ". " + this.inventory.get(i).getFirst().getName() +
                     amount
-                    + ": " + this.inventory.get(i).getFirst().getDescription());
+                    + ": " + this.inventory.get(i).getFirst().getDescription();
             output = output.concat("\n");
-            //TODO: this will repeatedly add existing items, either wipe existing ones or check if they already exist
-            SwingRenderer.addInventoryButton(frame, output, this, i);
+            //could make this create a JButton (title) and a JLabel (description), as JLabels wrap
+            SwingRenderer.addInventoryButton(frame, output, this, i, 1);
         }
 //        output = output.concat("Remaining inventory space: " + (this.inventoryCap - calculateInventorySize()));
 //        SwingRenderer.changeLabelText(frame, output, LabelType.INVENTORY);
@@ -147,7 +147,7 @@ public class Player {
 
     //this is very dry, but I wasn't sure how to use checkInventory due to the different types
     public boolean checkRelics(JFrame frame, boolean death) {
-
+        SwingRenderer.clearInventoryPanel(frame, 3);
         if (this.equippedRelics.isEmpty()) {
             if (death) {
                 System.out.println(Main.colorString("Too good for those darn relics, eh?", DialogueType.INVENTORY));
@@ -157,14 +157,14 @@ public class Player {
             return true;
         }
 
-        String output = "";
         for (int i = 0; i < this.equippedRelics.size(); i++) {
-            output = output.concat((i+1) + ". " + this.equippedRelics.get(i).getName() + ": "
-                    + this.equippedRelics.get(i).getDescription());
+            String output = (i+1) + ". " + this.equippedRelics.get(i).getName() + ": "
+                    + this.equippedRelics.get(i).getDescription();
             output = output.concat("\n\n");
+            SwingRenderer.addInventoryButton(frame, output, this, i, 3);
         }
-        output = output.concat("Remaining relic pouch space: " + (this.relicCap - getEquippedRelics().size()));
-        SwingRenderer.changeLabelText(frame, output, LabelType.RELICS);
+//        output = output.concat("Remaining relic pouch space: " + (this.relicCap - getEquippedRelics().size()));
+//        SwingRenderer.changeLabelText(frame, output, LabelType.RELICS);
         return false;
     }
 
@@ -186,6 +186,7 @@ public class Player {
         return -1;
     }
 
+    //should be called any time anything printed can change, e.g. health change, absorption change, etc.
     public void checkStatus(JFrame frame) {
         String output = "";
         output = output.concat("Current player status:\n");
@@ -248,9 +249,9 @@ public class Player {
         }
     }
 
-    public boolean equipRelic(Relic relic) {
+    public boolean equipRelic(JFrame frame, Relic relic) {
         if (getEquippedRelics().size() >= this.relicCap) {
-            System.out.println("You cannot equip any more relics!");
+            SwingRenderer.changeLabelText(frame, "You cannot equip any more relics!", LabelType.ERROR);
             return false;
         }
         relic.setEquipped(true);
@@ -258,7 +259,7 @@ public class Player {
         int relicIndex = this.findItemInInventory(relic);
         this.inventory.remove(relicIndex);
         if (relic.isCursed()) {
-            System.out.println("Oh no! the " + relic.getName() + " was cursed!");
+            SwingRenderer.changeLabelText(frame, "OH no! the " + relic.getName() + " was cursed!", LabelType.ERROR);
         }
         return true;
     }

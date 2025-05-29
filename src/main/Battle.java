@@ -12,8 +12,7 @@ public class Battle {
         System.out.println(Main.colorString("The battle has begun!", DialogueType.BATTLE));
         while (!room.getEnemies().isEmpty()) {
             String enemyString = "It's your turn! What would you like to attack?\n" + readEnemies(room, player);
-            System.out.println(enemyString);
-            SwingRenderer.changeLabelText(frame, enemyString, LabelType.BATTLE);
+            SwingRenderer.changeLabelText(frame, enemyString, LabelType.MAIN);
 
             player.printStatusLine();
             int enemyIndex = Main.responseHandler(frame, player, enemyString, 1, room.getEnemies().size()) - 1;
@@ -38,7 +37,7 @@ public class Battle {
                 enemyAttacker.attack(player);
             }
         }
-        SwingRenderer.changeLabelText(frame, "The enemies were defeated!", LabelType.BATTLE);
+        SwingRenderer.changeLabelText(frame, "The enemies were defeated!", LabelType.MAIN);
     }
 
     public static String readEnemies(EnemyRoom room, Player player) {

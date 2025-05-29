@@ -22,7 +22,7 @@ public class Menu {
                 return;
             }
 
-            player.getInventory().get(response - 1).getFirst().useItem(player);
+            player.getInventory().get(response - 1).getFirst().useItem(frame, player);
         }
     }
     public static void relicLoop(JFrame frame, Player player) {
@@ -42,7 +42,7 @@ public class Menu {
                 return;
             }
 
-            player.getEquippedRelics().get(response - 1).useItem(player);
+            player.getEquippedRelics().get(response - 1).useItem(frame, player);
         }
     }
 

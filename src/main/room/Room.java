@@ -34,6 +34,7 @@ public class Room {
         SwingRenderer.changeLabelText(frame, this.description, LabelType.DESCRIPTION);
         System.out.println(this.description);
         player.incrementRoomsTraversed();
+        player.checkStatus(frame);
     }
 
     public RoomType getType() {

@@ -2,6 +2,8 @@ package main.item;
 
 import main.Player;
 
+import javax.swing.*;
+
 public abstract class Item {
     String description;
     String name;
@@ -10,7 +12,7 @@ public abstract class Item {
         this.name = "";
     }
 
-    public abstract void useItem(Player player);
+    public abstract void useItem(JFrame frame, Player player);
 
 
     public void setDescription(String description) {

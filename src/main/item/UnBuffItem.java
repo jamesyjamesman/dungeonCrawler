@@ -4,13 +4,15 @@ import main.DialogueType;
 import main.Main;
 import main.Player;
 
+import javax.swing.*;
+
 public class UnBuffItem extends BuffItem {
     public UnBuffItem() {
     }
 
     @Override
-    public void useItem(Player player) {
-        super.useItem(player);
+    public void useItem(JFrame frame, Player player) {
+        super.useItem(frame, player);
         System.out.println("Blegh! You think that was meatballs. At some point.");
         System.out.println("You're really not feeling too good.");
         //if I ever implement a poison mechanic it would be used here instead

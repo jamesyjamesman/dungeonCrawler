@@ -6,6 +6,7 @@ import main.Player;
 import main.item.Item;
 import main.room.Room;
 
+import javax.swing.*;
 import java.util.Random;
 
 public abstract class Relic extends Item {
@@ -35,9 +36,9 @@ public abstract class Relic extends Item {
     }
 
     @Override
-    public void useItem(Player player) {
+    public void useItem(JFrame frame, Player player) {
         if(this.equipped) {player.unequipRelic(this);}
-        else {player.equipRelic(this);}
+        else {player.equipRelic(frame, this);}
     }
 
     public boolean isCursed() {

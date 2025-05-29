@@ -4,6 +4,7 @@ import main.DialogueType;
 import main.Main;
 import main.Player;
 
+import javax.swing.*;
 import java.util.Random;
 
 public class HealthItem extends Item{
@@ -21,7 +22,7 @@ public class HealthItem extends Item{
     }
 
     @Override
-    public void useItem(Player player) {
+    public void useItem(JFrame frame, Player player) {
         this.healthRestored = new Random().nextInt(this.restorationLowerBound, this.restorationUpperBound);
 
         if (this.healthRestored < 0) {

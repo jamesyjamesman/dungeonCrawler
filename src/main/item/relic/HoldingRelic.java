@@ -2,6 +2,8 @@ package main.item.relic;
 
 import main.Player;
 
+import javax.swing.*;
+
 public class HoldingRelic extends Relic {
     public HoldingRelic() {
         setName("Relic of Holding");
@@ -9,7 +11,7 @@ public class HoldingRelic extends Relic {
     }
 
     @Override
-    public void useItem(Player player) {
+    public void useItem(JFrame frame, Player player) {
         if (this.equipped) {
             int itemsOverCapacity = player.calculateInventorySize() - (player.getInventoryCap() - 10);
             if (itemsOverCapacity > 0) {
@@ -22,7 +24,7 @@ public class HoldingRelic extends Relic {
             }
         }
         else {
-            if (player.equipRelic(this)) {
+            if (player.equipRelic(frame,this)) {
             player.changeInventoryCap(10);
             }
         }
