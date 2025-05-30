@@ -50,7 +50,7 @@ public class SlimeBoss extends Boss {
             damage = slimeWait(frame);
         }
         if (damage > 0) {
-            SwingRenderer.appendMainLabelText(frame, "You took " + damage + " damage!");
+            SwingRenderer.addHealthText(frame, "You took " + damage + " damage from the slime!");
         }
         player.takeDamage(frame, damage);
     }

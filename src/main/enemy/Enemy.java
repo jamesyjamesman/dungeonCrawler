@@ -41,10 +41,10 @@ public class Enemy {
     public void attack(JFrame frame, Player player) {
         if (player.equippedRelicIndex("Relic of Bounciness") > -1
             && new Random().nextInt(4) == 0) {
-            SwingRenderer.appendMainLabelText(frame, "The attack from the " + this.species + " bounced right off!");
+            SwingRenderer.addHealthText(frame, "The attack from the " + this.species + " bounced right off!");
                 return;
         }
-        SwingRenderer.appendMainLabelText(frame, "The " + this.species + " attacked you, dealing " + this.damage + " damage!");
+        SwingRenderer.addHealthText(frame, "The " + this.species + " attacked you, dealing " + this.damage + " damage!");
         player.takeDamage(frame, this.damage);
         //will get more complex with weapons, etc.
     }

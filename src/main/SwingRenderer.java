@@ -55,9 +55,9 @@ public class SwingRenderer extends JFrame {
         statusTextLabel.setBackground(black);
         statusTextLabel.setForeground(Color.white);
         statusTextLabel.setOpaque(true);
-        int labelWidth = 200;
+        int statusLabelWidth = 200;
         int labelHeight = 200;
-        statusTextLabel.setBounds(frameWidth - labelWidth, 0, labelWidth, labelHeight);
+        statusTextLabel.setBounds(frameWidth - statusLabelWidth, 0, statusLabelWidth, labelHeight);
         layeredPane.add(statusTextLabel);
         layeredPane.setLayer(statusTextLabel, 2);
 
@@ -67,7 +67,7 @@ public class SwingRenderer extends JFrame {
         inventoryPanel.setBackground(black);
         inventoryPanel.setForeground(Color.white);
         inventoryPanel.setOpaque(true);
-        labelWidth = 600;
+        int labelWidth = 600;
         labelHeight = 450;
         inventoryPanel.setBounds(frameWidth - labelWidth, frameHeight - labelHeight, labelWidth, labelHeight);
         layeredPane.add(inventoryPanel);
@@ -182,15 +182,57 @@ public class SwingRenderer extends JFrame {
         layeredPane.setLayer(yesOrNo, 11);
 
 
-//TODO: add label that covers all health changes (e.g. status kind of, but the whole messages)
-        //I'm imagining a ticker-like board but that seems hard to implement
+        JPanel healthPanel = new JPanel();
+        healthPanel.setName("health");
+        healthPanel.setBackground(Color.black);
+        healthPanel.setForeground(Color.white);
+        healthPanel.setOpaque(true);
+        healthPanel.setBorder(new LineBorder(Color.lightGray));
+        int healthLabelHeight = 200;
+        int healthLabelWidth = 300;
+        healthPanel.setBounds(frameWidth - healthLabelWidth - statusLabelWidth, 0, healthLabelWidth, healthLabelHeight);
+        layeredPane.add(healthPanel);
+        layeredPane.setLayer(healthPanel, 67);
 
         frame.setLayeredPane(layeredPane);
         frame.setVisible(true);
         return frame;
     }
 
-    public static void changeAnswerVisibility(JFrame frame, boolean visible) {
+    //TODO: find a way to stop labels from grouping on the same line, same for inventory AND figure out wrapping
+    public static void addHealthText(JFrame frame, String newText) {
+        newText = HTMLifyString(newText);
+        JPanel healthPanel = (JPanel) frame.getLayeredPane().getComponentsInLayer(67)[0];
+        JLabel newLabel = new JLabel();
+        newLabel.setForeground(Color.white);
+        newLabel.setText(newText);
+        healthPanel.add(newLabel);
+        removeHealthText(healthPanel);
+        changeHealthTextColor(healthPanel);
+    }
+    public static void removeHealthText(JPanel healthPanel) {
+        if (healthPanel.getComponents().length > 6) {
+            healthPanel.remove(healthPanel.getComponent(0));
+            healthPanel.revalidate();
+            healthPanel.repaint();
+        }
+    }
+
+    //the FIRST should be white, but they start dark and get brighter
+    //I'm not sure how to fix this easily
+    public static void changeHealthTextColor(JPanel healthPanel) {
+        for (int i = 0; i < healthPanel.getComponents().length; i++) {
+            JLabel textLabel = (JLabel) healthPanel.getComponent(i);
+            switch (i) {
+                case 5, 4, 3 -> textLabel.setForeground(Color.white);
+                case 2 -> textLabel.setForeground(Color.lightGray);
+                case 1 -> textLabel.setForeground(Color.gray);
+                case 0 -> textLabel.setForeground(Color.darkGray);
+            }
+        }
+    }
+
+        public static void changeAnswerVisibility(JFrame frame, boolean visible) {
         frame.getLayeredPane().getComponentsInLayer(11)[0].setVisible(visible);
     }
 

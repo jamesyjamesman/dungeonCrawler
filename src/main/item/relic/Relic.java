@@ -23,13 +23,13 @@ public abstract class Relic extends Item {
             if (player.equippedRelicIndex("Relic of Cursed Healing") == -1) {
                 int amountDamage = new Random().nextInt(4);
                 if (amountDamage > 0) {
-                    SwingRenderer.appendMainLabelText(frame, "Your cursed " + getName() + " caused " + amountDamage + " damage!");
+                    SwingRenderer.addHealthText(frame, "Your cursed " + getName() + " caused " + amountDamage + " damage!");
                     player.takeDamage(frame, amountDamage);
                 }
             } else {
                 int amountHeal = new Random().nextInt(2);
                 if (amountHeal > 0) {
-                    SwingRenderer.appendMainLabelText(frame, "Your cursed " + getName() + " healed you for " + amountHeal + " health!");
+                    SwingRenderer.addHealthText(frame, "Your cursed " + getName() + " healed you for " + amountHeal + " health!");
                     player.heal(amountHeal);
                 }
             }

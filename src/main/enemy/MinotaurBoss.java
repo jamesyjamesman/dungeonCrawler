@@ -52,7 +52,7 @@ public class MinotaurBoss extends Boss {
         }
 
         if (damage > 0) {
-            SwingRenderer.appendMainLabelText(frame, "You took " + damage + " damage!");
+            SwingRenderer.addHealthText(frame, "You took " + damage + " damage from the minotaur!");
         }
         player.takeDamage(frame, damage);
     }

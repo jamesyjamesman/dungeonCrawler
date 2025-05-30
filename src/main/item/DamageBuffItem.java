@@ -15,7 +15,7 @@ public class DamageBuffItem extends BuffItem {
     @Override
     public void useItem(JFrame frame, Player player) {
         super.useItem(frame, player);
-        SwingRenderer.appendMainLabelText(frame, "You're not sure how, but your " + this.statType + " increased by " + this.amountChanged + ".");
+        SwingRenderer.addHealthText(frame, "You're not sure how, but your " + this.statType + " increased by " + this.amountChanged + ".");
         player.increaseDamage(this.amountChanged);
     }
 }

@@ -16,9 +16,9 @@ public class RelicPouchBuffItem extends BuffItem {
     public void useItem(JFrame frame, Player player) {
         super.useItem(frame, player);
         if (amountChanged > 0) {
-            SwingRenderer.appendMainLabelText(frame, "You're not sure how, but your " + this.statType + " increased by " + this.amountChanged + ".");
+            SwingRenderer.addHealthText(frame, "You're not sure how, but your " + this.statType + " increased by " + this.amountChanged + ".");
         } else {
-            SwingRenderer.appendMainLabelText(frame, "Ew. That one was a dud.");
+            SwingRenderer.addHealthText(frame, "Ew. That one was a dud.");
         }
         player.changeRelicCap(this.amountChanged);
     }
