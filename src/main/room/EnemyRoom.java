@@ -1,6 +1,8 @@
 package main.room;
 
 import main.Battle;
+import main.LabelType;
+import main.SwingRenderer;
 import main.enemy.Enemy;
 import main.Player;
 
@@ -21,7 +23,7 @@ public class EnemyRoom extends Room {
     @Override
     public void completeRoomActions(Player player, JFrame frame) {
         super.completeRoomActions(player, frame);
-        System.out.println(this.battleInitiationMessage);
+        SwingRenderer.changeLabelText(frame, this.battleInitiationMessage, LabelType.MAIN);
         Battle.battleLoop(frame, player, this);
         reset();
     }

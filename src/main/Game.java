@@ -26,11 +26,9 @@ public class Game {
             ArrayList<Room> activeRooms = new ArrayList<>(getRandomActiveRooms(rooms));
             String exitString = createExitsString(playerCharacter, activeRooms, currentRoom);
 
-            System.out.println(exitString);
             SwingRenderer.changeLabelText(frame, exitString, LabelType.MAIN);
             playerCharacter.useRelics(frame, currentRoom);
 
-            playerCharacter.printStatusLine();
             int response = Main.responseHandler(frame, playerCharacter, exitString, 1, currentRoom.getExits().size()) - 1;
             Room nextRoom = currentRoom.getExits().get(response);
             currentRoom.getExits().clear();

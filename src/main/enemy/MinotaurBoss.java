@@ -3,6 +3,7 @@ package main.enemy;
 import main.DialogueType;
 import main.Main;
 import main.Player;
+import main.SwingRenderer;
 import main.item.relic.CurseHealRelic;
 import main.item.relic.Relic;
 
@@ -12,28 +13,28 @@ import java.util.Random;
 public class MinotaurBoss extends Boss {
     public MinotaurBoss() {
     }
-    public int chargeAttack() {
-        System.out.println(Main.colorString("The minotaur charges at you, goring you with its horns!", DialogueType.BATTLE));
+    public int chargeAttack(JFrame frame) {
+        SwingRenderer.appendMainLabelText(frame, "The minotaur charges at you, goring you with its horns!");
         return this.damage * 2;
     }
-    public int shriekAttack() {
-        System.out.println(Main.colorString("The minotaur unleashes a piercing scream!", DialogueType.BATTLE));
+    public int shriekAttack(JFrame frame) {
+        SwingRenderer.appendMainLabelText(frame, "The minotaur unleashes a piercing scream!");
         return this.damage;
     }
-    public int angerAttack() {
-        System.out.println(Main.colorString("The minotaur is getting upset!", DialogueType.BATTLE));
+    public int angerAttack(JFrame frame) {
+        SwingRenderer.appendMainLabelText(frame, "The minotaur is getting upset!");
         this.damage += 1;
         return 0;
     }
-    public int healAttack() {
-        System.out.println(Main.colorString("The minotaur pulls out a large chunk of meat, ripping into it!", DialogueType.BATTLE));
+    public int healAttack(JFrame frame) {
+        SwingRenderer.appendMainLabelText(frame, "The minotaur pulls out a large chunk of meat, ripping into it!");
         this.currentHealth += (int) (this.damage * 1.5);
         return 0;
     }
-    public int failedChargeAttack() {
-        System.out.println(Main.colorString("The minotaur tries to charge at you, but falls over, smacking itself in the face.", DialogueType.BATTLE));
+    public int failedChargeAttack(JFrame frame) {
+        SwingRenderer.appendMainLabelText(frame, "The minotaur tries to charge at you, but falls over, smacking itself in the face.");
         this.currentHealth -= this.damage / 2;
-        return angerAttack();
+        return angerAttack(frame);
     }
 
     //minotaur is not affected by relic of bounciness (on purpose)
@@ -43,15 +44,15 @@ public class MinotaurBoss extends Boss {
         int randomChoice = new Random().nextInt(9);
 
         switch (randomChoice) {
-            case 0 -> damage = failedChargeAttack();
-            case 1, 2 -> damage = angerAttack();
-            case 3, 4, 5 -> damage = shriekAttack();
-            case 6, 7 -> damage = chargeAttack();
-            case 8 -> damage = healAttack();
+            case 0 -> damage = failedChargeAttack(frame);
+            case 1, 2 -> damage = angerAttack(frame);
+            case 3, 4, 5 -> damage = shriekAttack(frame);
+            case 6, 7 -> damage = chargeAttack(frame);
+            case 8 -> damage = healAttack(frame);
         }
 
         if (damage > 0) {
-            System.out.println(Main.colorString("You took " + damage + " damage!", DialogueType.DAMAGE));
+            SwingRenderer.appendMainLabelText(frame, "You took " + damage + " damage!");
         }
         player.takeDamage(frame, damage);
     }

@@ -1,7 +1,9 @@
 package main.room;
 
+import main.LabelType;
 import main.Main;
 import main.Player;
+import main.SwingRenderer;
 import main.item.Item;
 import main.item.relic.Relic;
 
@@ -17,8 +19,8 @@ public class PureWaterRoom extends Room {
     @Override
     public void completeRoomActions(Player player, JFrame frame) {
         super.completeRoomActions(player, frame);
-        System.out.println("You sense this fountain has some purifying properties.\n" +
-                "Would you like to cleanse a relic? (y/n)");
+        SwingRenderer.changeLabelText(frame, "You sense this fountain has some purifying properties.\n" +
+                "Would you like to cleanse a relic? (y/n)", LabelType.MAIN);
         String response = Main.yesOrNo(frame);
         if (response.equals("y")) {
             List<Relic> relics = player.getEquippedRelics().stream()
@@ -34,12 +36,12 @@ public class PureWaterRoom extends Room {
                 }
             }
             if (cursedRelics.isEmpty()) {
-                System.out.println("You don't have any cursed relics!");
+                SwingRenderer.changeLabelText(frame, "You don't have any cursed relics!", LabelType.ERROR);
                 return;
             }
             Relic selectedRelic = cursedRelics.get(new Random().nextInt(cursedRelics.size()));
             selectedRelic.setCursed(false);
-            System.out.println("Your " + selectedRelic.getName() + " has been cured!");
+            SwingRenderer.changeLabelText(frame, "Your " + selectedRelic.getName() + " has been cured!", LabelType.ERROR);
         }
     }
 }

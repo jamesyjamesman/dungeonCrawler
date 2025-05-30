@@ -3,6 +3,7 @@ package main.item;
 import main.DialogueType;
 import main.Main;
 import main.Player;
+import main.SwingRenderer;
 
 import javax.swing.*;
 
@@ -15,9 +16,9 @@ public class RelicPouchBuffItem extends BuffItem {
     public void useItem(JFrame frame, Player player) {
         super.useItem(frame, player);
         if (amountChanged > 0) {
-            System.out.println(Main.colorString("You're not sure how, but your " + this.statType + " increased by " + this.amountChanged + ".", DialogueType.HEAL));
+            SwingRenderer.appendMainLabelText(frame, "You're not sure how, but your " + this.statType + " increased by " + this.amountChanged + ".");
         } else {
-            System.out.println("Ew. That one was a dud.");
+            SwingRenderer.appendMainLabelText(frame, "Ew. That one was a dud.");
         }
         player.changeRelicCap(this.amountChanged);
     }

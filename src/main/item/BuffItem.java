@@ -1,6 +1,7 @@
 package main.item;
 
 import main.Player;
+import main.SwingRenderer;
 
 import javax.swing.*;
 import java.util.Random;
@@ -22,7 +23,7 @@ public abstract class BuffItem extends Item {
     @Override
     public void useItem(JFrame frame, Player player) {
         randomizeAmountChanged();
-        System.out.println("You crack open the can, plug your nose, and manage to force its contents down your throat.");
+        SwingRenderer.appendMainLabelText(frame, "You crack open the can, plug your nose, and manage to force its contents down your throat.");
         player.discardItem(this);
     }
 

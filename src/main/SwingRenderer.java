@@ -20,7 +20,6 @@ public class SwingRenderer extends JFrame {
         int screenHeight = (int) screenSize.getHeight();
 
         JFrame frame = new JFrame();
-        frame.setVisible(true);
         frame.setBackground(Color.black);
         frame.setExtendedState(MAXIMIZED_BOTH);
         frame.setTitle("Dungeon Crawler");
@@ -38,11 +37,13 @@ public class SwingRenderer extends JFrame {
         int frameHeight = (int) frameSize.getHeight();
         int frameWidth = (int) frameSize.getWidth();
 
+        Color black = Color.black;
+
         JLabel descriptionTextLabel = new JLabel();
         descriptionTextLabel.setName("description");
-        descriptionTextLabel.setSize(200, 200);
+        descriptionTextLabel.setSize(300, 200);
         descriptionTextLabel.setBorder(new LineBorder(Color.lightGray));
-        descriptionTextLabel.setBackground(Color.black);
+        descriptionTextLabel.setBackground(black);
         descriptionTextLabel.setForeground(Color.white);
         descriptionTextLabel.setOpaque(true);
         layeredPane.add(descriptionTextLabel);
@@ -51,10 +52,10 @@ public class SwingRenderer extends JFrame {
         JLabel statusTextLabel = new JLabel();
         statusTextLabel.setName("status");
         statusTextLabel.setBorder(new LineBorder(Color.lightGray));
-        statusTextLabel.setBackground(Color.black);
+        statusTextLabel.setBackground(black);
         statusTextLabel.setForeground(Color.white);
         statusTextLabel.setOpaque(true);
-        int labelWidth = 300;
+        int labelWidth = 200;
         int labelHeight = 200;
         statusTextLabel.setBounds(frameWidth - labelWidth, 0, labelWidth, labelHeight);
         layeredPane.add(statusTextLabel);
@@ -63,10 +64,11 @@ public class SwingRenderer extends JFrame {
         JPanel inventoryPanel = new JPanel();
         inventoryPanel.setName("inventory");
         inventoryPanel.setBorder(new LineBorder(Color.lightGray));
-        inventoryPanel.setBackground(Color.black);
+        inventoryPanel.setBackground(black);
         inventoryPanel.setForeground(Color.white);
         inventoryPanel.setOpaque(true);
-        labelHeight = 300;
+        labelWidth = 600;
+        labelHeight = 450;
         inventoryPanel.setBounds(frameWidth - labelWidth, frameHeight - labelHeight, labelWidth, labelHeight);
         layeredPane.add(inventoryPanel);
         layeredPane.setLayer(inventoryPanel, 1);
@@ -74,7 +76,7 @@ public class SwingRenderer extends JFrame {
         JPanel relicPanel = new JPanel();
         relicPanel.setName("relics");
         relicPanel.setBorder(new LineBorder(Color.lightGray));
-        relicPanel.setBackground(Color.black);
+        relicPanel.setBackground(black);
         relicPanel.setForeground(Color.white);
         relicPanel.setOpaque(true);
         relicPanel.setBounds(frameWidth - labelWidth, frameHeight - labelHeight, labelWidth, labelHeight);
@@ -83,8 +85,7 @@ public class SwingRenderer extends JFrame {
         layeredPane.setLayer(relicPanel, 3);
 
         JPanel inventorySwitches = new JPanel();
-//        inventorySwitches.setBorder(new LineBorder(Color.lightGray));
-        inventorySwitches.setBackground(Color.black);
+        inventorySwitches.setBackground(black);
         inventorySwitches.setForeground(Color.white);
         inventorySwitches.setOpaque(false);
         inventorySwitches.setBounds(frameWidth - labelWidth, frameHeight - labelHeight - 25, labelWidth, 25);
@@ -123,12 +124,12 @@ public class SwingRenderer extends JFrame {
         JTextField userInput = new JTextField();
         userInput.setName("input");
         userInput.setBorder(new LineBorder(Color.lightGray));
-        userInput.setBackground(Color.black);
+        userInput.setBackground(black);
         userInput.setForeground(Color.white);
         userInput.setOpaque(true);
         int userInputHeight = 100;
         int userInputWidth = 600;
-        userInput.setBounds(frameWidth/2 - userInputWidth/2, frameHeight - userInputHeight, userInputWidth, userInputHeight);
+        userInput.setBounds(0, frameHeight - userInputHeight, userInputWidth, userInputHeight);
         userInput.addActionListener(_ -> setTempText(userInput, tempText));
         layeredPane.add(userInput);
         layeredPane.setLayer(userInput, 2);
@@ -136,38 +137,39 @@ public class SwingRenderer extends JFrame {
         JLabel errorTextLabel = new JLabel();
         errorTextLabel.setName("error");
         errorTextLabel.setBorder(new LineBorder(Color.lightGray));
-        errorTextLabel.setBackground(Color.black);
+        errorTextLabel.setBackground(black);
         errorTextLabel.setForeground(Color.white);
         errorTextLabel.setOpaque(true);
         int errorTextLabelWidth = 600;
         int errorTextLabelHeight = 50;
-        errorTextLabel.setBounds(frameWidth/2 - errorTextLabelWidth/2, frameHeight - errorTextLabelHeight - userInputHeight, errorTextLabelWidth, errorTextLabelHeight);
+        errorTextLabel.setBounds(0, frameHeight - errorTextLabelHeight - userInputHeight, errorTextLabelWidth, errorTextLabelHeight);
         layeredPane.add(errorTextLabel);
         layeredPane.setLayer(errorTextLabel, 2);
 
         JLabel mainTextLabel = new JLabel();
         mainTextLabel.setName("main");
         mainTextLabel.setBorder(new LineBorder(Color.lightGray));
-        mainTextLabel.setBackground(Color.black);
+        mainTextLabel.setBackground(black);
         mainTextLabel.setForeground(Color.white);
         mainTextLabel.setOpaque(true);
         int mainTextLabelHeight = 300;
         int mainTextLabelWidth = 600;
-        mainTextLabel.setBounds(frameWidth/2 - mainTextLabelWidth/2, frameHeight - mainTextLabelHeight - errorTextLabelHeight - userInputHeight, mainTextLabelWidth, mainTextLabelHeight);
+        mainTextLabel.setBounds(0, frameHeight - mainTextLabelHeight - errorTextLabelHeight - userInputHeight, mainTextLabelWidth, mainTextLabelHeight);
         layeredPane.add(mainTextLabel);
         layeredPane.setLayer(mainTextLabel, 2);
-
+//TODO: add label that covers all health changes (e.g. status kind of, but the whole messages)
+        //I'm imagining a ticker-like board but that seems hard to implement
 
         frame.setLayeredPane(layeredPane);
-
+        frame.setVisible(true);
         return frame;
     }
-    public static void changeLabelText(JFrame frame, String newText, LabelType label) {
+    public static void changeLabelText(JFrame frame, String newText, LabelType labelType) {
         newText = HTMLifyString(newText);
 
         String targetComponent = "";
 
-        switch (label) {
+        switch (labelType) {
             case STATUS -> targetComponent = "status";
             case INVENTORY -> targetComponent = "inventory";
             case RELICS -> targetComponent = "relics";
@@ -176,9 +178,8 @@ public class SwingRenderer extends JFrame {
             case DESCRIPTION -> targetComponent = "description";
             case ERROR -> targetComponent = "error";
         }
-
-        ((JLabel) getComponentFromFrame(frame, targetComponent)).setText(newText);
-
+        JLabel label = (JLabel) getComponentFromFrame(frame, targetComponent);
+        label.setText(newText);
     }
 
     public static void appendMainLabelText(JFrame frame, String addedText) {
@@ -254,8 +255,7 @@ public class SwingRenderer extends JFrame {
         newButton.setHorizontalAlignment(SwingConstants.LEFT);
         itemLabel.setText(labelText);
         JPanel inventoryPanel = (JPanel) frame.getLayeredPane().getComponentsInLayer(layer)[0];
-        itemPanel.setSize(inventoryPanel.getSize());
-        itemLabel.setSize(inventoryPanel.getSize());
+        itemLabel.setMaximumSize(new Dimension(100, 300));
         itemPanel.add(newButton);
         itemPanel.add(itemLabel);
         inventoryPanel.add(itemPanel);

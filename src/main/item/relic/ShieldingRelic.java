@@ -3,6 +3,7 @@ package main.item.relic;
 import main.DialogueType;
 import main.Main;
 import main.Player;
+import main.SwingRenderer;
 import main.room.Room;
 
 import javax.swing.*;
@@ -19,7 +20,7 @@ public class ShieldingRelic extends Relic {
         if (player.getAbsorption() < 5) {
             int absorptionAmount = new Random().nextInt(1, 3);
             player.addAbsorption(absorptionAmount);
-            System.out.println(Main.colorString("Your Relic of Shielding gave you " + absorptionAmount + " point" + Main.pluralChecker(absorptionAmount) + " of absorption!", DialogueType.HEAL));
+            SwingRenderer.appendMainLabelText(frame, "Your Relic of Shielding gave you " + absorptionAmount + " point" + Main.pluralChecker(absorptionAmount) + " of absorption!");
         }
         super.useRelic(frame, player, room);
     }

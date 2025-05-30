@@ -42,7 +42,7 @@ public class Player {
 
     public void attack(JFrame frame, Enemy enemy) {
         int totalDamage = this.damage;
-        int damageDealt = enemy.takeDamage(totalDamage);
+        int damageDealt = enemy.takeDamage(frame, totalDamage);
         if (damageDealt > 0) {
             SwingRenderer.appendMainLabelText(frame, "The " + enemy.getSpecies() + " took " + totalDamage + " damage!");
         }
@@ -51,40 +51,30 @@ public class Player {
 
     public void itemPickup(JFrame frame, Item item) {
         if (calculateInventorySize() >= this.inventoryCap) {
-            System.out.println("Your inventory is full!");
-            System.out.println("Would you like to use or discard an item? (y/n)");
-            SwingRenderer.changeLabelText(frame, "Your inventory is full!\nWould you like to use or discard an item? (y/n)", LabelType.MAIN);
-
-            String response = Main.yesOrNo(frame);
-            if (response.equals("y")) {
-                Menu.inventoryLoop(this, frame);
-                if (calculateInventorySize() >= this.inventoryCap) {
-                    System.out.println("Your inventory is still full... The " + item.getName() + " remains where it was.");
-                    return;
-                }
-            } else {
+            SwingRenderer.appendMainLabelText(frame, "Your inventory is full!\nEnter anything to continue, if your inventory is still full the item will be lost.");
+            Main.yesOrNo(frame);
+            if (calculateInventorySize() >= this.inventoryCap) {
+                SwingRenderer.appendMainLabelText(frame, "Your inventory is still full... The " + item.getName() + " remains where it was.");
                 return;
             }
         }
         addItemToInventory(item);
 
         if (item instanceof Relic && getEquippedRelics().size() < this.relicCap) {
-            System.out.println("Would you like to equip the " + item.getName() + " now? (y/n)");
             SwingRenderer.changeLabelText(frame, "Would you like to equip the " + item.getName() + " now? (y/n)", LabelType.MAIN);
             String response = Main.yesOrNo(frame);
             if (response.equals("y")) {
                 item.useItem(frame, this);
-                System.out.println("The " + item.getName() + " has been equipped!");
+                SwingRenderer.appendMainLabelText(frame, "The " + item.getName() + " has been equipped!");
                 checkRelics(frame, false);
                 return;
             }
         }
-        System.out.println("You stash the " + item.getName() + " in your bag.");
+        SwingRenderer.appendMainLabelText(frame, "You stash the " + item.getName() + " in your bag.");
     }
 
     public boolean addItemToInventory(Item item) {
         if (calculateInventorySize() >= this.inventoryCap) {
-            System.out.println("Your inventory is full!");
             return true;
         }
         int itemIndex = findItemInInventory(item);
@@ -122,6 +112,7 @@ public class Player {
     public boolean checkInventory(JFrame frame, boolean death) {
         SwingRenderer.clearInventoryPanel(frame, 1);
         if (this.inventory.isEmpty()) {
+            //deprecated ?
             if (death) {
                 System.out.println(Main.colorString("Wow! Not leaving anything for the next person...", DialogueType.INVENTORY));
             } else {
@@ -149,6 +140,7 @@ public class Player {
     public boolean checkRelics(JFrame frame, boolean death) {
         SwingRenderer.clearInventoryPanel(frame, 3);
         if (this.equippedRelics.isEmpty()) {
+            //deprecated?
             if (death) {
                 System.out.println(Main.colorString("Too good for those darn relics, eh?", DialogueType.INVENTORY));
             } else {
@@ -196,16 +188,7 @@ public class Player {
         output = output.concat("Attack damage: " + this.damage + "\n");
         output = output.concat("Rooms traveled: " + this.roomsTraversed + "\n");
         output = output.concat("Inventory capacity: " + this.inventoryCap + "\n");
-        System.out.println(output);
         SwingRenderer.changeLabelText(frame, output, LabelType.STATUS);
-        printStatusLine();
-    }
-
-    /**
-     * Prints out the player's current level and health as a prompt
-     */
-    public void printStatusLine() {
-        System.out.print("L" + this.level + " HP " + (this.currentHealth + this.absorption) + "/" + this.maxHealth);
     }
 
     public void takeDamage(JFrame frame, int damage) {
@@ -266,30 +249,28 @@ public class Player {
         return true;
     }
 
-    public boolean unequipRelic(Relic relic){
+    public boolean unequipRelic(JFrame frame, Relic relic){
         if (relic.isCursed()) {
-            System.out.println("The relic is welded to you painfully. You can't remove it!");
+            SwingRenderer.changeLabelText(frame, "The relic is welded to you painfully. You can't remove it!", LabelType.ERROR);
             return false;
         }
 
         boolean inventoryFull = addItemToInventory(relic);
         if (inventoryFull) {
-            System.out.println("The relic could not be unequipped!");
+            SwingRenderer.changeLabelText(frame, "Your inventory is full; the relic could not be unequipped!", LabelType.ERROR);
             return false;
         }
         relic.setEquipped(false);
-        System.out.println("The " + relic.getName() + " was unequipped!");
+        SwingRenderer.changeLabelText(frame, "The " + relic.getName() + " was unequipped!", LabelType.ERROR);
         getEquippedRelics().remove(relic);
         return true;
     }
 
     public void doDeathSequence(JFrame frame) {
-        System.out.println("\"Ack! It's too much for me!\" " + getName() + " exclaims.");
-        System.out.println(getName() + " falls to their knees... then to the ground.");
-        System.out.println("GAME OVER!");
-        System.out.println();
-        endStatistics(frame);
-        exit(0);
+        SwingRenderer.changeLabelText(frame, "\"Ack! It's too much for me!\" " + getName() + " exclaims.\n" + getName() + " falls to their knees... then to the ground.\n" + "GAME OVER!", LabelType.MAIN);
+//        endStatistics(frame);
+        while (true) {
+        }
     }
 
     // if player died from food, it will not show that item as being consumed
@@ -303,21 +284,23 @@ public class Player {
         checkRelics(frame, true);
     }
 
-    public void checkLevelUp() {
+    public void checkLevelUp(JFrame frame) {
         if (this.experience >= this.expToNextLevel && this.level < 10) {
-            levelUp();
+            levelUp(frame);
         }
     }
-    public void levelUp() {
+
+    //could make a popup-type thing?
+    public void levelUp(JFrame frame) {
         this.experience -= this.expToNextLevel;
         this.expToNextLevel = (int) Math.round(this.expToNextLevel * 1.2);
         this.level += 1;
-        System.out.println(Main.colorString("You leveled up!", DialogueType.LEVEL));
-        levelUpEffects(this.level);
-        checkLevelUp();
+        SwingRenderer.appendMainLabelText(frame, "You leveled up!");
+        levelUpEffects(frame, this.level);
+        checkLevelUp(frame);
     }
 
-    public void levelUpEffects(int newLevel) {
+    public void levelUpEffects(JFrame frame, int newLevel) {
         int maxHealthChange = 0;
         int inventoryCapChange = 0;
         int damageChange = 0;
@@ -354,23 +337,23 @@ public class Player {
                 relicCapChange = 2;
                 inventoryCapChange = 3;
                 this.expToNextLevel = 100000000;
-                System.out.println(Main.colorString("You're at the maximum level!", DialogueType.LEVEL));
+                SwingRenderer.appendMainLabelText(frame, "You're at the maximum level!");
                 break;
         }
         if (maxHealthChange != 0) {
-            System.out.println(Main.colorString("Your maximum health increased by " + maxHealthChange + "!", DialogueType.LEVEL));
+            SwingRenderer.appendMainLabelText(frame, "Your maximum health increased by " + maxHealthChange + "!");
             changeMaxHealth(maxHealthChange);
         }
         if (inventoryCapChange != 0) {
-            System.out.println(Main.colorString("Your inventory size increased by " + inventoryCapChange + "!", DialogueType.LEVEL));
+            SwingRenderer.appendMainLabelText(frame, "Your inventory size increased by " + inventoryCapChange + "!");
             changeInventoryCap(inventoryCapChange);
         }
         if (damageChange != 0) {
-            System.out.println(Main.colorString("Your attack damage increased by " + damageChange + "!", DialogueType.LEVEL));
+            SwingRenderer.appendMainLabelText(frame, "Your attack damage increased by " + damageChange + "!");
             increaseDamage(damageChange);
         }
         if (relicCapChange != 0) {
-            System.out.println(Main.colorString("Your relic pouch capacity increased by " + relicCapChange + "!", DialogueType.LEVEL));
+            SwingRenderer.appendMainLabelText(frame, "Your relic pouch capacity increased by " + relicCapChange + "!");
             changeRelicCap(relicCapChange);
         }
     }

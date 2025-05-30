@@ -28,7 +28,7 @@ public class Enemy {
         this.damageType = "";
     }
 
-    public int takeDamage(int damage) {
+    public int takeDamage(JFrame frame, int damage) {
         int oldHealth = this.currentHealth;
         this.currentHealth -= damage;
         if (this.currentHealth < 0) {

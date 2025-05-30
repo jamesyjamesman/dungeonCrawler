@@ -14,10 +14,7 @@ public class PlayerInit {
             playerName = SwingRenderer.getTempText(frame);
         }
         Player player = new Player(playerName);
-        if (player.getName().equals("help")) {
-            System.out.println("Well, not right now...");
-        }
-        System.out.println("Your character's name is: " + player.getName());
+        SwingRenderer.changeLabelText(frame, "Your character's name is: " + player.getName(), LabelType.ERROR);
         return player;
     }
 }

@@ -9,13 +9,11 @@ import javax.swing.*;
 public class Battle {
 
     public static void battleLoop(JFrame frame, Player player, EnemyRoom room) {
-        System.out.println(Main.colorString("The battle has begun!", DialogueType.BATTLE));
-        SwingRenderer.changeLabelText(frame, "", LabelType.MAIN);
+        SwingRenderer.appendMainLabelText(frame, "The battle has begun!");
         while (!room.getEnemies().isEmpty()) {
             String enemyString = "It's your turn! What would you like to attack?" + "\n" + readEnemies(room, player);
             SwingRenderer.appendMainLabelText(frame, enemyString);
 
-            player.printStatusLine();
             int enemyIndex = Main.responseHandler(frame, player, enemyString, 1, room.getEnemies().size()) - 1;
             SwingRenderer.changeLabelText(frame, "", LabelType.MAIN);
             Enemy enemy = room.getEnemies().get(enemyIndex);
@@ -23,7 +21,7 @@ public class Battle {
             boolean enemyIsDead = enemy.getCurrentHealth() == 0;
             if (enemyIsDead) {
                 player.changeExperience(enemy.getExperienceDropped());
-                player.checkLevelUp();
+                player.checkLevelUp(frame);
                 SwingRenderer.appendMainLabelText(frame, "The " + enemy.getSpecies() + " died! You got " + enemy.getExperienceDropped() + " experience!");
                 room.addDefeatedEnemies(enemy);
                 room.removeEnemies(enemy);

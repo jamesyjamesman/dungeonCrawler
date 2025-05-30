@@ -32,7 +32,6 @@ public class Room {
 
     public void completeRoomActions(Player player, JFrame frame) {
         SwingRenderer.changeLabelText(frame, this.description, LabelType.DESCRIPTION);
-        System.out.println(this.description);
         player.incrementRoomsTraversed();
         player.checkStatus(frame);
     }

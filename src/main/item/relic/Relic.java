@@ -23,14 +23,12 @@ public abstract class Relic extends Item {
             if (player.equippedRelicIndex("Relic of Cursed Healing") == -1) {
                 int amountDamage = new Random().nextInt(4);
                 if (amountDamage > 0) {
-                    System.out.println(Main.colorString("Your cursed " + getName() + " caused " + amountDamage + " damage!", DialogueType.DAMAGE));
                     SwingRenderer.appendMainLabelText(frame, "Your cursed " + getName() + " caused " + amountDamage + " damage!");
                     player.takeDamage(frame, amountDamage);
                 }
             } else {
                 int amountHeal = new Random().nextInt(2);
                 if (amountHeal > 0) {
-                    System.out.println(Main.colorString("Your cursed " + getName() + " healed you for " + amountHeal + " health!", DialogueType.HEAL));
                     SwingRenderer.appendMainLabelText(frame, "Your cursed " + getName() + " healed you for " + amountHeal + " health!");
                     player.heal(amountHeal);
                 }
@@ -40,7 +38,7 @@ public abstract class Relic extends Item {
 
     @Override
     public void useItem(JFrame frame, Player player) {
-        if(this.equipped) {player.unequipRelic(this);}
+        if(this.equipped) {player.unequipRelic(frame, this);}
         else {player.equipRelic(frame, this);}
     }
 

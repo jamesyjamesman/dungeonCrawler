@@ -2,6 +2,8 @@ package main;
 import javax.swing.*;
 import java.util.Scanner;
 
+
+//DEPRECATED
 public class Menu {
 
     public static void inventoryLoop(Player player, JFrame frame) {
@@ -13,7 +15,6 @@ public class Menu {
             }
 
             System.out.println("Would you like to use an item?\nInput the appropriate number to use it, or exit to return to gameplay.");
-            player.printStatusLine();
             System.out.print(" Inventory> ");
             int response = responseHandler(frame, 1, player.getInventory().size());
 
@@ -33,7 +34,6 @@ public class Menu {
             }
 
             System.out.println("Would you like to unequip a relic?\nInput the appropriate number to do so, or exit to return to gameplay.");
-            player.printStatusLine();
             System.out.print(" Relics> ");
             int response = responseHandler(frame, 1, player.getEquippedRelics().size());
 
