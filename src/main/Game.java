@@ -28,7 +28,7 @@ public class Game {
 
             System.out.println(exitString);
             SwingRenderer.changeLabelText(frame, exitString, LabelType.MAIN);
-            playerCharacter.useRelics(currentRoom);
+            playerCharacter.useRelics(frame, currentRoom);
 
             playerCharacter.printStatusLine();
             int response = Main.responseHandler(frame, playerCharacter, exitString, 1, currentRoom.getExits().size()) - 1;

@@ -17,6 +17,6 @@ public class UnBuffItem extends BuffItem {
         System.out.println("You're really not feeling too good.");
         //if I ever implement a poison mechanic it would be used here instead
         System.out.println(Main.colorString("You took " + this.amountChanged + " damage!", DialogueType.DAMAGE));
-        player.takeDamage(this.amountChanged);
+        player.takeDamage(frame, this.amountChanged);
     }
 }

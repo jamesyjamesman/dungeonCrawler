@@ -40,11 +40,11 @@ public class Player {
         this.expToNextLevel = 10;
     }
 
-    public void attack(Enemy enemy) {
+    public void attack(JFrame frame, Enemy enemy) {
         int totalDamage = this.damage;
         int damageDealt = enemy.takeDamage(totalDamage);
         if (damageDealt > 0) {
-            System.out.println(Main.colorString("The " + enemy.getSpecies() + " took " + totalDamage + " damage!", DialogueType.BATTLE));
+            SwingRenderer.appendMainLabelText(frame, "The " + enemy.getSpecies() + " took " + totalDamage + " damage!");
         }
         //will get more complex with weapons, etc.
     }
@@ -208,21 +208,23 @@ public class Player {
         System.out.print("L" + this.level + " HP " + (this.currentHealth + this.absorption) + "/" + this.maxHealth);
     }
 
-    public void takeDamage(int damage) {
+    public void takeDamage(JFrame frame, int damage) {
         if (this.absorption > 0) {
             this.absorption -= damage;
             if (this.absorption < 0) {
                 damage = -1 * this.absorption;
                 this.absorption = 0;
             } else {
+                checkStatus(frame);
                 return;
             }
         }
         this.currentHealth -= damage;
         if (this.currentHealth <= 0) {
             this.currentHealth = 0;
-            //TODO: no longer kills the player instantly! THIS IS A BUG! Player death needs to be checked during battle, now.
+            doDeathSequence(frame);
         }
+        checkStatus(frame);
     }
     public int heal(int health) {
         this.currentHealth += health;
@@ -243,9 +245,9 @@ public class Player {
         this.damage += damageIncrease;
     }
 
-    public void useRelics(Room room) {
+    public void useRelics(JFrame frame, Room room) {
         for (Relic equippedRelic : this.equippedRelics) {
-            equippedRelic.useRelic(this, room);
+            equippedRelic.useRelic(frame, this, room);
         }
     }
 
@@ -259,7 +261,7 @@ public class Player {
         int relicIndex = this.findItemInInventory(relic);
         this.inventory.remove(relicIndex);
         if (relic.isCursed()) {
-            SwingRenderer.changeLabelText(frame, "OH no! the " + relic.getName() + " was cursed!", LabelType.ERROR);
+            SwingRenderer.changeLabelText(frame, "Oh no! the " + relic.getName() + " was cursed!", LabelType.ERROR);
         }
         return true;
     }

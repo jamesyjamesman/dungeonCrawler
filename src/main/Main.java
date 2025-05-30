@@ -63,17 +63,16 @@ public class Main {
                 continue;
             }
             once = true;
-            System.out.print("> ");
             String promptResponse = checkForCommands(frame, player, repeatString, newResponse);
             int response;
             try {
                 response = Integer.parseInt(promptResponse);
             } catch(NumberFormatException e) {
-                System.out.println("Invalid response!");
+                SwingRenderer.changeLabelText(frame, "Invalid response!", LabelType.ERROR);
                 continue;
             }
             if (response > upperBound || response < lowerBound) {
-                System.out.println("Out of bounds!");
+                SwingRenderer.changeLabelText(frame, "Out of bounds!", LabelType.ERROR);
                 continue;
             }
             return response;
@@ -97,7 +96,7 @@ public class Main {
             } else if (newResponse.equals("n") || newResponse.equals("no")) {
                 return "n";
             }
-            System.out.println("Invalid response!");
+            SwingRenderer.changeLabelText(frame, "Invalid response!", LabelType.ERROR);
         }
 
     }
@@ -106,20 +105,20 @@ public class Main {
         Scanner promptScanner = new Scanner(System.in);
         while (true) {
             switch (input) {
-                case "status" -> player.checkStatus(frame);
-                case "help" -> commandList();
-                case "inventory", "inv" -> {
-                    Menu.inventoryLoop(player, frame);
-                    System.out.println(exitString);
-                    player.printStatusLine();
-                }
-                case "relics" -> {
-                    Menu.relicLoop(frame, player);
-                    System.out.println(exitString);
-                    player.printStatusLine();
-                }
+//                case "status" -> player.checkStatus(frame);
+//                case "help" -> commandList();
+//                case "inventory", "inv" -> {
+//                    Menu.inventoryLoop(player, frame);
+//                    System.out.println(exitString);
+//                    player.printStatusLine();
+//                }
+//                case "relics" -> {
+//                    Menu.relicLoop(frame, player);
+//                    System.out.println(exitString);
+//                    player.printStatusLine();
+//                }
                 //debug commands
-                case "kill" -> player.takeDamage(1000000);
+                case "kill" -> player.takeDamage(frame, 1000000);
                 case "godmode" -> {
                     player.increaseDamage(1000);
                     player.addAbsorption(100000);
@@ -133,6 +132,7 @@ public class Main {
         }
     }
 
+    //needs refactor
     public static void commandList() {
         System.out.println("List of commands:");
         System.out.println("help: checks this command.");

@@ -17,7 +17,7 @@ public class TrapRoom extends Room {
     public void completeRoomActions(Player player, JFrame frame) {
         super.completeRoomActions(player, frame);
         System.out.println(Main.colorString("You took " + this.damageDealt + " damage!", DialogueType.DAMAGE));
-        player.takeDamage(this.damageDealt);
+        player.takeDamage(frame, this.damageDealt);
     }
     public void setDamageDealt(int damageDealt) {
         this.damageDealt = damageDealt;

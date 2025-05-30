@@ -6,6 +6,7 @@ import main.Player;
 import main.item.relic.Relic;
 import main.item.relic.SlimeRelic;
 
+import javax.swing.*;
 import java.util.Random;
 
 public class SlimeBoss extends Boss {
@@ -31,7 +32,7 @@ public class SlimeBoss extends Boss {
 
     //not good
     @Override
-    public void attack(Player player) {
+    public void attack(JFrame frame, Player player) {
         if (player.equippedRelicIndex("Relic of Bounciness") > -1
                 && new Random().nextInt(4) == 0) {
             System.out.println(Main.colorString("The attack from the " + this.species + " bounced right off!", DialogueType.BATTLE));
@@ -50,7 +51,7 @@ public class SlimeBoss extends Boss {
         if (damage > 0) {
             System.out.println(Main.colorString("You took " + damage + " damage!", DialogueType.DAMAGE));
         }
-        player.takeDamage(damage);
+        player.takeDamage(frame, damage);
     }
 
     @Override

@@ -181,6 +181,14 @@ public class SwingRenderer extends JFrame {
 
     }
 
+    public static void appendMainLabelText(JFrame frame, String addedText) {
+        JLabel mainLabel = (JLabel) getComponentFromFrame(frame, "main");
+        String oldText = mainLabel.getText().replaceAll("</html>", "");
+        addedText = HTMLifyString(addedText).replaceAll("<html>", "");
+        String newText = oldText + "<br>" + addedText;
+        mainLabel.setText(newText);
+    }
+
     public static void makeInventoryVisible(JFrame frame) {
         JPanel inventoryPanel = (JPanel) frame.getLayeredPane().getComponentsInLayer(1)[0];
         JPanel relicPanel = (JPanel) frame.getLayeredPane().getComponentsInLayer(3)[0];
@@ -228,16 +236,29 @@ public class SwingRenderer extends JFrame {
         panel.revalidate();
         panel.repaint();
     }
-    public static void addInventoryButton(JFrame frame, String buttonText, Player player, int itemIndex, int layer) {
+    public static void addInventoryButton(JFrame frame, String labelText, Player player, int itemIndex, int layer) {
         InventoryButton newButton = new InventoryButton();
         if (layer == 1) {
             newButton.addActionListener(_ -> useItem(frame, itemIndex, player));
         } else {
             newButton.addActionListener(_ -> unequipRelic(frame, itemIndex, player));
         }
-        buttonText = HTMLifyString(buttonText);
-        newButton.setText(buttonText);
-        ((JPanel) frame.getLayeredPane().getComponentsInLayer(layer)[0]).add(newButton);
+        //add button and label to a new panel, force button left, somehow get wrapping going
+        JPanel itemPanel = new JPanel();
+        itemPanel.setOpaque(false);
+        JLabel itemLabel = new JLabel();
+        itemLabel.setForeground(Color.white);
+        itemLabel.setOpaque(false);
+        labelText = HTMLifyString(labelText);
+        newButton.setText("Use");
+        newButton.setHorizontalAlignment(SwingConstants.LEFT);
+        itemLabel.setText(labelText);
+        JPanel inventoryPanel = (JPanel) frame.getLayeredPane().getComponentsInLayer(layer)[0];
+        itemPanel.setSize(inventoryPanel.getSize());
+        itemLabel.setSize(inventoryPanel.getSize());
+        itemPanel.add(newButton);
+        itemPanel.add(itemLabel);
+        inventoryPanel.add(itemPanel);
     }
 
     public static void useItem(JFrame frame, int itemIndex, Player player) {

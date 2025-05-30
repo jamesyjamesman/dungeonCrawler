@@ -3,7 +3,9 @@ package main.enemy;
 import main.DialogueType;
 import main.Main;
 import main.Player;
+import main.SwingRenderer;
 
+import javax.swing.*;
 import java.util.Random;
 
 public class Enemy {
@@ -36,14 +38,14 @@ public class Enemy {
         return damage;
     }
 
-    public void attack(Player player) {
+    public void attack(JFrame frame, Player player) {
         if (player.equippedRelicIndex("Relic of Bounciness") > -1
             && new Random().nextInt(4) == 0) {
-                System.out.println(Main.colorString("The attack from the " + this.species + " bounced right off!", DialogueType.BATTLE));
+            SwingRenderer.appendMainLabelText(frame, "The attack from the " + this.species + " bounced right off!");
                 return;
         }
-        System.out.println(Main.colorString("The " + this.species + " attacked you, dealing " + this.damage + " damage!", DialogueType.DAMAGE));
-        player.takeDamage(this.damage);
+        SwingRenderer.appendMainLabelText(frame, "The " + this.species + " attacked you, dealing " + this.damage + " damage!");
+        player.takeDamage(frame, this.damage);
         //will get more complex with weapons, etc.
     }
 

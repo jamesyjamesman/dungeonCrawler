@@ -6,6 +6,7 @@ import main.Player;
 import main.item.relic.CurseHealRelic;
 import main.item.relic.Relic;
 
+import javax.swing.*;
 import java.util.Random;
 
 public class MinotaurBoss extends Boss {
@@ -37,7 +38,7 @@ public class MinotaurBoss extends Boss {
 
     //minotaur is not affected by relic of bounciness (on purpose)
     @Override
-    public void attack(Player player) {
+    public void attack(JFrame frame, Player player) {
         int damage = 0;
         int randomChoice = new Random().nextInt(9);
 
@@ -52,7 +53,7 @@ public class MinotaurBoss extends Boss {
         if (damage > 0) {
             System.out.println(Main.colorString("You took " + damage + " damage!", DialogueType.DAMAGE));
         }
-        player.takeDamage(damage);
+        player.takeDamage(frame, damage);
     }
 
     @Override

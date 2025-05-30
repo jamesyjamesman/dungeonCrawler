@@ -3,6 +3,7 @@ package main.item;
 import main.DialogueType;
 import main.Main;
 import main.Player;
+import main.SwingRenderer;
 
 import javax.swing.*;
 import java.util.Random;
@@ -26,24 +27,25 @@ public class HealthItem extends Item{
         this.healthRestored = new Random().nextInt(this.restorationLowerBound, this.restorationUpperBound);
 
         if (this.healthRestored < 0) {
-            System.out.println(Main.colorString("Yuck! The " + this.name + " was terrible... You lost " + this.healthRestored * -1 + " health.", DialogueType.DAMAGE));
-            player.takeDamage(this.healthRestored * -1);
+            SwingRenderer.appendMainLabelText(frame, "Yuck! The " + this.name + " was terrible... You lost " + this.healthRestored * -1 + " health.");
+            player.takeDamage(frame, this.healthRestored * -1);
         } else {
             if (this.maxHealthChange != 0) {
-                System.out.println(Main.colorString("Wow! A surge of power courses through you... your maximum health has increased by " + this.maxHealthChange + "!", DialogueType.HEAL));
+                SwingRenderer.appendMainLabelText(frame, "Wow! A surge of power courses through you... your maximum health has increased by " + this.maxHealthChange + "!");
                 player.changeMaxHealth(this.maxHealthChange);
             }
             if (this.addedAbsorption != 0) {
-                System.out.println(Main.colorString("Wow! An aura of healthiness surrounds you... You gained " + this.addedAbsorption + " points of absorption!", DialogueType.HEAL));
+                SwingRenderer.appendMainLabelText(frame, "Wow! An aura of healthiness surrounds you... You gained " + this.addedAbsorption + " points of absorption!");
                 player.addAbsorption(this.addedAbsorption);
             }
             int amountHealed = player.heal(this.healthRestored);
             if (amountHealed != 0) {
-                System.out.println(Main.colorString("Yum! That " + this.name + " was great! You replenished " + amountHealed + " health.", DialogueType.HEAL));
+                SwingRenderer.appendMainLabelText(frame, "Yum! That " + this.name + " was great! You replenished " + amountHealed + " health.");
             } else {
-                System.out.println("That " + this.name + " was delicious! ...but you don't feel any healthier.");
+                SwingRenderer.appendMainLabelText(frame, "That " + this.name + " was delicious! ...but you don't feel any healthier.");
             }
         }
+        player.checkStatus(frame);
         player.discardItem(this);
     }
 

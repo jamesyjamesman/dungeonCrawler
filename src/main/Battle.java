@@ -10,20 +10,21 @@ public class Battle {
 
     public static void battleLoop(JFrame frame, Player player, EnemyRoom room) {
         System.out.println(Main.colorString("The battle has begun!", DialogueType.BATTLE));
+        SwingRenderer.changeLabelText(frame, "", LabelType.MAIN);
         while (!room.getEnemies().isEmpty()) {
-            String enemyString = "It's your turn! What would you like to attack?\n" + readEnemies(room, player);
-            SwingRenderer.changeLabelText(frame, enemyString, LabelType.MAIN);
+            String enemyString = "It's your turn! What would you like to attack?" + "\n" + readEnemies(room, player);
+            SwingRenderer.appendMainLabelText(frame, enemyString);
 
             player.printStatusLine();
             int enemyIndex = Main.responseHandler(frame, player, enemyString, 1, room.getEnemies().size()) - 1;
-
+            SwingRenderer.changeLabelText(frame, "", LabelType.MAIN);
             Enemy enemy = room.getEnemies().get(enemyIndex);
-            player.attack(enemy);
+            player.attack(frame, enemy);
             boolean enemyIsDead = enemy.getCurrentHealth() == 0;
             if (enemyIsDead) {
                 player.changeExperience(enemy.getExperienceDropped());
                 player.checkLevelUp();
-                System.out.println(Main.colorString("The " + enemy.getSpecies() + " died! You got " + enemy.getExperienceDropped() + " experience!", DialogueType.BATTLE));
+                SwingRenderer.appendMainLabelText(frame, "The " + enemy.getSpecies() + " died! You got " + enemy.getExperienceDropped() + " experience!");
                 room.addDefeatedEnemies(enemy);
                 room.removeEnemies(enemy);
                 if (enemy instanceof Boss) {
@@ -34,7 +35,7 @@ public class Battle {
             //enemies attack player
             for (int i = 0; i < room.getEnemies().size(); i++) {
                 Enemy enemyAttacker = room.getEnemies().get(i);
-                enemyAttacker.attack(player);
+                enemyAttacker.attack(frame, player);
             }
         }
         SwingRenderer.changeLabelText(frame, "The enemies were defeated!", LabelType.MAIN);

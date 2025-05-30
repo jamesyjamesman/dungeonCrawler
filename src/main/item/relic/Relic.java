@@ -3,6 +3,7 @@ package main.item.relic;
 import main.DialogueType;
 import main.Main;
 import main.Player;
+import main.SwingRenderer;
 import main.item.Item;
 import main.room.Room;
 
@@ -17,18 +18,20 @@ public abstract class Relic extends Item {
         this.cursed = new Random().nextInt(5) == 0;
     }
 
-    public void useRelic(Player player, Room room) {
+    public void useRelic(JFrame frame, Player player, Room room) {
         if (this.cursed) {
             if (player.equippedRelicIndex("Relic of Cursed Healing") == -1) {
                 int amountDamage = new Random().nextInt(4);
                 if (amountDamage > 0) {
                     System.out.println(Main.colorString("Your cursed " + getName() + " caused " + amountDamage + " damage!", DialogueType.DAMAGE));
-                    player.takeDamage(amountDamage);
+                    SwingRenderer.appendMainLabelText(frame, "Your cursed " + getName() + " caused " + amountDamage + " damage!");
+                    player.takeDamage(frame, amountDamage);
                 }
             } else {
                 int amountHeal = new Random().nextInt(2);
                 if (amountHeal > 0) {
                     System.out.println(Main.colorString("Your cursed " + getName() + " healed you for " + amountHeal + " health!", DialogueType.HEAL));
+                    SwingRenderer.appendMainLabelText(frame, "Your cursed " + getName() + " healed you for " + amountHeal + " health!");
                     player.heal(amountHeal);
                 }
             }
