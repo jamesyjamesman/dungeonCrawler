@@ -157,12 +157,48 @@ public class SwingRenderer extends JFrame {
         mainTextLabel.setBounds(0, frameHeight - mainTextLabelHeight - errorTextLabelHeight - userInputHeight, mainTextLabelWidth, mainTextLabelHeight);
         layeredPane.add(mainTextLabel);
         layeredPane.setLayer(mainTextLabel, 2);
+
+        JPanel yesOrNo = new JPanel();
+        yesOrNo.setOpaque(false);
+        yesOrNo.setBounds(0, frameHeight - errorTextLabelHeight - userInputHeight - 25, mainTextLabelWidth, 25);
+        yesOrNo.setVisible(false);
+
+        JLabel questionText = new JLabel();
+        questionText.setVisible(false);
+        layeredPane.add(questionText);
+        layeredPane.setLayer(questionText, 12);
+
+        InventoryButton yes = new InventoryButton();
+        yes.setText("Yes");
+        yes.addActionListener(_ -> questionText.setText("yes"));
+        yesOrNo.add(yes);
+
+        InventoryButton no = new InventoryButton();
+        no.setText("No");
+        no.addActionListener(_ -> questionText.setText("no"));
+        yesOrNo.add(no);
+
+        layeredPane.add(yesOrNo);
+        layeredPane.setLayer(yesOrNo, 11);
+
+
 //TODO: add label that covers all health changes (e.g. status kind of, but the whole messages)
         //I'm imagining a ticker-like board but that seems hard to implement
 
         frame.setLayeredPane(layeredPane);
         frame.setVisible(true);
         return frame;
+    }
+
+    public static void changeAnswerVisibility(JFrame frame, boolean visible) {
+        frame.getLayeredPane().getComponentsInLayer(11)[0].setVisible(visible);
+    }
+
+    public static String getAnswerText(JFrame frame) {
+        JLabel answerLabel = (JLabel) frame.getLayeredPane().getComponentsInLayer(12)[0];
+        String output = answerLabel.getText();
+        answerLabel.setText("");
+        return output;
     }
     public static void changeLabelText(JFrame frame, String newText, LabelType labelType) {
         newText = HTMLifyString(newText);
@@ -237,6 +273,7 @@ public class SwingRenderer extends JFrame {
         panel.revalidate();
         panel.repaint();
     }
+    //TODO: make cursed relics a different color (purple) if you have the relic equipped (or if the relic is equipped)
     public static void addInventoryButton(JFrame frame, String labelText, Player player, int itemIndex, int layer) {
         InventoryButton newButton = new InventoryButton();
         if (layer == 1) {

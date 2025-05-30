@@ -80,13 +80,14 @@ public class Main {
         }
     }
 
-    //TODO: this should make buttons appear on the main label (yes or no) that can be clicked nicely
     public static String yesOrNo(JFrame frame) {
-        String originalResponse = SwingRenderer.getTempText(frame).toLowerCase();
+        //this could be done better
+        SwingRenderer.changeAnswerVisibility(frame, true);
+        String originalResponse = SwingRenderer.getAnswerText(frame);
         String newResponse;
         boolean once = false;
         while (true) {
-            newResponse = SwingRenderer.getTempText(frame).toLowerCase();
+            newResponse = SwingRenderer.getAnswerText(frame);
             if (newResponse.isEmpty()) {
                 continue;
             }
@@ -95,13 +96,14 @@ public class Main {
             }
             once = true;
             if (newResponse.equals("y") || newResponse.equals("yes")) {
+                SwingRenderer.changeAnswerVisibility(frame, false);
                 return "y";
             } else if (newResponse.equals("n") || newResponse.equals("no")) {
+                SwingRenderer.changeAnswerVisibility(frame, false);
                 return "n";
             }
             SwingRenderer.changeLabelText(frame, "Invalid response!", LabelType.ERROR);
         }
-
     }
 
     public static String checkForCommands(JFrame frame, Player player, String exitString, String input) {
