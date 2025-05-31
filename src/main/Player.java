@@ -66,7 +66,7 @@ public class Player {
             if (response.equals("y")) {
                 item.useItem(frame, this);
                 SwingRenderer.appendMainLabelText(frame, "The " + item.getName() + " has been equipped!");
-                checkRelics(frame, false);
+                checkRelics(frame);
                 return;
             }
         }
@@ -109,17 +109,9 @@ public class Player {
     }
 
     //can cause index out of bounds
-    public void checkInventory(JFrame frame, boolean death) {
+    public void checkInventory(JFrame frame) {
         SwingRenderer.clearInventoryPane(frame, 1);
-        if (this.inventory.isEmpty()) {
-            //deprecated ?
-            if (death) {
-                System.out.println(Main.colorString("Wow! Not leaving anything for the next person...", DialogueType.INVENTORY));
-            } else {
-                System.out.println(Main.colorString("Your inventory is empty!", DialogueType.INVENTORY));
-            }
-            return;
-        }
+
         for (int i = 0; i < this.inventory.size(); i++) {
             //Displays amount of items in parentheses (e.g. (x2)) if the amount is greater than 1
             String amount = (this.inventory.get(i).size() > 1) ? " (x" + this.inventory.get(i).size() + ")" : "";
@@ -134,17 +126,8 @@ public class Player {
     }
 
     //this is very dry, but I wasn't sure how to use checkInventory due to the different types
-    public void checkRelics(JFrame frame, boolean death) {
+    public void checkRelics(JFrame frame) {
         SwingRenderer.clearInventoryPane(frame, 3);
-        if (this.equippedRelics.isEmpty()) {
-            //deprecated?
-            if (death) {
-                System.out.println(Main.colorString("Too good for those darn relics, eh?", DialogueType.INVENTORY));
-            } else {
-                System.out.println(Main.colorString("Your relic pouch is empty!", DialogueType.INVENTORY));
-            }
-            return;
-        }
 
         for (int i = 0; i < this.equippedRelics.size(); i++) {
             String output = (i+1) + ". " + this.equippedRelics.get(i).getName() + ": "

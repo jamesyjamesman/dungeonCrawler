@@ -19,7 +19,7 @@ public abstract class Boss extends Enemy {
         String response = Main.yesOrNo(frame);
         if (response.equals("y")) {
             player.itemPickup(frame, droppedRelic);
-            player.checkInventory(frame, false);
+            player.checkInventory(frame);
         }
     }
 }

@@ -342,13 +342,13 @@ public class SwingRenderer extends JFrame {
     public static void useItem(JFrame frame, int itemIndex, Player player) {
         ArrayList<Item> items = player.getInventory().get(itemIndex);
         items.getFirst().useItem(frame, player);
-        player.checkInventory(frame, false);
-        player.checkRelics(frame, false);
+        player.checkInventory(frame);
+        player.checkRelics(frame);
     }
 
     public static void unequipRelic(JFrame frame, int itemIndex, Player player) {
         player.getEquippedRelics().get(itemIndex).useItem(frame, player);
-        player.checkInventory(frame, false);
-        player.checkRelics(frame, false);
+        player.checkInventory(frame);
+        player.checkRelics(frame);
     }
 }
