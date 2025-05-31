@@ -29,7 +29,7 @@ public class Game {
             SwingRenderer.changeLabelText(frame, exitString, LabelType.MAIN);
             playerCharacter.useRelics(frame, currentRoom);
 
-            int response = Main.responseHandler(frame, playerCharacter, exitString, 1, currentRoom.getExits().size()) - 1;
+            int response = Main.responseHandler(frame, playerCharacter, 1, currentRoom.getExits().size()) - 1;
             Room nextRoom = currentRoom.getExits().get(response);
             currentRoom.getExits().clear();
             currentRoom = nextRoom;

@@ -14,7 +14,7 @@ public class Battle {
             String enemyString = "It's your turn! What would you like to attack?" + "\n" + readEnemies(room, player);
             SwingRenderer.appendMainLabelText(frame, enemyString);
 
-            int enemyIndex = Main.responseHandler(frame, player, enemyString, 1, room.getEnemies().size()) - 1;
+            int enemyIndex = Main.responseHandler(frame, player, 1, room.getEnemies().size()) - 1;
             SwingRenderer.changeLabelText(frame, "", LabelType.MAIN);
             Enemy enemy = room.getEnemies().get(enemyIndex);
             player.attack(frame, enemy);

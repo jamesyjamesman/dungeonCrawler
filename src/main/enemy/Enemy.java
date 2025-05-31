@@ -47,14 +47,6 @@ public class Enemy {
         //will get more complex with weapons, etc.
     }
 
-    public String getInformation() {
-        String output = "";
-        output += this.currentHealth + "/" + this.maxHealth + " HP\n";
-        output += this.damage + " DMG\n";
-        output += this.experienceDropped + " EXP\n";
-        return output;
-    }
-
     public void reset() {
         this.currentHealth = this.maxHealth;
     }

@@ -51,9 +51,6 @@ public class HealthItem extends Item{
         this.restorationLowerBound = lowerBound;
         this.restorationUpperBound = upperBound;
     }
-    public void setMaxHealthChange(int maxHealthChange) {
-        this.maxHealthChange = maxHealthChange;
-    }
     public void setAddedAbsorption(int addedAbsorption) {
         this.addedAbsorption = addedAbsorption;
     }

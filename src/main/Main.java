@@ -51,7 +51,7 @@ public class Main {
             newRoom.setItem(item);
         }
     }
-    public static int responseHandler(JFrame frame, Player player, String repeatString, int lowerBound, int upperBound) {
+    public static int responseHandler(JFrame frame, Player player, int lowerBound, int upperBound) {
         String originalResponse = SwingRenderer.getTempText(frame).toLowerCase();
         String newResponse;
         boolean once = false;
@@ -64,7 +64,7 @@ public class Main {
                 continue;
             }
             once = true;
-            String promptResponse = checkForCommands(frame, player, repeatString, newResponse);
+            String promptResponse = checkForCommands(frame, player, newResponse);
             int response;
             try {
                 response = Integer.parseInt(promptResponse);
@@ -106,7 +106,7 @@ public class Main {
         }
     }
 
-    public static String checkForCommands(JFrame frame, Player player, String exitString, String input) {
+    public static String checkForCommands(JFrame frame, Player player, String input) {
         Scanner promptScanner = new Scanner(System.in);
         while (true) {
             switch (input) {
