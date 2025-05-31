@@ -5,6 +5,8 @@ import main.item.*;
 import main.item.relic.ForesightRelic;
 import main.item.relic.Relic;
 import main.room.*;
+import main.swing.LabelType;
+import main.swing.SwingRenderer;
 
 import javax.swing.*;
 import java.util.ArrayList;

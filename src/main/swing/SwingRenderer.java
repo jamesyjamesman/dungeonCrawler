@@ -1,5 +1,6 @@
-package main;
+package main.swing;
 
+import main.Player;
 import main.item.Item;
 
 import javax.swing.*;
@@ -312,6 +313,7 @@ public class SwingRenderer extends JFrame {
         pane.revalidate();
         pane.repaint();
     }
+
     //TODO: make cursed relics a different color (purple) if you have the relic equipped (or if the relic is equipped)
     public static void addInventoryButton(JFrame frame, String newItemText, Player player, int itemIndex, int layer) {
         InventoryButton newButton = new InventoryButton();

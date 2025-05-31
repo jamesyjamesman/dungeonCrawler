@@ -2,7 +2,7 @@ package main.item.relic;
 
 import main.Main;
 import main.Player;
-import main.SwingRenderer;
+import main.swing.SwingRenderer;
 import main.room.Room;
 
 import javax.swing.*;

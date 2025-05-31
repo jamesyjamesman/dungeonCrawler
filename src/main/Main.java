@@ -4,6 +4,8 @@ import main.initialization.*;
 import main.item.*;
 import main.item.relic.Relic;
 import main.room.*;
+import main.swing.LabelType;
+import main.swing.SwingRenderer;
 
 import java.util.ArrayList;
 import java.util.Random;

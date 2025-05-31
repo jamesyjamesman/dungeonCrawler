@@ -2,7 +2,7 @@ package main.enemy;
 
 import main.Main;
 import main.Player;
-import main.SwingRenderer;
+import main.swing.SwingRenderer;
 import main.item.relic.Relic;
 
 import javax.swing.*;

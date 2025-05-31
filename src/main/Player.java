@@ -4,6 +4,8 @@ import main.enemy.Enemy;
 import main.item.Item;
 import main.item.relic.Relic;
 import main.room.Room;
+import main.swing.LabelType;
+import main.swing.SwingRenderer;
 
 import javax.swing.*;
 import java.util.ArrayList;

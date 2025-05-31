@@ -1,7 +1,7 @@
 package main.item;
 
 import main.Player;
-import main.SwingRenderer;
+import main.swing.SwingRenderer;
 
 import javax.swing.*;
 import java.util.Random;

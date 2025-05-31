@@ -1,9 +1,9 @@
 package main.room;
 
-import main.LabelType;
+import main.swing.LabelType;
 import main.Main;
 import main.Player;
-import main.SwingRenderer;
+import main.swing.SwingRenderer;
 import main.item.Item;
 import main.item.relic.Relic;
 

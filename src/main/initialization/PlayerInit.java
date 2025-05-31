@@ -1,8 +1,8 @@
 package main.initialization;
 
-import main.LabelType;
+import main.swing.LabelType;
 import main.Player;
-import main.SwingRenderer;
+import main.swing.SwingRenderer;
 
 import javax.swing.*;
 

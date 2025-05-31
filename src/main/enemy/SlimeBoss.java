@@ -1,7 +1,7 @@
 package main.enemy;
 
 import main.Player;
-import main.SwingRenderer;
+import main.swing.SwingRenderer;
 import main.item.relic.Relic;
 import main.item.relic.SlimeRelic;
 

@@ -1,9 +1,7 @@
 package main.item;
 
-import main.DialogueType;
-import main.Main;
 import main.Player;
-import main.SwingRenderer;
+import main.swing.SwingRenderer;
 
 import javax.swing.*;
 

@@ -1,8 +1,8 @@
 package main.room;
 
 import main.Battle;
-import main.LabelType;
-import main.SwingRenderer;
+import main.swing.LabelType;
+import main.swing.SwingRenderer;
 import main.enemy.Enemy;
 import main.Player;
 

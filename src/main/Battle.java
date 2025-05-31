@@ -3,6 +3,8 @@ package main;
 import main.enemy.Boss;
 import main.enemy.Enemy;
 import main.room.EnemyRoom;
+import main.swing.LabelType;
+import main.swing.SwingRenderer;
 
 import javax.swing.*;
 
