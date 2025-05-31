@@ -3,6 +3,7 @@ package main;
 import main.item.Item;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.text.*;
 import java.awt.*;
@@ -31,63 +32,50 @@ public class SwingRenderer extends JFrame {
         backgroundImageLabel.setHorizontalAlignment(SwingConstants.LEFT);
         backgroundImageLabel.setName("background");
         JLayeredPane layeredPane = new JLayeredPane();
-        layeredPane.add(backgroundImageLabel, JLayeredPane.DEFAULT_LAYER);
+        layeredPane.add(backgroundImageLabel);
+        layeredPane.setLayer(backgroundImageLabel, -5);
 
         Dimension frameSize = frame.getSize();
         int frameHeight = (int) frameSize.getHeight();
         int frameWidth = (int) frameSize.getWidth();
 
-        Color black = Color.black;
-
-        JLabel descriptionTextLabel = new JLabel();
+        DungeonLabel descriptionTextLabel = new DungeonLabel();
         descriptionTextLabel.setName("description");
         descriptionTextLabel.setSize(300, 200);
-        descriptionTextLabel.setBorder(new LineBorder(Color.lightGray));
-        descriptionTextLabel.setBackground(black);
-        descriptionTextLabel.setForeground(Color.white);
-        descriptionTextLabel.setOpaque(true);
         layeredPane.add(descriptionTextLabel);
         layeredPane.setLayer(descriptionTextLabel, 2);
+        ShadowLabel descriptionShadow = new ShadowLabel(layeredPane);
+        descriptionShadow.setSize(300, 200);
 
-        JLabel statusTextLabel = new JLabel();
+        DungeonLabel statusTextLabel = new DungeonLabel();
         statusTextLabel.setName("status");
-        statusTextLabel.setBorder(new LineBorder(Color.lightGray));
-        statusTextLabel.setBackground(black);
-        statusTextLabel.setForeground(Color.white);
-        statusTextLabel.setOpaque(true);
         int statusLabelWidth = 200;
         int labelHeight = 200;
         statusTextLabel.setBounds(frameWidth - statusLabelWidth, 0, statusLabelWidth, labelHeight);
         layeredPane.add(statusTextLabel);
         layeredPane.setLayer(statusTextLabel, 2);
+        ShadowLabel statusShadow = new ShadowLabel(layeredPane);
+        statusShadow.setBounds(frameWidth - statusLabelWidth, 0, statusLabelWidth, labelHeight);
 
-        JTextPane inventoryPane = new JTextPane();
+        DungeonTextPane inventoryPane = new DungeonTextPane();
         inventoryPane.setName("inventory");
-        inventoryPane.setEditable(false);
-        inventoryPane.setBorder(new LineBorder(Color.lightGray));
-        inventoryPane.setBackground(black);
-        inventoryPane.setForeground(Color.white);
-        inventoryPane.setOpaque(true);
         int labelWidth = 400;
         labelHeight = 450;
         inventoryPane.setBounds(frameWidth - labelWidth, frameHeight - labelHeight, labelWidth, labelHeight);
         layeredPane.add(inventoryPane);
         layeredPane.setLayer(inventoryPane, 1);
+        ShadowLabel inventoryShadow = new ShadowLabel(layeredPane);
+        inventoryShadow.setBounds(frameWidth - labelWidth, frameHeight - labelHeight, labelWidth, labelHeight);
 
-        JTextPane relicPane = new JTextPane();
+        DungeonTextPane relicPane = new DungeonTextPane();
         relicPane.setName("relics");
-        relicPane.setEditable(false);
-        relicPane.setBorder(new LineBorder(Color.lightGray));
-        relicPane.setBackground(black);
-        relicPane.setForeground(Color.white);
-        relicPane.setOpaque(true);
         relicPane.setBounds(frameWidth - labelWidth, frameHeight - labelHeight, labelWidth, labelHeight);
         relicPane.setVisible(false);
         layeredPane.add(relicPane);
         layeredPane.setLayer(relicPane, 3);
 
-        JPanel inventorySwitches = new JPanel();
-        inventorySwitches.setBackground(black);
+        DungeonPanel inventorySwitches = new DungeonPanel();
+        inventorySwitches.setBackground(Color.black);
         inventorySwitches.setForeground(Color.white);
         inventorySwitches.setOpaque(false);
         inventorySwitches.setBounds(frameWidth - labelWidth, frameHeight - labelHeight - 25, labelWidth, 25);
@@ -112,44 +100,42 @@ public class SwingRenderer extends JFrame {
 
         JTextField userInput = new JTextField();
         userInput.setName("input");
-        userInput.setBorder(new LineBorder(Color.lightGray));
-        userInput.setBackground(black);
+        userInput.setBorder(new LineBorder(new Color(0,0,0,0)));
         userInput.setForeground(Color.white);
-        userInput.setOpaque(true);
+        userInput.setOpaque(false);
+        userInput.setCaretColor(Color.white);
         int userInputHeight = 100;
         int userInputWidth = 600;
         userInput.setBounds(0, frameHeight - userInputHeight, userInputWidth, userInputHeight);
         userInput.addActionListener(_ -> setTempText(userInput, tempText));
         layeredPane.add(userInput);
         layeredPane.setLayer(userInput, 2);
+        ShadowLabel userInputShadow = new ShadowLabel(layeredPane);
+        userInputShadow.setBounds(0, frameHeight - userInputHeight, userInputWidth, userInputHeight);
 
-        JLabel errorTextLabel = new JLabel();
+        DungeonLabel errorTextLabel = new DungeonLabel();
         errorTextLabel.setName("error");
-        errorTextLabel.setBorder(new LineBorder(Color.lightGray));
-        errorTextLabel.setBackground(black);
-        errorTextLabel.setForeground(Color.white);
-        errorTextLabel.setOpaque(true);
         int errorTextLabelWidth = 600;
         int errorTextLabelHeight = 50;
-        errorTextLabel.setBounds(0, frameHeight - errorTextLabelHeight - userInputHeight, errorTextLabelWidth, errorTextLabelHeight);
+        errorTextLabel.setBounds(0, frameHeight - errorTextLabelHeight - userInputHeight - 25, errorTextLabelWidth, errorTextLabelHeight);
         layeredPane.add(errorTextLabel);
         layeredPane.setLayer(errorTextLabel, 2);
+        ShadowLabel errorShadow = new ShadowLabel(layeredPane);
+        errorShadow.setBounds(0, frameHeight - errorTextLabelHeight - userInputHeight - 25, errorTextLabelWidth, errorTextLabelHeight);
 
-        JLabel mainTextLabel = new JLabel();
+        DungeonLabel mainTextLabel = new DungeonLabel();
         mainTextLabel.setName("main");
-        mainTextLabel.setBorder(new LineBorder(Color.lightGray));
-        mainTextLabel.setBackground(black);
-        mainTextLabel.setForeground(Color.white);
-        mainTextLabel.setOpaque(true);
         int mainTextLabelHeight = 300;
         int mainTextLabelWidth = 600;
-        mainTextLabel.setBounds(0, frameHeight - mainTextLabelHeight - errorTextLabelHeight - userInputHeight, mainTextLabelWidth, mainTextLabelHeight);
+        mainTextLabel.setBounds(0, frameHeight - mainTextLabelHeight - errorTextLabelHeight - userInputHeight - 25, mainTextLabelWidth, mainTextLabelHeight);
         layeredPane.add(mainTextLabel);
         layeredPane.setLayer(mainTextLabel, 2);
+        ShadowLabel mainShadow = new ShadowLabel(layeredPane);
+        mainShadow.setBounds(0, frameHeight - mainTextLabelHeight - errorTextLabelHeight - userInputHeight - 25, mainTextLabelWidth, mainTextLabelHeight);
 
         JPanel yesOrNo = new JPanel();
         yesOrNo.setOpaque(false);
-        yesOrNo.setBounds(0, frameHeight - errorTextLabelHeight - userInputHeight - 25, mainTextLabelWidth, 25);
+        yesOrNo.setBounds(0, frameHeight - errorTextLabelHeight - userInputHeight - 50, mainTextLabelWidth, 25);
         yesOrNo.setVisible(false);
 
         JLabel questionText = new JLabel();
@@ -170,18 +156,15 @@ public class SwingRenderer extends JFrame {
         layeredPane.add(yesOrNo);
         layeredPane.setLayer(yesOrNo, 11);
 
-
-        JTextPane healthPane = new JTextPane();
+        DungeonTextPane healthPane = new DungeonTextPane();
         healthPane.setName("health");
-        healthPane.setBackground(Color.black);
-        healthPane.setForeground(Color.white);
-        healthPane.setOpaque(true);
-        healthPane.setBorder(new LineBorder(Color.lightGray));
         int healthLabelHeight = 200;
         int healthLabelWidth = 300;
         healthPane.setBounds(frameWidth - healthLabelWidth - statusLabelWidth, 0, healthLabelWidth, healthLabelHeight);
         layeredPane.add(healthPane);
         layeredPane.setLayer(healthPane, 67);
+        ShadowLabel healthShadow = new ShadowLabel(layeredPane);
+        healthShadow.setBounds(frameWidth - healthLabelWidth - statusLabelWidth, 0, healthLabelWidth, healthLabelHeight);
 
         frame.setLayeredPane(layeredPane);
         frame.setVisible(true);
