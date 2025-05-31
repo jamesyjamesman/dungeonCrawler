@@ -4,6 +4,7 @@ import main.item.Item;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -61,28 +62,30 @@ public class SwingRenderer extends JFrame {
         layeredPane.add(statusTextLabel);
         layeredPane.setLayer(statusTextLabel, 2);
 
-        JPanel inventoryPanel = new JPanel();
-        inventoryPanel.setName("inventory");
-        inventoryPanel.setBorder(new LineBorder(Color.lightGray));
-        inventoryPanel.setBackground(black);
-        inventoryPanel.setForeground(Color.white);
-        inventoryPanel.setOpaque(true);
-        int labelWidth = 600;
+        JTextPane inventoryPane = new JTextPane();
+        inventoryPane.setName("inventory");
+        inventoryPane.setEditable(false);
+        inventoryPane.setBorder(new LineBorder(Color.lightGray));
+        inventoryPane.setBackground(black);
+        inventoryPane.setForeground(Color.white);
+        inventoryPane.setOpaque(true);
+        int labelWidth = 400;
         labelHeight = 450;
-        inventoryPanel.setBounds(frameWidth - labelWidth, frameHeight - labelHeight, labelWidth, labelHeight);
-        layeredPane.add(inventoryPanel);
-        layeredPane.setLayer(inventoryPanel, 1);
+        inventoryPane.setBounds(frameWidth - labelWidth, frameHeight - labelHeight, labelWidth, labelHeight);
+        layeredPane.add(inventoryPane);
+        layeredPane.setLayer(inventoryPane, 1);
 
-        JPanel relicPanel = new JPanel();
-        relicPanel.setName("relics");
-        relicPanel.setBorder(new LineBorder(Color.lightGray));
-        relicPanel.setBackground(black);
-        relicPanel.setForeground(Color.white);
-        relicPanel.setOpaque(true);
-        relicPanel.setBounds(frameWidth - labelWidth, frameHeight - labelHeight, labelWidth, labelHeight);
-        relicPanel.setVisible(false);
-        layeredPane.add(relicPanel);
-        layeredPane.setLayer(relicPanel, 3);
+        JTextPane relicPane = new JTextPane();
+        relicPane.setName("relics");
+        relicPane.setEditable(false);
+        relicPane.setBorder(new LineBorder(Color.lightGray));
+        relicPane.setBackground(black);
+        relicPane.setForeground(Color.white);
+        relicPane.setOpaque(true);
+        relicPane.setBounds(frameWidth - labelWidth, frameHeight - labelHeight, labelWidth, labelHeight);
+        relicPane.setVisible(false);
+        layeredPane.add(relicPane);
+        layeredPane.setLayer(relicPane, 3);
 
         JPanel inventorySwitches = new JPanel();
         inventorySwitches.setBackground(black);
@@ -101,19 +104,6 @@ public class SwingRenderer extends JFrame {
         switchRelics.addActionListener(_ -> makeRelicsVisible(frame));
         switchRelics.setText("Relics");
         inventorySwitches.add(switchRelics);
-
-        //deprecated
-        JLabel battleTextLabel = new JLabel();
-        battleTextLabel.setVisible(false);
-        battleTextLabel.setName("battle");
-        battleTextLabel.setBorder(new LineBorder(Color.lightGray));
-        battleTextLabel.setBackground(Color.black);
-        battleTextLabel.setForeground(Color.white);
-        battleTextLabel.setOpaque(true);
-        labelHeight = 300;
-        battleTextLabel.setBounds(frameWidth/2 - labelWidth/2, frameHeight - labelHeight, labelWidth, labelHeight);
-        layeredPane.add(battleTextLabel);
-        layeredPane.setLayer(battleTextLabel, 2);
 
         JLabel tempText = new JLabel();
         tempText.setName("temp");
@@ -182,54 +172,95 @@ public class SwingRenderer extends JFrame {
         layeredPane.setLayer(yesOrNo, 11);
 
 
-        JPanel healthPanel = new JPanel();
-        healthPanel.setName("health");
-        healthPanel.setBackground(Color.black);
-        healthPanel.setForeground(Color.white);
-        healthPanel.setOpaque(true);
-        healthPanel.setBorder(new LineBorder(Color.lightGray));
+        JTextPane healthPane = new JTextPane();
+        healthPane.setName("health");
+        healthPane.setBackground(Color.black);
+        healthPane.setForeground(Color.white);
+        healthPane.setOpaque(true);
+        healthPane.setBorder(new LineBorder(Color.lightGray));
         int healthLabelHeight = 200;
         int healthLabelWidth = 300;
-        healthPanel.setBounds(frameWidth - healthLabelWidth - statusLabelWidth, 0, healthLabelWidth, healthLabelHeight);
-        layeredPane.add(healthPanel);
-        layeredPane.setLayer(healthPanel, 67);
+        healthPane.setBounds(frameWidth - healthLabelWidth - statusLabelWidth, 0, healthLabelWidth, healthLabelHeight);
+        layeredPane.add(healthPane);
+        layeredPane.setLayer(healthPane, 67);
 
         frame.setLayeredPane(layeredPane);
         frame.setVisible(true);
         return frame;
     }
-
-    //TODO: find a way to stop labels from grouping on the same line, same for inventory AND figure out wrapping
+    //TODO: fix off by 1 error
     public static void addHealthText(JFrame frame, String newText) {
-        newText = HTMLifyString(newText);
-        JPanel healthPanel = (JPanel) frame.getLayeredPane().getComponentsInLayer(67)[0];
-        JLabel newLabel = new JLabel();
-        newLabel.setForeground(Color.white);
-        newLabel.setText(newText);
-        healthPanel.add(newLabel);
-        removeHealthText(healthPanel);
-        changeHealthTextColor(healthPanel);
-    }
-    public static void removeHealthText(JPanel healthPanel) {
-        if (healthPanel.getComponents().length > 6) {
-            healthPanel.remove(healthPanel.getComponent(0));
-            healthPanel.revalidate();
-            healthPanel.repaint();
+        newText = newText + "\n";
+        JTextPane healthPane = (JTextPane) frame.getLayeredPane().getComponentsInLayer(67)[0];
+        Document doc = healthPane.getStyledDocument();
+        SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+        StyleConstants.setBold(attributeSet, true);
+        try {
+            doc.insertString(doc.getLength(), newText, attributeSet);
+            findPaneLines(healthPane);
+        } catch (BadLocationException e) {
+            throw new RuntimeException(e);
         }
+    }
+
+    public static void findPaneLines(JTextPane healthPane) throws BadLocationException {
+        Document doc = healthPane.getDocument();
+            String text = doc.getText(0, doc.getLength());
+            int startingPos = 0;
+            int n = 0;
+            while (true) {
+                int endLineIndex = text.indexOf("\n", startingPos) + 1;
+                //THESE SHOULD be == -1 but i think there's an off by 1 error
+                if (endLineIndex - 1 <= 0 && n > 6) {
+                    removeHealthText(healthPane);
+                    break;
+                }
+                if (endLineIndex - 1 <= 0) {
+                    break;
+                }
+                changeHealthTextColor(healthPane, n, startingPos, endLineIndex);
+                startingPos = endLineIndex;
+                n++;
+            }
+    }
+
+    public static void removeHealthText(JTextPane healthPane) throws BadLocationException {
+        Document doc = healthPane.getDocument();
+        String text = doc.getText(0, doc.getLength());
+        int endLineIndex = text.indexOf("\n");
+        doc.remove(0, endLineIndex + 1);
+
+        healthPane.revalidate();
+        healthPane.repaint();
     }
 
     //the FIRST should be white, but they start dark and get brighter
     //I'm not sure how to fix this easily
-    public static void changeHealthTextColor(JPanel healthPanel) {
-        for (int i = 0; i < healthPanel.getComponents().length; i++) {
-            JLabel textLabel = (JLabel) healthPanel.getComponent(i);
-            switch (i) {
-                case 5, 4, 3 -> textLabel.setForeground(Color.white);
-                case 2 -> textLabel.setForeground(Color.lightGray);
-                case 1 -> textLabel.setForeground(Color.gray);
-                case 0 -> textLabel.setForeground(Color.darkGray);
-            }
+    //THIS IS GIVEN 7 LINES (0-6), FIX BUG
+    public static void changeHealthTextColor(JTextPane healthPane, int line, int startPos, int endPos) throws BadLocationException {
+        Color color = Color.white;
+        System.out.println(line);
+        switch (line) {
+            case 3, 4, 5:
+                return;
+            case 2:
+                color = Color.lightGray;
+                break;
+            case 1:
+                color = Color.gray;
+                break;
+            case 0:
+                color = Color.darkGray;
+                break;
         }
+        Style style = healthPane.addStyle("style", null);
+        StyleConstants.setForeground(style, color);
+        StyleConstants.setBold(style, true);
+
+        Document doc = healthPane.getStyledDocument();
+        String text = doc.getText(startPos, endPos - startPos);
+        doc.remove(startPos, endPos - startPos);
+        doc.insertString(startPos, text, style);
     }
 
         public static void changeAnswerVisibility(JFrame frame, boolean visible) {
@@ -251,7 +282,6 @@ public class SwingRenderer extends JFrame {
             case STATUS -> targetComponent = "status";
             case INVENTORY -> targetComponent = "inventory";
             case RELICS -> targetComponent = "relics";
-            case BATTLE -> targetComponent = "battle";
             case MAIN -> targetComponent = "main";
             case DESCRIPTION -> targetComponent = "description";
             case ERROR -> targetComponent = "error";
@@ -262,24 +292,28 @@ public class SwingRenderer extends JFrame {
 
     public static void appendMainLabelText(JFrame frame, String addedText) {
         JLabel mainLabel = (JLabel) getComponentFromFrame(frame, "main");
-        String oldText = mainLabel.getText().replaceAll("</html>", "");
-        addedText = HTMLifyString(addedText).replaceAll("<html>", "");
-        String newText = oldText + "<br>" + addedText;
+        String newText = combineHTMLStrings(mainLabel.getText(), HTMLifyString(addedText));
         mainLabel.setText(newText);
     }
 
+    public static String combineHTMLStrings(String oldText, String addedText) {
+        oldText = oldText.replaceAll("</html>", "");
+        addedText = addedText.replaceAll("<html>", "");
+        return oldText + "<br>" + addedText;
+    }
+
     public static void makeInventoryVisible(JFrame frame) {
-        JPanel inventoryPanel = (JPanel) frame.getLayeredPane().getComponentsInLayer(1)[0];
-        JPanel relicPanel = (JPanel) frame.getLayeredPane().getComponentsInLayer(3)[0];
-        inventoryPanel.setVisible(true);
-        relicPanel.setVisible(false);
+        JTextPane inventoryPane = (JTextPane) frame.getLayeredPane().getComponentsInLayer(1)[0];
+        JTextPane relicPane = (JTextPane) frame.getLayeredPane().getComponentsInLayer(3)[0];
+        inventoryPane.setVisible(true);
+        relicPane.setVisible(false);
     }
 
     public static void makeRelicsVisible(JFrame frame) {
-        JPanel inventoryPanel = (JPanel) frame.getLayeredPane().getComponentsInLayer(1)[0];
-        JPanel relicPanel = (JPanel) frame.getLayeredPane().getComponentsInLayer(3)[0];
-        inventoryPanel.setVisible(false);
-        relicPanel.setVisible(true);
+        JTextPane inventoryPane = (JTextPane) frame.getLayeredPane().getComponentsInLayer(1)[0];
+        JTextPane relicPane = (JTextPane) frame.getLayeredPane().getComponentsInLayer(3)[0];
+        inventoryPane.setVisible(false);
+        relicPane.setVisible(true);
     }
 
     public static String HTMLifyString(String input) {
@@ -309,14 +343,20 @@ public class SwingRenderer extends JFrame {
         return output;
     }
 
-    public static void clearInventoryPanel(JFrame frame, int layer) {
-        JPanel panel = (JPanel) frame.getLayeredPane().getComponentsInLayer(layer)[0];
-        panel.removeAll();
-        panel.revalidate();
-        panel.repaint();
+    public static void clearInventoryPane(JFrame frame, int layer) {
+        JTextPane pane = (JTextPane) frame.getLayeredPane().getComponentsInLayer(layer)[0];
+        Document doc = pane.getStyledDocument();
+        try {
+            doc.remove(0, doc.getLength());
+        } catch (BadLocationException e) {
+            throw new RuntimeException(e);
+        }
+        pane.removeAll();
+        pane.revalidate();
+        pane.repaint();
     }
     //TODO: make cursed relics a different color (purple) if you have the relic equipped (or if the relic is equipped)
-    public static void addInventoryButton(JFrame frame, String labelText, Player player, int itemIndex, int layer) {
+    public static void addInventoryButton(JFrame frame, String newItemText, Player player, int itemIndex, int layer) {
         InventoryButton newButton = new InventoryButton();
         if (layer == 1) {
             newButton.addActionListener(_ -> useItem(frame, itemIndex, player));
@@ -324,20 +364,20 @@ public class SwingRenderer extends JFrame {
             newButton.addActionListener(_ -> unequipRelic(frame, itemIndex, player));
         }
         //add button and label to a new panel, force button left, somehow get wrapping going
-        JPanel itemPanel = new JPanel();
-        itemPanel.setOpaque(false);
-        JLabel itemLabel = new JLabel();
-        itemLabel.setForeground(Color.white);
-        itemLabel.setOpaque(false);
-        labelText = HTMLifyString(labelText);
         newButton.setText("Use");
         newButton.setHorizontalAlignment(SwingConstants.LEFT);
-        itemLabel.setText(labelText);
-        JPanel inventoryPanel = (JPanel) frame.getLayeredPane().getComponentsInLayer(layer)[0];
-        itemLabel.setMaximumSize(new Dimension(100, 300));
-        itemPanel.add(newButton);
-        itemPanel.add(itemLabel);
-        inventoryPanel.add(itemPanel);
+
+        JTextPane inventoryPane = (JTextPane) frame.getLayeredPane().getComponentsInLayer(layer)[0];
+        Document doc = inventoryPane.getStyledDocument();
+        inventoryPane.setCaretPosition(doc.getLength());
+        inventoryPane.insertComponent(newButton);
+        SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+        StyleConstants.setBold(attributeSet, true);
+        try {
+            doc.insertString(doc.getLength(), newItemText, attributeSet);
+        } catch (BadLocationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void useItem(JFrame frame, int itemIndex, Player player) {

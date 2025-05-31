@@ -5,7 +5,6 @@ public enum LabelType {
     DESCRIPTION,
     MAIN,
     ERROR,
-    BATTLE,
     INVENTORY,
     RELICS,
 }

@@ -110,7 +110,7 @@ public class Player {
 
     //can cause index out of bounds
     public boolean checkInventory(JFrame frame, boolean death) {
-        SwingRenderer.clearInventoryPanel(frame, 1);
+        SwingRenderer.clearInventoryPane(frame, 1);
         if (this.inventory.isEmpty()) {
             //deprecated ?
             if (death) {
@@ -138,7 +138,7 @@ public class Player {
 
     //this is very dry, but I wasn't sure how to use checkInventory due to the different types
     public boolean checkRelics(JFrame frame, boolean death) {
-        SwingRenderer.clearInventoryPanel(frame, 3);
+        SwingRenderer.clearInventoryPane(frame, 3);
         if (this.equippedRelics.isEmpty()) {
             //deprecated?
             if (death) {
