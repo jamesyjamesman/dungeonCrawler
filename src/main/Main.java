@@ -85,11 +85,11 @@ public class Main {
     public static String yesOrNo(JFrame frame) {
         //this could be done better
         SwingRenderer.changeAnswerVisibility(frame, true);
-        String originalResponse = SwingRenderer.getAnswerText(frame);
+        String originalResponse = SwingRenderer.getTempText(frame);
         String newResponse;
         boolean once = false;
         while (true) {
-            newResponse = SwingRenderer.getAnswerText(frame);
+            newResponse = SwingRenderer.getTempText(frame);
             if (newResponse.isEmpty()) {
                 continue;
             }

@@ -139,19 +139,14 @@ public class SwingRenderer extends JFrame {
         yesOrNo.setBounds(0, frameHeight - errorTextLabelHeight - userInputHeight - 50, mainTextLabelWidth, 25);
         yesOrNo.setVisible(false);
 
-        JLabel questionText = new JLabel();
-        questionText.setVisible(false);
-        layeredPane.add(questionText);
-        layeredPane.setLayer(questionText, 12);
-
         InventoryButton yes = new InventoryButton();
         yes.setText("Yes");
-        yes.addActionListener(_ -> questionText.setText("yes"));
+        yes.addActionListener(_ -> tempText.setText("yes"));
         yesOrNo.add(yes);
 
         InventoryButton no = new InventoryButton();
         no.setText("No");
-        no.addActionListener(_ -> questionText.setText("no"));
+        no.addActionListener(_ -> tempText.setText("no"));
         yesOrNo.add(no);
 
         layeredPane.add(yesOrNo);
@@ -226,12 +221,6 @@ public class SwingRenderer extends JFrame {
         frame.getLayeredPane().getComponentsInLayer(11)[0].setVisible(visible);
     }
 
-    public static String getAnswerText(JFrame frame) {
-        JLabel answerLabel = (JLabel) frame.getLayeredPane().getComponentsInLayer(12)[0];
-        String output = answerLabel.getText();
-        answerLabel.setText("");
-        return output;
-    }
     public static void changeLabelText(JFrame frame, String newText, LabelType labelType) {
         newText = HTMLifyString(newText);
 
