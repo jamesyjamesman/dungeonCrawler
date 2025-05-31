@@ -13,7 +13,8 @@ import java.util.List;
 public class SwingRenderer extends JFrame {
 
     public static JFrame renderer() {
-        ImageIcon backgroundImage = new ImageIcon("assets/background.png");
+        ImageIcon backgroundImage = new ImageIcon(ClassLoader.getSystemResource("background.png"));
+
         int imageWidth = backgroundImage.getIconWidth();
         int imageHeight = backgroundImage.getIconHeight();
         Rectangle screenSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
