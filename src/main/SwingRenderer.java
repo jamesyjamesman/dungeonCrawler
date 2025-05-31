@@ -6,9 +6,8 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.text.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 public class SwingRenderer extends JFrame {
 
@@ -188,7 +187,7 @@ public class SwingRenderer extends JFrame {
         frame.setVisible(true);
         return frame;
     }
-    //TODO: fix off by 1 error
+
     public static void addHealthText(JFrame frame, String newText) {
         newText = newText + "\n";
         JTextPane healthPane = (JTextPane) frame.getLayeredPane().getComponentsInLayer(67)[0];
@@ -197,52 +196,34 @@ public class SwingRenderer extends JFrame {
         StyleConstants.setBold(attributeSet, true);
         try {
             doc.insertString(doc.getLength(), newText, attributeSet);
-            findPaneLines(healthPane);
+            HealthLineRenderer(healthPane);
         } catch (BadLocationException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static void findPaneLines(JTextPane healthPane) throws BadLocationException {
+    public static void HealthLineRenderer(JTextPane healthPane) throws BadLocationException {
         Document doc = healthPane.getDocument();
             String text = doc.getText(0, doc.getLength());
-            int startingPos = 0;
-            int n = 0;
-            while (true) {
-                int endLineIndex = text.indexOf("\n", startingPos) + 1;
-                //THESE SHOULD be == -1 but i think there's an off by 1 error
-                if (endLineIndex - 1 <= 0 && n > 6) {
-                    removeHealthText(healthPane);
-                    break;
-                }
-                if (endLineIndex - 1 <= 0) {
-                    break;
-                }
-                changeHealthTextColor(healthPane, n, startingPos, endLineIndex);
-                startingPos = endLineIndex;
-                n++;
+            ArrayList<String> textLines = new ArrayList<>(List.of(text.split("\n")));
+
+            if (textLines.size() > 6) {
+                textLines.removeFirst();
+            }
+            doc.remove(0, doc.getLength());
+            for (int i = 0; i < textLines.size(); i++) {
+                Style style = getHealthTextStyle(healthPane, i + 6 - textLines.size());
+                doc.insertString(doc.getLength(), textLines.get(i) + "\n", style);
             }
     }
 
-    public static void removeHealthText(JTextPane healthPane) throws BadLocationException {
-        Document doc = healthPane.getDocument();
-        String text = doc.getText(0, doc.getLength());
-        int endLineIndex = text.indexOf("\n");
-        doc.remove(0, endLineIndex + 1);
-
-        healthPane.revalidate();
-        healthPane.repaint();
-    }
-
-    //the FIRST should be white, but they start dark and get brighter
-    //I'm not sure how to fix this easily
-    //THIS IS GIVEN 7 LINES (0-6), FIX BUG
-    public static void changeHealthTextColor(JTextPane healthPane, int line, int startPos, int endPos) throws BadLocationException {
+    public static Style getHealthTextStyle(JTextPane healthPane, int line) {
+        Style style = healthPane.addStyle("style", null);
+        StyleConstants.setBold(style, true);
         Color color = Color.white;
-        System.out.println(line);
         switch (line) {
             case 3, 4, 5:
-                return;
+                break;
             case 2:
                 color = Color.lightGray;
                 break;
@@ -253,14 +234,8 @@ public class SwingRenderer extends JFrame {
                 color = Color.darkGray;
                 break;
         }
-        Style style = healthPane.addStyle("style", null);
         StyleConstants.setForeground(style, color);
-        StyleConstants.setBold(style, true);
-
-        Document doc = healthPane.getStyledDocument();
-        String text = doc.getText(startPos, endPos - startPos);
-        doc.remove(startPos, endPos - startPos);
-        doc.insertString(startPos, text, style);
+        return style;
     }
 
         public static void changeAnswerVisibility(JFrame frame, boolean visible) {
