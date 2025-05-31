@@ -8,8 +8,6 @@ import main.room.Room;
 import javax.swing.*;
 import java.util.ArrayList;
 
-import static java.lang.System.exit;
-
 public class Player {
     String name;
     int maxHealth;
@@ -109,7 +107,7 @@ public class Player {
     }
 
     //can cause index out of bounds
-    public boolean checkInventory(JFrame frame, boolean death) {
+    public void checkInventory(JFrame frame, boolean death) {
         SwingRenderer.clearInventoryPane(frame, 1);
         if (this.inventory.isEmpty()) {
             //deprecated ?
@@ -118,7 +116,7 @@ public class Player {
             } else {
                 System.out.println(Main.colorString("Your inventory is empty!", DialogueType.INVENTORY));
             }
-            return true;
+            return;
         }
         for (int i = 0; i < this.inventory.size(); i++) {
             //Displays amount of items in parentheses (e.g. (x2)) if the amount is greater than 1
@@ -131,13 +129,10 @@ public class Player {
             //could make this create a JButton (title) and a JLabel (description), as JLabels wrap
             SwingRenderer.addInventoryButton(frame, output, this, i, 1);
         }
-//        output = output.concat("Remaining inventory space: " + (this.inventoryCap - calculateInventorySize()));
-//        SwingRenderer.changeLabelText(frame, output, LabelType.INVENTORY);
-        return false;
     }
 
     //this is very dry, but I wasn't sure how to use checkInventory due to the different types
-    public boolean checkRelics(JFrame frame, boolean death) {
+    public void checkRelics(JFrame frame, boolean death) {
         SwingRenderer.clearInventoryPane(frame, 3);
         if (this.equippedRelics.isEmpty()) {
             //deprecated?
@@ -146,7 +141,7 @@ public class Player {
             } else {
                 System.out.println(Main.colorString("Your relic pouch is empty!", DialogueType.INVENTORY));
             }
-            return true;
+            return;
         }
 
         for (int i = 0; i < this.equippedRelics.size(); i++) {
@@ -155,9 +150,6 @@ public class Player {
             output = output.concat("\n\n");
             SwingRenderer.addInventoryButton(frame, output, this, i, 3);
         }
-//        output = output.concat("Remaining relic pouch space: " + (this.relicCap - getEquippedRelics().size()));
-//        SwingRenderer.changeLabelText(frame, output, LabelType.RELICS);
-        return false;
     }
 
     public int findItemInInventory(Item item) {
@@ -271,17 +263,6 @@ public class Player {
 //        endStatistics(frame);
         while (true) {
         }
-    }
-
-    // if player died from food, it will not show that item as being consumed
-    public void endStatistics(JFrame frame) {
-        System.out.println("Player statistics:");
-        System.out.println("Rooms completed: " + this.roomsTraversed);
-        System.out.println("Maximum health: " + this.maxHealth);
-        System.out.println("Inventory:");
-        checkInventory(frame,true);
-        System.out.println("Relics:");
-        checkRelics(frame, true);
     }
 
     public void checkLevelUp(JFrame frame) {

@@ -1,7 +1,5 @@
 package main.room;
 
-import main.DialogueType;
-import main.Main;
 import main.Player;
 import main.SwingRenderer;
 

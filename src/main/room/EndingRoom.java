@@ -6,8 +6,6 @@ import main.SwingRenderer;
 
 import javax.swing.JFrame;
 
-import static java.lang.System.exit;
-
 public class EndingRoom extends Room {
     public EndingRoom() {
     }

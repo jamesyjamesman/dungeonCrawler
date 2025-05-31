@@ -110,18 +110,6 @@ public class Main {
         Scanner promptScanner = new Scanner(System.in);
         while (true) {
             switch (input) {
-//                case "status" -> player.checkStatus(frame);
-//                case "help" -> commandList();
-//                case "inventory", "inv" -> {
-//                    Menu.inventoryLoop(player, frame);
-//                    System.out.println(exitString);
-//                    player.printStatusLine();
-//                }
-//                case "relics" -> {
-//                    Menu.relicLoop(frame, player);
-//                    System.out.println(exitString);
-//                    player.printStatusLine();
-//                }
                 //debug commands
                 case "kill" -> player.takeDamage(frame, 1000000);
                 case "godmode" -> {
@@ -134,15 +122,6 @@ public class Main {
             }
             input = promptScanner.nextLine();
         }
-    }
-
-    //needs refactor
-    public static void commandList() {
-        System.out.println("List of commands:");
-        System.out.println("help: checks this command.");
-        System.out.println("status: checks player's status and statistics.");
-        System.out.println("inventory (inv): shows the contents of the player's inventory.");
-        System.out.println("relics: shows a list of equipped relics.");
     }
 
     public static String pluralChecker(int numThings) {

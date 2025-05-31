@@ -3,7 +3,6 @@ package main;
 import main.item.Item;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.text.*;
 import java.awt.*;
