@@ -116,7 +116,7 @@ public class Player {
             //Displays amount of items in parentheses (e.g. (x2)) if the amount is greater than 1
             String amount = (this.inventory.get(i).size() > 1) ? " (x" + this.inventory.get(i).size() + ")" : "";
 
-            String output = (i+1) + ". " + this.inventory.get(i).getFirst().getName() +
+            String output = this.inventory.get(i).getFirst().getName() +
                     amount
                     + ": " + this.inventory.get(i).getFirst().getDescription();
             output = output.concat("\n");
@@ -130,7 +130,7 @@ public class Player {
         SwingRenderer.clearInventoryPane(frame, 3);
 
         for (int i = 0; i < this.equippedRelics.size(); i++) {
-            String output = (i+1) + ". " + this.equippedRelics.get(i).getName() + ": "
+            String output = this.equippedRelics.get(i).getName() + ": "
                     + this.equippedRelics.get(i).getDescription();
             output = output.concat("\n\n");
             SwingRenderer.addInventoryButton(frame, output, this, i, 3);

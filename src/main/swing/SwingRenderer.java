@@ -8,7 +8,9 @@ import javax.swing.border.LineBorder;
 import javax.swing.text.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class SwingRenderer extends JFrame {
 
@@ -109,6 +111,7 @@ public class SwingRenderer extends JFrame {
         int userInputWidth = 600;
         userInput.setBounds(0, frameHeight - userInputHeight, userInputWidth, userInputHeight);
         userInput.addActionListener(_ -> setTempText(userInput, tempText));
+        userInput.requestFocusInWindow();
         layeredPane.add(userInput);
         layeredPane.setLayer(userInput, 2);
         ShadowLabel userInputShadow = new ShadowLabel(layeredPane);
@@ -253,6 +256,7 @@ public class SwingRenderer extends JFrame {
     public static void makeInventoryVisible(JFrame frame) {
         JTextPane inventoryPane = (JTextPane) frame.getLayeredPane().getComponentsInLayer(1)[0];
         JTextPane relicPane = (JTextPane) frame.getLayeredPane().getComponentsInLayer(3)[0];
+        setInputFocus(frame);
         inventoryPane.setVisible(true);
         relicPane.setVisible(false);
     }
@@ -260,6 +264,7 @@ public class SwingRenderer extends JFrame {
     public static void makeRelicsVisible(JFrame frame) {
         JTextPane inventoryPane = (JTextPane) frame.getLayeredPane().getComponentsInLayer(1)[0];
         JTextPane relicPane = (JTextPane) frame.getLayeredPane().getComponentsInLayer(3)[0];
+        setInputFocus(frame);
         inventoryPane.setVisible(false);
         relicPane.setVisible(true);
     }
@@ -288,7 +293,15 @@ public class SwingRenderer extends JFrame {
         JLabel tempLabel = (JLabel) getComponentFromFrame(frame, "temp");
         String output = tempLabel.getText();
         tempLabel.setText("");
+        setInputFocus(frame);
         return output;
+    }
+
+    //if called after a button is pressed, the button click animation does not function properly
+    public static void setInputFocus(JFrame frame) {
+         Arrays.stream(frame.getLayeredPane().getComponentsInLayer(2))
+                 .filter(component -> component.getName().equals("input"))
+                 .forEach(Component::requestFocusInWindow);
     }
 
     public static void clearInventoryPane(JFrame frame, int layer) {
@@ -334,11 +347,13 @@ public class SwingRenderer extends JFrame {
         items.getFirst().useItem(frame, player);
         player.checkInventory(frame);
         player.checkRelics(frame);
+        setInputFocus(frame);
     }
 
     public static void unequipRelic(JFrame frame, int itemIndex, Player player) {
         player.getEquippedRelics().get(itemIndex).useItem(frame, player);
         player.checkInventory(frame);
         player.checkRelics(frame);
+        setInputFocus(frame);
     }
 }
