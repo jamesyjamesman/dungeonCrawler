@@ -8,6 +8,7 @@ import main.swing.LabelType;
 import main.swing.SwingRenderer;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Player {
@@ -113,27 +114,37 @@ public class Player {
         SwingRenderer.clearInventoryPane(frame, 1);
 
         for (int i = 0; i < this.inventory.size(); i++) {
+            Item item = this.inventory.get(i).getFirst();
+            Color color;
             //Displays amount of items in parentheses (e.g. (x2)) if the amount is greater than 1
             String amount = (this.inventory.get(i).size() > 1) ? " (x" + this.inventory.get(i).size() + ")" : "";
 
-            String output = this.inventory.get(i).getFirst().getName() +
-                    amount
-                    + ": " + this.inventory.get(i).getFirst().getDescription();
+            String output = item.getName() + amount + ": " + item.getDescription();
             output = output.concat("\n");
-            //could make this create a JButton (title) and a JLabel (description), as JLabels wrap
-            SwingRenderer.addInventoryButton(frame, output, this, i, 1);
+            if (item instanceof Relic relic && relic.isCursed() && equippedRelicIndex("Relic of Curse Detection") != -1) {
+                color = new Color(100, 0, 130);
+            } else {
+                color = Color.white;
+            }
+            SwingRenderer.addInventoryButton(frame, output, this, i, 1, color);
         }
     }
 
     //this is very dry, but I wasn't sure how to use checkInventory due to the different types
     public void checkRelics(JFrame frame) {
         SwingRenderer.clearInventoryPane(frame, 3);
+        Color color;
 
         for (int i = 0; i < this.equippedRelics.size(); i++) {
             String output = this.equippedRelics.get(i).getName() + ": "
                     + this.equippedRelics.get(i).getDescription();
             output = output.concat("\n\n");
-            SwingRenderer.addInventoryButton(frame, output, this, i, 3);
+            if (this.equippedRelics.get(i).isCursed()) {
+                color = new Color(100, 0, 130);
+            } else {
+                color = Color.white;
+            }
+            SwingRenderer.addInventoryButton(frame, output, this, i, 3, color);
         }
     }
 
@@ -244,6 +255,7 @@ public class Player {
     }
 
     public void doDeathSequence(JFrame frame) {
+        checkStatus(frame);
         SwingRenderer.changeLabelText(frame, "\"Ack! It's too much for me!\" " + getName() + " exclaims.\n" + getName() + " falls to their knees... then to the ground.\n" + "GAME OVER!", LabelType.MAIN);
 //        endStatistics(frame);
         while (true) {

@@ -10,12 +10,11 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class SwingRenderer extends JFrame {
 
     public static JFrame renderer() {
-        ImageIcon backgroundImage = new ImageIcon(ClassLoader.getSystemResource("background.png"));
+        ImageIcon backgroundImage = new ImageIcon(ClassLoader.getSystemResource("default_background.png"));
 
         int imageWidth = backgroundImage.getIconWidth();
         int imageHeight = backgroundImage.getIconHeight();
@@ -189,7 +188,7 @@ public class SwingRenderer extends JFrame {
             String text = doc.getText(0, doc.getLength());
             ArrayList<String> textLines = new ArrayList<>(List.of(text.split("\n")));
 
-            if (textLines.size() > 6) {
+            while (textLines.size() > 6) {
                 textLines.removeFirst();
             }
             doc.remove(0, doc.getLength());
@@ -317,15 +316,13 @@ public class SwingRenderer extends JFrame {
         pane.repaint();
     }
 
-    //TODO: make cursed relics a different color (purple) if you have the relic equipped (or if the relic is equipped)
-    public static void addInventoryButton(JFrame frame, String newItemText, Player player, int itemIndex, int layer) {
+    public static void addInventoryButton(JFrame frame, String newItemText, Player player, int itemIndex, int layer, Color color) {
         InventoryButton newButton = new InventoryButton();
         if (layer == 1) {
             newButton.addActionListener(_ -> useItem(frame, itemIndex, player));
         } else {
             newButton.addActionListener(_ -> unequipRelic(frame, itemIndex, player));
         }
-        //add button and label to a new panel, force button left, somehow get wrapping going
         newButton.setText("Use");
         newButton.setHorizontalAlignment(SwingConstants.LEFT);
 
@@ -335,6 +332,7 @@ public class SwingRenderer extends JFrame {
         inventoryPane.insertComponent(newButton);
         SimpleAttributeSet attributeSet = new SimpleAttributeSet();
         StyleConstants.setBold(attributeSet, true);
+        StyleConstants.setForeground(attributeSet, color);
         try {
             doc.insertString(doc.getLength(), newItemText, attributeSet);
         } catch (BadLocationException e) {
@@ -355,5 +353,9 @@ public class SwingRenderer extends JFrame {
         player.checkInventory(frame);
         player.checkRelics(frame);
         setInputFocus(frame);
+    }
+
+    public static void changeBackgroundImage(JFrame frame, String fileName) {
+        ((JLabel) frame.getLayeredPane().getComponentsInLayer(-5)[0]).setIcon(new ImageIcon(ClassLoader.getSystemResource(fileName)));
     }
 }

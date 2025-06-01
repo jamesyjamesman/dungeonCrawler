@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class Room {
     String appearance;
     String description;
+    String backgroundFileName;
     int id;
     ArrayList<Room> exits;
     int numExits;
@@ -21,6 +22,7 @@ public class Room {
     public Room() {
         this.appearance = "It looks like a completely normal room from here.";
         this.description = "It's completely empty.";
+        this.backgroundFileName = "default_background.png";
         this.id = 0;
         this.exits = new ArrayList<>();
         this.numExits = 2;
@@ -31,6 +33,7 @@ public class Room {
     }
 
     public void completeRoomActions(Player player, JFrame frame) {
+        SwingRenderer.changeBackgroundImage(frame, this.backgroundFileName);
         SwingRenderer.changeLabelText(frame, this.description, LabelType.DESCRIPTION);
         player.incrementRoomsTraversed();
         player.checkStatus(frame);

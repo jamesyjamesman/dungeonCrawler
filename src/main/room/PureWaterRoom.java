@@ -16,6 +16,9 @@ public class PureWaterRoom extends Room {
     public PureWaterRoom() {}
 
     //I wanted to make it so you could purify apples to buff them and have no chance of being rotten, but I don't know if there's an easy way to do that.
+    /*TODO: somehow figure out how to override useItem for items (possibly: add a check in checkInventory for current
+    TODO: room, then replace the listener for a different method if this room). Then, one item can be placed in the
+     TODO: fountain, either purifying it or doing nothing at all.*/
     @Override
     public void completeRoomActions(Player player, JFrame frame) {
         super.completeRoomActions(player, frame);
