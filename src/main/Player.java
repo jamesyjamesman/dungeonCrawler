@@ -25,6 +25,7 @@ public class Player {
     int level;
     int experience;
     int expToNextLevel;
+    Room currentRoom;
     public Player(String newName) {
         this.name = newName;
         this.maxHealth = 20;
@@ -39,6 +40,7 @@ public class Player {
         this.level = 1;
         this.experience = 0;
         this.expToNextLevel = 10;
+        this.currentRoom = null;
     }
 
     public void attack(JFrame frame, Enemy enemy) {
@@ -374,5 +376,11 @@ public class Player {
     }
     public void changeExperience(int addedExp) {
         this.experience += addedExp;
+    }
+    public void setCurrentRoom(Room room) {
+        this.currentRoom = room;
+    }
+    public Room getCurrentRoom() {
+        return this.currentRoom;
     }
 }

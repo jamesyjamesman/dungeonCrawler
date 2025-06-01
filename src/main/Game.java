@@ -19,7 +19,7 @@ public class Game {
         //this shouldn't be here
         ArrayList<Item> itemList = ItemInit.itemInit();
         while (playerCharacter.getCurrentHealth() > 0) {
-
+            playerCharacter.setCurrentRoom(currentRoom);
             Main.roomChecker(currentRoom, rooms, relicList, itemList);
 
             currentRoom.completeRoomActions(playerCharacter, frame);
@@ -32,6 +32,10 @@ public class Game {
             playerCharacter.useRelics(frame, currentRoom);
 
             int response = Main.responseHandler(frame, playerCharacter, 1, currentRoom.getExits().size()) - 1;
+            //this should be moved somewhere else, or make a new pure water room every time
+            if (currentRoom instanceof PureWaterRoom room) {
+                room.setFountainUsed(false);
+            }
             Room nextRoom = currentRoom.getExits().get(response);
             currentRoom.getExits().clear();
             currentRoom = nextRoom;

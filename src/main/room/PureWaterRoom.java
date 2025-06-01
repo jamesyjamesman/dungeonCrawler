@@ -4,47 +4,27 @@ import main.swing.LabelType;
 import main.Main;
 import main.Player;
 import main.swing.SwingRenderer;
-import main.item.Item;
-import main.item.relic.Relic;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class PureWaterRoom extends Room {
-    public PureWaterRoom() {}
+    boolean fountainUsed;
+    public PureWaterRoom() {
+        this.fountainUsed = false;
+    }
 
-    //I wanted to make it so you could purify apples to buff them and have no chance of being rotten, but I don't know if there's an easy way to do that.
-    /*TODO: somehow figure out how to override useItem for items (possibly: add a check in checkInventory for current
-    TODO: room, then replace the listener for a different method if this room). Then, one item can be placed in the
-     TODO: fountain, either purifying it or doing nothing at all.*/
     @Override
     public void completeRoomActions(Player player, JFrame frame) {
         super.completeRoomActions(player, frame);
         SwingRenderer.changeLabelText(frame, "You sense this fountain has some purifying properties.\n" +
-                "Would you like to cleanse a relic? (y/n)", LabelType.MAIN);
-        String response = Main.yesOrNo(frame);
-        if (response.equals("y")) {
-            List<Relic> relics = player.getEquippedRelics().stream()
-                    .filter(Relic::isCursed)
-                    .toList();
-            ArrayList<Relic> cursedRelics = new ArrayList<>(relics);
-            if (!player.getInventory().isEmpty()) {
-                for (int i = 0; i < player.getInventory().size(); i++) {
-                    Item item = player.getInventory().get(i).getFirst();
-                    if (item instanceof Relic relic && relic.isCursed()) {
-                        cursedRelics.add(relic);
-                    }
-                }
-            }
-            if (cursedRelics.isEmpty()) {
-                SwingRenderer.changeLabelText(frame, "You don't have any cursed relics!", LabelType.ERROR);
-                return;
-            }
-            Relic selectedRelic = cursedRelics.get(new Random().nextInt(cursedRelics.size()));
-            selectedRelic.setCursed(false);
-            SwingRenderer.changeLabelText(frame, "Your " + selectedRelic.getName() + " has been cured!", LabelType.ERROR);
-        }
+                "You may place an item or relic in the fountain, if you'd like. Enter anything to continue.", LabelType.MAIN);
+        Main.yesOrNo(frame);
+    }
+
+    public void setFountainUsed(boolean used) {
+        this.fountainUsed = used;
+    }
+    public boolean getFountainUsed() {
+        return this.fountainUsed;
     }
 }

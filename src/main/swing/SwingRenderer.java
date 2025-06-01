@@ -2,6 +2,9 @@ package main.swing;
 
 import main.Player;
 import main.item.Item;
+import main.item.PureAppleItem;
+import main.item.relic.Relic;
+import main.room.PureWaterRoom;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -318,12 +321,24 @@ public class SwingRenderer extends JFrame {
 
     public static void addInventoryButton(JFrame frame, String newItemText, Player player, int itemIndex, int layer, Color color) {
         InventoryButton newButton = new InventoryButton();
-        if (layer == 1) {
+        if (player.getCurrentRoom() instanceof PureWaterRoom pureRoom && !pureRoom.getFountainUsed()) {
+            newButton.setText("Cleanse");
+            if (layer == 1) {
+                newButton.addActionListener(_ -> cleanseItem(frame, itemIndex, player));
+            } else {
+                newButton.addActionListener(_ -> cleanseRelic(frame, itemIndex, player));
+            }
+        } else if (layer == 1) {
             newButton.addActionListener(_ -> useItem(frame, itemIndex, player));
+            if (player.getInventory().get(itemIndex).getFirst() instanceof Relic) {
+                newButton.setText("Equip");
+            } else {
+                newButton.setText("Use");
+            }
         } else {
             newButton.addActionListener(_ -> unequipRelic(frame, itemIndex, player));
+            newButton.setText("Unequip");
         }
-        newButton.setText("Use");
         newButton.setHorizontalAlignment(SwingConstants.LEFT);
 
         JTextPane inventoryPane = (JTextPane) frame.getLayeredPane().getComponentsInLayer(layer)[0];
@@ -338,6 +353,36 @@ public class SwingRenderer extends JFrame {
         } catch (BadLocationException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void cleanseItem(JFrame frame, int itemIndex, Player player) {
+        Item item = player.getInventory().get(itemIndex).getFirst();
+        if (item instanceof Relic relic && relic.isCursed()) {
+            relic.setCursed(false);
+            changeLabelText(frame, "The " + relic.getName() + " was cured!", LabelType.ERROR);
+        } else if (item.getName().equals("Apple")) {
+            player.discardItem(item);
+            player.addItemToInventory(new PureAppleItem());
+            changeLabelText(frame, "The apple was purified!", LabelType.ERROR);
+        } else {
+            changeLabelText(frame, "You put the " + item.getName() + " in the fountain, but nothing happened.", LabelType.ERROR);
+        }
+        ((PureWaterRoom) player.getCurrentRoom()).setFountainUsed(true);
+        player.checkInventory(frame);
+        appendMainLabelText(frame, "The fountain ran dry!");
+    }
+
+    public static void cleanseRelic(JFrame frame, int itemIndex, Player player) {
+        Relic relic = player.getEquippedRelics().get(itemIndex);
+        if (relic.isCursed()) {
+            relic.setCursed(false);
+            changeLabelText(frame, "The " + relic.getName() + " was cured!", LabelType.ERROR);
+        } else {
+            changeLabelText(frame, "That relic wasn't cursed...", LabelType.ERROR);
+        }
+        ((PureWaterRoom) player.getCurrentRoom()).setFountainUsed(true);
+        player.checkRelics(frame);
+        appendMainLabelText(frame, "The fountain ran dry!");
     }
 
     public static void useItem(JFrame frame, int itemIndex, Player player) {
