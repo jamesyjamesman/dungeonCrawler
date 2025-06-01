@@ -10,17 +10,16 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.text.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class SwingRenderer extends JFrame {
 
-    public static JFrame renderer() {
+    public static JFrame componentFactory() {
         ImageIcon backgroundImage = new ImageIcon(ClassLoader.getSystemResource("default_background.png"));
 
-        int imageWidth = backgroundImage.getIconWidth();
-        int imageHeight = backgroundImage.getIconHeight();
         Rectangle screenSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
         int screenWidth = (int) screenSize.getWidth();
         int screenHeight = (int) screenSize.getHeight();
@@ -33,7 +32,6 @@ public class SwingRenderer extends JFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JLabel backgroundImageLabel = new JLabel(backgroundImage);
-        backgroundImageLabel.setSize(imageWidth, imageHeight);
         backgroundImageLabel.setHorizontalAlignment(SwingConstants.LEFT);
         backgroundImageLabel.setName("background");
         JLayeredPane layeredPane = new JLayeredPane();
@@ -46,35 +44,24 @@ public class SwingRenderer extends JFrame {
 
         DungeonLabel descriptionTextLabel = new DungeonLabel();
         descriptionTextLabel.setName("description");
-        descriptionTextLabel.setSize(300, 200);
         layeredPane.add(descriptionTextLabel);
         layeredPane.setLayer(descriptionTextLabel, 2);
         ShadowLabel descriptionShadow = new ShadowLabel(layeredPane);
-        descriptionShadow.setSize(300, 200);
 
         DungeonLabel statusTextLabel = new DungeonLabel();
         statusTextLabel.setName("status");
-        int statusLabelWidth = 200;
-        int labelHeight = 200;
-        statusTextLabel.setBounds(frameWidth - statusLabelWidth, 0, statusLabelWidth, labelHeight);
         layeredPane.add(statusTextLabel);
         layeredPane.setLayer(statusTextLabel, 2);
         ShadowLabel statusShadow = new ShadowLabel(layeredPane);
-        statusShadow.setBounds(frameWidth - statusLabelWidth, 0, statusLabelWidth, labelHeight);
 
         DungeonTextPane inventoryPane = new DungeonTextPane();
         inventoryPane.setName("inventory");
-        int labelWidth = 400;
-        labelHeight = 450;
-        inventoryPane.setBounds(frameWidth - labelWidth, frameHeight - labelHeight, labelWidth, labelHeight);
         layeredPane.add(inventoryPane);
         layeredPane.setLayer(inventoryPane, 1);
         ShadowLabel inventoryShadow = new ShadowLabel(layeredPane);
-        inventoryShadow.setBounds(frameWidth - labelWidth, frameHeight - labelHeight, labelWidth, labelHeight);
 
         DungeonTextPane relicPane = new DungeonTextPane();
         relicPane.setName("relics");
-        relicPane.setBounds(frameWidth - labelWidth, frameHeight - labelHeight, labelWidth, labelHeight);
         relicPane.setVisible(false);
         layeredPane.add(relicPane);
         layeredPane.setLayer(relicPane, 3);
@@ -83,7 +70,6 @@ public class SwingRenderer extends JFrame {
         inventorySwitches.setBackground(Color.black);
         inventorySwitches.setForeground(Color.white);
         inventorySwitches.setOpaque(false);
-        inventorySwitches.setBounds(frameWidth - labelWidth, frameHeight - labelHeight - 25, labelWidth, 25);
         layeredPane.add(inventorySwitches);
         layeredPane.setLayer(inventorySwitches, 10);
 
@@ -109,39 +95,26 @@ public class SwingRenderer extends JFrame {
         userInput.setForeground(Color.white);
         userInput.setOpaque(false);
         userInput.setCaretColor(Color.white);
-        int userInputHeight = 100;
-        int userInputWidth = 600;
-        userInput.setBounds(0, frameHeight - userInputHeight, userInputWidth, userInputHeight);
         userInput.addActionListener(_ -> setTempText(userInput, tempText));
         userInput.requestFocusInWindow();
         layeredPane.add(userInput);
         layeredPane.setLayer(userInput, 2);
         ShadowLabel userInputShadow = new ShadowLabel(layeredPane);
-        userInputShadow.setBounds(0, frameHeight - userInputHeight, userInputWidth, userInputHeight);
 
         DungeonLabel errorTextLabel = new DungeonLabel();
         errorTextLabel.setName("error");
-        int errorTextLabelWidth = 600;
-        int errorTextLabelHeight = 50;
-        errorTextLabel.setBounds(0, frameHeight - errorTextLabelHeight - userInputHeight - 25, errorTextLabelWidth, errorTextLabelHeight);
         layeredPane.add(errorTextLabel);
         layeredPane.setLayer(errorTextLabel, 2);
         ShadowLabel errorShadow = new ShadowLabel(layeredPane);
-        errorShadow.setBounds(0, frameHeight - errorTextLabelHeight - userInputHeight - 25, errorTextLabelWidth, errorTextLabelHeight);
 
         DungeonLabel mainTextLabel = new DungeonLabel();
         mainTextLabel.setName("main");
-        int mainTextLabelHeight = 300;
-        int mainTextLabelWidth = 600;
-        mainTextLabel.setBounds(0, frameHeight - mainTextLabelHeight - errorTextLabelHeight - userInputHeight - 25, mainTextLabelWidth, mainTextLabelHeight);
         layeredPane.add(mainTextLabel);
         layeredPane.setLayer(mainTextLabel, 2);
         ShadowLabel mainShadow = new ShadowLabel(layeredPane);
-        mainShadow.setBounds(0, frameHeight - mainTextLabelHeight - errorTextLabelHeight - userInputHeight - 25, mainTextLabelWidth, mainTextLabelHeight);
 
         JPanel yesOrNo = new JPanel();
         yesOrNo.setOpaque(false);
-        yesOrNo.setBounds(0, frameHeight - errorTextLabelHeight - userInputHeight - 50, mainTextLabelWidth, 25);
         yesOrNo.setVisible(false);
 
         InventoryButton yes = new InventoryButton();
@@ -159,17 +132,70 @@ public class SwingRenderer extends JFrame {
 
         DungeonTextPane healthPane = new DungeonTextPane();
         healthPane.setName("health");
-        int healthLabelHeight = 200;
-        int healthLabelWidth = 300;
-        healthPane.setBounds(frameWidth - healthLabelWidth - statusLabelWidth, 0, healthLabelWidth, healthLabelHeight);
         layeredPane.add(healthPane);
         layeredPane.setLayer(healthPane, 67);
         ShadowLabel healthShadow = new ShadowLabel(layeredPane);
-        healthShadow.setBounds(frameWidth - healthLabelWidth - statusLabelWidth, 0, healthLabelWidth, healthLabelHeight);
 
         frame.setLayeredPane(layeredPane);
         frame.setVisible(true);
+        frame.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                renderer(frame, backgroundImage, backgroundImageLabel, descriptionTextLabel, descriptionShadow, statusTextLabel, statusShadow, inventoryPane, inventoryShadow, relicPane, inventorySwitches, userInput, userInputShadow, errorTextLabel, errorShadow, mainTextLabel, mainShadow, yesOrNo, healthPane, healthShadow);
+            }
+        });
+        renderer(frame, backgroundImage, backgroundImageLabel, descriptionTextLabel, descriptionShadow, statusTextLabel, statusShadow, inventoryPane, inventoryShadow, relicPane, inventorySwitches, userInput, userInputShadow, errorTextLabel, errorShadow, mainTextLabel, mainShadow, yesOrNo, healthPane, healthShadow);
         return frame;
+    }
+
+    public static void renderer(JFrame frame, Icon backgroundImage, JLabel background, JLabel description, JLabel descriptionShadow, JLabel status, JLabel statusShadow, JTextPane inventory, JLabel inventoryShadow, JTextPane relics, JPanel invSwitches, JTextField input, JLabel inputShadow, JLabel error, JLabel errorShadow, JLabel main, JLabel mainShadow, JPanel yesOrNo, JTextPane health, JLabel healthShadow) {
+        int imageWidth = backgroundImage.getIconWidth();
+        int imageHeight = backgroundImage.getIconHeight();
+
+        int frameHeight = frame.getHeight();
+        int frameWidth = frame.getWidth();
+
+        background.setSize(imageWidth, imageHeight);
+
+        description.setSize(300, 200);
+        descriptionShadow.setSize(300, 200);
+
+        int statusLabelWidth = 200;
+        int labelHeight = 200;
+        status.setBounds(frameWidth - statusLabelWidth, 0, statusLabelWidth, labelHeight);
+        statusShadow.setBounds(frameWidth - statusLabelWidth, 0, statusLabelWidth, labelHeight);
+
+        int labelWidth = 400;
+        labelHeight = 450;
+        inventory.setBounds(frameWidth - labelWidth, frameHeight - labelHeight, labelWidth, labelHeight);
+        inventoryShadow.setBounds(frameWidth - labelWidth, frameHeight - labelHeight, labelWidth, labelHeight);
+
+        relics.setBounds(frameWidth - labelWidth, frameHeight - labelHeight, labelWidth, labelHeight);
+
+        invSwitches.setBounds(frameWidth - labelWidth, frameHeight - labelHeight - 25, labelWidth, 25);
+
+        int userInputHeight = 100;
+        int userInputWidth = 600;
+        input.setBounds(0, frameHeight - userInputHeight, userInputWidth, userInputHeight);
+        inputShadow.setBounds(0, frameHeight - userInputHeight, userInputWidth, userInputHeight);
+
+        int errorTextLabelWidth = 600;
+        int errorTextLabelHeight = 50;
+        error.setBounds(0, frameHeight - errorTextLabelHeight - userInputHeight - 25, errorTextLabelWidth, errorTextLabelHeight);
+        errorShadow.setBounds(0, frameHeight - errorTextLabelHeight - userInputHeight - 25, errorTextLabelWidth, errorTextLabelHeight);
+
+        int mainTextLabelHeight = 300;
+        int mainTextLabelWidth = 600;
+        main.setBounds(0, frameHeight - mainTextLabelHeight - errorTextLabelHeight - userInputHeight - 25, mainTextLabelWidth, mainTextLabelHeight);
+        mainShadow.setBounds(0, frameHeight - mainTextLabelHeight - errorTextLabelHeight - userInputHeight - 25, mainTextLabelWidth, mainTextLabelHeight);
+
+        yesOrNo.setBounds(0, frameHeight - errorTextLabelHeight - userInputHeight - 50, mainTextLabelWidth, 25);
+
+        int healthLabelHeight = 200;
+        int healthLabelWidth = 300;
+        health.setBounds(frameWidth - healthLabelWidth - statusLabelWidth, 0, healthLabelWidth, healthLabelHeight);
+        healthShadow.setBounds(frameWidth - healthLabelWidth - statusLabelWidth, 0, healthLabelWidth, healthLabelHeight);
     }
 
     public static void addHealthText(JFrame frame, String newText) {

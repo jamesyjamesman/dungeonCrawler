@@ -124,7 +124,7 @@ public class Player {
             String output = item.getName() + amount + ": " + item.getDescription();
             output = output.concat("\n");
             if (item instanceof Relic relic && relic.isCursed() && equippedRelicIndex("Relic of Curse Detection") != -1) {
-                color = new Color(100, 0, 130);
+                color = new Color(130, 30, 190);
             } else {
                 color = Color.white;
             }
@@ -142,7 +142,7 @@ public class Player {
                     + this.equippedRelics.get(i).getDescription();
             output = output.concat("\n\n");
             if (this.equippedRelics.get(i).isCursed()) {
-                color = new Color(100, 0, 130);
+                color = new Color(130, 30, 190);
             } else {
                 color = Color.white;
             }
