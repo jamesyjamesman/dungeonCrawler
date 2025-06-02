@@ -38,10 +38,6 @@ public class SwingRenderer extends JFrame {
         layeredPane.add(backgroundImageLabel);
         layeredPane.setLayer(backgroundImageLabel, -5);
 
-        Dimension frameSize = frame.getSize();
-        int frameHeight = (int) frameSize.getHeight();
-        int frameWidth = (int) frameSize.getWidth();
-
         DungeonLabel descriptionTextLabel = new DungeonLabel();
         descriptionTextLabel.setName("description");
         layeredPane.add(descriptionTextLabel);
