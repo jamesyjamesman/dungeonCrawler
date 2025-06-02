@@ -44,7 +44,7 @@ public class HealthItem extends Item{
             }
         }
         player.checkStatus(frame);
-        player.discardItem(this);
+        player.discardItem(frame, this);
     }
 
     public void setRestorationRange(int lowerBound, int upperBound) {

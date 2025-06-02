@@ -345,32 +345,40 @@ public class SwingRenderer extends JFrame {
         pane.repaint();
     }
 
-    public static void addInventoryButton(JFrame frame, String newItemText, Player player, int itemIndex, int layer, Color color) {
-        InventoryButton newButton = new InventoryButton();
+    public static void addInventoryLabel(JFrame frame, String newItemText, Player player, int itemIndex, int layer, Color color) {
+        InventoryButton useButton = new InventoryButton();
+        InventoryButton dropButton = new InventoryButton();
         if (player.getCurrentRoom() instanceof PureWaterRoom pureRoom && !pureRoom.getFountainUsed()) {
-            newButton.setText("Cleanse");
+            useButton.setText("Cleanse");
             if (layer == 1) {
-                newButton.addActionListener(_ -> cleanseItem(frame, itemIndex, player));
+                useButton.addActionListener(_ -> cleanseItem(frame, itemIndex, player));
             } else {
-                newButton.addActionListener(_ -> cleanseRelic(frame, itemIndex, player));
+                useButton.addActionListener(_ -> cleanseRelic(frame, itemIndex, player));
             }
         } else if (layer == 1) {
-            newButton.addActionListener(_ -> useItem(frame, itemIndex, player));
+            useButton.addActionListener(_ -> useItem(frame, itemIndex, player));
+            dropButton.addActionListener(_ -> player.discardItem(frame, player.getInventory().get(itemIndex).getFirst()));
             if (player.getInventory().get(itemIndex).getFirst() instanceof Relic) {
-                newButton.setText("Equip");
+                useButton.setText("Equip");
             } else {
-                newButton.setText("Use");
+                useButton.setText("Use");
             }
         } else {
-            newButton.addActionListener(_ -> unequipRelic(frame, itemIndex, player));
-            newButton.setText("Unequip");
+            useButton.addActionListener(_ -> unequipRelic(frame, itemIndex, player));
+            useButton.setText("Unequip");
         }
-        newButton.setHorizontalAlignment(SwingConstants.LEFT);
+        useButton.setHorizontalAlignment(SwingConstants.LEFT);
+        dropButton.setHorizontalAlignment(SwingConstants.LEFT);
+        dropButton.setText("Drop");
 
         JTextPane inventoryPane = (JTextPane) frame.getLayeredPane().getComponentsInLayer(layer)[0];
         Document doc = inventoryPane.getStyledDocument();
         inventoryPane.setCaretPosition(doc.getLength());
-        inventoryPane.insertComponent(newButton);
+        inventoryPane.insertComponent(useButton);
+        if (layer == 1) {
+            inventoryPane.setCaretPosition(doc.getLength());
+            inventoryPane.insertComponent(dropButton);
+        }
         SimpleAttributeSet attributeSet = new SimpleAttributeSet();
         StyleConstants.setBold(attributeSet, true);
         StyleConstants.setForeground(attributeSet, color);
@@ -387,7 +395,7 @@ public class SwingRenderer extends JFrame {
             relic.setCursed(false);
             changeLabelText(frame, "The " + relic.getName() + " was cured!", LabelType.ERROR);
         } else if (item.getName().equals("Apple")) {
-            player.discardItem(item);
+            player.discardItem(frame, item);
             player.addItemToInventory(new PureAppleItem());
             changeLabelText(frame, "The apple was purified!", LabelType.ERROR);
         } else {

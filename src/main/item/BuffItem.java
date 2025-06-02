@@ -24,7 +24,7 @@ public abstract class BuffItem extends Item {
     public void useItem(JFrame frame, Player player) {
         randomizeAmountChanged();
         SwingRenderer.appendMainLabelText(frame, "You crack open the can, plug your nose, and manage to force its contents down your throat.");
-        player.discardItem(this);
+        player.discardItem(frame, this);
     }
 
     //sets amount changed from the lower bound to the upper bound - 1

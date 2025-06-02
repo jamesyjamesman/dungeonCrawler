@@ -99,7 +99,7 @@ public class Player {
         return totalSize;
     }
 
-    public void discardItem(Item item) {
+    public void discardItem(JFrame frame, Item item) {
         int itemIndex = findItemInInventory(item);
         if (itemIndex == -1) {
             System.out.println("Error! This code should not be reachable (Item.java)");
@@ -109,6 +109,8 @@ public class Player {
         } else {
             this.inventory.get(itemIndex).remove(item);
         }
+        checkInventory(frame);
+        SwingRenderer.changeLabelText(frame, "The " + item.getName() + " was dropped!", LabelType.ERROR);
     }
 
     //can cause index out of bounds
@@ -128,7 +130,7 @@ public class Player {
             } else {
                 color = Color.white;
             }
-            SwingRenderer.addInventoryButton(frame, output, this, i, 1, color);
+            SwingRenderer.addInventoryLabel(frame, output, this, i, 1, color);
         }
     }
 
@@ -146,7 +148,7 @@ public class Player {
             } else {
                 color = Color.white;
             }
-            SwingRenderer.addInventoryButton(frame, output, this, i, 3, color);
+            SwingRenderer.addInventoryLabel(frame, output, this, i, 3, color);
         }
     }
 
