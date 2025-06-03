@@ -433,4 +433,34 @@ public class SwingRenderer extends JFrame {
     public static void changeBackgroundImage(JFrame frame, String fileName) {
         ((JLabel) frame.getLayeredPane().getComponentsInLayer(-5)[0]).setIcon(new ImageIcon(ClassLoader.getSystemResource(fileName)));
     }
+
+    //I am never ever using swing again after this project. I have spent hours on this and it still doesn't work right
+    public static void createIntroductionPopup(JFrame mainFrame) {
+        JPanel panel = new JPanel();
+        panel.setOpaque(false);
+        JTextPane pane = new DungeonTextPane();
+        JFrame popupFrame = new JFrame();
+        popupFrame.setBounds(mainFrame.getWidth()/2 - 150, mainFrame.getHeight()/2 - 150, 300, 300);
+        popupFrame.getContentPane().setBackground(Color.black);
+        panel.add(pane);
+        panel.setBounds(popupFrame.getBounds());
+        pane.setPreferredSize(panel.getSize());
+        popupFrame.setVisible(true);
+        popupFrame.setTitle("Introduction");
+        InventoryButton button = new InventoryButton();
+        button.setText("OK");
+        button.setBorder(new LineBorder(Color.lightGray));
+        Document doc = pane.getStyledDocument();
+        SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+        StyleConstants.setBold(attributeSet, true);
+        try {
+            doc.insertString(0, "Welcome to the simulation!\nYou will be presented choices on where to proceed.\nPress the appropriate button or type your answer in the field in the bottom left.\nGood luck!\n", attributeSet);
+        } catch (BadLocationException e) {
+            throw new RuntimeException(e);
+        }
+        button.addActionListener(_ -> popupFrame.dispose());
+        panel.add(button);
+        popupFrame.add(panel);
+        popupFrame.pack();
+    }
 }
