@@ -132,20 +132,45 @@ public class SwingRenderer extends JFrame {
         layeredPane.setLayer(healthPane, 67);
         ShadowLabel healthShadow = new ShadowLabel(layeredPane);
 
+        DungeonPanel popupPanel = new DungeonPanel();
+        popupPanel.setName("popup");
+        popupPanel.setVisible(false);
+        layeredPane.add(popupPanel);
+        layeredPane.setLayer(popupPanel, 80);
+
+        InventoryButton popupButton = new InventoryButton();
+        popupButton.setText("Close");
+
+        layeredPane.add(popupButton);
+        layeredPane.setLayer(popupButton, 81);
+
+        DungeonTextPane popupPane = new DungeonTextPane();
+        layeredPane.add(popupPane);
+        layeredPane.setLayer(popupPane, 81);
+
+        ShadowLabel popupShadow = new ShadowLabel(layeredPane);
+        layeredPane.setLayer(popupShadow, 79);
+        popupShadow.setVisible(false);
+
+        popupButton.addActionListener(_ -> hidePopup(popupShadow, popupPanel));
+
+        popupPanel.add(popupPane);
+        popupPanel.add(popupButton);
+
         frame.setLayeredPane(layeredPane);
         frame.setVisible(true);
         frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
-                renderer(frame, backgroundImage, backgroundImageLabel, descriptionTextLabel, descriptionShadow, statusTextLabel, statusShadow, inventoryPane, inventoryShadow, relicPane, inventorySwitches, userInput, userInputShadow, errorTextLabel, errorShadow, mainTextLabel, mainShadow, yesOrNo, healthPane, healthShadow);
+                renderer(frame, backgroundImage, backgroundImageLabel, descriptionTextLabel, descriptionShadow, statusTextLabel, statusShadow, inventoryPane, inventoryShadow, relicPane, inventorySwitches, userInput, userInputShadow, errorTextLabel, errorShadow, mainTextLabel, mainShadow, yesOrNo, healthPane, healthShadow, popupPanel, popupPane, popupButton, popupShadow);
             }
         });
-        renderer(frame, backgroundImage, backgroundImageLabel, descriptionTextLabel, descriptionShadow, statusTextLabel, statusShadow, inventoryPane, inventoryShadow, relicPane, inventorySwitches, userInput, userInputShadow, errorTextLabel, errorShadow, mainTextLabel, mainShadow, yesOrNo, healthPane, healthShadow);
+        renderer(frame, backgroundImage, backgroundImageLabel, descriptionTextLabel, descriptionShadow, statusTextLabel, statusShadow, inventoryPane, inventoryShadow, relicPane, inventorySwitches, userInput, userInputShadow, errorTextLabel, errorShadow, mainTextLabel, mainShadow, yesOrNo, healthPane, healthShadow, popupPanel, popupPane, popupButton, popupShadow);
         return frame;
     }
 
-    public static void renderer(JFrame frame, Icon backgroundImage, JLabel background, JLabel description, JLabel descriptionShadow, JLabel status, JLabel statusShadow, JTextPane inventory, JLabel inventoryShadow, JTextPane relics, JPanel invSwitches, JTextField input, JLabel inputShadow, JLabel error, JLabel errorShadow, JLabel main, JLabel mainShadow, JPanel yesOrNo, JTextPane health, JLabel healthShadow) {
+    public static void renderer(JFrame frame, Icon backgroundImage, JLabel background, JLabel description, JLabel descriptionShadow, JLabel status, JLabel statusShadow, JTextPane inventory, JLabel inventoryShadow, JTextPane relics, JPanel invSwitches, JTextField input, JLabel inputShadow, JLabel error, JLabel errorShadow, JLabel main, JLabel mainShadow, JPanel yesOrNo, JTextPane health, JLabel healthShadow, JPanel popupPanel, JTextPane popupPane, JButton popupButton, JLabel popupShadow) {
         int imageWidth = backgroundImage.getIconWidth();
         int imageHeight = backgroundImage.getIconHeight();
 
@@ -192,6 +217,11 @@ public class SwingRenderer extends JFrame {
         int healthLabelWidth = 300;
         health.setBounds(frameWidth - healthLabelWidth - statusLabelWidth, 0, healthLabelWidth, healthLabelHeight);
         healthShadow.setBounds(frameWidth - healthLabelWidth - statusLabelWidth, 0, healthLabelWidth, healthLabelHeight);
+
+        int popupPanelWidth = 500;
+        int popupPanelHeight = 400;
+        popupPanel.setBounds(frameWidth/2 - popupPanelWidth/2, frameHeight/2 - popupPanelHeight/2, popupPanelWidth, popupPanelHeight);
+        popupShadow.setBounds(0, 0, frameWidth, frameHeight);
     }
 
     public static void addHealthText(JFrame frame, String newText) {
@@ -434,33 +464,25 @@ public class SwingRenderer extends JFrame {
         ((JLabel) frame.getLayeredPane().getComponentsInLayer(-5)[0]).setIcon(new ImageIcon(ClassLoader.getSystemResource(fileName)));
     }
 
-    //I am never ever using swing again after this project. I have spent hours on this and it still doesn't work right
-    public static void createIntroductionPopup(JFrame mainFrame) {
-        JPanel panel = new JPanel();
-        panel.setOpaque(false);
-        JTextPane pane = new DungeonTextPane();
-        JFrame popupFrame = new JFrame();
-        popupFrame.setBounds(mainFrame.getWidth()/2 - 150, mainFrame.getHeight()/2 - 150, 300, 300);
-        popupFrame.getContentPane().setBackground(Color.black);
-        panel.add(pane);
-        panel.setBounds(popupFrame.getBounds());
-        pane.setPreferredSize(panel.getSize());
-        popupFrame.setVisible(true);
-        popupFrame.setTitle("Introduction");
-        InventoryButton button = new InventoryButton();
-        button.setText("OK");
-        button.setBorder(new LineBorder(Color.lightGray));
+    public static void createPopup(JFrame frame, String popupText) {
+        JPanel panel = (JPanel) frame.getLayeredPane().getComponentsInLayer(80)[0];
+        JLabel shadow = (JLabel) frame.getLayeredPane().getComponentsInLayer(79)[0];
+        JTextPane pane = (JTextPane) panel.getComponent(0);
         Document doc = pane.getStyledDocument();
         SimpleAttributeSet attributeSet = new SimpleAttributeSet();
         StyleConstants.setBold(attributeSet, true);
         try {
-            doc.insertString(0, "Welcome to the simulation!\nYou will be presented choices on where to proceed.\nPress the appropriate button or type your answer in the field in the bottom left.\nGood luck!\n", attributeSet);
+            doc.remove(0, doc.getLength());
+            doc.insertString(0, popupText, attributeSet);
         } catch (BadLocationException e) {
             throw new RuntimeException(e);
         }
-        button.addActionListener(_ -> popupFrame.dispose());
-        panel.add(button);
-        popupFrame.add(panel);
-        popupFrame.pack();
+        panel.setVisible(true);
+        shadow.setVisible(true);
+    }
+
+    public static void hidePopup(JLabel shadow, JPanel panel) {
+        panel.setVisible(false);
+        shadow.setVisible(false);
     }
 }

@@ -15,8 +15,8 @@ import javax.swing.JFrame;
 public class Main {
     public static void main(String[] args) {
         JFrame frame = SwingRenderer.componentFactory();
-        SwingRenderer.createIntroductionPopup(frame);
-
+//        SwingRenderer.createIntroductionPopup(frame);
+        SwingRenderer.createPopup(frame, "Welcome to the simulation!\nYou will be presented choices on where to proceed.\nPress the appropriate button or type your answer in the field in the bottom left.\nGood luck!\n");
         Player playerCharacter = PlayerInit.playerInit(frame);
         ArrayList<Room> rooms = RoomInit.roomInit();
 
