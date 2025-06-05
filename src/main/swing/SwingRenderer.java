@@ -383,7 +383,12 @@ public class SwingRenderer extends JFrame {
             }
         } else if (layer == 1) {
             useButton.addActionListener(_ -> useItem(frame, itemIndex, player));
-            dropButton.addActionListener(_ -> player.discardItem(frame, player.getInventory().get(itemIndex).getFirst()));
+            dropButton.addActionListener(_ -> {
+                Item item = player.getInventory().get(itemIndex).getFirst();
+                player.discardItem(frame, item);
+                SwingRenderer.changeLabelText(frame, "The " + item.getName() + " was dropped!", LabelType.ERROR);
+                }
+            );
             if (player.getInventory().get(itemIndex).getFirst() instanceof Relic) {
                 useButton.setText("Equip");
             } else {

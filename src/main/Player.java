@@ -110,7 +110,6 @@ public class Player {
             this.inventory.get(itemIndex).remove(item);
         }
         checkInventory(frame);
-        SwingRenderer.changeLabelText(frame, "The " + item.getName() + " was dropped!", LabelType.ERROR);
     }
 
     //can cause index out of bounds
@@ -266,23 +265,24 @@ public class Player {
         }
     }
 
-    public void checkLevelUp(JFrame frame) {
+    public void checkLevelUp(JFrame frame, String output) {
         if (this.experience >= this.expToNextLevel && this.level < 10) {
-            levelUp(frame);
+            levelUp(frame, output);
         }
     }
 
     //could make a popup-type thing?
-    public void levelUp(JFrame frame) {
+    public void levelUp(JFrame frame, String output) {
+        output += "You leveled up!\n";
         this.experience -= this.expToNextLevel;
         this.expToNextLevel = (int) Math.round(this.expToNextLevel * 1.2);
         this.level += 1;
-        SwingRenderer.appendMainLabelText(frame, "You leveled up!");
-        levelUpEffects(frame, this.level);
-        checkLevelUp(frame);
+        output += levelUpEffects(frame, this.level, output);
+        checkLevelUp(frame, output);
+        SwingRenderer.createPopup(frame, output);
     }
 
-    public void levelUpEffects(JFrame frame, int newLevel) {
+    public String levelUpEffects(JFrame frame, int newLevel, String output) {
         int maxHealthChange = 0;
         int inventoryCapChange = 0;
         int damageChange = 0;
@@ -319,25 +319,26 @@ public class Player {
                 relicCapChange = 2;
                 inventoryCapChange = 3;
                 this.expToNextLevel = 100000000;
-                SwingRenderer.appendMainLabelText(frame, "You're at the maximum level!");
+                output +=  "You're at the maximum level!\n";
                 break;
         }
         if (maxHealthChange != 0) {
-            SwingRenderer.appendMainLabelText(frame, "Your maximum health increased by " + maxHealthChange + "!");
+            output += "Your maximum health increased by " + maxHealthChange + "!\n";
             changeMaxHealth(maxHealthChange);
         }
         if (inventoryCapChange != 0) {
-            SwingRenderer.appendMainLabelText(frame, "Your inventory size increased by " + inventoryCapChange + "!");
+            output += "Your inventory size increased by " + inventoryCapChange + "!\n";
             changeInventoryCap(inventoryCapChange);
         }
         if (damageChange != 0) {
-            SwingRenderer.appendMainLabelText(frame, "Your attack damage increased by " + damageChange + "!");
+            output += "Your attack damage increased by " + damageChange + "!\n";
             increaseDamage(damageChange);
         }
         if (relicCapChange != 0) {
-            SwingRenderer.appendMainLabelText(frame, "Your relic pouch capacity increased by " + relicCapChange + "!");
+            output += "Your relic pouch capacity increased by " + relicCapChange + "!\n";
             changeRelicCap(relicCapChange);
         }
+        return output;
     }
 
     public int getCurrentHealth() {

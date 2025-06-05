@@ -23,7 +23,7 @@ public class Battle {
             boolean enemyIsDead = enemy.getCurrentHealth() == 0;
             if (enemyIsDead) {
                 player.changeExperience(enemy.getExperienceDropped());
-                player.checkLevelUp(frame);
+                player.checkLevelUp(frame, "");
                 player.checkStatus(frame);
                 SwingRenderer.appendMainLabelText(frame, "The " + enemy.getSpecies() + " died! You got " + enemy.getExperienceDropped() + " experience!");
                 room.addDefeatedEnemies(enemy);
