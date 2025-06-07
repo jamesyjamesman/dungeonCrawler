@@ -13,7 +13,7 @@ public class EndingRoom extends Room {
     @Override
     public void completeRoomActions(Player player, JFrame frame) {
         super.completeRoomActions(player, frame);
-        SwingRenderer.changeLabelText(frame, "You survived long enough to escape! You win!", LabelType.MAIN);
+        SwingRenderer.appendMainLabelText(frame, "You survived long enough to escape! You win!", true);
         while (true) {
 
         }

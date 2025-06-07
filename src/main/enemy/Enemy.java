@@ -1,6 +1,7 @@
 package main.enemy;
 
 import main.Player;
+import main.swing.LabelType;
 import main.swing.SwingRenderer;
 
 import javax.swing.*;
@@ -45,6 +46,16 @@ public class Enemy {
         SwingRenderer.addHealthText(frame, "The " + this.species + " attacked you, dealing " + this.damage + " damage!");
         player.takeDamage(frame, this.damage);
         //will get more complex with weapons, etc.
+    }
+
+    //very basic right now, could add a basic description, and attack descriptions for bosses.
+    public void checkInformation(JFrame frame) {
+        String output = "";
+        output += this.species.substring(0, 1).toUpperCase() + this.species.substring(1) + "\n";
+        output += "HP: " + this.currentHealth + "/" + this.maxHealth + "\n";
+        output += "EXP: " + this.experienceDropped + "\n";
+        output += "ATK DMG: " + this.damage + "\n";
+        SwingRenderer.changeLabelText(frame, output, LabelType.DESCRIPTION);
     }
 
     public void reset() {

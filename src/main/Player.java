@@ -47,33 +47,33 @@ public class Player {
         int totalDamage = this.damage;
         int damageDealt = enemy.takeDamage(frame, totalDamage);
         if (damageDealt > 0) {
-            SwingRenderer.appendMainLabelText(frame, "The " + enemy.getSpecies() + " took " + totalDamage + " damage!");
+            SwingRenderer.appendMainLabelText(frame, "The " + enemy.getSpecies() + " took " + totalDamage + " damage!\n", false);
         }
         //will get more complex with weapons, etc.
     }
 
     public void itemPickup(JFrame frame, Item item) {
         if (calculateInventorySize() >= this.inventoryCap) {
-            SwingRenderer.appendMainLabelText(frame, "Your inventory is full!\nEnter anything to continue, if your inventory is still full the item will be lost.");
+            SwingRenderer.appendMainLabelText(frame, "Your inventory is full!\nEnter anything to continue, if your inventory is still full the item will be lost.", false);
             Main.yesOrNo(frame);
             if (calculateInventorySize() >= this.inventoryCap) {
-                SwingRenderer.appendMainLabelText(frame, "Your inventory is still full... The " + item.getName() + " remains where it was.");
+                SwingRenderer.appendMainLabelText(frame, "Your inventory is still full... The " + item.getName() + " remains where it was.", false);
                 return;
             }
         }
         addItemToInventory(item);
 
         if (item instanceof Relic && getEquippedRelics().size() < this.relicCap) {
-            SwingRenderer.changeLabelText(frame, "Would you like to equip the " + item.getName() + " now? (y/n)", LabelType.MAIN);
+            SwingRenderer.appendMainLabelText(frame, "Would you like to equip the " + item.getName() + " now? (y/n)", true);
             String response = Main.yesOrNo(frame);
             if (response.equals("y")) {
                 item.useItem(frame, this);
-                SwingRenderer.appendMainLabelText(frame, "The " + item.getName() + " has been equipped!");
+                SwingRenderer.appendMainLabelText(frame, "The " + item.getName() + " has been equipped!", false);
                 checkRelics(frame);
                 return;
             }
         }
-        SwingRenderer.appendMainLabelText(frame, "You stash the " + item.getName() + " in your bag.");
+        SwingRenderer.appendMainLabelText(frame, "You stash the " + item.getName() + " in your bag.", false);
     }
 
     public boolean addItemToInventory(Item item) {
@@ -259,7 +259,7 @@ public class Player {
 
     public void doDeathSequence(JFrame frame) {
         checkStatus(frame);
-        SwingRenderer.changeLabelText(frame, "\"Ack! It's too much for me!\" " + getName() + " exclaims.\n" + getName() + " falls to their knees... then to the ground.\n" + "GAME OVER!", LabelType.MAIN);
+        SwingRenderer.appendMainLabelText(frame, "\"Ack! It's too much for me!\" " + getName() + " exclaims.\n" + getName() + " falls to their knees... then to the ground.\n" + "GAME OVER!", true);
 //        endStatistics(frame);
         while (true) {
         }

@@ -1,6 +1,7 @@
 package main.swing;
 
 import main.Player;
+import main.enemy.Enemy;
 import main.item.Item;
 import main.item.PureAppleItem;
 import main.item.relic.Relic;
@@ -67,7 +68,7 @@ public class SwingRenderer extends JFrame {
         inventorySwitches.setForeground(Color.white);
         inventorySwitches.setOpaque(false);
         layeredPane.add(inventorySwitches);
-        layeredPane.setLayer(inventorySwitches, 10);
+        layeredPane.setLayer(inventorySwitches, 80);
 
         InventoryButton switchInventory = new InventoryButton();
         switchInventory.addActionListener(_ -> makeInventoryVisible(frame));
@@ -103,10 +104,10 @@ public class SwingRenderer extends JFrame {
         layeredPane.setLayer(errorTextLabel, 2);
         ShadowLabel errorShadow = new ShadowLabel(layeredPane);
 
-        DungeonLabel mainTextLabel = new DungeonLabel();
-        mainTextLabel.setName("main");
-        layeredPane.add(mainTextLabel);
-        layeredPane.setLayer(mainTextLabel, 2);
+        DungeonTextPane mainTextPane = new DungeonTextPane();
+        mainTextPane.setName("main");
+        layeredPane.add(mainTextPane);
+        layeredPane.setLayer(mainTextPane, 78);
         ShadowLabel mainShadow = new ShadowLabel(layeredPane);
 
         JPanel yesOrNo = new JPanel();
@@ -163,14 +164,14 @@ public class SwingRenderer extends JFrame {
             @Override
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
-                renderer(frame, backgroundImage, backgroundImageLabel, descriptionTextLabel, descriptionShadow, statusTextLabel, statusShadow, inventoryPane, inventoryShadow, relicPane, inventorySwitches, userInput, userInputShadow, errorTextLabel, errorShadow, mainTextLabel, mainShadow, yesOrNo, healthPane, healthShadow, popupPanel, popupPane, popupButton, popupShadow);
+                renderer(frame, backgroundImage, backgroundImageLabel, descriptionTextLabel, descriptionShadow, statusTextLabel, statusShadow, inventoryPane, inventoryShadow, relicPane, inventorySwitches, userInput, userInputShadow, errorTextLabel, errorShadow, mainTextPane, mainShadow, yesOrNo, healthPane, healthShadow, popupPanel, popupPane, popupButton, popupShadow);
             }
         });
-        renderer(frame, backgroundImage, backgroundImageLabel, descriptionTextLabel, descriptionShadow, statusTextLabel, statusShadow, inventoryPane, inventoryShadow, relicPane, inventorySwitches, userInput, userInputShadow, errorTextLabel, errorShadow, mainTextLabel, mainShadow, yesOrNo, healthPane, healthShadow, popupPanel, popupPane, popupButton, popupShadow);
+        renderer(frame, backgroundImage, backgroundImageLabel, descriptionTextLabel, descriptionShadow, statusTextLabel, statusShadow, inventoryPane, inventoryShadow, relicPane, inventorySwitches, userInput, userInputShadow, errorTextLabel, errorShadow, mainTextPane, mainShadow, yesOrNo, healthPane, healthShadow, popupPanel, popupPane, popupButton, popupShadow);
         return frame;
     }
 
-    public static void renderer(JFrame frame, Icon backgroundImage, JLabel background, JLabel description, JLabel descriptionShadow, JLabel status, JLabel statusShadow, JTextPane inventory, JLabel inventoryShadow, JTextPane relics, JPanel invSwitches, JTextField input, JLabel inputShadow, JLabel error, JLabel errorShadow, JLabel main, JLabel mainShadow, JPanel yesOrNo, JTextPane health, JLabel healthShadow, JPanel popupPanel, JTextPane popupPane, JButton popupButton, JLabel popupShadow) {
+    public static void renderer(JFrame frame, Icon backgroundImage, JLabel background, JLabel description, JLabel descriptionShadow, JLabel status, JLabel statusShadow, JTextPane inventory, JLabel inventoryShadow, JTextPane relics, JPanel invSwitches, JTextField input, JLabel inputShadow, JLabel error, JLabel errorShadow, JTextPane main, JLabel mainShadow, JPanel yesOrNo, JTextPane health, JLabel healthShadow, JPanel popupPanel, JTextPane popupPane, JButton popupButton, JLabel popupShadow) {
         int imageWidth = backgroundImage.getIconWidth();
         int imageHeight = backgroundImage.getIconHeight();
 
@@ -295,12 +296,27 @@ public class SwingRenderer extends JFrame {
         label.setText(newText);
     }
 
-    public static void appendMainLabelText(JFrame frame, String addedText) {
-        JLabel mainLabel = (JLabel) getComponentFromFrame(frame, "main");
-        String newText = combineHTMLStrings(mainLabel.getText(), HTMLifyString(addedText));
-        mainLabel.setText(newText);
+    public static void setTempText(JFrame frame, String text) {
+        JLabel tempText = (JLabel) getComponentFromFrame(frame, "temp");
+        tempText.setText(text);
     }
 
+    public static void appendMainLabelText(JFrame frame, String addedText, boolean clear) {
+        JTextPane mainPane = (JTextPane) frame.getLayeredPane().getComponentsInLayer(78)[0];
+        Document doc = mainPane.getStyledDocument();
+        SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+        StyleConstants.setBold(attributeSet, true);
+        try {
+            if (clear) {
+                doc.remove(0, doc.getLength());
+            }
+            doc.insertString(doc.getLength(), addedText, attributeSet);
+        } catch (BadLocationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Deprecated
     public static String combineHTMLStrings(String oldText, String addedText) {
         oldText = oldText.replaceAll("</html>", "");
         addedText = addedText.replaceAll("<html>", "");
@@ -420,6 +436,37 @@ public class SwingRenderer extends JFrame {
         }
     }
 
+    public static void addEnemyLabel(JFrame frame, String enemyText, Player player, Enemy enemy, int enemyIndex) {
+        InventoryButton attackButton = new InventoryButton();
+        InventoryButton checkButton = new InventoryButton();
+
+        attackButton.setText("Attack");
+        checkButton.setText("Check");
+
+        attackButton.addActionListener(_ -> setTempText(frame, Integer.toString(enemyIndex + 1)));
+        checkButton.addActionListener(_ -> enemy.checkInformation(frame));
+
+        attackButton.setHorizontalAlignment(SwingConstants.LEFT);
+        checkButton.setHorizontalAlignment(SwingConstants.LEFT);
+
+        JTextPane mainPane = (JTextPane) frame.getLayeredPane().getComponentsInLayer(78)[0];
+        Document doc = mainPane.getStyledDocument();
+        mainPane.setCaretPosition(doc.getLength());
+        mainPane.insertComponent(attackButton);
+        if (player.equippedRelicIndex("Relic of Enemy Information") > -1) {
+            mainPane.setCaretPosition(doc.getLength());
+            mainPane.insertComponent(checkButton);
+        }
+        SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+        StyleConstants.setBold(attributeSet, true);
+        StyleConstants.setForeground(attributeSet, Color.white);
+        try {
+            doc.insertString(doc.getLength(), enemyText, attributeSet);
+        } catch (BadLocationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static void cleanseItem(JFrame frame, int itemIndex, Player player) {
         Item item = player.getInventory().get(itemIndex).getFirst();
         if (item instanceof Relic relic && relic.isCursed()) {
@@ -434,7 +481,7 @@ public class SwingRenderer extends JFrame {
         }
         ((PureWaterRoom) player.getCurrentRoom()).setFountainUsed(true);
         player.checkInventory(frame);
-        appendMainLabelText(frame, "The fountain ran dry!");
+        appendMainLabelText(frame, "The fountain ran dry!", false);
     }
 
     public static void cleanseRelic(JFrame frame, int itemIndex, Player player) {
@@ -447,7 +494,7 @@ public class SwingRenderer extends JFrame {
         }
         ((PureWaterRoom) player.getCurrentRoom()).setFountainUsed(true);
         player.checkRelics(frame);
-        appendMainLabelText(frame, "The fountain ran dry!");
+        appendMainLabelText(frame, "The fountain ran dry!", false);
     }
 
     public static void useItem(JFrame frame, int itemIndex, Player player) {
@@ -469,6 +516,7 @@ public class SwingRenderer extends JFrame {
         ((JLabel) frame.getLayeredPane().getComponentsInLayer(-5)[0]).setIcon(new ImageIcon(ClassLoader.getSystemResource(fileName)));
     }
 
+    //TODO: make enter also close popup
     public static void createPopup(JFrame frame, String popupText) {
         JPanel panel = (JPanel) frame.getLayeredPane().getComponentsInLayer(80)[0];
         JLabel shadow = (JLabel) frame.getLayeredPane().getComponentsInLayer(79)[0];

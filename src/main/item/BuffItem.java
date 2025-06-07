@@ -23,7 +23,7 @@ public abstract class BuffItem extends Item {
     @Override
     public void useItem(JFrame frame, Player player) {
         randomizeAmountChanged();
-        SwingRenderer.appendMainLabelText(frame, "You crack open the can, plug your nose, and manage to force its contents down your throat.");
+        SwingRenderer.appendMainLabelText(frame, "You crack open the can, plug your nose, and manage to force its contents down your throat.", false);
         player.discardItem(frame, this);
     }
 

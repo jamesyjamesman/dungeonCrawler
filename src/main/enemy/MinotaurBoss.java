@@ -12,25 +12,25 @@ public class MinotaurBoss extends Boss {
     public MinotaurBoss() {
     }
     public int chargeAttack(JFrame frame) {
-        SwingRenderer.appendMainLabelText(frame, "The minotaur charges at you, goring you with its horns!");
+        SwingRenderer.appendMainLabelText(frame, "The minotaur charges at you, goring you with its horns!\n", false);
         return this.damage * 2;
     }
     public int shriekAttack(JFrame frame) {
-        SwingRenderer.appendMainLabelText(frame, "The minotaur unleashes a piercing scream!");
+        SwingRenderer.appendMainLabelText(frame, "The minotaur unleashes a piercing scream!\n", false);
         return this.damage;
     }
     public int angerAttack(JFrame frame) {
-        SwingRenderer.appendMainLabelText(frame, "The minotaur is getting upset!");
+        SwingRenderer.appendMainLabelText(frame, "The minotaur is getting upset!\n", false);
         this.damage += 1;
         return 0;
     }
     public int healAttack(JFrame frame) {
-        SwingRenderer.appendMainLabelText(frame, "The minotaur pulls out a large chunk of meat, ripping into it!");
+        SwingRenderer.appendMainLabelText(frame, "The minotaur pulls out a large chunk of meat, ripping into it!\n", false);
         this.currentHealth += (int) (this.damage * 1.5);
         return 0;
     }
     public int failedChargeAttack(JFrame frame) {
-        SwingRenderer.appendMainLabelText(frame, "The minotaur tries to charge at you, but falls over, smacking itself in the face.");
+        SwingRenderer.appendMainLabelText(frame, "The minotaur tries to charge at you, but falls over, smacking itself in the face.\n", false);
         this.currentHealth -= this.damage / 2;
         return angerAttack(frame);
     }

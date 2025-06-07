@@ -22,18 +22,18 @@ public class ItemRoom extends Room {
 
         //this should be defined on the object itself but because the item isn't defined initially it crashes, which is not great.
         if (this.id == 10) {
-            SwingRenderer.changeLabelText(frame, "Would you like to ...look through the corpse? (y/n)", LabelType.MAIN);
+            SwingRenderer.appendMainLabelText(frame, "Would you like to ...look through the corpse? (y/n)", true);
         } else {
-            SwingRenderer.changeLabelText(frame, "Would you like to take the " + this.item.getName() + "? (y/n)", LabelType.MAIN);
+            SwingRenderer.appendMainLabelText(frame, "Would you like to take the " + this.item.getName() + "? (y/n)", true);
         }
         if (player.equippedRelicIndex("Relic of Curse Detection") > -1) {
             if (this.item instanceof Relic checkRelic && checkRelic.isCursed()) {
-                    SwingRenderer.appendMainLabelText(frame, "Warning! The " + this.item.getName() + " is cursed!");
+                    SwingRenderer.appendMainLabelText(frame, "Warning! The " + this.item.getName() + " is cursed!", false);
             }
         }
         String response = Main.yesOrNo(frame);
         if (response.equals("n")) {
-            SwingRenderer.appendMainLabelText(frame, "You chose to forgo the loot...");
+            SwingRenderer.appendMainLabelText(frame, "You chose to forgo the loot...", false);
             return;
         }
         player.itemPickup(frame, this.item);

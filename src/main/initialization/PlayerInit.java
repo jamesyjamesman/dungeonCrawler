@@ -8,7 +8,7 @@ import javax.swing.*;
 
 public class PlayerInit {
     public static Player playerInit(JFrame frame) {
-        SwingRenderer.changeLabelText(frame, "First, you'll need to name your character!\nPlease enter your character's name.", LabelType.MAIN);
+        SwingRenderer.appendMainLabelText(frame, "First, you'll need to name your character!\nPlease enter your character's name.", true);
         String playerName = "";
         while (playerName.isEmpty()) {
             playerName = SwingRenderer.getTempText(frame);
