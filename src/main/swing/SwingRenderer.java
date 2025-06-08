@@ -68,7 +68,7 @@ public class SwingRenderer extends JFrame {
         inventorySwitches.setForeground(Color.white);
         inventorySwitches.setOpaque(false);
         layeredPane.add(inventorySwitches);
-        layeredPane.setLayer(inventorySwitches, 80);
+        layeredPane.setLayer(inventorySwitches, 78);
 
         InventoryButton switchInventory = new InventoryButton();
         switchInventory.addActionListener(_ -> makeInventoryVisible(frame));
@@ -107,7 +107,7 @@ public class SwingRenderer extends JFrame {
         DungeonTextPane mainTextPane = new DungeonTextPane();
         mainTextPane.setName("main");
         layeredPane.add(mainTextPane);
-        layeredPane.setLayer(mainTextPane, 78);
+        layeredPane.setLayer(mainTextPane, 77);
         ShadowLabel mainShadow = new ShadowLabel(layeredPane);
 
         JPanel yesOrNo = new JPanel();
@@ -125,7 +125,7 @@ public class SwingRenderer extends JFrame {
         yesOrNo.add(no);
 
         layeredPane.add(yesOrNo);
-        layeredPane.setLayer(yesOrNo, 11);
+        layeredPane.setLayer(yesOrNo, 83);
 
         DungeonTextPane healthPane = new DungeonTextPane();
         healthPane.setName("health");
@@ -276,7 +276,7 @@ public class SwingRenderer extends JFrame {
     }
 
         public static void changeAnswerVisibility(JFrame frame, boolean visible) {
-        frame.getLayeredPane().getComponentsInLayer(11)[0].setVisible(visible);
+        frame.getLayeredPane().getComponentsInLayer(83)[0].setVisible(visible);
     }
 
     public static void changeLabelText(JFrame frame, String newText, LabelType labelType) {
@@ -302,13 +302,14 @@ public class SwingRenderer extends JFrame {
     }
 
     public static void appendMainLabelText(JFrame frame, String addedText, boolean clear) {
-        JTextPane mainPane = (JTextPane) frame.getLayeredPane().getComponentsInLayer(78)[0];
+        JTextPane mainPane = (JTextPane) frame.getLayeredPane().getComponentsInLayer(77)[0];
         Document doc = mainPane.getStyledDocument();
         SimpleAttributeSet attributeSet = new SimpleAttributeSet();
         StyleConstants.setBold(attributeSet, true);
         try {
             if (clear) {
                 doc.remove(0, doc.getLength());
+                mainPane.removeAll();
             }
             doc.insertString(doc.getLength(), addedText, attributeSet);
         } catch (BadLocationException e) {
@@ -449,7 +450,7 @@ public class SwingRenderer extends JFrame {
         attackButton.setHorizontalAlignment(SwingConstants.LEFT);
         checkButton.setHorizontalAlignment(SwingConstants.LEFT);
 
-        JTextPane mainPane = (JTextPane) frame.getLayeredPane().getComponentsInLayer(78)[0];
+        JTextPane mainPane = (JTextPane) frame.getLayeredPane().getComponentsInLayer(77)[0];
         Document doc = mainPane.getStyledDocument();
         mainPane.setCaretPosition(doc.getLength());
         mainPane.insertComponent(attackButton);
@@ -462,6 +463,27 @@ public class SwingRenderer extends JFrame {
         StyleConstants.setForeground(attributeSet, Color.white);
         try {
             doc.insertString(doc.getLength(), enemyText, attributeSet);
+        } catch (BadLocationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void addRoomLabel(JFrame frame, int roomIndex, String roomAppearance) {
+        InventoryButton roomButton = new InventoryButton();
+        roomButton.setText("Go");
+        roomButton.addActionListener(_ -> setTempText(frame, Integer.toString(roomIndex + 1)));
+        roomButton.setHorizontalAlignment(SwingConstants.LEFT);
+
+        JTextPane mainPane = (JTextPane) frame.getLayeredPane().getComponentsInLayer(77)[0];
+        Document doc = mainPane.getStyledDocument();
+        mainPane.setCaretPosition(doc.getLength());
+        mainPane.insertComponent(roomButton);
+
+        SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+        StyleConstants.setBold(attributeSet, true);
+        StyleConstants.setForeground(attributeSet, Color.white);
+        try {
+            doc.insertString(doc.getLength(), roomAppearance, attributeSet);
         } catch (BadLocationException e) {
             throw new RuntimeException(e);
         }

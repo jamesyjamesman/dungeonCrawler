@@ -5,7 +5,6 @@ import main.item.*;
 import main.item.relic.ForesightRelic;
 import main.item.relic.Relic;
 import main.room.*;
-import main.swing.LabelType;
 import main.swing.SwingRenderer;
 
 import javax.swing.*;
@@ -26,9 +25,7 @@ public class Game {
 
             activateRooms(rooms, playerCharacter);
             ArrayList<Room> activeRooms = new ArrayList<>(getRandomActiveRooms(rooms));
-            String exitString = createExitsString(playerCharacter, activeRooms, currentRoom);
-
-            SwingRenderer.appendMainLabelText(frame, exitString, true);
+            createRoomExits(frame, playerCharacter, activeRooms, currentRoom);
             playerCharacter.useRelics(frame, currentRoom);
 
             int response = Main.responseHandler(frame, playerCharacter, 1, currentRoom.getExits().size()) - 1;
@@ -45,17 +42,16 @@ public class Game {
         playerCharacter.doDeathSequence(frame);
     }
 
-    public static String createExitsString(Player player, ArrayList<Room> activeRooms, Room room) {
-        String output = "";
-        output = output.concat("Where would you like to go?\n");
-        output = output.concat("You see " + room.getNumExits() + " exit" + Main.pluralChecker(room.getNumExits()) + ".\n");
+    public static void createRoomExits(JFrame frame, Player player, ArrayList<Room> activeRooms, Room room) {
+        SwingRenderer.appendMainLabelText(frame, "Where would you like to go?\n", true);
+        SwingRenderer.appendMainLabelText(frame, "You see " + room.getNumExits() + " exit" + Main.pluralChecker(room.getNumExits()) + ".\n", false);
 
         for (int i = 0; i < room.getNumExits(); i++) {
             room.addExit(getWeightedRoom(activeRooms));
 
             int foresightIndex = player.equippedRelicIndex("Relic of Foresight");
 
-            output = output.concat((i + 1) + ". " + room.getExits().get(i).getAppearance());
+            String output = (i + 1) + ". " + room.getExits().get(i).getAppearance();
             if (foresightIndex != -1) {
                 ForesightRelic foresightRelic = (ForesightRelic) player.getEquippedRelics().get(foresightIndex);
                 int numExits = foresightRelic.findNumExits(room, i);
@@ -63,8 +59,8 @@ public class Game {
             } else {
                 output = output.concat("\n");
             }
+            SwingRenderer.addRoomLabel(frame, i, output);
         }
-        return output;
     }
 
     public static void deactivateRelicRooms(ArrayList<Room> rooms) {
