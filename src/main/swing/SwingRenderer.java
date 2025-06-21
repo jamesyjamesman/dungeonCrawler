@@ -392,7 +392,7 @@ public class SwingRenderer extends JFrame {
         InventoryButton useButton = new InventoryButton();
         InventoryButton dropButton = new InventoryButton();
         if (player.getCurrentRoom() instanceof PureWaterRoom pureRoom && !pureRoom.getFountainUsed()) {
-            useButton.setText("Cleanse");
+            useButton.setText(" Cleanse ");
             if (layer == 1) {
                 useButton.addActionListener(_ -> cleanseItem(frame, itemIndex, player));
             } else {
@@ -407,17 +407,17 @@ public class SwingRenderer extends JFrame {
                 }
             );
             if (player.getInventory().get(itemIndex).getFirst() instanceof Relic) {
-                useButton.setText("Equip");
+                useButton.setText(" Equip ");
             } else {
-                useButton.setText("Use");
+                useButton.setText(" Use ");
             }
         } else {
             useButton.addActionListener(_ -> unequipRelic(frame, itemIndex, player));
-            useButton.setText("Unequip");
+            useButton.setText(" Unequip ");
         }
         useButton.setHorizontalAlignment(SwingConstants.LEFT);
         dropButton.setHorizontalAlignment(SwingConstants.LEFT);
-        dropButton.setText("Drop");
+        dropButton.setText(" Drop ");
 
         JTextPane inventoryPane = (JTextPane) frame.getLayeredPane().getComponentsInLayer(layer)[0];
         Document doc = inventoryPane.getStyledDocument();
@@ -441,8 +441,8 @@ public class SwingRenderer extends JFrame {
         InventoryButton attackButton = new InventoryButton();
         InventoryButton checkButton = new InventoryButton();
 
-        attackButton.setText("Attack");
-        checkButton.setText("Check");
+        attackButton.setText(" Attack ");
+        checkButton.setText(" Check ");
 
         attackButton.addActionListener(_ -> setTempText(frame, Integer.toString(enemyIndex + 1)));
         checkButton.addActionListener(_ -> enemy.checkInformation(frame));
@@ -470,7 +470,7 @@ public class SwingRenderer extends JFrame {
 
     public static void addRoomLabel(JFrame frame, int roomIndex, String roomAppearance) {
         InventoryButton roomButton = new InventoryButton();
-        roomButton.setText("Go");
+        roomButton.setText(" Go ");
         roomButton.addActionListener(_ -> setTempText(frame, Integer.toString(roomIndex + 1)));
         roomButton.setHorizontalAlignment(SwingConstants.LEFT);
 
