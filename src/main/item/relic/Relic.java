@@ -16,22 +16,8 @@ public abstract class Relic extends Item {
         this.cursed = new Random().nextInt(5) == 0;
     }
 
+    //should be abstract, any calls should be removed
     public void useRelic(JFrame frame, Player player, Room room) {
-        if (this.cursed) {
-            if (player.equippedRelicIndex("Relic of Cursed Healing") == -1) {
-                int amountDamage = new Random().nextInt(4);
-                if (amountDamage > 0) {
-                    SwingRenderer.addHealthText(frame, "Your cursed " + getName() + " caused " + amountDamage + " damage!");
-                    player.takeDamage(frame, amountDamage);
-                }
-            } else {
-                int amountHeal = new Random().nextInt(2);
-                if (amountHeal > 0) {
-                    SwingRenderer.addHealthText(frame, "Your cursed " + getName() + " healed you for " + amountHeal + " health!");
-                    player.heal(amountHeal);
-                }
-            }
-        }
     }
 
     @Override

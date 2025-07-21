@@ -28,6 +28,7 @@ public abstract class BuffItem extends Item {
     }
 
     //sets amount changed from the lower bound to the upper bound - 1
+    //why did I do this like this? the amount can just be randomized inside the useItem method...
     public void randomizeAmountChanged() {
         this.amountChanged = new Random().nextInt(this.lowBound, this.highBound);
     }

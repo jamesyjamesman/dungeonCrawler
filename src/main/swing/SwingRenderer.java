@@ -154,6 +154,30 @@ public class SwingRenderer extends JFrame {
         popupShadow.setVisible(false);
 
         popupButton.addActionListener(_ -> hidePopup(popupShadow, popupPanel));
+        //surely there's a better way to do this
+        //this code doesn't work
+        //use key binding??
+        //might need to be on a text panel (could put on text pane)
+        //TODO: fix this
+        popupPanel.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                keyReleased(e);
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                keyReleased(e);
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                System.out.println(e.getKeyCode());
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    hidePopup(popupShadow, popupPanel);
+                }
+            }
+        });
 
         popupPanel.add(popupPane);
         popupPanel.add(popupButton);
@@ -489,11 +513,14 @@ public class SwingRenderer extends JFrame {
         }
     }
 
+    //WHY IS THIS HERE??
+    //TODO: put this somewhere REASONABLE
     public static void cleanseItem(JFrame frame, int itemIndex, Player player) {
         Item item = player.getInventory().get(itemIndex).getFirst();
         if (item instanceof Relic relic && relic.isCursed()) {
             relic.setCursed(false);
             changeLabelText(frame, "The " + relic.getName() + " was cured!", LabelType.ERROR);
+            player.getCurrentStatuses().setCursed(player.getCurrentStatuses().getCursed() - 1);
         } else if (item.getName().equals("Apple")) {
             player.discardItem(frame, item);
             player.addItemToInventory(new PureAppleItem());
@@ -511,6 +538,7 @@ public class SwingRenderer extends JFrame {
         if (relic.isCursed()) {
             relic.setCursed(false);
             changeLabelText(frame, "The " + relic.getName() + " was cured!", LabelType.ERROR);
+            player.getCurrentStatuses().setCursed(player.getCurrentStatuses().getCursed() - 1);
         } else {
             changeLabelText(frame, "That relic wasn't cursed...", LabelType.ERROR);
         }
@@ -552,6 +580,7 @@ public class SwingRenderer extends JFrame {
         } catch (BadLocationException e) {
             throw new RuntimeException(e);
         }
+        panel.requestFocusInWindow();
         panel.setVisible(true);
         shadow.setVisible(true);
     }

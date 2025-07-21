@@ -27,6 +27,7 @@ public class Game {
             ArrayList<Room> activeRooms = new ArrayList<>(getRandomActiveRooms(rooms));
             createRoomExits(frame, playerCharacter, activeRooms, currentRoom);
             playerCharacter.useRelics(frame, currentRoom);
+            playerCharacter.statusHandler(frame, false);
 
             int response = Main.responseHandler(frame, playerCharacter, 1, currentRoom.getExits().size()) - 1;
             //this should be moved somewhere else, or make a new pure water room every time
@@ -36,8 +37,6 @@ public class Game {
             Room nextRoom = currentRoom.getExits().get(response);
             currentRoom.getExits().clear();
             currentRoom = nextRoom;
-
-
         }
         playerCharacter.doDeathSequence(frame);
     }

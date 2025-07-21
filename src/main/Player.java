@@ -10,6 +10,7 @@ import main.swing.SwingRenderer;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Player {
     String name;
@@ -19,6 +20,7 @@ public class Player {
     int damage;
     ArrayList<ArrayList<Item>> inventory;
     ArrayList<Relic> equippedRelics;
+    //make absorption a status?
     int absorption;
     int inventoryCap;
     int relicCap;
@@ -26,6 +28,7 @@ public class Player {
     int experience;
     int expToNextLevel;
     Room currentRoom;
+    Statuses currentStatuses;
     public Player(String newName) {
         this.name = newName;
         this.maxHealth = 20;
@@ -41,6 +44,7 @@ public class Player {
         this.experience = 0;
         this.expToNextLevel = 10;
         this.currentRoom = null;
+        this.currentStatuses = new Statuses();
     }
 
     public void attack(JFrame frame, Enemy enemy) {
@@ -236,6 +240,7 @@ public class Player {
         this.inventory.remove(relicIndex);
         if (relic.isCursed()) {
             SwingRenderer.changeLabelText(frame, "Oh no! the " + relic.getName() + " was cursed!", LabelType.ERROR);
+            this.currentStatuses.setCursed(this.currentStatuses.getCursed() + 1);
         }
         return true;
     }
@@ -345,6 +350,54 @@ public class Player {
         }
         return output;
     }
+    public void statusHandler(JFrame frame, boolean inBattle) {
+        doPoisonDamage(frame);
+        if (inBattle) {
+            return;
+        }
+        doCurseDamage(frame);
+    }
+
+    public void doPoisonDamage(JFrame frame) {
+        int poisonLevel = this.currentStatuses.getPoison();
+        if (poisonLevel == 0) {
+            return;
+        }
+        takeDamage(frame, poisonLevel);
+        SwingRenderer.addHealthText(frame, "You took " + poisonLevel + " poison damage! Your poison level is now " + (poisonLevel - 1) + ".");
+        this.currentStatuses.setPoison(poisonLevel - 1);
+    }
+
+    public void doCurseDamage(JFrame frame) {
+        int curseLevel = this.currentStatuses.getCursed();
+        if (curseLevel == 0) {
+            return;
+        }
+        if (equippedRelicIndex("Relic of Cursed Healing") == -1) {
+            int totalDamage = 0;
+            for (int i = 0; i < curseLevel; i++) {
+                totalDamage += new Random().nextInt(4);
+            }
+            if (totalDamage > 0) {
+                SwingRenderer.addHealthText(frame, "You took " + totalDamage + " damage from your cursed relics!");
+                takeDamage(frame, totalDamage);
+            }
+        } else {
+            int totalHeal = 0;
+            for (int i = 0; i < curseLevel; i++) {
+                totalHeal += new Random().nextInt(2);
+            }
+            if (totalHeal > 0) {
+                int amountHealed = heal(totalHeal);
+                SwingRenderer.addHealthText(frame, "You gained " + amountHealed + " health from your cursed relics!");
+            }
+        }
+
+    }
+
+    public void doFireDamage(JFrame frame) {
+        //TODO
+    }
 
     public int getCurrentHealth() {
         return this.currentHealth;
@@ -390,5 +443,17 @@ public class Player {
     }
     public Room getCurrentRoom() {
         return this.currentRoom;
+    }
+    public Statuses getCurrentStatuses() {
+        return this.currentStatuses;
+    }
+    //this is not necessary, i forgot how objects work
+    public void changeStatus(Status status, int level) {
+        switch (status) {
+            case POISON -> this.currentStatuses.setPoison(level);
+            case FIRE -> this.currentStatuses.setFire(level);
+            case CURSED -> this.currentStatuses.setCursed(level);
+            case WEAKENED -> this.currentStatuses.setWeakened(level);
+        }
     }
 }
