@@ -175,7 +175,6 @@ public class Player {
     }
 
     //should be called any time anything printed can change, e.g. health change, absorption change, etc.
-    //TODO: make inventory and relics render as (n/cap) e.g. (8/10)
     public void checkStatus(JFrame frame) {
         String output = "";
     // Renders level and exp to next level, unless the player is at the max level (10), where it just shows the level.

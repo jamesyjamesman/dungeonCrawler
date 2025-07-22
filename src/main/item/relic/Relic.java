@@ -1,7 +1,6 @@
 package main.item.relic;
 
 import main.Player;
-import main.swing.SwingRenderer;
 import main.item.Item;
 import main.room.Room;
 

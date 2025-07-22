@@ -154,12 +154,7 @@ public class SwingRenderer extends JFrame {
         popupShadow.setVisible(false);
 
         popupButton.addActionListener(_ -> hidePopup(popupShadow, popupPanel));
-        //surely there's a better way to do this
-        //this code doesn't work
-        //use key binding??
-        //might need to be on a text panel (could put on text pane)
-        //TODO: fix this
-        popupPanel.addKeyListener(new KeyListener() {
+        popupPane.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
                 keyReleased(e);
@@ -172,9 +167,9 @@ public class SwingRenderer extends JFrame {
 
             @Override
             public void keyReleased(KeyEvent e) {
-                System.out.println(e.getKeyCode());
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     hidePopup(popupShadow, popupPanel);
+                    setInputFocus(frame);
                 }
             }
         });
@@ -394,6 +389,10 @@ public class SwingRenderer extends JFrame {
 
     //if called after a button is pressed, the button click animation does not function properly
     public static void setInputFocus(JFrame frame) {
+        //if popup is enabled, do not set focus to text field
+        if (frame.getLayeredPane().getComponentsInLayer(80)[0].isVisible()) {
+            return;
+        }
          Arrays.stream(frame.getLayeredPane().getComponentsInLayer(2))
                  .filter(component -> component.getName().equals("input"))
                  .forEach(Component::requestFocusInWindow);
@@ -565,7 +564,6 @@ public class SwingRenderer extends JFrame {
         ((JLabel) frame.getLayeredPane().getComponentsInLayer(-5)[0]).setIcon(new ImageIcon(ClassLoader.getSystemResource(fileName)));
     }
 
-    //TODO: make enter also close popup
     public static void createPopup(JFrame frame, String popupText) {
         JPanel panel = (JPanel) frame.getLayeredPane().getComponentsInLayer(80)[0];
         JLabel shadow = (JLabel) frame.getLayeredPane().getComponentsInLayer(79)[0];
@@ -579,7 +577,7 @@ public class SwingRenderer extends JFrame {
         } catch (BadLocationException e) {
             throw new RuntimeException(e);
         }
-        panel.requestFocusInWindow();
+        pane.requestFocusInWindow();
         panel.setVisible(true);
         shadow.setVisible(true);
     }
