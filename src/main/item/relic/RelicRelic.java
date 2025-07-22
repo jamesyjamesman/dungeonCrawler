@@ -17,6 +17,7 @@ public class RelicRelic extends Relic {
             int relicsOverCapacity = player.getEquippedRelics().size() - (player.getRelicCap() - 3);
             if (relicsOverCapacity > 0) {
                 SwingRenderer.appendMainLabelText(frame, "You have too many relics equipped to remove this relic!\n" + "Unequip " + relicsOverCapacity + " relics to remove this relic.", false);
+                UIUpdater(frame, player);
                 return;
             }
             if (player.unequipRelic(frame, this)) {
@@ -28,5 +29,6 @@ public class RelicRelic extends Relic {
                 player.changeRelicCap(3);
             }
         }
+        UIUpdater(frame, player);
     }
 }

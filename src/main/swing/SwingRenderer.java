@@ -426,7 +426,7 @@ public class SwingRenderer extends JFrame {
                 useButton.addActionListener(_ -> ((Relic) item).cleanseRelic(frame, player));
             }
         } else if (layer == 1) {
-            useButton.addActionListener(_ -> handleItemUsage(frame, itemIndex, player));
+            useButton.addActionListener(_ -> item.useItem(frame, player));
             dropButton.addActionListener(_ -> {
                 player.discardItem(frame, item);
                 SwingRenderer.changeLabelText(frame, "The " + item.getName() + " was dropped!", LabelType.ERROR);
@@ -438,7 +438,7 @@ public class SwingRenderer extends JFrame {
                 useButton.setText(" Use ");
             }
         } else {
-            useButton.addActionListener(_ -> handleRelicUnequip(frame, itemIndex, player));
+            useButton.addActionListener(_ -> item.useItem(frame, player));
             useButton.setText(" Unequip ");
         }
         useButton.setHorizontalAlignment(SwingConstants.LEFT);
@@ -513,22 +513,6 @@ public class SwingRenderer extends JFrame {
         } catch (BadLocationException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    //both of these handler functions should probably replace the actual method (useItem)
-    public static void handleItemUsage(JFrame frame, int itemIndex, Player player) {
-        ArrayList<Item> items = player.getInventory().get(itemIndex);
-        items.getFirst().useItem(frame, player);
-        player.checkInventory(frame);
-        player.checkRelics(frame);
-        setInputFocus(frame);
-    }
-
-    public static void handleRelicUnequip(JFrame frame, int itemIndex, Player player) {
-        player.getEquippedRelics().get(itemIndex).useItem(frame, player);
-        player.checkInventory(frame);
-        player.checkRelics(frame);
-        setInputFocus(frame);
     }
 
     public static void changeBackgroundImage(JFrame frame, String fileName) {

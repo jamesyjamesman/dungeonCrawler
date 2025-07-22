@@ -40,6 +40,7 @@ public abstract class Relic extends Item {
     public void useItem(JFrame frame, Player player) {
         if(this.equipped) {player.unequipRelic(frame, this);}
         else {player.equipRelic(frame, this);}
+        UIUpdater(frame, player);
     }
 
     public boolean isCursed() {

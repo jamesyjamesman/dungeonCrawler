@@ -16,7 +16,16 @@ public abstract class Item {
         this.name = "";
     }
 
-    public abstract void useItem(JFrame frame, Player player);
+    public void useItem(JFrame frame, Player player) {
+       UIUpdater(frame, player);
+    }
+
+    public void UIUpdater(JFrame frame, Player player) {
+        player.checkInventory(frame);
+        player.checkRelics(frame);
+        player.checkStatus(frame);
+        SwingRenderer.setInputFocus(frame);
+    }
 
     public void cleanseItem(JFrame frame, Player player) {
         if (this instanceof Relic relic && relic.isCursed()) {

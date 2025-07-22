@@ -5,6 +5,5 @@ public class PureAppleItem extends HealthItem {
         this.name = "Pure Apple";
         this.description = "The purified water cleansed any rot this apple once had. It looks perfect!";
         setRestorationRange(5, 10);
-
     }
 }
