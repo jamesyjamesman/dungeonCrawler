@@ -16,5 +16,6 @@ public class UnBuffItem extends BuffItem {
         int poisonAmount = new Random().nextInt(3, 6);
         player.getCurrentStatuses().setPoison(player.getCurrentStatuses().getPoison() + poisonAmount);
         SwingRenderer.addHealthText(frame, "Blegh! You think that was meatballs. At some point.\nYou don't feel so good... You received " + poisonAmount + " levels of poison.");
+        UIUpdater(frame, player);
     }
 }

@@ -97,5 +97,8 @@ public class Room {
     public void setSelectionWeight(int selectionWeight) {
         this.selectionWeight = selectionWeight;
     }
+    public void setBackgroundFileName(String backgroundFileName) {
+        this.backgroundFileName = backgroundFileName;
+    }
 
 }

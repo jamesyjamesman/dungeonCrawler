@@ -137,6 +137,7 @@ public class RoomInit {
             slimeBossRoom.setBattleInitiationMessage("The massive slime starts vibrating intensely, and then launches at you.");
             slimeBossRoom.setType(RoomType.BOSS);
             slimeBossRoom.setSelectionWeight(5);
+            slimeBossRoom.setBackgroundFileName("slime_room.png");
             bossRoomList.add(slimeBossRoom);
 
             BossRoom minotaurBossRoom = new BossRoom();

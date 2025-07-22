@@ -493,6 +493,7 @@ public class SwingRenderer extends JFrame {
         pane.repaint();
     }
 
+    //change to not use layer pls
     public static void addInventoryLabel(JFrame frame, String newItemText, Player player, int itemIndex, int layer, Color color) {
         InventoryButton useButton = new InventoryButton();
         InventoryButton dropButton = new InventoryButton();
@@ -526,7 +527,7 @@ public class SwingRenderer extends JFrame {
         dropButton.setHorizontalAlignment(SwingConstants.LEFT);
         dropButton.setText(" Drop ");
 
-        JTextPane inventoryPane = (JTextPane) componentGrabber(frame, ComponentType.PANE_INVENTORY);
+        JTextPane inventoryPane = (JTextPane) frame.getLayeredPane().getComponentsInLayer(layer)[0];
         Document doc = inventoryPane.getStyledDocument();
         inventoryPane.setCaretPosition(doc.getLength());
         inventoryPane.insertComponent(useButton);
