@@ -1,6 +1,5 @@
 package main.room;
 
-import main.swing.LabelType;
 import main.swing.SwingRenderer;
 import main.item.Item;
 import main.item.relic.Relic;

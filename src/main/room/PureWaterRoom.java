@@ -1,6 +1,5 @@
 package main.room;
 
-import main.swing.LabelType;
 import main.Main;
 import main.Player;
 import main.swing.SwingRenderer;

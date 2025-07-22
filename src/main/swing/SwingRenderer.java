@@ -520,10 +520,9 @@ public class SwingRenderer extends JFrame {
         if (item instanceof Relic relic && relic.isCursed()) {
             relic.setCursed(false);
             changeLabelText(frame, "The " + relic.getName() + " was cured!", LabelType.ERROR);
-            player.getCurrentStatuses().setCursed(player.getCurrentStatuses().getCursed() - 1);
         } else if (item.getName().equals("Apple")) {
             player.discardItem(frame, item);
-            player.addItemToInventory(new PureAppleItem());
+            player.addItemToInventory(frame, new PureAppleItem());
             changeLabelText(frame, "The apple was purified!", LabelType.ERROR);
         } else {
             changeLabelText(frame, "You put the " + item.getName() + " in the fountain, but nothing happened.", LabelType.ERROR);

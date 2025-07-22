@@ -65,7 +65,7 @@ public class Player {
                 return;
             }
         }
-        addItemToInventory(item);
+        addItemToInventory(frame, item);
 
         if (item instanceof Relic && getEquippedRelics().size() < this.relicCap) {
             SwingRenderer.appendMainLabelText(frame, "Would you like to equip the " + item.getName() + " now? (y/n)", true);
@@ -80,7 +80,7 @@ public class Player {
         SwingRenderer.appendMainLabelText(frame, "You stash the " + item.getName() + " in your bag.", false);
     }
 
-    public boolean addItemToInventory(Item item) {
+    public boolean addItemToInventory(JFrame frame, Item item) {
         if (calculateInventorySize() >= this.inventoryCap) {
             return true;
         }
@@ -92,6 +92,7 @@ public class Player {
         } else {
             this.inventory.get(itemIndex).add(item);
         }
+        checkStatus(frame);
         return false;
     }
 
@@ -174,16 +175,44 @@ public class Player {
     }
 
     //should be called any time anything printed can change, e.g. health change, absorption change, etc.
+    //TODO: make inventory and relics render as (n/cap) e.g. (8/10)
     public void checkStatus(JFrame frame) {
         String output = "";
-        output = output.concat("Current player status:\n");
+    // Renders level and exp to next level, unless the player is at the max level (10), where it just shows the level.
         output = output.concat("Level " + this.level + (this.level < 10 ? " (" + this.experience + "/" + this.expToNextLevel + " exp)" : ""));
         output = output.concat("\n");
         output = output.concat("Health: " + (this.currentHealth + this.absorption) + "/" + this.maxHealth + "\n");
         output = output.concat("Attack damage: " + this.damage + "\n");
         output = output.concat("Rooms traveled: " + this.roomsTraversed + "\n");
-        output = output.concat("Inventory capacity: " + this.inventoryCap + "\n");
+        output = output.concat("Inventory: " + calculateInventorySize() + "/" + this.inventoryCap + "\n");
+        output = output.concat("Relics: " + this.equippedRelics.size() + "/" + this.relicCap + "\n");
+        output = output.concat(statusEffectChecker());
         SwingRenderer.changeLabelText(frame, output, LabelType.STATUS);
+    }
+
+    public String statusEffectChecker() {
+        boolean anyEffects = false;
+        String output = "Status effects: \n";
+        if (this.currentStatuses.getCursed() > 0) {
+            output += "Cursed: Level " + this.currentStatuses.getCursed() + "\n";
+            anyEffects = true;
+        }
+        if (this.currentStatuses.getPoison() > 0) {
+            output += "Poison: Level " + this.currentStatuses.getPoison() + "\n";
+            anyEffects = true;
+        }
+        if (this.currentStatuses.getWeakened() > 0) {
+            output += "Weakened: Level " + this.currentStatuses.getWeakened() + "\n";
+            anyEffects = true;
+        }
+        if (this.currentStatuses.getFire() > 0) {
+            output += "Burning: Level " + this.currentStatuses.getFire() + "\n";
+            anyEffects = true;
+        }
+        if (anyEffects) {
+            return output;
+        }
+        return "";
     }
 
     public void takeDamage(JFrame frame, int damage) {
@@ -242,6 +271,7 @@ public class Player {
             SwingRenderer.changeLabelText(frame, "Oh no! the " + relic.getName() + " was cursed!", LabelType.ERROR);
             this.currentStatuses.setCursed(this.currentStatuses.getCursed() + 1);
         }
+        checkStatus(frame);
         return true;
     }
 
@@ -251,7 +281,7 @@ public class Player {
             return false;
         }
 
-        boolean inventoryFull = addItemToInventory(relic);
+        boolean inventoryFull = addItemToInventory(frame, relic);
         if (inventoryFull) {
             SwingRenderer.changeLabelText(frame, "Your inventory is full; the relic could not be unequipped!", LabelType.ERROR);
             return false;
@@ -281,18 +311,17 @@ public class Player {
         }
     }
 
-    //could make a popup-type thing?
     public void levelUp(JFrame frame, String output) {
         output += "You leveled up!\n";
         this.experience -= this.expToNextLevel;
         this.expToNextLevel = (int) Math.round(this.expToNextLevel * 1.2);
         this.level += 1;
-        output += levelUpEffects(frame, this.level, output);
+        output = levelUpEffects(this.level, output);
         checkLevelUp(frame, output);
         SwingRenderer.createPopup(frame, output);
     }
 
-    public String levelUpEffects(JFrame frame, int newLevel, String output) {
+    public String levelUpEffects(int newLevel, String output) {
         int maxHealthChange = 0;
         int inventoryCapChange = 0;
         int damageChange = 0;
@@ -361,7 +390,7 @@ public class Player {
     public int weakenAttack(JFrame frame, int initialDamage) {
         int weaknessLevel = this.currentStatuses.getWeakened();
         if (weaknessLevel == 0) {return initialDamage;}
-        int finalDamage = initialDamage / (weaknessLevel + 1);
+        int finalDamage = initialDamage / (int) (Math.pow(2, weaknessLevel));
     // 1 - (1/(n+1)) chance to decrease weakness level by one
         if (new Random().nextInt(weaknessLevel + 1) != 0) {
             this.currentStatuses.setWeakened(this.currentStatuses.getWeakened() - 1);
@@ -408,7 +437,6 @@ public class Player {
     }
 
     public void doFireDamage(JFrame frame) {
-        //TODO
     }
 
     public int getCurrentHealth() {
