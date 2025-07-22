@@ -15,8 +15,9 @@ public class MinotaurBoss extends Boss {
         SwingRenderer.appendMainLabelText(frame, "The minotaur charges at you, goring you with its horns!\n", false);
         return this.damage * 2;
     }
-    public int shriekAttack(JFrame frame) {
-        SwingRenderer.appendMainLabelText(frame, "The minotaur unleashes a piercing scream!\n", false);
+    public int shriekAttack(JFrame frame, Player player) {
+        player.getCurrentStatuses().setWeakened(player.getCurrentStatuses().getWeakened() + 1);
+        SwingRenderer.appendMainLabelText(frame, "The minotaur unleashes a piercing scream, wracking your nerves! (You gained a level of weakness).\n", false);
         return this.damage;
     }
     public int angerAttack(JFrame frame) {
@@ -44,7 +45,7 @@ public class MinotaurBoss extends Boss {
         switch (randomChoice) {
             case 0 -> damage = failedChargeAttack(frame);
             case 1, 2 -> damage = angerAttack(frame);
-            case 3, 4, 5 -> damage = shriekAttack(frame);
+            case 3, 4, 5 -> damage = shriekAttack(frame, player);
             case 6, 7 -> damage = chargeAttack(frame);
             case 8 -> damage = healAttack(frame);
         }

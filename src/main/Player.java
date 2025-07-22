@@ -48,7 +48,7 @@ public class Player {
     }
 
     public void attack(JFrame frame, Enemy enemy) {
-        int totalDamage = this.damage;
+        int totalDamage = weakenAttack(frame, this.damage);
         int damageDealt = enemy.takeDamage(frame, totalDamage);
         if (damageDealt > 0) {
             SwingRenderer.appendMainLabelText(frame, "The " + enemy.getSpecies() + " took " + totalDamage + " damage!\n", false);
@@ -358,6 +358,18 @@ public class Player {
         doCurseDamage(frame);
     }
 
+    public int weakenAttack(JFrame frame, int initialDamage) {
+        int weaknessLevel = this.currentStatuses.getWeakened();
+        if (weaknessLevel == 0) {return initialDamage;}
+        int finalDamage = initialDamage / (weaknessLevel + 1);
+    // 1 - (1/(n+1)) chance to decrease weakness level by one
+        if (new Random().nextInt(weaknessLevel + 1) != 0) {
+            this.currentStatuses.setWeakened(this.currentStatuses.getWeakened() - 1);
+            SwingRenderer.addHealthText(frame, "Your weakness level decreased by one!");
+        }
+        return finalDamage;
+    }
+
     public void doPoisonDamage(JFrame frame) {
         int poisonLevel = this.currentStatuses.getPoison();
         if (poisonLevel == 0) {
@@ -446,14 +458,5 @@ public class Player {
     }
     public Statuses getCurrentStatuses() {
         return this.currentStatuses;
-    }
-    //this is not necessary, i forgot how objects work
-    public void changeStatus(Status status, int level) {
-        switch (status) {
-            case POISON -> this.currentStatuses.setPoison(level);
-            case FIRE -> this.currentStatuses.setFire(level);
-            case CURSED -> this.currentStatuses.setCursed(level);
-            case WEAKENED -> this.currentStatuses.setWeakened(level);
-        }
     }
 }
