@@ -119,7 +119,7 @@ public class Player {
 
     //can cause index out of bounds
     public void checkInventory(JFrame frame) {
-        SwingRenderer.clearInventoryPane(frame, 1);
+        SwingRenderer.clearInventoryPane(frame, false);
 
         for (int i = 0; i < this.inventory.size(); i++) {
             Item item = this.inventory.get(i).getFirst();
@@ -140,7 +140,7 @@ public class Player {
 
     //this is very dry, but I wasn't sure how to use checkInventory due to the different types
     public void checkRelics(JFrame frame) {
-        SwingRenderer.clearInventoryPane(frame, 3);
+        SwingRenderer.clearInventoryPane(frame, true);
         Color color;
 
         for (int i = 0; i < this.equippedRelics.size(); i++) {
