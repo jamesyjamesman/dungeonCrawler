@@ -3,7 +3,6 @@ package main.swing;
 import main.Player;
 import main.enemy.Enemy;
 import main.item.Item;
-import main.item.PureAppleItem;
 import main.item.relic.Relic;
 import main.room.PureWaterRoom;
 
@@ -15,6 +14,8 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+//TODO: remove all instances of grabbing elements based on their layer. use only names or an ENUM somehow
 
 public class SwingRenderer extends JFrame {
 
@@ -414,17 +415,19 @@ public class SwingRenderer extends JFrame {
     public static void addInventoryLabel(JFrame frame, String newItemText, Player player, int itemIndex, int layer, Color color) {
         InventoryButton useButton = new InventoryButton();
         InventoryButton dropButton = new InventoryButton();
+        Item item = player.getInventory().get(itemIndex).getFirst();
+
         if (player.getCurrentRoom() instanceof PureWaterRoom pureRoom && !pureRoom.getFountainUsed()) {
             useButton.setText(" Cleanse ");
             if (layer == 1) {
-                useButton.addActionListener(_ -> cleanseItem(frame, itemIndex, player));
+                useButton.addActionListener(_ -> item.cleanseItem(frame, player));
             } else {
-                useButton.addActionListener(_ -> cleanseRelic(frame, itemIndex, player));
+                //this is a little funky
+                useButton.addActionListener(_ -> ((Relic) item).cleanseRelic(frame, player));
             }
         } else if (layer == 1) {
-            useButton.addActionListener(_ -> useItem(frame, itemIndex, player));
+            useButton.addActionListener(_ -> handleItemUsage(frame, itemIndex, player));
             dropButton.addActionListener(_ -> {
-                Item item = player.getInventory().get(itemIndex).getFirst();
                 player.discardItem(frame, item);
                 SwingRenderer.changeLabelText(frame, "The " + item.getName() + " was dropped!", LabelType.ERROR);
                 }
@@ -435,7 +438,7 @@ public class SwingRenderer extends JFrame {
                 useButton.setText(" Use ");
             }
         } else {
-            useButton.addActionListener(_ -> unequipRelic(frame, itemIndex, player));
+            useButton.addActionListener(_ -> handleRelicUnequip(frame, itemIndex, player));
             useButton.setText(" Unequip ");
         }
         useButton.setHorizontalAlignment(SwingConstants.LEFT);
@@ -512,40 +515,8 @@ public class SwingRenderer extends JFrame {
         }
     }
 
-    //WHY IS THIS HERE??
-    //TODO: put this somewhere REASONABLE
-    public static void cleanseItem(JFrame frame, int itemIndex, Player player) {
-        Item item = player.getInventory().get(itemIndex).getFirst();
-        if (item instanceof Relic relic && relic.isCursed()) {
-            relic.setCursed(false);
-            changeLabelText(frame, "The " + relic.getName() + " was cured!", LabelType.ERROR);
-        } else if (item.getName().equals("Apple")) {
-            player.discardItem(frame, item);
-            player.addItemToInventory(frame, new PureAppleItem());
-            changeLabelText(frame, "The apple was purified!", LabelType.ERROR);
-        } else {
-            changeLabelText(frame, "You put the " + item.getName() + " in the fountain, but nothing happened.", LabelType.ERROR);
-        }
-        ((PureWaterRoom) player.getCurrentRoom()).setFountainUsed(true);
-        player.checkInventory(frame);
-        appendMainLabelText(frame, "The fountain ran dry!", false);
-    }
-
-    public static void cleanseRelic(JFrame frame, int itemIndex, Player player) {
-        Relic relic = player.getEquippedRelics().get(itemIndex);
-        if (relic.isCursed()) {
-            relic.setCursed(false);
-            changeLabelText(frame, "The " + relic.getName() + " was cured!", LabelType.ERROR);
-            player.getCurrentStatuses().setCursed(player.getCurrentStatuses().getCursed() - 1);
-        } else {
-            changeLabelText(frame, "That relic wasn't cursed...", LabelType.ERROR);
-        }
-        ((PureWaterRoom) player.getCurrentRoom()).setFountainUsed(true);
-        player.checkRelics(frame);
-        appendMainLabelText(frame, "The fountain ran dry!", false);
-    }
-
-    public static void useItem(JFrame frame, int itemIndex, Player player) {
+    //both of these handler functions should probably replace the actual method (useItem)
+    public static void handleItemUsage(JFrame frame, int itemIndex, Player player) {
         ArrayList<Item> items = player.getInventory().get(itemIndex);
         items.getFirst().useItem(frame, player);
         player.checkInventory(frame);
@@ -553,7 +524,7 @@ public class SwingRenderer extends JFrame {
         setInputFocus(frame);
     }
 
-    public static void unequipRelic(JFrame frame, int itemIndex, Player player) {
+    public static void handleRelicUnequip(JFrame frame, int itemIndex, Player player) {
         player.getEquippedRelics().get(itemIndex).useItem(frame, player);
         player.checkInventory(frame);
         player.checkRelics(frame);
