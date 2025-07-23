@@ -49,12 +49,15 @@ public class Player {
         this.equippedWeapon = null;
     }
     public void attack(JFrame frame, Enemy enemy) {
-        int totalDamage = weakenAttack(frame, this.damage + ((this.equippedWeapon != null) ? this.equippedWeapon.getDamage() : 0));
+        int totalDamage = weakenAttack(frame, calculateTotalAttack());
         int damageDealt = enemy.takeDamage(frame, totalDamage);
         if (damageDealt > 0) {
             SwingRenderer.appendMainLabelText(frame, "The " + enemy.getSpecies() + " took " + totalDamage + " damage!\n", false);
         }
-        //will get more complex with weapons, etc.
+    }
+
+    public int calculateTotalAttack() {
+        return this.damage + ((this.equippedWeapon != null) ? this.equippedWeapon.getDamage() : 0);
     }
 
     public void itemPickup(JFrame frame, Item item) {
@@ -183,7 +186,7 @@ public class Player {
         output = output.concat("Level " + this.level + (this.level < 10 ? " (" + this.experience + "/" + this.expToNextLevel + " exp)" : ""));
         output = output.concat("\n");
         output = output.concat("Health: " + (this.currentHealth + this.absorption) + "/" + this.maxHealth + "\n");
-        output = output.concat("Attack damage: " + this.damage + "\n");
+        output = output.concat("Attack damage: " + calculateTotalAttack() + "\n");
         output = output.concat("Rooms traveled: " + this.roomsTraversed + "\n");
         output = output.concat("Inventory: " + calculateInventorySize() + "/" + this.inventoryCap + "\n");
         output = output.concat("Relics: " + this.equippedRelics.size() + "/" + this.relicCap + "\n");

@@ -19,7 +19,7 @@ public class PureWaterRoom extends Room {
                 You sense this fountain has some purifying properties.
                 You may place an item or relic in the fountain, if you'd like. Enter anything to continue.
                 """, true);
-        Main.yesOrNo(frame);
+        Main.waitForResponse(frame);
     }
 
     public void setFountainUsed(boolean used) {

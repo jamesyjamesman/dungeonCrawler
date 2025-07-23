@@ -105,6 +105,17 @@ public class Main {
         }
     }
 
+    //TODO: add okay button similar to yes/no
+    public static void waitForResponse(JFrame frame) {
+        while (true) {
+            String response = SwingRenderer.getTempText(frame);
+            if (response.isEmpty()) {
+                continue;
+            }
+            return;
+        }
+    }
+
     public static String checkForCommands(JFrame frame, Player player, String input) {
         Scanner promptScanner = new Scanner(System.in);
         while (true) {

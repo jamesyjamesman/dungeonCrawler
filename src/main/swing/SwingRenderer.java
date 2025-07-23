@@ -512,6 +512,7 @@ public class SwingRenderer extends JFrame {
             } else {
                 useButton.setText(" Use ");
             }
+        }
             useButton.setHorizontalAlignment(SwingConstants.LEFT);
             dropButton.setHorizontalAlignment(SwingConstants.LEFT);
             dropButton.setText(" Drop ");
@@ -524,7 +525,6 @@ public class SwingRenderer extends JFrame {
             inventoryPane.insertComponent(dropButton);
 
             insertSimpleText(doc, newText, color);
-        }
     }
 
     public static void addWeaponLabel(JFrame frame, String newText, Player player, Weapon weapon) {
@@ -568,7 +568,7 @@ public class SwingRenderer extends JFrame {
             useButton.addActionListener(_ -> relic.useItem(frame, player));
         }
 
-        JTextPane inventoryPane = (JTextPane) componentGrabber(frame, ComponentType.PANE_INVENTORY);
+        JTextPane inventoryPane = (JTextPane) componentGrabber(frame, ComponentType.PANE_RELIC);
         Document doc = inventoryPane.getStyledDocument();
         inventoryPane.setCaretPosition(doc.getLength());
         inventoryPane.insertComponent(useButton);

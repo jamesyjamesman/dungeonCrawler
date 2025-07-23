@@ -31,6 +31,9 @@ public abstract class Item {
         if (this instanceof Relic relic && relic.isCursed()) {
             relic.setCursed(false);
             SwingRenderer.changeLabelText(frame, "The " + relic.getName() + " was cured!", ComponentType.LABEL_ERROR);
+            if (relic.isEquipped()) {
+                player.getCurrentStatuses().setCursed(player.getCurrentStatuses().getCursed() - 1);
+            }
         } else if (this.getName().equals("Apple")) {
             player.discardItem(frame, this);
             player.addItemToInventory(frame, new PureAppleItem());

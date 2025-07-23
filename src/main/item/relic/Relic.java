@@ -23,19 +23,6 @@ public abstract class Relic extends Item {
     public void useRelic(JFrame frame, Player player, Room room) {
     }
 
-    public void cleanseRelic(JFrame frame, Player player) {
-        if (this.isCursed()) {
-            this.setCursed(false);
-            SwingRenderer.changeLabelText(frame, "The " + this.getName() + " was cured!", ComponentType.LABEL_ERROR);
-            player.getCurrentStatuses().setCursed(player.getCurrentStatuses().getCursed() - 1);
-        } else {
-            SwingRenderer.changeLabelText(frame, "That relic wasn't cursed...", ComponentType.LABEL_ERROR);
-        }
-        ((PureWaterRoom) player.getCurrentRoom()).setFountainUsed(true);
-        player.checkRelics(frame);
-        SwingRenderer.appendMainLabelText(frame, "The fountain ran dry!", false);
-    }
-
     @Override
     public void useItem(JFrame frame, Player player) {
         if(this.equipped) {player.unequipRelic(frame, this);}
