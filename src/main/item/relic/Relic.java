@@ -4,7 +4,7 @@ import main.Player;
 import main.item.Item;
 import main.room.PureWaterRoom;
 import main.room.Room;
-import main.swing.LabelType;
+import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
 import javax.swing.*;
@@ -26,10 +26,10 @@ public abstract class Relic extends Item {
     public void cleanseRelic(JFrame frame, Player player) {
         if (this.isCursed()) {
             this.setCursed(false);
-            SwingRenderer.changeLabelText(frame, "The " + this.getName() + " was cured!", LabelType.ERROR);
+            SwingRenderer.changeLabelText(frame, "The " + this.getName() + " was cured!", ComponentType.LABEL_ERROR);
             player.getCurrentStatuses().setCursed(player.getCurrentStatuses().getCursed() - 1);
         } else {
-            SwingRenderer.changeLabelText(frame, "That relic wasn't cursed...", LabelType.ERROR);
+            SwingRenderer.changeLabelText(frame, "That relic wasn't cursed...", ComponentType.LABEL_ERROR);
         }
         ((PureWaterRoom) player.getCurrentRoom()).setFountainUsed(true);
         player.checkRelics(frame);

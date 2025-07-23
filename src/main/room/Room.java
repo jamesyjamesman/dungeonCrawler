@@ -1,9 +1,10 @@
 package main.room;
 
-import main.swing.LabelType;
+import main.swing.ComponentType;
 import main.Player;
 
 import main.swing.SwingRenderer;
+
 import javax.swing.JFrame;
 import java.util.ArrayList;
 
@@ -34,7 +35,7 @@ public class Room {
 
     public void completeRoomActions(Player player, JFrame frame) {
         SwingRenderer.changeBackgroundImage(frame, this.backgroundFileName);
-        SwingRenderer.changeLabelText(frame, this.description, LabelType.DESCRIPTION);
+        SwingRenderer.changeLabelText(frame, this.description, ComponentType.LABEL_DESCRIPTION);
         player.incrementRoomsTraversed();
         player.checkStatus(frame);
         player.checkInventory(frame);

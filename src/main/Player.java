@@ -4,7 +4,7 @@ import main.enemy.Enemy;
 import main.item.Item;
 import main.item.relic.Relic;
 import main.room.Room;
-import main.swing.LabelType;
+import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
 import javax.swing.*;
@@ -165,6 +165,7 @@ public class Player {
         return -1;
     }
 
+    //TODO: use enumerator instead
     public int equippedRelicIndex(String relicName) {
         for (Relic equippedRelic : this.equippedRelics) {
             if (equippedRelic.getName().equals(relicName)) {
@@ -186,7 +187,7 @@ public class Player {
         output = output.concat("Inventory: " + calculateInventorySize() + "/" + this.inventoryCap + "\n");
         output = output.concat("Relics: " + this.equippedRelics.size() + "/" + this.relicCap + "\n");
         output = output.concat(statusEffectChecker());
-        SwingRenderer.changeLabelText(frame, output, LabelType.STATUS);
+        SwingRenderer.changeLabelText(frame, output, ComponentType.LABEL_STATUS);
     }
 
     public String statusEffectChecker() {
@@ -259,7 +260,7 @@ public class Player {
 
     public boolean equipRelic(JFrame frame, Relic relic) {
         if (getEquippedRelics().size() >= this.relicCap) {
-            SwingRenderer.changeLabelText(frame, "You cannot equip any more relics!", LabelType.ERROR);
+            SwingRenderer.changeLabelText(frame, "You cannot equip any more relics!", ComponentType.LABEL_ERROR);
             return false;
         }
         relic.setEquipped(true);
@@ -267,7 +268,7 @@ public class Player {
         int relicIndex = this.findItemInInventory(relic);
         this.inventory.remove(relicIndex);
         if (relic.isCursed()) {
-            SwingRenderer.changeLabelText(frame, "Oh no! the " + relic.getName() + " was cursed!", LabelType.ERROR);
+            SwingRenderer.changeLabelText(frame, "Oh no! the " + relic.getName() + " was cursed!", ComponentType.LABEL_ERROR);
             this.currentStatuses.setCursed(this.currentStatuses.getCursed() + 1);
         }
         checkStatus(frame);
@@ -276,17 +277,17 @@ public class Player {
 
     public boolean unequipRelic(JFrame frame, Relic relic){
         if (relic.isCursed()) {
-            SwingRenderer.changeLabelText(frame, "The relic is welded to you painfully. You can't remove it!", LabelType.ERROR);
+            SwingRenderer.changeLabelText(frame, "The relic is welded to you painfully. You can't remove it!", ComponentType.LABEL_ERROR);
             return false;
         }
 
         boolean inventoryFull = addItemToInventory(frame, relic);
         if (inventoryFull) {
-            SwingRenderer.changeLabelText(frame, "Your inventory is full; the relic could not be unequipped!", LabelType.ERROR);
+            SwingRenderer.changeLabelText(frame, "Your inventory is full; the relic could not be unequipped!", ComponentType.LABEL_ERROR);
             return false;
         }
         relic.setEquipped(false);
-        SwingRenderer.changeLabelText(frame, "The " + relic.getName() + " was unequipped!", LabelType.ERROR);
+        SwingRenderer.changeLabelText(frame, "The " + relic.getName() + " was unequipped!", ComponentType.LABEL_ERROR);
         getEquippedRelics().remove(relic);
         return true;
     }

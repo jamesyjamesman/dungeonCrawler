@@ -1,6 +1,6 @@
 package main.initialization;
 
-import main.swing.LabelType;
+import main.swing.ComponentType;
 import main.Player;
 import main.swing.SwingRenderer;
 
@@ -14,7 +14,7 @@ public class PlayerInit {
             playerName = SwingRenderer.getTempText(frame);
         }
         Player player = new Player(playerName);
-        SwingRenderer.changeLabelText(frame, "Your character's name is: " + player.getName(), LabelType.ERROR);
+        SwingRenderer.changeLabelText(frame, "Your character's name is: " + player.getName(), ComponentType.LABEL_ERROR);
         return player;
     }
 }

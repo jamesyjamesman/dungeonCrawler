@@ -4,7 +4,7 @@ import main.initialization.*;
 import main.item.*;
 import main.item.relic.Relic;
 import main.room.*;
-import main.swing.LabelType;
+import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
 import java.util.ArrayList;
@@ -68,11 +68,11 @@ public class Main {
             try {
                 response = Integer.parseInt(promptResponse);
             } catch(NumberFormatException e) {
-                SwingRenderer.changeLabelText(frame, "Invalid response!", LabelType.ERROR);
+                SwingRenderer.changeLabelText(frame, "Invalid response!", ComponentType.LABEL_ERROR);
                 continue;
             }
             if (response > upperBound || response < lowerBound) {
-                SwingRenderer.changeLabelText(frame, "Out of bounds!", LabelType.ERROR);
+                SwingRenderer.changeLabelText(frame, "Out of bounds!", ComponentType.LABEL_ERROR);
                 continue;
             }
             return response;
@@ -101,7 +101,7 @@ public class Main {
                 SwingRenderer.changeAnswerVisibility(frame, false);
                 return "n";
             }
-            SwingRenderer.changeLabelText(frame, "Invalid response!", LabelType.ERROR);
+            SwingRenderer.changeLabelText(frame, "Invalid response!", ComponentType.LABEL_ERROR);
         }
     }
 
@@ -129,17 +129,5 @@ public class Main {
         } else {
             return "s";
         }
-    }
-
-    public static String colorString(String input, DialogueType type) {
-        String output = switch (type) {
-            case INVENTORY -> "\u001B[36m" + input;
-            case LEVEL -> "\u001B[33m" + input;
-            case BATTLE -> "\u001B[35m" + input;
-            case NAVIGATION -> "\u001B[34m" + input;
-            case DAMAGE -> "\u001B[31m" + input;
-            case HEAL -> "\u001B[32m" + input;
-        };
-        return output + "\u001B[0m";
     }
 }

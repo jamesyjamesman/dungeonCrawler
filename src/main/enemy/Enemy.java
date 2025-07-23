@@ -1,7 +1,7 @@
 package main.enemy;
 
 import main.Player;
-import main.swing.LabelType;
+import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
 import javax.swing.*;
@@ -55,7 +55,7 @@ public class Enemy {
         output += "HP: " + this.currentHealth + "/" + this.maxHealth + "\n";
         output += "EXP: " + this.experienceDropped + "\n";
         output += "ATK DMG: " + this.damage + "\n";
-        SwingRenderer.changeLabelText(frame, output, LabelType.DESCRIPTION);
+        SwingRenderer.changeLabelText(frame, output, ComponentType.LABEL_DESCRIPTION);
     }
 
     public void reset() {

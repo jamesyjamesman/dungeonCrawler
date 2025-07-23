@@ -387,21 +387,11 @@ public class SwingRenderer extends JFrame {
         componentGrabber(frame, ComponentType.PANEL_YES_OR_NO).setVisible(visible);
     }
 
-    //should use componentGrabber
-    public static void changeLabelText(JFrame frame, String newText, LabelType labelType) {
+    public static void changeLabelText(JFrame frame, String newText, ComponentType componentType) {
         newText = HTMLifyString(newText);
 
-        String targetComponent = "";
-
-        switch (labelType) {
-            case STATUS -> targetComponent = "status";
-            case INVENTORY -> targetComponent = "inventory";
-            case RELICS -> targetComponent = "relics";
-            case MAIN -> targetComponent = "main";
-            case DESCRIPTION -> targetComponent = "description";
-            case ERROR -> targetComponent = "error";
-        }
-        JLabel label = (JLabel) getComponentByName(frame, targetComponent);
+    //Can throw an exception
+        JLabel label = (JLabel) componentGrabber(frame, componentType);
         label.setText(newText);
     }
 
@@ -511,7 +501,7 @@ public class SwingRenderer extends JFrame {
             useButton.addActionListener(_ -> item.useItem(frame, player));
             dropButton.addActionListener(_ -> {
                 player.discardItem(frame, item);
-                SwingRenderer.changeLabelText(frame, "The " + item.getName() + " was dropped!", LabelType.ERROR);
+                SwingRenderer.changeLabelText(frame, "The " + item.getName() + " was dropped!", ComponentType.LABEL_ERROR);
                 }
             );
             if (player.getInventory().get(itemIndex).getFirst() instanceof Relic) {
@@ -566,14 +556,8 @@ public class SwingRenderer extends JFrame {
             mainPane.setCaretPosition(doc.getLength());
             mainPane.insertComponent(checkButton);
         }
-        SimpleAttributeSet attributeSet = new SimpleAttributeSet();
-        StyleConstants.setBold(attributeSet, true);
-        StyleConstants.setForeground(attributeSet, Color.white);
-        try {
-            doc.insertString(doc.getLength(), enemyText, attributeSet);
-        } catch (BadLocationException e) {
-            throw new RuntimeException(e);
-        }
+
+        insertSimpleText(doc, enemyText);
     }
 
     public static void addRoomLabel(JFrame frame, int roomIndex, String roomAppearance) {
@@ -587,11 +571,15 @@ public class SwingRenderer extends JFrame {
         mainPane.setCaretPosition(doc.getLength());
         mainPane.insertComponent(roomButton);
 
+        insertSimpleText(doc, roomAppearance);
+    }
+
+    public static void insertSimpleText(Document doc, String text) {
         SimpleAttributeSet attributeSet = new SimpleAttributeSet();
         StyleConstants.setBold(attributeSet, true);
         StyleConstants.setForeground(attributeSet, Color.white);
         try {
-            doc.insertString(doc.getLength(), roomAppearance, attributeSet);
+            doc.insertString(doc.getLength(), text, attributeSet);
         } catch (BadLocationException e) {
             throw new RuntimeException(e);
         }
