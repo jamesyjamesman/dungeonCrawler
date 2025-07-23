@@ -11,6 +11,7 @@ import java.util.Random;
 public class ShieldingRelic extends Relic {
     public ShieldingRelic() {
         setName("Relic of Shielding");
+        setType(RelicType.SHIELDING);
         setDescription("A shimmering relic that gives a constant source of shielding, but only up to a limited amount.");
     }
 

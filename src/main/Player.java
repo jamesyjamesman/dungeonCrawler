@@ -4,6 +4,7 @@ import main.enemy.Enemy;
 import main.item.Item;
 import main.item.Weapon;
 import main.item.relic.Relic;
+import main.item.relic.RelicType;
 import main.room.Room;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
@@ -30,6 +31,7 @@ public class Player {
     Room currentRoom;
     Statuses currentStatuses;
     Weapon equippedWeapon;
+    int gold;
     public Player(String newName) {
         this.name = newName;
         this.maxHealth = 20;
@@ -47,6 +49,7 @@ public class Player {
         this.currentRoom = null;
         this.currentStatuses = new Statuses();
         this.equippedWeapon = null;
+        this.gold = 0;
     }
     public void attack(JFrame frame, Enemy enemy) {
         int totalDamage = weakenAttack(frame, calculateTotalAttack());
@@ -63,7 +66,7 @@ public class Player {
     public void itemPickup(JFrame frame, Item item) {
         if (calculateInventorySize() >= this.inventoryCap) {
             SwingRenderer.appendMainLabelText(frame, "Your inventory is full!\nEnter anything to continue, if your inventory is still full the item will be lost.", false);
-            Main.yesOrNo(frame);
+            Main.waitForResponse(frame);
             if (calculateInventorySize() >= this.inventoryCap) {
                 SwingRenderer.appendMainLabelText(frame, "Your inventory is still full... The " + item.getName() + " remains where it was.", false);
                 return;
@@ -133,7 +136,7 @@ public class Player {
 
             String output = item.getName() + amount + ": " + item.getDescription();
             output = output.concat("\n");
-            if (item instanceof Relic relic && relic.isCursed() && equippedRelicIndex("Relic of Curse Detection") != -1) {
+            if (item instanceof Relic relic && relic.isCursed() && equippedRelicIndex(RelicType.CURSE_DETECTION) != -1) {
                 color = new Color(130, 30, 190);
             } else {
                 color = Color.white;
@@ -169,10 +172,9 @@ public class Player {
         return -1;
     }
 
-    //TODO: use enumerator instead
-    public int equippedRelicIndex(String relicName) {
+    public int equippedRelicIndex(RelicType relicName) {
         for (Relic equippedRelic : this.equippedRelics) {
-            if (equippedRelic.getName().equals(relicName)) {
+            if (equippedRelic.getType() == relicName) {
                 return this.equippedRelics.indexOf(equippedRelic);
             }
         }
@@ -185,6 +187,7 @@ public class Player {
     // Renders level and exp to next level, unless the player is at the max level (10), where it just shows the level.
         output = output.concat("Level " + this.level + (this.level < 10 ? " (" + this.experience + "/" + this.expToNextLevel + " exp)" : ""));
         output = output.concat("\n");
+        output = output.concat("Gold: " + this.gold + "\n");
         output = output.concat("Health: " + (this.currentHealth + this.absorption) + "/" + this.maxHealth + "\n");
         output = output.concat("Attack damage: " + calculateTotalAttack() + "\n");
         output = output.concat("Rooms traveled: " + this.roomsTraversed + "\n");
@@ -418,7 +421,7 @@ public class Player {
         if (curseLevel == 0) {
             return;
         }
-        if (equippedRelicIndex("Relic of Cursed Healing") == -1) {
+        if (equippedRelicIndex(RelicType.CURSE_HEAL) == -1) {
             int totalDamage = 0;
             for (int i = 0; i < curseLevel; i++) {
                 totalDamage += new Random().nextInt(4);

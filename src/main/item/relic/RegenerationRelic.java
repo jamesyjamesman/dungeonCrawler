@@ -10,6 +10,7 @@ import java.util.Random;
 public class RegenerationRelic extends Relic {
     public RegenerationRelic() {
         setName("Relic of Regeneration");
+        setType(RelicType.REGENERATION);
         setDescription("This mystical artifact will heal you on occasion.");
     }
 

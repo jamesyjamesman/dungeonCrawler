@@ -5,6 +5,7 @@ import main.room.Room;
 public class ForesightRelic extends Relic {
     public ForesightRelic() {
         setName("Relic of Foresight");
+        setType(RelicType.FORESIGHT);
         setDescription("An interesting artifact that allows you to tell how many exits the next room has.");
     }
 

@@ -1,6 +1,7 @@
 package main.enemy;
 
 import main.Player;
+import main.item.relic.RelicType;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
@@ -38,7 +39,7 @@ public class Enemy {
     }
 
     public void attack(JFrame frame, Player player) {
-        if (player.equippedRelicIndex("Relic of Bounciness") > -1
+        if (player.equippedRelicIndex(RelicType.SLIME) > -1
             && new Random().nextInt(4) == 0) {
             SwingRenderer.addHealthText(frame, "The attack from the " + this.species + " bounced right off!");
                 return;

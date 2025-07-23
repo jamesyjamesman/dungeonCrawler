@@ -5,6 +5,7 @@ import main.enemy.Enemy;
 import main.item.Item;
 import main.item.Weapon;
 import main.item.relic.Relic;
+import main.item.relic.RelicType;
 import main.room.PureWaterRoom;
 
 import javax.swing.*;
@@ -593,7 +594,7 @@ public class SwingRenderer extends JFrame {
         Document doc = mainPane.getStyledDocument();
         mainPane.setCaretPosition(doc.getLength());
         mainPane.insertComponent(attackButton);
-        if (player.equippedRelicIndex("Relic of Enemy Information") > -1) {
+        if (player.equippedRelicIndex(RelicType.ENEMY_INFORMATION) > -1) {
             mainPane.setCaretPosition(doc.getLength());
             mainPane.insertComponent(checkButton);
         }

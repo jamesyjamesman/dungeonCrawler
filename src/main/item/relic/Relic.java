@@ -2,10 +2,7 @@ package main.item.relic;
 
 import main.Player;
 import main.item.Item;
-import main.room.PureWaterRoom;
 import main.room.Room;
-import main.swing.ComponentType;
-import main.swing.SwingRenderer;
 
 import javax.swing.*;
 import java.util.Random;
@@ -13,9 +10,11 @@ import java.util.Random;
 public abstract class Relic extends Item {
     boolean equipped;
     boolean cursed;
+    RelicType relicType;
     public Relic(){
         this.equipped = false;
         this.cursed = new Random().nextInt(5) == 0;
+        this.relicType = null;
     }
 
     //TODO
@@ -42,5 +41,11 @@ public abstract class Relic extends Item {
     }
     public boolean isEquipped() {
         return this.equipped;
+    }
+    public RelicType getType() {
+        return this.relicType;
+    }
+    public void setType(RelicType relicType) {
+        this.relicType = relicType;
     }
 }

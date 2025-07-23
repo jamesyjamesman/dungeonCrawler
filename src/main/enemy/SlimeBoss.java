@@ -1,6 +1,7 @@
 package main.enemy;
 
 import main.Player;
+import main.item.relic.RelicType;
 import main.swing.SwingRenderer;
 import main.item.relic.Relic;
 import main.item.relic.SlimeRelic;
@@ -32,7 +33,7 @@ public class SlimeBoss extends Boss {
     //not good
     @Override
     public void attack(JFrame frame, Player player) {
-        if (player.equippedRelicIndex("Relic of Bounciness") > -1
+        if (player.equippedRelicIndex(RelicType.SLIME) > -1
                 && new Random().nextInt(4) == 0) {
             SwingRenderer.appendMainLabelText(frame, "The attack from the " + this.species + " bounced right off!", false);
             return;
