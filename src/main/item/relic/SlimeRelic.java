@@ -4,7 +4,7 @@ package main.item.relic;
 public class SlimeRelic extends Relic {
     public SlimeRelic() {
         setName("Relic of Bounciness");
-        setType(RelicType.SHIELDING);
+        setType(RelicType.SLIME);
         setDescription("This relic covers you in viscous, bouncy slime. Some attacks just bounce right off!");
     }
 }
