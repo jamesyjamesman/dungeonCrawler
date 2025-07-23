@@ -53,4 +53,7 @@ public abstract class Relic extends Item {
     public void setEquipped(boolean equipped) {
         this.equipped = equipped;
     }
+    public boolean isEquipped() {
+        return this.equipped;
+    }
 }

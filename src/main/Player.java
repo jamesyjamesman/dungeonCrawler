@@ -2,6 +2,7 @@ package main;
 
 import main.enemy.Enemy;
 import main.item.Item;
+import main.item.Weapon;
 import main.item.relic.Relic;
 import main.room.Room;
 import main.swing.ComponentType;
@@ -20,7 +21,6 @@ public class Player {
     int damage;
     ArrayList<ArrayList<Item>> inventory;
     ArrayList<Relic> equippedRelics;
-    //make absorption a status?
     int absorption;
     int inventoryCap;
     int relicCap;
@@ -29,6 +29,7 @@ public class Player {
     int expToNextLevel;
     Room currentRoom;
     Statuses currentStatuses;
+    Weapon equippedWeapon;
     public Player(String newName) {
         this.name = newName;
         this.maxHealth = 20;
@@ -45,10 +46,10 @@ public class Player {
         this.expToNextLevel = 10;
         this.currentRoom = null;
         this.currentStatuses = new Statuses();
+        this.equippedWeapon = null;
     }
-
     public void attack(JFrame frame, Enemy enemy) {
-        int totalDamage = weakenAttack(frame, this.damage);
+        int totalDamage = weakenAttack(frame, this.damage + ((this.equippedWeapon != null) ? this.equippedWeapon.getDamage() : 0));
         int damageDealt = enemy.takeDamage(frame, totalDamage);
         if (damageDealt > 0) {
             SwingRenderer.appendMainLabelText(frame, "The " + enemy.getSpecies() + " took " + totalDamage + " damage!\n", false);
@@ -134,7 +135,7 @@ public class Player {
             } else {
                 color = Color.white;
             }
-            SwingRenderer.addInventoryLabel(frame, output, this, i, 1, color);
+            SwingRenderer.addItemLabel(frame, output, this, item, color);
         }
     }
 
@@ -144,15 +145,15 @@ public class Player {
         Color color;
 
         for (int i = 0; i < this.equippedRelics.size(); i++) {
-            String output = this.equippedRelics.get(i).getName() + ": "
-                    + this.equippedRelics.get(i).getDescription();
+            Relic relic = this.equippedRelics.get(i);
+            String output = relic.getName() + ": " + relic.getDescription();
             output = output.concat("\n\n");
-            if (this.equippedRelics.get(i).isCursed()) {
+            if (relic.isCursed()) {
                 color = new Color(130, 30, 190);
             } else {
                 color = Color.white;
             }
-            SwingRenderer.addInventoryLabel(frame, output, this, i, 3, color);
+            SwingRenderer.addItemLabel(frame, output, this, relic, color);
         }
     }
 
@@ -486,5 +487,11 @@ public class Player {
     }
     public Statuses getCurrentStatuses() {
         return this.currentStatuses;
+    }
+    public void setEquippedWeapon(Weapon weapon) {
+        this.equippedWeapon = weapon;
+    }
+    public Weapon getEquippedWeapon() {
+        return this.equippedWeapon;
     }
 }

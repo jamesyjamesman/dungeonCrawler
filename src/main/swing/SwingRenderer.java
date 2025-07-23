@@ -3,6 +3,7 @@ package main.swing;
 import main.Player;
 import main.enemy.Enemy;
 import main.item.Item;
+import main.item.Weapon;
 import main.item.relic.Relic;
 import main.room.PureWaterRoom;
 
@@ -483,56 +484,96 @@ public class SwingRenderer extends JFrame {
         pane.repaint();
     }
 
-    //change to not use layer pls
-    public static void addInventoryLabel(JFrame frame, String newItemText, Player player, int itemIndex, int layer, Color color) {
+    public static void addItemLabel(JFrame frame, String newItemText, Player player, Item item, Color color) {
+        if (item instanceof Relic relic && relic.isEquipped()) {
+            addRelicLabel(frame, newItemText, player, relic, color);
+        } else if (item instanceof Weapon weapon) {
+            addWeaponLabel(frame, newItemText, player, weapon);
+        } else {
+            addInventoryLabel(frame, newItemText, player, item, color);
+        }
+    }
+
+    public static void addInventoryLabel(JFrame frame, String newText, Player player, Item item, Color color) {
         InventoryButton useButton = new InventoryButton();
         InventoryButton dropButton = new InventoryButton();
-        Item item = player.getInventory().get(itemIndex).getFirst();
 
         if (player.getCurrentRoom() instanceof PureWaterRoom pureRoom && !pureRoom.getFountainUsed()) {
             useButton.setText(" Cleanse ");
-            if (layer == 1) {
-                useButton.addActionListener(_ -> item.cleanseItem(frame, player));
-            } else {
-                //this is a little funky
-                useButton.addActionListener(_ -> ((Relic) item).cleanseRelic(frame, player));
-            }
-        } else if (layer == 1) {
+            useButton.addActionListener(_ -> item.cleanseItem(frame, player));
+        } else {
             useButton.addActionListener(_ -> item.useItem(frame, player));
             dropButton.addActionListener(_ -> {
                 player.discardItem(frame, item);
                 SwingRenderer.changeLabelText(frame, "The " + item.getName() + " was dropped!", ComponentType.LABEL_ERROR);
-                }
-            );
-            if (player.getInventory().get(itemIndex).getFirst() instanceof Relic) {
+            });
+            if (item instanceof Relic) {
                 useButton.setText(" Equip ");
             } else {
                 useButton.setText(" Use ");
             }
+            useButton.setHorizontalAlignment(SwingConstants.LEFT);
+            dropButton.setHorizontalAlignment(SwingConstants.LEFT);
+            dropButton.setText(" Drop ");
+
+            JTextPane inventoryPane = (JTextPane) componentGrabber(frame, ComponentType.PANE_INVENTORY);
+            Document doc = inventoryPane.getStyledDocument();
+            inventoryPane.setCaretPosition(doc.getLength());
+            inventoryPane.insertComponent(useButton);
+            inventoryPane.setCaretPosition(doc.getLength());
+            inventoryPane.insertComponent(dropButton);
+
+            insertSimpleText(doc, newText, color);
+        }
+    }
+
+    public static void addWeaponLabel(JFrame frame, String newText, Player player, Weapon weapon) {
+        InventoryButton useButton = new InventoryButton();
+        InventoryButton dropButton = new InventoryButton();
+
+        if (!weapon.isEquipped()) {
+            useButton.setText(" Equip ");
         } else {
-            useButton.addActionListener(_ -> item.useItem(frame, player));
             useButton.setText(" Unequip ");
         }
-        useButton.setHorizontalAlignment(SwingConstants.LEFT);
-        dropButton.setHorizontalAlignment(SwingConstants.LEFT);
         dropButton.setText(" Drop ");
 
-        JTextPane inventoryPane = (JTextPane) frame.getLayeredPane().getComponentsInLayer(layer)[0];
+        useButton.addActionListener(_ -> weapon.useItem(frame, player));
+        dropButton.addActionListener(_ -> player.discardItem(frame, weapon));
+
+        useButton.setHorizontalAlignment(SwingConstants.LEFT);
+        dropButton.setHorizontalAlignment(SwingConstants.LEFT);
+
+        JTextPane inventoryPane = (JTextPane) componentGrabber(frame, ComponentType.PANE_INVENTORY);
         Document doc = inventoryPane.getStyledDocument();
         inventoryPane.setCaretPosition(doc.getLength());
         inventoryPane.insertComponent(useButton);
-        if (layer == 1) {
+
+        if (!weapon.isEquipped()) {
             inventoryPane.setCaretPosition(doc.getLength());
             inventoryPane.insertComponent(dropButton);
         }
-        SimpleAttributeSet attributeSet = new SimpleAttributeSet();
-        StyleConstants.setBold(attributeSet, true);
-        StyleConstants.setForeground(attributeSet, color);
-        try {
-            doc.insertString(doc.getLength(), newItemText, attributeSet);
-        } catch (BadLocationException e) {
-            throw new RuntimeException(e);
+
+        insertSimpleText(doc, newText);
+    }
+
+    public static void addRelicLabel(JFrame frame, String newText, Player player, Relic relic, Color color) {
+        InventoryButton useButton = new InventoryButton();
+
+        if (player.getCurrentRoom() instanceof PureWaterRoom pureRoom && !pureRoom.getFountainUsed()) {
+            useButton.setText(" Cleanse ");
+            useButton.addActionListener(_ -> relic.cleanseItem(frame, player));
+        } else {
+            useButton.setText(" Unequip ");
+            useButton.addActionListener(_ -> relic.useItem(frame, player));
         }
+
+        JTextPane inventoryPane = (JTextPane) componentGrabber(frame, ComponentType.PANE_INVENTORY);
+        Document doc = inventoryPane.getStyledDocument();
+        inventoryPane.setCaretPosition(doc.getLength());
+        inventoryPane.insertComponent(useButton);
+
+        insertSimpleText(doc, newText, color);
     }
 
     public static void addEnemyLabel(JFrame frame, String enemyText, Player player, Enemy enemy, int enemyIndex) {
@@ -578,6 +619,17 @@ public class SwingRenderer extends JFrame {
         SimpleAttributeSet attributeSet = new SimpleAttributeSet();
         StyleConstants.setBold(attributeSet, true);
         StyleConstants.setForeground(attributeSet, Color.white);
+        try {
+            doc.insertString(doc.getLength(), text, attributeSet);
+        } catch (BadLocationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void insertSimpleText(Document doc, String text, Color color) {
+        SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+        StyleConstants.setBold(attributeSet, true);
+        StyleConstants.setForeground(attributeSet, color);
         try {
             doc.insertString(doc.getLength(), text, attributeSet);
         } catch (BadLocationException e) {

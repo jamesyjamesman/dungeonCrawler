@@ -7,12 +7,15 @@ import java.util.ArrayList;
 public class ItemInit {
     static ArrayList<HealthItem> healthItemList = new ArrayList<>();
     static ArrayList<BuffItem> buffItemList = new ArrayList<>();
+    static ArrayList<Weapon> weaponList = new ArrayList<>();
     static ArrayList<Item> itemList = new ArrayList<>();
     public static ArrayList<Item> itemInit() {
         ArrayList<HealthItem> healthItems = healthItemInit();
         ArrayList<BuffItem> buffItems = buffItemInit();
+        ArrayList<Weapon> weapons = weaponInit();
         itemList.addAll(healthItems);
         itemList.addAll(buffItems);
+        itemList.addAll(weapons);
         return itemList;
     }
     public static ArrayList<HealthItem> healthItemInit() {
@@ -61,5 +64,14 @@ public class ItemInit {
             buffItemList.add(relicBuff);
 
         return buffItemList;
+    }
+
+    public static ArrayList<Weapon> weaponInit() {
+        Weapon shortSword = new Weapon();
+        shortSword.setName("Shortsword of Boringness");
+        shortSword.setDamage(1);
+        weaponList.add(shortSword);
+
+        return weaponList;
     }
 }
