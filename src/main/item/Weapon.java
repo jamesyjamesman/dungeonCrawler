@@ -16,11 +16,12 @@ public class Weapon extends Item {
     public void useItem(JFrame frame, Player player) {
         if (this.isEquipped()) {
             this.setEquipped(false);
-            player.setEquippedWeapon(this);
+            player.setEquippedWeapon(null);
         } else {
             this.setEquipped(true);
-            player.setEquippedWeapon(null);
+            player.setEquippedWeapon(this);
         }
+        UIUpdater(frame, player);
     }
 
     public void setEquipped(boolean equipped) {

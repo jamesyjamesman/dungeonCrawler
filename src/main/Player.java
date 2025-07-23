@@ -500,4 +500,17 @@ public class Player {
     public Weapon getEquippedWeapon() {
         return this.equippedWeapon;
     }
+    public int getGold() {
+        return this.gold;
+    }
+    public void addGold(int gold) {
+        this.gold += gold;
+    }
+    public boolean takeGold(int cost) {
+        if (this.gold >= cost) {
+            this.gold -= cost;
+            return true;
+        }
+        return false;
+    }
 }

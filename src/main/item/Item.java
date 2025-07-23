@@ -20,6 +20,7 @@ public abstract class Item {
        UIUpdater(frame, player);
     }
 
+    //should not be a method on item???
     public void UIUpdater(JFrame frame, Player player) {
         player.checkInventory(frame);
         player.checkRelics(frame);
@@ -42,8 +43,8 @@ public abstract class Item {
             SwingRenderer.changeLabelText(frame, "You put the " + this.getName() + " in the fountain, but nothing happened.", ComponentType.LABEL_ERROR);
         }
         ((PureWaterRoom) player.getCurrentRoom()).setFountainUsed(true);
-        player.checkInventory(frame);
         SwingRenderer.appendMainLabelText(frame, "The fountain ran dry!", false);
+        UIUpdater(frame, player);
     }
 
 

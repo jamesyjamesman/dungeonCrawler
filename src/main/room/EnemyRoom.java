@@ -38,10 +38,10 @@ public class EnemyRoom extends Room {
     public void addEnemies(Enemy enemy) {
         this.enemies.add(enemy);
     }
-    public void removeEnemies(Enemy enemy) {
+    public void removeEnemy(Enemy enemy) {
         this.enemies.remove(enemy);
     }
-    public void addDefeatedEnemies(Enemy enemy) {
+    public void addDefeatedEnemy(Enemy enemy) {
         this.defeatedEnemies.add(enemy);
     }
     public ArrayList<Enemy> getEnemies() {

@@ -2,6 +2,7 @@ package main.initialization;
 
 import main.enemy.*;
 import main.enemy.MageEnemy;
+import main.item.Weapon;
 
 import java.util.ArrayList;
 
@@ -25,6 +26,12 @@ public class EnemyInit {
             goblin.setSpecies("goblin");
             goblin.setDamage(1);
             goblin.setExperienceDropped(3);
+            //TODO: remove testing sword
+            Weapon shortsword = new Weapon();
+            shortsword.setDamage(1);
+            shortsword.setName("Shortsword of Boringness");
+            goblin.getLoot().addItem(shortsword);
+            goblin.getLoot().setGold(3);
             enemyList.add(goblin);
 
             Enemy orc = new Enemy();

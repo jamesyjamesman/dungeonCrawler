@@ -19,17 +19,9 @@ public class Battle {
             SwingRenderer.appendMainLabelText(frame, "", true);
             Enemy enemy = room.getEnemies().get(enemyIndex);
             player.attack(frame, enemy);
-            boolean enemyIsDead = enemy.getCurrentHealth() == 0;
-            if (enemyIsDead) {
-                player.changeExperience(enemy.getExperienceDropped());
-                player.checkLevelUp(frame, "");
-                player.checkStatus(frame);
-                SwingRenderer.appendMainLabelText(frame, "The " + enemy.getSpecies() + " died! You got " + enemy.getExperienceDropped() + " experience!\n", false);
-                room.addDefeatedEnemies(enemy);
-                room.removeEnemies(enemy);
-                if (enemy instanceof Boss) {
-                    ((Boss) enemy).death(frame, player);
-                }
+            //this should just be in takeDamage but this is fine for now
+            if (enemy.getCurrentHealth() <= 0) {
+                enemy.death(frame, player, room);
             }
 
             //enemies attack player

@@ -2,6 +2,7 @@ package main.enemy;
 
 import main.Player;
 import main.item.relic.RelicType;
+import main.room.EnemyRoom;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
@@ -17,6 +18,7 @@ public class Enemy {
     int experienceDropped;
     String species;
     String damageType;
+    Loot loot;
     public Enemy() {
         this.maxHealth = 0;
         this.currentHealth = 0;
@@ -26,6 +28,7 @@ public class Enemy {
         this.experienceDropped = 0;
         this.species = "";
         this.damageType = "";
+        this.loot = new Loot();
     }
 
     public int takeDamage(JFrame frame, int damage) {
@@ -36,6 +39,22 @@ public class Enemy {
             return oldHealth;
         }
         return damage;
+    }
+
+    public void death(JFrame frame, Player player, EnemyRoom enemyRoom) {
+        player.changeExperience(getExperienceDropped());
+        player.checkLevelUp(frame, "");
+        player.checkStatus(frame);
+        SwingRenderer.appendMainLabelText(frame, "The " + getSpecies() + " died! You got " + getExperienceDropped() + " experience!\n", false);
+
+        player.addGold(this.getLoot().getGold());
+        for (int i = 0; i < this.getLoot().getItems().size(); i++) {
+            player.itemPickup(frame, this.getLoot().getItems().get(i));
+        }
+
+        enemyRoom.addDefeatedEnemy(this);
+        enemyRoom.removeEnemy(this);
+        player.checkInventory(frame);
     }
 
     public void attack(JFrame frame, Player player) {
@@ -85,4 +104,7 @@ public class Enemy {
     public int getMaxHealth(){return this.maxHealth;}
     public void setExperienceDropped(int experienceDropped) {this.experienceDropped = experienceDropped;}
     public int getExperienceDropped() {return this.experienceDropped;}
+    public Loot getLoot() {
+        return this.loot;
+    }
 }
