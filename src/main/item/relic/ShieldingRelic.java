@@ -22,6 +22,5 @@ public class ShieldingRelic extends Relic {
             player.addAbsorption(absorptionAmount);
             SwingRenderer.addHealthText(frame, "Your Relic of Shielding gave you " + absorptionAmount + " point" + Main.pluralChecker(absorptionAmount) + " of absorption!");
         }
-        super.useRelic(frame, player, room);
     }
 }

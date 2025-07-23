@@ -22,6 +22,5 @@ public class RegenerationRelic extends Relic {
             SwingRenderer.addHealthText(frame, "Your Relic of Regeneration healed you for " + amountHealed + " health!");
             }
         }
-        super.useRelic(frame, player, room);
     }
 }

@@ -17,10 +17,7 @@ public abstract class Relic extends Item {
         this.relicType = null;
     }
 
-    //TODO
-    //should be abstract, any calls should be removed
-    public void useRelic(JFrame frame, Player player, Room room) {
-    }
+    public abstract void useRelic(JFrame frame, Player player, Room room);
 
     @Override
     public void useItem(JFrame frame, Player player) {
