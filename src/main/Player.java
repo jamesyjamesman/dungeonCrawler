@@ -397,7 +397,7 @@ public class Player {
     public int weakenAttack(JFrame frame, int initialDamage) {
         int weaknessLevel = this.currentStatuses.getWeakened();
         if (weaknessLevel == 0) {return initialDamage;}
-        int finalDamage = initialDamage / (int) (Math.pow(2, weaknessLevel));
+        int finalDamage = initialDamage / (weaknessLevel + 1);
     // 1 - (1/(n+1)) chance to decrease weakness level by one
         if (new Random().nextInt(weaknessLevel + 1) != 0) {
             this.currentStatuses.setWeakened(this.currentStatuses.getWeakened() - 1);
@@ -494,7 +494,13 @@ public class Player {
     public Statuses getCurrentStatuses() {
         return this.currentStatuses;
     }
-    public void setEquippedWeapon(Weapon weapon) {
+    //TODO: Fix hotfix, equip button should not even be visible
+    //TODO: fix weapons stacking in inventory
+    public void setEquippedWeapon(JFrame frame, Weapon weapon) {
+        if (this.equippedWeapon != null) {
+            SwingRenderer.changeLabelText(frame, "You cannot equip more than one weapon!", ComponentType.LABEL_ERROR);
+            return;
+        }
         this.equippedWeapon = weapon;
     }
     public Weapon getEquippedWeapon() {

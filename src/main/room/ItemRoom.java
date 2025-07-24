@@ -22,7 +22,7 @@ public class ItemRoom extends Room {
 
         //this should be defined on the object itself but because the item isn't defined initially it crashes, which is not great.
         if (this.id == 10) {
-            SwingRenderer.appendMainLabelText(frame, "Would you like to ...look through the corpse? (y/n)", true);
+            SwingRenderer.appendMainLabelText(frame, "Would you like to ...look through the corpse? (y/n)\n", true);
         } else {
             SwingRenderer.appendMainLabelText(frame, "Would you like to take the " + this.item.getName() + "? (y/n)", true);
         }

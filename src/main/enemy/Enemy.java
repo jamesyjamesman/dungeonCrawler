@@ -46,7 +46,7 @@ public class Enemy {
         player.changeExperience(getExperienceDropped());
         player.checkLevelUp(frame, "");
         player.checkStatus(frame);
-        SwingRenderer.appendMainLabelText(frame, "The " + getSpecies() + " died! You got " + getExperienceDropped() + " experience!\n", false);
+        SwingRenderer.changeLabelText(frame, "The " + getSpecies() + " died! You got " + getExperienceDropped() + " experience!\n", ComponentType.LABEL_DESCRIPTION);
 
         dropLoot(frame, player);
 
@@ -64,7 +64,7 @@ public class Enemy {
     }
 
     public void attack(JFrame frame, Player player) {
-        if (player.equippedRelicIndex(RelicType.SLIME) > -1
+        if (player.equippedRelicIndex(RelicType.SLIME) != -1
             && new Random().nextInt(4) == 0) {
             SwingRenderer.addHealthText(frame, "The attack from the " + this.species + " bounced right off!");
                 return;
@@ -112,5 +112,8 @@ public class Enemy {
     public int getExperienceDropped() {return this.experienceDropped;}
     public Loot getLoot() {
         return this.loot;
+    }
+    public void setLoot(Loot loot) {
+        this.loot = loot;
     }
 }

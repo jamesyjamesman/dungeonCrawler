@@ -2,6 +2,7 @@ package main.initialization;
 
 import main.item.*;
 import main.item.buff.*;
+import main.item.weapon.ShortSword;
 import main.item.weapon.Weapon;
 
 import java.util.ArrayList;
@@ -69,10 +70,7 @@ public class ItemInit {
     }
 
     public static ArrayList<Weapon> weaponInit() {
-        Weapon shortSword = new Weapon();
-        shortSword.setName("Shortsword of Boringness");
-        shortSword.setDamage(1);
-        weaponList.add(shortSword);
+        weaponList.add(new ShortSword(1));
 
         return weaponList;
     }

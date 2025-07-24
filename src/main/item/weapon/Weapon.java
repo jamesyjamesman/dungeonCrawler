@@ -17,10 +17,10 @@ public class Weapon extends Item {
     public void useItem(JFrame frame, Player player) {
         if (this.isEquipped()) {
             this.setEquipped(false);
-            player.setEquippedWeapon(null);
+            player.setEquippedWeapon(frame, null);
         } else {
             this.setEquipped(true);
-            player.setEquippedWeapon(this);
+            player.setEquippedWeapon(frame, this);
         }
         UIUpdater(frame, player);
     }
@@ -31,6 +31,7 @@ public class Weapon extends Item {
     public void setDamage(int damage) {
         this.damage = damage;
     }
+    //compare returned weapon from player to input instead of having bool
     public boolean isEquipped() {
         return equipped;
     }
