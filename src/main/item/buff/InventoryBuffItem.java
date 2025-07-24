@@ -1,4 +1,4 @@
-package main.item;
+package main.item.buff;
 
 import main.Player;
 import main.swing.SwingRenderer;

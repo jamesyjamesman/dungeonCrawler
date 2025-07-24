@@ -7,13 +7,18 @@ import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
 import javax.swing.*;
+import java.util.Random;
 
 public abstract class Item {
     String description;
     String name;
+    double dropChance;
+    int value;
     public Item() {
         this.description = "";
         this.name = "";
+        this.dropChance = .10;
+        this.value = 0;
     }
 
     public void useItem(JFrame frame, Player player) {
@@ -21,6 +26,7 @@ public abstract class Item {
     }
 
     //should not be a method on item???
+    //put on player or swingRenderer, prob the latter
     public void UIUpdater(JFrame frame, Player player) {
         player.checkInventory(frame);
         player.checkRelics(frame);
@@ -51,9 +57,27 @@ public abstract class Item {
     public void setDescription(String description) {
         this.description = description;
     }
-    public String getDescription() {return this.description;}
+    public String getDescription() {
+        return this.description;
+    }
     public void setName(String name) {
         this.name = name;
     }
-    public String getName() {return this.name;}
+    public String getName() {
+        return this.name;
+    }
+    public void setDropChance(double dropChance) {
+        this.dropChance = dropChance;
+    }
+    public void dropItem(JFrame frame, Player player) {
+        if (new Random().nextDouble(0, 1) < this.dropChance) {
+            player.itemPickup(frame, this);
+        }
+    }
+    public void setValue(int value) {
+        this.value = value;
+    }
+    public int getValue() {
+        return this.value;
+    }
 }

@@ -1,6 +1,7 @@
-package main.item;
+package main.item.buff;
 
 import main.Player;
+import main.item.Item;
 import main.swing.SwingRenderer;
 
 import javax.swing.*;
@@ -16,8 +17,8 @@ public abstract class BuffItem extends Item {
         this.amountChanged = 0;
         this.lowBound = 0;
         this.highBound = 0;
-        this.name = "Suspicious Can";
-        this.description = "A can of... something. It's chunky.";
+        setName("Suspicious Can");
+        setDescription("A can of... something. It's chunky.");
     }
 
     @Override

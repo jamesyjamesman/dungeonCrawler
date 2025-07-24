@@ -1,6 +1,7 @@
-package main.item;
+package main.item.weapon;
 
 import main.Player;
+import main.item.Item;
 
 import javax.swing.*;
 

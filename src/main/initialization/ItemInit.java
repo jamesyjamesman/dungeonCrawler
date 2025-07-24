@@ -1,6 +1,8 @@
 package main.initialization;
 
 import main.item.*;
+import main.item.buff.*;
+import main.item.weapon.Weapon;
 
 import java.util.ArrayList;
 

@@ -2,7 +2,7 @@ package main;
 
 import main.enemy.Enemy;
 import main.item.Item;
-import main.item.Weapon;
+import main.item.weapon.Weapon;
 import main.item.relic.Relic;
 import main.item.relic.RelicType;
 import main.room.Room;

@@ -2,7 +2,7 @@ package main.initialization;
 
 import main.enemy.*;
 import main.enemy.MageEnemy;
-import main.item.Weapon;
+import main.item.weapon.Weapon;
 
 import java.util.ArrayList;
 
