@@ -7,6 +7,7 @@ import javax.swing.*;
 
 public class RelicPouchBuffItem extends BuffItem {
     public RelicPouchBuffItem() {
+        this.setBounds(0, 2);
         this.statType = "relic pouch capacity";
     }
 

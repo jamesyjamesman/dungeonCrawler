@@ -4,7 +4,7 @@ import main.initialization.*;
 import main.item.*;
 import main.item.relic.ForesightRelic;
 import main.item.relic.Relic;
-import main.item.relic.RelicType;
+import main.item.relic.RelicID;
 import main.room.*;
 import main.swing.SwingRenderer;
 
@@ -49,7 +49,7 @@ public class Game {
         for (int i = 0; i < room.getNumExits(); i++) {
             room.addExit(getWeightedRoom(activeRooms));
 
-            int foresightIndex = player.equippedRelicIndex(RelicType.FORESIGHT);
+            int foresightIndex = player.equippedRelicIndex(RelicID.FORESIGHT);
 
             String output = (i + 1) + ". " + room.getExits().get(i).getAppearance();
             if (foresightIndex != -1) {

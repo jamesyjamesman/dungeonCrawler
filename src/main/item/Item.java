@@ -1,30 +1,45 @@
 package main.item;
 
 import main.Player;
-import main.item.relic.Relic;
+import main.item.health.*;
+import main.item.relic.*;
+import main.item.weapon.*;
+import main.item.buff.*;
 import main.room.PureWaterRoom;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
 import javax.swing.*;
-import java.util.Random;
 
 public abstract class Item {
     String description;
     String name;
-    double dropChance;
     int value;
     boolean stackable;
     public Item() {
         this.description = "";
         this.name = "";
-        this.dropChance = .10;
         this.value = 0;
         this.stackable = true;
     }
 
     public void useItem(JFrame frame, Player player) {
        UIUpdater(frame, player);
+    }
+
+    public static Item itemFactory(ItemID itemID) {
+        return switch (itemID) {
+            case WEAPON_MACE -> new Mace();
+            case WEAPON_SHORT_SWORD -> new ShortSword();
+            case WEAPON_WAND -> new Wand();
+            case HEALTH_APPLE -> new AppleItem();
+            case HEALTH_STEAK -> new SteakItem();
+            case HEALTH_APPLE_PURE -> new PureAppleItem();
+            case HEALTH_CHOCOLATE -> new ChocolateItem();
+            case BUFF_DAMAGE -> new DamageBuffItem();
+            //TODO: add the rest
+            default -> new DummyItem();
+        };
     }
 
     //should not be a method on item???
@@ -67,17 +82,6 @@ public abstract class Item {
     }
     public String getName() {
         return this.name;
-    }
-    public void setDropChance(double dropChance) {
-        this.dropChance = dropChance;
-    }
-    public double getDropChance() {
-        return this.dropChance;
-    }
-    public void dropItem(JFrame frame, Player player) {
-        if (new Random().nextDouble(0, 1) < this.dropChance) {
-            player.itemPickup(frame, this);
-        }
     }
     public void setValue(int value) {
         this.value = value;

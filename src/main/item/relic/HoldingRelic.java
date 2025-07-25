@@ -8,7 +8,7 @@ import javax.swing.*;
 public class HoldingRelic extends Relic {
     public HoldingRelic() {
         setName("Relic of Holding");
-        setType(RelicType.HOLDING);
+        setType(RelicID.HOLDING);
         setDescription("A strange relic that somehow fits many things in a small amulet.");
     }
 

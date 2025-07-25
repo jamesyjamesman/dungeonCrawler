@@ -1,8 +1,7 @@
 package main;
 
-import main.enemy.Boss;
 import main.enemy.Enemy;
-import main.item.relic.RelicType;
+import main.item.relic.RelicID;
 import main.room.EnemyRoom;
 import main.swing.SwingRenderer;
 
@@ -39,7 +38,7 @@ public class Battle {
             String species = enemy.getSpecies();
             String speciesCapitalized = species.substring(0, 1).toUpperCase() + species.substring(1);
             String output = (i+1) + ". " + speciesCapitalized;
-            if (player.equippedRelicIndex(RelicType.ENEMY_INFORMATION) > -1) {
+            if (player.equippedRelicIndex(RelicID.ENEMY_INFORMATION) > -1) {
                 output = output.concat(" (" + enemy.getCurrentHealth() + "/" + enemy.getMaxHealth() + " HP)\n");
             } else {
                 output = output.concat("\n");

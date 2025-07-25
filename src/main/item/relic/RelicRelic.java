@@ -8,7 +8,7 @@ import javax.swing.*;
 public class RelicRelic extends Relic {
     public RelicRelic() {
         setName("Relic of Relics");
-        setType(RelicType.RELICS);
+        setType(RelicID.RELICS);
         setDescription("Er, somehow, equipping this relic lets you equip 2 more relics?");
     }
 

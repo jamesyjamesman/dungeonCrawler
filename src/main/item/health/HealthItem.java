@@ -1,12 +1,13 @@
-package main.item;
+package main.item.health;
 
 import main.Player;
+import main.item.Item;
 import main.swing.SwingRenderer;
 
 import javax.swing.*;
 import java.util.Random;
 
-public class HealthItem extends Item{
+public class HealthItem extends Item {
     int healthRestored;
     int restorationLowerBound;
     int restorationUpperBound;
@@ -25,7 +26,7 @@ public class HealthItem extends Item{
         this.healthRestored = new Random().nextInt(this.restorationLowerBound, this.restorationUpperBound);
 
         if (this.healthRestored < 0) {
-            SwingRenderer.addHealthText(frame, "Yuck! The " + this.name + " was terrible... You lost " + this.healthRestored * -1 + " health.");
+            SwingRenderer.addHealthText(frame, "Yuck! The " + this.getName() + " was terrible... You lost " + this.healthRestored * -1 + " health.");
             player.takeDamage(frame, this.healthRestored * -1);
         } else {
             if (this.maxHealthChange != 0) {
@@ -38,9 +39,9 @@ public class HealthItem extends Item{
             }
             int amountHealed = player.heal(this.healthRestored);
             if (amountHealed != 0) {
-                SwingRenderer.addHealthText(frame, "Yum! That " + this.name + " was great! You replenished " + amountHealed + " health.");
+                SwingRenderer.addHealthText(frame, "Yum! That " + this.getName() + " was great! You replenished " + amountHealed + " health.");
             } else {
-                SwingRenderer.addHealthText(frame, "That " + this.name + " was delicious! ...but you don't feel any healthier.");
+                SwingRenderer.addHealthText(frame, "That " + this.getName() + " was delicious! ...but you don't feel any healthier.");
             }
         }
         UIUpdater(frame, player);

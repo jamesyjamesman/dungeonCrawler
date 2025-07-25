@@ -4,7 +4,7 @@ import main.enemy.Enemy;
 import main.item.Item;
 import main.item.weapon.Weapon;
 import main.item.relic.Relic;
-import main.item.relic.RelicType;
+import main.item.relic.RelicID;
 import main.room.Room;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
@@ -84,7 +84,7 @@ public class Player {
                 return;
             }
         }
-        SwingRenderer.appendMainLabelText(frame, "You stash the " + item.getName() + " in your bag.", false);
+        SwingRenderer.appendMainLabelText(frame, "You stash the " + item.getName() + " in your bag.\n", false);
     }
 
     public boolean addItemToInventory(JFrame frame, Item item) {
@@ -136,7 +136,7 @@ public class Player {
             String output = item.getName() + amount + ": " + item.getDescription();
             output = output.concat("\n");
             Color color;
-            if (item instanceof Relic relic && relic.isCursed() && equippedRelicIndex(RelicType.CURSE_DETECTION) != -1) {
+            if (item instanceof Relic relic && relic.isCursed() && equippedRelicIndex(RelicID.CURSE_DETECTION) != -1) {
                 color = new Color(130, 30, 190);
             } else {
                 color = Color.white;
@@ -172,7 +172,7 @@ public class Player {
         return -1;
     }
 
-    public int equippedRelicIndex(RelicType relicName) {
+    public int equippedRelicIndex(RelicID relicName) {
         for (Relic equippedRelic : this.equippedRelics) {
             if (equippedRelic.getType() == relicName) {
                 return this.equippedRelics.indexOf(equippedRelic);
@@ -420,7 +420,7 @@ public class Player {
         if (curseLevel == 0) {
             return;
         }
-        if (equippedRelicIndex(RelicType.CURSE_HEAL) == -1) {
+        if (equippedRelicIndex(RelicID.CURSE_HEAL) == -1) {
             int totalDamage = 0;
             for (int i = 0; i < curseLevel; i++) {
                 totalDamage += new Random().nextInt(4);
@@ -436,7 +436,9 @@ public class Player {
             }
             if (totalHeal > 0) {
                 int amountHealed = heal(totalHeal);
-                SwingRenderer.addHealthText(frame, "You gained " + amountHealed + " health from your cursed relics!");
+                if (amountHealed > 0) {
+                    SwingRenderer.addHealthText(frame, "You gained " + amountHealed + " health from your cursed relics!");
+                }
             }
         }
 

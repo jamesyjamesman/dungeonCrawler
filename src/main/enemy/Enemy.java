@@ -1,8 +1,8 @@
 package main.enemy;
 
 import main.Player;
-import main.item.Item;
-import main.item.relic.RelicType;
+import main.item.Loot;
+import main.item.relic.RelicID;
 import main.room.EnemyRoom;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
@@ -48,23 +48,15 @@ public class Enemy {
         player.checkStatus(frame);
         SwingRenderer.changeLabelText(frame, "The " + getSpecies() + " died! You got " + getExperienceDropped() + " experience!\n", ComponentType.LABEL_DESCRIPTION);
 
-        dropLoot(frame, player);
+        this.getLoot().dropLoot(frame, player);
 
         enemyRoom.addDefeatedEnemy(this);
         enemyRoom.removeEnemy(this);
         player.checkInventory(frame);
     }
 
-    public void dropLoot(JFrame frame, Player player) {
-        player.addGold(this.getLoot().getGold());
-        for (int i = 0; i < this.getLoot().getItems().size(); i++) {
-            Item item = this.getLoot().getItems().get(i);
-            item.dropItem(frame, player);
-        }
-    }
-
     public void attack(JFrame frame, Player player) {
-        if (player.equippedRelicIndex(RelicType.SLIME) != -1
+        if (player.equippedRelicIndex(RelicID.SLIME) != -1
             && new Random().nextInt(4) == 0) {
             SwingRenderer.addHealthText(frame, "The attack from the " + this.species + " bounced right off!");
                 return;

@@ -7,6 +7,7 @@ import javax.swing.*;
 
 public class HealthBuffItem extends BuffItem {
     public HealthBuffItem() {
+        this.setBounds(1, 4);
         this.statType = "maximum health";
     }
 

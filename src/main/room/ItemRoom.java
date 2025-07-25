@@ -1,6 +1,6 @@
 package main.room;
 
-import main.item.relic.RelicType;
+import main.item.relic.RelicID;
 import main.swing.SwingRenderer;
 import main.item.Item;
 import main.item.relic.Relic;
@@ -26,7 +26,7 @@ public class ItemRoom extends Room {
         } else {
             SwingRenderer.appendMainLabelText(frame, "Would you like to take the " + this.item.getName() + "? (y/n)", true);
         }
-        if (player.equippedRelicIndex(RelicType.CURSE_DETECTION) > -1) {
+        if (player.equippedRelicIndex(RelicID.CURSE_DETECTION) > -1) {
             if (this.item instanceof Relic checkRelic && checkRelic.isCursed()) {
                     SwingRenderer.appendMainLabelText(frame, "Warning! The " + this.item.getName() + " is cursed!", false);
             }

@@ -2,6 +2,7 @@ package main.initialization;
 
 import main.item.*;
 import main.item.buff.*;
+import main.item.health.*;
 import main.item.weapon.ShortSword;
 import main.item.weapon.Weapon;
 
@@ -22,23 +23,13 @@ public class ItemInit {
         return itemList;
     }
     public static ArrayList<HealthItem> healthItemInit() {
-            HealthItem apple = new HealthItem();
-            apple.setName("Apple");
-            apple.setDescription("An apple you found in the cave system. It doesn't seem too fresh.");
-            apple.setRestorationRange(-1, 6);
+            HealthItem apple = new AppleItem();
             healthItemList.add(apple);
 
-            HealthItem chocolate = new HealthItem();
-            chocolate.setName("Torpedo Chocolate Bar");
-            chocolate.setDescription("A legendary chocolate bar thought to be long-lost. You're salivating just looking at it.");
-            chocolate.setRestorationRange(5, 15);
-            chocolate.setAddedAbsorption(3);
+            HealthItem chocolate = new ChocolateItem();
             healthItemList.add(chocolate);
 
-            HealthItem steak = new HealthItem();
-            steak.setName("Steak");
-            steak.setDescription("A perfectly cooked steak.");
-            steak.setRestorationRange(3, 9);
+            HealthItem steak = new SteakItem();
             healthItemList.add(steak);
 
         return healthItemList;
@@ -47,30 +38,25 @@ public class ItemInit {
 
     public static ArrayList<BuffItem> buffItemInit() {
             BuffItem healthBuff = new HealthBuffItem();
-            healthBuff.setBounds(1, 4);
             buffItemList.add(healthBuff);
 
             BuffItem damageBuff = new DamageBuffItem();
-            damageBuff.setBounds(1, 3);
             buffItemList.add(damageBuff);
 
             BuffItem unBuff = new UnBuffItem();
-            unBuff.setBounds(2, 7);
             buffItemList.add(unBuff);
 
             BuffItem inventoryBuff = new InventoryBuffItem();
-            inventoryBuff.setBounds(1, 3);
             buffItemList.add(inventoryBuff);
 
             BuffItem relicBuff = new RelicPouchBuffItem();
-            relicBuff.setBounds(0, 2);
             buffItemList.add(relicBuff);
 
         return buffItemList;
     }
 
     public static ArrayList<Weapon> weaponInit() {
-        weaponList.add(new ShortSword(1));
+        weaponList.add(new ShortSword());
 
         return weaponList;
     }

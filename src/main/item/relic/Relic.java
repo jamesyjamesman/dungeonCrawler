@@ -10,11 +10,11 @@ import java.util.Random;
 public abstract class Relic extends Item {
     boolean equipped;
     boolean cursed;
-    RelicType relicType;
+    RelicID relicID;
     public Relic(){
         this.equipped = false;
         this.cursed = new Random().nextInt(5) == 0;
-        this.relicType = null;
+        this.relicID = null;
     }
 
     public void useRelic(JFrame frame, Player player, Room room) {}
@@ -38,12 +38,12 @@ public abstract class Relic extends Item {
     }
     //instead of having a boolean on the object itself, this method could just check players relic bag
     public boolean isEquipped(Player player) {
-        return player.equippedRelicIndex(this.relicType) != -1;
+        return player.equippedRelicIndex(this.relicID) != -1;
     }
-    public RelicType getType() {
-        return this.relicType;
+    public RelicID getType() {
+        return this.relicID;
     }
-    public void setType(RelicType relicType) {
-        this.relicType = relicType;
+    public void setType(RelicID relicID) {
+        this.relicID = relicID;
     }
 }

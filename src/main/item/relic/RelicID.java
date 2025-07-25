@@ -1,6 +1,6 @@
 package main.item.relic;
 
-public enum RelicType {
+public enum RelicID {
     CURSE_HEAL,
     CURSE_DETECTION,
     ENEMY_INFORMATION,

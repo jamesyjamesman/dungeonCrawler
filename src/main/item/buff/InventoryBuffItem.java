@@ -7,6 +7,7 @@ import javax.swing.*;
 
 public class InventoryBuffItem extends BuffItem {
     public InventoryBuffItem() {
+        this.setBounds(1, 3);
         this.statType = "inventory capacity";
     }
     @Override

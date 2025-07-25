@@ -2,9 +2,9 @@ package main.initialization;
 
 import main.enemy.*;
 import main.enemy.MageEnemy;
-import main.item.weapon.Mace;
-import main.item.weapon.ShortSword;
-import main.item.weapon.Wand;
+import main.item.ItemBlueprint;
+import main.item.ItemID;
+import main.item.Loot;
 
 import java.util.ArrayList;
 
@@ -22,8 +22,7 @@ public class EnemyInit {
             //not implemented, but should definitely be an enum
             goblinMage.setDamageType("magic");
             goblinMage.setExperienceDropped(3);
-            //todo debug value (0.15)
-            goblinMage.setLoot(new Loot(2, new Wand(1.0)));
+            goblinMage.setLoot(new Loot(2, new ItemBlueprint(0.15, ItemID.WEAPON_WAND)));
             enemyList.add(goblinMage);
 
             Enemy goblin = new Enemy();
@@ -31,7 +30,10 @@ public class EnemyInit {
             goblin.setSpecies("goblin");
             goblin.setDamage(1);
             goblin.setExperienceDropped(3);
-            goblin.setLoot(new Loot(3, new ShortSword(0.2)));
+            ArrayList<ItemBlueprint> items = new ArrayList<>();
+            items.add(new ItemBlueprint(0.2, ItemID.WEAPON_SHORT_SWORD));
+            items.add(new ItemBlueprint(0.1, ItemID.BUFF_DAMAGE));
+            goblin.setLoot(new Loot(3, items));
             enemyList.add(goblin);
 
             Enemy orc = new Enemy();
@@ -39,7 +41,7 @@ public class EnemyInit {
             orc.setSpecies("orc");
             orc.setDamage(2);
             orc.setExperienceDropped(7);
-            orc.setLoot(new Loot(5, new Mace(0.05)));
+            orc.setLoot(new Loot(5, new ItemBlueprint(0.05, ItemID.WEAPON_MACE)));
             enemyList.add(orc);
 
         return enemyList;
