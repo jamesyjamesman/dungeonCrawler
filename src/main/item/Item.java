@@ -39,6 +39,7 @@ public abstract class Item {
             case HEALTH_APPLE_PURE -> new PureAppleItem();
             case HEALTH_CHOCOLATE -> new ChocolateItem();
             case BUFF_DAMAGE -> new DamageBuffItem();
+            case BUFF_HEALTH -> new HealthBuffItem();
             //TODO: add the rest
             default -> new DummyItem();
         };

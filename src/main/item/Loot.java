@@ -1,6 +1,7 @@
 package main.item;
 
 import main.Player;
+import main.swing.SwingRenderer;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class Loot {
 
     public void dropLoot(JFrame frame, Player player) {
         player.addGold(this.getGold());
+        SwingRenderer.appendMainLabelText(frame, "The enemy dropped " + this.getGold() + "gold!\n", false);
         for (int i = 0; i < this.getItems().size(); i++) {
             ItemBlueprint blueprint = this.getItems().get(i);
             if (new Random().nextDouble(0, 1) > blueprint.getDropChance()) {
@@ -41,17 +43,12 @@ public class Loot {
             }
             Item item = Item.itemFactory(blueprint.getID());
             player.itemPickup(frame, item);
+            SwingRenderer.appendMainLabelText(frame, "The enemy dropped a" + item.getName() + "!\n", false);
         }
     }
 
-    public void addItemBlueprint(ItemBlueprint itemBlueprint) {
-        this.items.add(itemBlueprint);
-    }
     public int getGold() {
         return this.gold;
-    }
-    public void setGold(int gold) {
-        this.gold = gold;
     }
     public ArrayList<ItemBlueprint> getItems() {
         return this.items;

@@ -174,20 +174,18 @@ public class SwingRenderer extends JFrame {
         popupPane.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
-                keyReleased(e);
             }
 
             @Override
             public void keyPressed(KeyEvent e) {
-                keyReleased(e);
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     hidePopup(popupShadow, popupPanel);
                     setInputFocus(frame);
                 }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
             }
         });
 
