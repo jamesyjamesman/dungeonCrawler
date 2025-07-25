@@ -30,8 +30,10 @@ public abstract class Item {
     public static Item itemFactory(ItemID itemID) {
         return switch (itemID) {
             case WEAPON_MACE -> new Mace();
-            case WEAPON_SHORT_SWORD -> new ShortSword();
+            case WEAPON_SWORD_SHORT -> new ShortSword();
             case WEAPON_WAND -> new Wand();
+            case WEAPON_SPEAR_SLIME -> new SlimeSpear();
+            case WEAPON_SWORD_SLIME -> new SlimeSword();
             case HEALTH_APPLE -> new AppleItem();
             case HEALTH_STEAK -> new SteakItem();
             case HEALTH_APPLE_PURE -> new PureAppleItem();

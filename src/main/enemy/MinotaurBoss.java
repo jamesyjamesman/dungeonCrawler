@@ -1,6 +1,7 @@
 package main.enemy;
 
 import main.Player;
+import main.item.Loot;
 import main.swing.SwingRenderer;
 import main.item.relic.CurseHealRelic;
 import main.item.relic.Relic;
@@ -10,6 +11,7 @@ import java.util.Random;
 
 public class MinotaurBoss extends Boss {
     public MinotaurBoss() {
+        this.setLoot(new Loot(30));
     }
     public int chargeAttack(JFrame frame) {
         SwingRenderer.appendMainLabelText(frame, "The minotaur charges at you, goring you with its horns!\n", false);

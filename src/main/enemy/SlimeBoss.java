@@ -1,16 +1,25 @@
 package main.enemy;
 
 import main.Player;
+import main.item.ItemBlueprint;
+import main.item.ItemID;
+import main.item.Loot;
 import main.item.relic.RelicID;
 import main.swing.SwingRenderer;
 import main.item.relic.Relic;
 import main.item.relic.SlimeRelic;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class SlimeBoss extends Boss {
     public SlimeBoss() {
+        ArrayList<ItemBlueprint> items = new ArrayList<>();
+        items.add(new ItemBlueprint(0.7, ItemID.WEAPON_SWORD_SLIME));
+        items.add(new ItemBlueprint(0.3, ItemID.WEAPON_SPEAR_SLIME));
+        items.add(new ItemBlueprint(1.0, ItemID.BUFF_HEALTH));
+        this.setLoot(new Loot(20, items));
     }
 
     public int slimeLaunchAttack(JFrame frame) {

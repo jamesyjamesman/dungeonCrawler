@@ -31,7 +31,7 @@ public class EnemyInit {
             goblin.setDamage(1);
             goblin.setExperienceDropped(3);
             ArrayList<ItemBlueprint> items = new ArrayList<>();
-            items.add(new ItemBlueprint(0.2, ItemID.WEAPON_SHORT_SWORD));
+            items.add(new ItemBlueprint(0.2, ItemID.WEAPON_SWORD_SHORT));
             items.add(new ItemBlueprint(0.1, ItemID.BUFF_DAMAGE));
             goblin.setLoot(new Loot(3, items));
             enemyList.add(goblin);

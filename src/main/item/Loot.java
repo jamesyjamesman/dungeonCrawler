@@ -16,6 +16,11 @@ public class Loot {
         this.gold = 0;
     }
 
+    public Loot(int gold) {
+        this.gold = gold;
+        this.items = new ArrayList<>();
+    }
+
     public Loot(int gold, ArrayList<ItemBlueprint> items) {
         this.gold = gold;
         this.items = items;
