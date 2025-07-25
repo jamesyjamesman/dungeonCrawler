@@ -92,7 +92,7 @@ public class Player {
             return true;
         }
         int itemIndex = findItemInInventory(item);
-        if (itemIndex == -1) {
+        if (itemIndex == -1 || !item.isStackable()) {
             ArrayList<Item> newItem = new ArrayList<>();
             newItem.add(item);
             this.inventory.add(newItem);
@@ -130,12 +130,12 @@ public class Player {
 
         for (int i = 0; i < this.inventory.size(); i++) {
             Item item = this.inventory.get(i).getFirst();
-            Color color;
             //Displays amount of items in parentheses (e.g. (x2)) if the amount is greater than 1
             String amount = (this.inventory.get(i).size() > 1) ? " (x" + this.inventory.get(i).size() + ")" : "";
 
             String output = item.getName() + amount + ": " + item.getDescription();
             output = output.concat("\n");
+            Color color;
             if (item instanceof Relic relic && relic.isCursed() && equippedRelicIndex(RelicType.CURSE_DETECTION) != -1) {
                 color = new Color(130, 30, 190);
             } else {
@@ -302,7 +302,6 @@ public class Player {
     public void doDeathSequence(JFrame frame) {
         checkStatus(frame);
         SwingRenderer.appendMainLabelText(frame, "\"Ack! It's too much for me!\" " + getName() + " exclaims.\n" + getName() + " falls to their knees... then to the ground.\n" + "GAME OVER!", true);
-//        endStatistics(frame);
         while (true) {
             try {
                 Thread.sleep(5000);
@@ -494,10 +493,8 @@ public class Player {
     public Statuses getCurrentStatuses() {
         return this.currentStatuses;
     }
-    //TODO: Fix hotfix, equip button should not even be visible
-    //TODO: fix weapons stacking in inventory
     public void setEquippedWeapon(JFrame frame, Weapon weapon) {
-        if (this.equippedWeapon != null) {
+        if (this.equippedWeapon != null && weapon != null) {
             SwingRenderer.changeLabelText(frame, "You cannot equip more than one weapon!", ComponentType.LABEL_ERROR);
             return;
         }

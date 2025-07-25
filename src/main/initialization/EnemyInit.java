@@ -22,7 +22,8 @@ public class EnemyInit {
             //not implemented, but should definitely be an enum
             goblinMage.setDamageType("magic");
             goblinMage.setExperienceDropped(3);
-            goblinMage.setLoot(new Loot(2, new Wand(0.15)));
+            //todo debug value (0.15)
+            goblinMage.setLoot(new Loot(2, new Wand(1.0)));
             enemyList.add(goblinMage);
 
             Enemy goblin = new Enemy();

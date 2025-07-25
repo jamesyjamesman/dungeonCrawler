@@ -2,6 +2,7 @@ package main.item.weapon;
 
 public class Wand extends Weapon {
     public Wand(double dropChance) {
+        this.weaponType = WeaponType.WAND;
         this.setDropChance(dropChance);
         this.setDamage(1);
         this.setName("Broken Wand");

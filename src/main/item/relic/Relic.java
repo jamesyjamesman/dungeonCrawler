@@ -37,8 +37,8 @@ public abstract class Relic extends Item {
         this.equipped = equipped;
     }
     //instead of having a boolean on the object itself, this method could just check players relic bag
-    public boolean isEquipped() {
-        return this.equipped;
+    public boolean isEquipped(Player player) {
+        return player.equippedRelicIndex(this.relicType) != -1;
     }
     public RelicType getType() {
         return this.relicType;

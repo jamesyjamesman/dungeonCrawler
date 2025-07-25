@@ -486,7 +486,7 @@ public class SwingRenderer extends JFrame {
     }
 
     public static void addItemLabel(JFrame frame, String newItemText, Player player, Item item, Color color) {
-        if (item instanceof Relic relic && relic.isEquipped()) {
+        if (item instanceof Relic relic && relic.isEquipped(player)) {
             addRelicLabel(frame, newItemText, player, relic, color);
         } else if (item instanceof Weapon weapon) {
             addWeaponLabel(frame, newItemText, player, weapon);
@@ -532,7 +532,7 @@ public class SwingRenderer extends JFrame {
         InventoryButton useButton = new InventoryButton();
         InventoryButton dropButton = new InventoryButton();
 
-        if (!weapon.isEquipped()) {
+        if (!weapon.isEquipped(player)) {
             useButton.setText(" Equip ");
         } else {
             useButton.setText(" Unequip ");
@@ -550,7 +550,7 @@ public class SwingRenderer extends JFrame {
         inventoryPane.setCaretPosition(doc.getLength());
         inventoryPane.insertComponent(useButton);
 
-        if (!weapon.isEquipped()) {
+        if (!weapon.isEquipped(player)) {
             inventoryPane.setCaretPosition(doc.getLength());
             inventoryPane.insertComponent(dropButton);
         }

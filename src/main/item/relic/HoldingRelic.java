@@ -14,7 +14,7 @@ public class HoldingRelic extends Relic {
 
     @Override
     public void useItem(JFrame frame, Player player) {
-        if (this.equipped) {
+        if (this.isEquipped(player)) {
             int itemsOverCapacity = player.calculateInventorySize() - (player.getInventoryCap() - 10);
             if (itemsOverCapacity > 0) {
                 SwingRenderer.appendMainLabelText(frame, "You have too many items to remove this relic!\n" + "Remove " + itemsOverCapacity + " items from your inventory to remove this relic.", false);

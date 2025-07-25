@@ -14,7 +14,7 @@ public class RelicRelic extends Relic {
 
     @Override
     public void useItem(JFrame frame, Player player) {
-        if (this.equipped) {
+        if (this.isEquipped(player)) {
             int relicsOverCapacity = player.getEquippedRelics().size() - (player.getRelicCap() - 3);
             if (relicsOverCapacity > 0) {
                 SwingRenderer.appendMainLabelText(frame, "You have too many relics equipped to remove this relic!\n" + "Unequip " + relicsOverCapacity + " relics to remove this relic.", false);

@@ -14,11 +14,13 @@ public abstract class Item {
     String name;
     double dropChance;
     int value;
+    boolean stackable;
     public Item() {
         this.description = "";
         this.name = "";
         this.dropChance = .10;
         this.value = 0;
+        this.stackable = true;
     }
 
     public void useItem(JFrame frame, Player player) {
@@ -38,7 +40,7 @@ public abstract class Item {
         if (this instanceof Relic relic && relic.isCursed()) {
             relic.setCursed(false);
             SwingRenderer.changeLabelText(frame, "The " + relic.getName() + " was cured!", ComponentType.LABEL_ERROR);
-            if (relic.isEquipped()) {
+            if (relic.isEquipped(player)) {
                 player.getCurrentStatuses().setCursed(player.getCurrentStatuses().getCursed() - 1);
             }
         } else if (this.getName().equals("Apple")) {
@@ -69,6 +71,9 @@ public abstract class Item {
     public void setDropChance(double dropChance) {
         this.dropChance = dropChance;
     }
+    public double getDropChance() {
+        return this.dropChance;
+    }
     public void dropItem(JFrame frame, Player player) {
         if (new Random().nextDouble(0, 1) < this.dropChance) {
             player.itemPickup(frame, this);
@@ -79,5 +84,11 @@ public abstract class Item {
     }
     public int getValue() {
         return this.value;
+    }
+    public void setStackable(boolean stackable) {
+        this.stackable = stackable;
+    }
+    public boolean isStackable() {
+        return this.stackable;
     }
 }

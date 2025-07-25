@@ -2,6 +2,7 @@ package main.item.weapon;
 
 public class Mace extends Weapon {
     public Mace(double dropChance) {
+        this.weaponType = WeaponType.MACE;
         this.setDropChance(dropChance);
         this.setDamage(2);
         this.setName("Rusty Mace");

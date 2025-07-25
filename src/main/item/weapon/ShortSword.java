@@ -2,6 +2,7 @@ package main.item.weapon;
 
 public class ShortSword extends Weapon {
     public ShortSword(double dropChance) {
+        this.weaponType = WeaponType.SHORT_SWORD;
         this.setDropChance(dropChance);
         this.setDamage(1);
         this.setName("Shortsword of Boringness");
