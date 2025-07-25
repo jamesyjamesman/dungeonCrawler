@@ -35,15 +35,15 @@ public class Loot {
 
     public void dropLoot(JFrame frame, Player player) {
         player.addGold(this.getGold());
-        SwingRenderer.appendMainLabelText(frame, "The enemy dropped " + this.getGold() + "gold!\n", false);
+        SwingRenderer.appendMainLabelText(frame, "The enemy dropped " + this.getGold() + " gold!\n", false);
         for (int i = 0; i < this.getItems().size(); i++) {
             ItemBlueprint blueprint = this.getItems().get(i);
             if (new Random().nextDouble(0, 1) > blueprint.getDropChance()) {
                 continue;
             }
             Item item = Item.itemFactory(blueprint.getID());
+            SwingRenderer.appendMainLabelText(frame, "The enemy dropped a " + item.getName() + "!\n", false);
             player.itemPickup(frame, item);
-            SwingRenderer.appendMainLabelText(frame, "The enemy dropped a" + item.getName() + "!\n", false);
         }
     }
 

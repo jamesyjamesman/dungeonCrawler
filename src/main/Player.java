@@ -91,7 +91,7 @@ public class Player {
         if (calculateInventorySize() >= this.inventoryCap) {
             return true;
         }
-        int itemIndex = findItemInInventory(item);
+        int itemIndex = findItemInInventoryByName(item);
         if (itemIndex == -1 || !item.isStackable()) {
             ArrayList<Item> newItem = new ArrayList<>();
             newItem.add(item);
@@ -101,6 +101,17 @@ public class Player {
         }
         checkStatus(frame);
         return false;
+    }
+
+    //Finds by name versus direct object comparison, would be better with an enumerator
+    public int findItemInInventoryByName(Item item) {
+        String itemName = item.getName();
+        for (int i = 0; i < this.inventory.size(); i++) {
+            if (this.inventory.get(i).getFirst().getName().equals(itemName)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public int calculateInventorySize() {
