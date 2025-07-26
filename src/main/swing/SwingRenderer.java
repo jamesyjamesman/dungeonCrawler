@@ -100,7 +100,6 @@ public class SwingRenderer extends JFrame {
         userInput.setOpaque(false);
         userInput.setCaretColor(Color.white);
         userInput.addActionListener(_ -> setTempText(userInput, tempText));
-        userInput.requestFocusInWindow();
         layeredPane.add(userInput);
         layeredPane.setLayer(userInput, 2);
         ShadowLabel userInputShadow = new ShadowLabel(layeredPane);
@@ -653,9 +652,9 @@ public class SwingRenderer extends JFrame {
         } catch (BadLocationException e) {
             throw new RuntimeException(e);
         }
-        pane.requestFocusInWindow();
         panel.setVisible(true);
         shadow.setVisible(true);
+        pane.requestFocusInWindow();
     }
 
     public static void hidePopup(JLabel shadow, JPanel panel) {
