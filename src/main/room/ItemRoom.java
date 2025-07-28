@@ -31,13 +31,13 @@ public class ItemRoom extends Room {
                     SwingRenderer.appendMainLabelText(frame, "Warning! The " + this.item.getName() + " is cursed!", false);
             }
         }
-        String response = Main.yesOrNo(frame);
-        if (response.equals("n")) {
-            SwingRenderer.appendMainLabelText(frame, "You chose to forgo the loot...", false);
+        boolean wantsItem = Main.parseResponseAsBoolean(frame);
+        if (wantsItem) {
+            player.itemPickup(frame, this.item);
+            player.checkInventory(frame);
             return;
         }
-        player.itemPickup(frame, this.item);
-        player.checkInventory(frame);
+        SwingRenderer.appendMainLabelText(frame, "You chose to forgo the loot...", false);
     }
     public void setItem(Item item) {
         this.item = item;

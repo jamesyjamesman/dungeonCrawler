@@ -76,8 +76,8 @@ public class Player {
 
         if (item instanceof Relic && getEquippedRelics().size() < this.relicCap) {
             SwingRenderer.appendMainLabelText(frame, "Would you like to equip the " + item.getName() + " now? (y/n)", true);
-            String response = Main.yesOrNo(frame);
-            if (response.equals("y")) {
+            boolean wantsEquipped = Main.parseResponseAsBoolean(frame);
+            if (wantsEquipped) {
                 item.useItem(frame, this);
                 SwingRenderer.appendMainLabelText(frame, "The " + item.getName() + " has been equipped!", false);
                 checkRelics(frame);

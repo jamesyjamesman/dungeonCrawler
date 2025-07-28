@@ -79,7 +79,7 @@ public class Main {
         }
     }
 
-    public static String yesOrNo(JFrame frame) {
+    public static boolean parseResponseAsBoolean(JFrame frame) {
         //this could be done better
         SwingRenderer.changeAnswerVisibility(frame, true);
         String originalResponse = SwingRenderer.getTempText(frame);
@@ -96,10 +96,10 @@ public class Main {
             once = true;
             if (newResponse.equals("y") || newResponse.equals("yes")) {
                 SwingRenderer.changeAnswerVisibility(frame, false);
-                return "y";
+                return true;
             } else if (newResponse.equals("n") || newResponse.equals("no")) {
                 SwingRenderer.changeAnswerVisibility(frame, false);
-                return "n";
+                return false;
             }
             SwingRenderer.changeLabelText(frame, "Invalid response!", ComponentType.LABEL_ERROR);
         }

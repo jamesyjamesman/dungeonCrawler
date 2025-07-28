@@ -19,8 +19,8 @@ public abstract class Boss extends Enemy {
         super.death(frame, player, enemyRoom);
         Relic droppedRelic = initializeBossRelic();
         SwingRenderer.appendMainLabelText(frame, "Wow! You defeated the " + this.species + " boss! Lucky for you, it seems to have dropped something!\n" + "Would you like to take the " + droppedRelic.getName() + "? (y/n)", false);
-        String response = Main.yesOrNo(frame);
-        if (response.equals("y")) {
+        boolean wantsPickup = Main.parseResponseAsBoolean(frame);
+        if (wantsPickup) {
             player.itemPickup(frame, droppedRelic);
             player.checkInventory(frame);
         }
