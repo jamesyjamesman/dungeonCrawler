@@ -7,6 +7,7 @@ import main.item.weapon.Weapon;
 import main.item.relic.Relic;
 import main.item.relic.RelicID;
 import main.room.PureWaterRoom;
+import main.room.ShopRoom;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -332,6 +333,13 @@ public class SwingRenderer extends JFrame {
                 .getFirst();
     }
 
+    public static void UIUpdater(JFrame frame, Player player) {
+        player.checkInventory(frame);
+        player.checkRelics(frame);
+        player.checkStatus(frame);
+        setInputFocus(frame);
+    }
+
     public static void addHealthText(JFrame frame, String newText) {
         newText = newText + "\n";
         JTextPane healthPane = (JTextPane) componentGrabber(frame, ComponentType.PANE_HEALTH);
@@ -501,10 +509,19 @@ public class SwingRenderer extends JFrame {
             useButton.addActionListener(_ -> item.cleanseItem(frame, player));
         } else {
             useButton.addActionListener(_ -> item.useItem(frame, player));
-            dropButton.addActionListener(_ -> {
-                player.discardItem(frame, item);
-                SwingRenderer.changeLabelText(frame, "The " + item.getName() + " was dropped!", ComponentType.LABEL_ERROR);
-            });
+            if (player.getCurrentRoom() instanceof ShopRoom) {
+                dropButton.setText(" Sell ");
+                dropButton.addActionListener(_ -> {
+                    player.sellItem(frame, item);
+                    SwingRenderer.changeLabelText(frame, "The " + item.getName() + " was sold!", ComponentType.LABEL_ERROR);
+                });
+            } else {
+                dropButton.setText(" Drop ");
+                dropButton.addActionListener(_ -> {
+                    player.discardItem(frame, item);
+                    SwingRenderer.changeLabelText(frame, "The " + item.getName() + " was dropped!", ComponentType.LABEL_ERROR);
+                });
+            }
             if (item instanceof Relic) {
                 useButton.setText(" Equip ");
             } else {
@@ -513,7 +530,6 @@ public class SwingRenderer extends JFrame {
         }
             useButton.setHorizontalAlignment(SwingConstants.LEFT);
             dropButton.setHorizontalAlignment(SwingConstants.LEFT);
-            dropButton.setText(" Drop ");
 
             JTextPane inventoryPane = (JTextPane) componentGrabber(frame, ComponentType.PANE_INVENTORY);
             Document doc = inventoryPane.getStyledDocument();
@@ -534,10 +550,21 @@ public class SwingRenderer extends JFrame {
         } else {
             useButton.setText(" Unequip ");
         }
-        dropButton.setText(" Drop ");
+        if (player.getCurrentRoom() instanceof ShopRoom) {
+            dropButton.setText(" Sell ");
+            dropButton.addActionListener(_ -> {
+                player.sellItem(frame, weapon);
+                SwingRenderer.changeLabelText(frame, "The " + weapon.getName() + " was sold!", ComponentType.LABEL_ERROR);
+            });
+        } else {
+            dropButton.setText(" Drop ");
+            dropButton.addActionListener(_ -> {
+                player.discardItem(frame, weapon);
+                SwingRenderer.changeLabelText(frame, "The " + weapon.getName() + " was dropped!", ComponentType.LABEL_ERROR);
+            });
+        }
 
         useButton.addActionListener(_ -> weapon.useItem(frame, player));
-        dropButton.addActionListener(_ -> player.discardItem(frame, weapon));
 
         useButton.setHorizontalAlignment(SwingConstants.LEFT);
         dropButton.setHorizontalAlignment(SwingConstants.LEFT);
@@ -611,6 +638,26 @@ public class SwingRenderer extends JFrame {
         mainPane.insertComponent(roomButton);
 
         insertSimpleText(doc, roomAppearance);
+    }
+
+    public static void addShopLabel(JFrame frame, Player player, Item item, ShopRoom shopRoom) {
+        InventoryButton buyButton = new InventoryButton();
+        buyButton.setText(" Buy ");
+        buyButton.addActionListener(_ -> shopRoom.sellItem(frame, item, player));
+        buyButton.setHorizontalAlignment(SwingConstants.LEFT);
+
+        JTextPane mainPane = (JTextPane) componentGrabber(frame, ComponentType.PANE_MAIN);
+        Document doc = mainPane.getStyledDocument();
+        mainPane.setCaretPosition(doc.getLength());
+        mainPane.insertComponent(buyButton);
+
+        String itemName = item.getName();
+        String itemDescription = item.getDescription();
+        int itemValue = item.getValue();
+
+        String itemInformation = itemName + " (" + itemValue + "G): " + itemDescription + "\n";
+
+        insertSimpleText(doc, itemInformation);
     }
 
     public static void insertSimpleText(Document doc, String text) {

@@ -44,7 +44,7 @@ public class HealthItem extends Item {
                 SwingRenderer.addHealthText(frame, "That " + this.getName() + " was delicious! ...but you don't feel any healthier.");
             }
         }
-        UIUpdater(frame, player);
+        SwingRenderer.UIUpdater(frame, player);
         player.discardItem(frame, this);
     }
 

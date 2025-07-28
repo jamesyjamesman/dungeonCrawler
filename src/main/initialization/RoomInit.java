@@ -256,6 +256,8 @@ public class RoomInit {
             waterRoom.setType(RoomType.SPECIAL);
             specialRoomList.add(waterRoom);
 
+            specialRoomList.add(new ShopRoom());
+
         return specialRoomList;
     }
 

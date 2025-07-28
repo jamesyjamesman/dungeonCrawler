@@ -24,7 +24,7 @@ public abstract class Item {
     }
 
     public void useItem(JFrame frame, Player player) {
-       UIUpdater(frame, player);
+       SwingRenderer.UIUpdater(frame, player);
     }
 
     public static Item itemFactory(ItemID itemID) {
@@ -45,15 +45,6 @@ public abstract class Item {
         };
     }
 
-    //should not be a method on item???
-    //put on player or swingRenderer, prob the latter
-    public void UIUpdater(JFrame frame, Player player) {
-        player.checkInventory(frame);
-        player.checkRelics(frame);
-        player.checkStatus(frame);
-        SwingRenderer.setInputFocus(frame);
-    }
-
     public void cleanseItem(JFrame frame, Player player) {
         if (this instanceof Relic relic && relic.isCursed()) {
             relic.setCursed(false);
@@ -70,7 +61,7 @@ public abstract class Item {
         }
         ((PureWaterRoom) player.getCurrentRoom()).setFountainUsed(true);
         SwingRenderer.appendMainLabelText(frame, "The fountain ran dry!", false);
-        UIUpdater(frame, player);
+        SwingRenderer.UIUpdater(frame, player);
     }
 
 

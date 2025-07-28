@@ -3,6 +3,7 @@ package main.item.relic;
 import main.Player;
 import main.item.Item;
 import main.room.Room;
+import main.swing.SwingRenderer;
 
 import javax.swing.*;
 import java.util.Random;
@@ -23,7 +24,7 @@ public abstract class Relic extends Item {
     public void useItem(JFrame frame, Player player) {
         if(this.equipped) {player.unequipRelic(frame, this);}
         else {player.equipRelic(frame, this);}
-        UIUpdater(frame, player);
+        SwingRenderer.UIUpdater(frame, player);
     }
 
     public boolean isCursed() {

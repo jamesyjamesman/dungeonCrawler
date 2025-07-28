@@ -6,6 +6,7 @@ import main.item.weapon.Weapon;
 import main.item.relic.Relic;
 import main.item.relic.RelicID;
 import main.room.Room;
+import main.room.ShopRoom;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
@@ -122,6 +123,11 @@ public class Player {
         return totalSize;
     }
 
+    public void sellItem(JFrame frame, Item item) {
+        discardItem(frame, item);
+        this.addGold(item.getValue());
+    }
+
     public void discardItem(JFrame frame, Item item) {
         int itemIndex = findItemInInventory(item);
         if (itemIndex == -1) {
@@ -132,7 +138,7 @@ public class Player {
         } else {
             this.inventory.get(itemIndex).remove(item);
         }
-        checkInventory(frame);
+        SwingRenderer.UIUpdater(frame, this);
     }
 
     //can cause index out of bounds
@@ -144,7 +150,7 @@ public class Player {
             //Displays amount of items in parentheses (e.g. (x2)) if the amount is greater than 1
             String amount = (this.inventory.get(i).size() > 1) ? " (x" + this.inventory.get(i).size() + ")" : "";
 
-            String output = item.getName() + amount + ": " + item.getDescription();
+            String output = item.getName() + ((this.getCurrentRoom() instanceof ShopRoom shopRoom && shopRoom.isOpen()) ? " [" + item.getValue() + "G]" : "") + amount + ": " + item.getDescription();
             output = output.concat("\n");
             Color color;
             if (item instanceof Relic relic && relic.isCursed() && equippedRelicIndex(RelicID.CURSE_DETECTION) != -1) {

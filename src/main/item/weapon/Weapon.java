@@ -2,6 +2,7 @@ package main.item.weapon;
 
 import main.Player;
 import main.item.Item;
+import main.swing.SwingRenderer;
 
 import javax.swing.*;
 
@@ -15,13 +16,12 @@ public class Weapon extends Item {
 
     @Override
     public void useItem(JFrame frame, Player player) {
-        System.out.println(this.isEquipped(player));
         if (this.isEquipped(player)) {
             player.setEquippedWeapon(frame, null);
         } else {
             player.setEquippedWeapon(frame, this);
         }
-        UIUpdater(frame, player);
+        SwingRenderer.UIUpdater(frame, player);
     }
 
     public void setDamage(int damage) {
