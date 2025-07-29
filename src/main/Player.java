@@ -328,19 +328,15 @@ public class Player {
         }
     }
 
-    public void checkLevelUp(JFrame frame, String output) {
-        if (this.experience >= this.expToNextLevel && this.level < 10) {
-            levelUp(frame, output);
+    public void levelUp(JFrame frame) {
+        String output = "";
+        while (this.experience >= this.expToNextLevel && this.level < 10) {
+            output += "You leveled up!\n";
+            this.experience -= this.expToNextLevel;
+            this.expToNextLevel = (int) Math.round(this.expToNextLevel * 1.2);
+            this.level += 1;
+            output = levelUpEffects(this.level, output);
         }
-    }
-
-    public void levelUp(JFrame frame, String output) {
-        output += "You leveled up!\n";
-        this.experience -= this.expToNextLevel;
-        this.expToNextLevel = (int) Math.round(this.expToNextLevel * 1.2);
-        this.level += 1;
-        output = levelUpEffects(this.level, output);
-        checkLevelUp(frame, output);
         SwingRenderer.createPopup(frame, output);
     }
 
