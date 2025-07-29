@@ -126,6 +126,7 @@ public class Player {
     public void sellItem(JFrame frame, Item item) {
         discardItem(frame, item);
         this.addGold(item.getValue());
+        SwingRenderer.UIUpdater(frame, this);
     }
 
     public void discardItem(JFrame frame, Item item) {
@@ -337,7 +338,9 @@ public class Player {
             this.level += 1;
             output = levelUpEffects(this.level, output);
         }
-        SwingRenderer.createPopup(frame, output);
+        if (!output.isEmpty()) {
+            SwingRenderer.createPopup(frame, output);
+        }
     }
 
     public String levelUpEffects(int newLevel, String output) {

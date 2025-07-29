@@ -11,7 +11,7 @@ import main.swing.SwingRenderer;
 
 import javax.swing.*;
 
-public abstract class Item {
+public abstract class Item implements Cloneable {
     String description;
     String name;
     int value;
@@ -88,5 +88,15 @@ public abstract class Item {
     }
     public boolean isStackable() {
         return this.stackable;
+    }
+
+    //TODO: maybe deal with nested objects (like name and description)
+    @Override
+    public Item clone() {
+        try {
+            return (Item) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

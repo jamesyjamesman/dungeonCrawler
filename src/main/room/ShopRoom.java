@@ -2,9 +2,8 @@ package main.room;
 
 import main.Main;
 import main.Player;
+import main.initialization.ItemInit;
 import main.item.Item;
-import main.item.ItemBlueprint;
-import main.item.ItemID;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
@@ -14,12 +13,12 @@ import java.util.Random;
 
 public class ShopRoom extends Room {
     ArrayList<Item> wares;
-    ArrayList<ArrayList<ItemBlueprint>> shopOptions;
+    ArrayList<Item> itemList;
     boolean open;
     public ShopRoom() {
         this.wares = new ArrayList<>();
         this.active = false;
-        this.open = true;
+        this.open = false;
         this.appearance = "You can hear a bell ringing. It's inviting?";
         this.description = "You see a cold glow from a small opening in the wall, and approach it.";
         this.id = 8394;
@@ -27,13 +26,9 @@ public class ShopRoom extends Room {
         this.roomsRequired = 20;
         this.numExits = 2;
         this.selectionWeight = 3;
-        this.shopOptions = new ArrayList<>();
-        this.shopOptions.add(new ArrayList<>());
-        this.shopOptions.getFirst().add(new ItemBlueprint(1.0, ItemID.BUFF_DAMAGE));
-        this.shopOptions.getFirst().add(new ItemBlueprint(1.0, ItemID.HEALTH_CHOCOLATE));
+        this.itemList = ItemInit.itemInit();
     }
 
-    //implement shop that covers main textbox.
     @Override
     public void completeRoomActions(Player player, JFrame frame) {
         super.completeRoomActions(player, frame);
@@ -42,6 +37,7 @@ public class ShopRoom extends Room {
         if (goToShop) {
             openShop();
             renderShopUI(frame, player);
+            SwingRenderer.UIUpdater(frame, player);
             Main.waitForResponse(frame);
         }
         closeShop();
@@ -82,12 +78,14 @@ public class ShopRoom extends Room {
         return this.open;
     }
     public void instantiateWares() {
-        int whichWares = new Random().nextInt(this.shopOptions.size());
-        ArrayList<ItemBlueprint> newWareOptions = this.shopOptions.get(whichWares);
+        int numWares = new Random().nextInt(3,7);
         ArrayList<Item> newWares = new ArrayList<>();
 
-        for (ItemBlueprint newWareOption : newWareOptions) {
-            newWares.add(Item.itemFactory(newWareOption.getID()));
+        for (int i = 0; i < numWares; i++) {
+            int randomItemIndex = new Random().nextInt(this.itemList.size());
+            Item item = this.itemList.get(randomItemIndex);
+            Item itemClone = item.clone();
+            newWares.add(itemClone);
         }
 
         this.wares = newWares;

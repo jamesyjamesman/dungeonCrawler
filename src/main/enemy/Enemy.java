@@ -44,7 +44,7 @@ public class Enemy {
 
     public void death(JFrame frame, Player player, EnemyRoom enemyRoom) {
         player.changeExperience(getExperienceDropped());
-        player.checkLevelUp(frame, "");
+        player.levelUp(frame);
         player.checkStatus(frame);
         SwingRenderer.changeLabelText(frame, "The " + getSpecies() + " died! You got " + getExperienceDropped() + " experience!\n", ComponentType.LABEL_DESCRIPTION);
 
