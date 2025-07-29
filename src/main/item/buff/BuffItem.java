@@ -14,6 +14,7 @@ public abstract class BuffItem extends Item {
     int highBound;
     public BuffItem() {
         this.statType = "";
+        this.setValue(10);
         this.amountChanged = 0;
         this.lowBound = 0;
         this.highBound = 0;

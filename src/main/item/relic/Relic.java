@@ -13,6 +13,7 @@ public abstract class Relic extends Item {
     boolean cursed;
     RelicID relicID;
     public Relic(){
+        this.setValue(25);
         this.equipped = false;
         this.cursed = new Random().nextInt(5) == 0;
         this.relicID = null;

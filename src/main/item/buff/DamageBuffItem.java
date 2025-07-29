@@ -8,7 +8,6 @@ import javax.swing.*;
 public class DamageBuffItem extends BuffItem {
     public DamageBuffItem() {
         this.setBounds(1, 3);
-        this.setValue(15);
         this.statType = "attack damage";
     }
 
