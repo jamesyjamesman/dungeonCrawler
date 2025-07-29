@@ -3,7 +3,7 @@ package main.room;
 import main.Player;
 import main.swing.SwingRenderer;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
 public class EndingRoom extends Room {
     public EndingRoom() {

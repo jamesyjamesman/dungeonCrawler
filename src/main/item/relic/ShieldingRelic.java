@@ -2,8 +2,8 @@ package main.item.relic;
 
 import main.Main;
 import main.Player;
-import main.swing.SwingRenderer;
 import main.room.Room;
+import main.swing.SwingRenderer;
 
 import javax.swing.*;
 import java.util.Random;

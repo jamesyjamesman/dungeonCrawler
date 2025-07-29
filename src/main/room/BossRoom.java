@@ -2,7 +2,7 @@ package main.room;
 
 import main.Player;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
 public class BossRoom extends EnemyRoom {
     boolean completed;

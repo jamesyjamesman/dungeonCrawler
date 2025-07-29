@@ -2,9 +2,9 @@ package main.enemy;
 
 import main.Player;
 import main.item.Loot;
-import main.swing.SwingRenderer;
 import main.item.relic.CurseHealRelic;
 import main.item.relic.Relic;
+import main.swing.SwingRenderer;
 
 import javax.swing.*;
 import java.util.Random;

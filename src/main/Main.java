@@ -1,16 +1,19 @@
 package main;
 
-import main.initialization.*;
-import main.item.*;
+import main.initialization.PlayerInit;
+import main.initialization.RoomInit;
+import main.item.Item;
 import main.item.relic.Relic;
-import main.room.*;
+import main.room.ItemRoom;
+import main.room.Room;
+import main.room.RoomType;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
-import javax.swing.JFrame;
 
 public class Main {
     public static void main(String[] args) {

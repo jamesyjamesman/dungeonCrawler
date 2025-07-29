@@ -1,11 +1,11 @@
 package main.room;
 
-import main.item.relic.RelicID;
-import main.swing.SwingRenderer;
-import main.item.Item;
-import main.item.relic.Relic;
 import main.Main;
 import main.Player;
+import main.item.Item;
+import main.item.relic.Relic;
+import main.item.relic.RelicID;
+import main.swing.SwingRenderer;
 
 import javax.swing.*;
 

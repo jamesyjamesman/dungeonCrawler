@@ -1,13 +1,15 @@
 package main.enemy;
 
 import main.Player;
-import main.item.ItemBlueprint;
-import main.item.ItemID;
+import main.item.Item;
 import main.item.Loot;
-import main.item.relic.RelicID;
-import main.swing.SwingRenderer;
+import main.item.buff.HealthBuffItem;
 import main.item.relic.Relic;
+import main.item.relic.RelicID;
 import main.item.relic.SlimeRelic;
+import main.item.weapon.SlimeSpear;
+import main.item.weapon.SlimeSword;
+import main.swing.SwingRenderer;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -15,10 +17,18 @@ import java.util.Random;
 
 public class SlimeBoss extends Boss {
     public SlimeBoss() {
-        ArrayList<ItemBlueprint> items = new ArrayList<>();
-        items.add(new ItemBlueprint(0.7, ItemID.WEAPON_SWORD_SLIME));
-        items.add(new ItemBlueprint(0.3, ItemID.WEAPON_SPEAR_SLIME));
-        items.add(new ItemBlueprint(1.0, ItemID.BUFF_HEALTH));
+        ArrayList<Item> items = new ArrayList<>();
+        SlimeSword slimeSword = new SlimeSword();
+        SlimeSpear slimeSpear = new SlimeSpear();
+        HealthBuffItem healthBuff = new HealthBuffItem();
+
+        slimeSword.setDropChance(0.7);
+        slimeSpear.setDropChance(0.3);
+        healthBuff.setBounds(4, 10);
+
+        items.add(slimeSword);
+        items.add(slimeSpear);
+        items.add(healthBuff);
         this.setLoot(new Loot(20, items));
     }
 

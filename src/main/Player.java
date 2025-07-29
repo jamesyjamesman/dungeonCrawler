@@ -2,9 +2,9 @@ package main;
 
 import main.enemy.Enemy;
 import main.item.Item;
-import main.item.weapon.Weapon;
 import main.item.relic.Relic;
 import main.item.relic.RelicID;
+import main.item.weapon.Weapon;
 import main.room.Room;
 import main.room.ShopRoom;
 import main.swing.ComponentType;

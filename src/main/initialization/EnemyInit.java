@@ -1,10 +1,12 @@
 package main.initialization;
 
 import main.enemy.*;
-import main.enemy.MageEnemy;
-import main.item.ItemBlueprint;
-import main.item.ItemID;
+import main.item.Item;
 import main.item.Loot;
+import main.item.buff.DamageBuffItem;
+import main.item.weapon.Mace;
+import main.item.weapon.ShortSword;
+import main.item.weapon.Wand;
 
 import java.util.ArrayList;
 
@@ -22,7 +24,9 @@ public class EnemyInit {
             //not implemented, but should definitely be an enum
             goblinMage.setDamageType("magic");
             goblinMage.setExperienceDropped(3);
-            goblinMage.setLoot(new Loot(2, new ItemBlueprint(0.15, ItemID.WEAPON_WAND)));
+            Wand wand = new Wand();
+            wand.setDropChance(0.15);
+            goblinMage.setLoot(new Loot(2, wand));
             enemyList.add(goblinMage);
 
             Enemy goblin = new Enemy();
@@ -30,9 +34,18 @@ public class EnemyInit {
             goblin.setSpecies("goblin");
             goblin.setDamage(1);
             goblin.setExperienceDropped(3);
-            ArrayList<ItemBlueprint> items = new ArrayList<>();
-            items.add(new ItemBlueprint(0.2, ItemID.WEAPON_SWORD_SHORT));
-            items.add(new ItemBlueprint(0.1, ItemID.BUFF_DAMAGE));
+            ArrayList<Item> items = new ArrayList<>();
+
+            ShortSword sword = new ShortSword();
+            sword.setDropChance(0.2);
+            items.add(sword);
+
+            DamageBuffItem damageBuff = new DamageBuffItem();
+            damageBuff.setBounds(1 ,2);
+            damageBuff.setDropChance(0.1);
+
+            items.add(damageBuff);
+
             goblin.setLoot(new Loot(3, items));
             enemyList.add(goblin);
 
@@ -41,7 +54,9 @@ public class EnemyInit {
             orc.setSpecies("orc");
             orc.setDamage(2);
             orc.setExperienceDropped(7);
-            orc.setLoot(new Loot(5, new ItemBlueprint(0.05, ItemID.WEAPON_MACE)));
+            Mace mace = new Mace();
+            mace.setDropChance(0.05);
+            orc.setLoot(new Loot(5, mace));
             enemyList.add(orc);
 
         return enemyList;

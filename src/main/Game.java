@@ -1,11 +1,14 @@
 package main;
 
-import main.initialization.*;
-import main.item.*;
+import main.initialization.ItemInit;
+import main.initialization.RelicInit;
+import main.item.Item;
 import main.item.relic.ForesightRelic;
 import main.item.relic.Relic;
 import main.item.relic.RelicID;
-import main.room.*;
+import main.room.PureWaterRoom;
+import main.room.Room;
+import main.room.RoomType;
 import main.swing.SwingRenderer;
 
 import javax.swing.*;

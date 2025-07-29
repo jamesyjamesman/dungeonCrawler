@@ -7,10 +7,9 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-//TODO: add slimy sword, slimy spear, and give gold drops to bosses
 public class Loot {
     int gold;
-    ArrayList<ItemBlueprint> items;
+    ArrayList<Item> items;
 
     public Loot() {
         this.items = new ArrayList<>();
@@ -22,35 +21,35 @@ public class Loot {
         this.items = new ArrayList<>();
     }
 
-    public Loot(int gold, ArrayList<ItemBlueprint> items) {
+    public Loot(int gold, ArrayList<Item> items) {
         this.gold = gold;
         this.items = items;
     }
 
-    public Loot(int gold, ItemBlueprint itemBlueprint) {
+    public Loot(int gold, Item item) {
         this.gold = gold;
         this.items = new ArrayList<>();
-        this.items.add(itemBlueprint);
+        this.items.add(item);
     }
 
     public void dropLoot(JFrame frame, Player player) {
         player.addGold(this.getGold());
         SwingRenderer.appendMainLabelText(frame, "The enemy dropped " + this.getGold() + " gold!\n", false);
         for (int i = 0; i < this.getItems().size(); i++) {
-            ItemBlueprint blueprint = this.getItems().get(i);
-            if (new Random().nextDouble(0, 1) > blueprint.getDropChance()) {
+            Item item = this.getItems().get(i);
+            if (new Random().nextDouble(0, 1) > item.getDropChance()) {
                 continue;
             }
-            Item item = Item.itemFactory(blueprint.getID());
-            SwingRenderer.appendMainLabelText(frame, "The enemy dropped a " + item.getName() + "!\n", false);
-            player.itemPickup(frame, item);
+            Item itemClone = item.clone();
+            SwingRenderer.appendMainLabelText(frame, "The enemy dropped a " + itemClone.getName() + "!\n", false);
+            player.itemPickup(frame, itemClone);
         }
     }
 
     public int getGold() {
         return this.gold;
     }
-    public ArrayList<ItemBlueprint> getItems() {
+    public ArrayList<Item> getItems() {
         return this.items;
     }
 }

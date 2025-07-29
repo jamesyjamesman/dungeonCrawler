@@ -1,10 +1,8 @@
 package main.item;
 
 import main.Player;
-import main.item.health.*;
-import main.item.relic.*;
-import main.item.weapon.*;
-import main.item.buff.*;
+import main.item.health.PureAppleItem;
+import main.item.relic.Relic;
 import main.room.PureWaterRoom;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
@@ -16,33 +14,17 @@ public abstract class Item implements Cloneable {
     String name;
     int value;
     boolean stackable;
+    double dropChance;
     public Item() {
         this.description = "";
         this.name = "";
         this.value = 0;
         this.stackable = true;
+        this.dropChance = 1.0;
     }
 
     public void useItem(JFrame frame, Player player) {
        SwingRenderer.UIUpdater(frame, player);
-    }
-
-    public static Item itemFactory(ItemID itemID) {
-        return switch (itemID) {
-            case WEAPON_MACE -> new Mace();
-            case WEAPON_SWORD_SHORT -> new ShortSword();
-            case WEAPON_WAND -> new Wand();
-            case WEAPON_SPEAR_SLIME -> new SlimeSpear();
-            case WEAPON_SWORD_SLIME -> new SlimeSword();
-            case HEALTH_APPLE -> new AppleItem();
-            case HEALTH_STEAK -> new SteakItem();
-            case HEALTH_APPLE_PURE -> new PureAppleItem();
-            case HEALTH_CHOCOLATE -> new ChocolateItem();
-            case BUFF_DAMAGE -> new DamageBuffItem();
-            case BUFF_HEALTH -> new HealthBuffItem();
-            //TODO: add the rest
-            default -> new DummyItem();
-        };
     }
 
     public void cleanseItem(JFrame frame, Player player) {
@@ -90,7 +72,13 @@ public abstract class Item implements Cloneable {
         return this.stackable;
     }
 
-    //TODO: maybe deal with nested objects (like name and description)
+    public double getDropChance() {
+        return this.dropChance;
+    }
+    public void setDropChance(double dropChance) {
+        this.dropChance = dropChance;
+    }
+
     @Override
     public Item clone() {
         try {

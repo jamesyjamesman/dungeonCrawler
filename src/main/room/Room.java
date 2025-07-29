@@ -1,11 +1,10 @@
 package main.room;
 
-import main.swing.ComponentType;
 import main.Player;
-
+import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class Room {

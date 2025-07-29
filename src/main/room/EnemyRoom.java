@@ -1,11 +1,11 @@
 package main.room;
 
 import main.Battle;
-import main.swing.SwingRenderer;
-import main.enemy.Enemy;
 import main.Player;
+import main.enemy.Enemy;
+import main.swing.SwingRenderer;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class EnemyRoom extends Room {

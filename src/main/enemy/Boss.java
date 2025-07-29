@@ -2,9 +2,9 @@ package main.enemy;
 
 import main.Main;
 import main.Player;
+import main.item.relic.Relic;
 import main.room.EnemyRoom;
 import main.swing.SwingRenderer;
-import main.item.relic.Relic;
 
 import javax.swing.*;
 

@@ -1,5 +1,6 @@
 package main.item;
 
+@Deprecated
 public enum ItemID {
     HEALTH_APPLE,
     HEALTH_APPLE_PURE,

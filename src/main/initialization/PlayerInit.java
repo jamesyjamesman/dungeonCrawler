@@ -1,7 +1,7 @@
 package main.initialization;
 
-import main.swing.ComponentType;
 import main.Player;
+import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
 import javax.swing.*;
