@@ -53,7 +53,7 @@ public class Main {
             newRoom.setItem(item);
         }
     }
-    public static int responseHandler(JFrame frame, Player player, int lowerBound, int upperBound) {
+    public static int getIntegerResponse(JFrame frame, Player player, int lowerBound, int upperBound) {
         String originalResponse = SwingRenderer.getTempText(frame).toLowerCase();
         String newResponse;
         boolean once = false;

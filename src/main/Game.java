@@ -33,7 +33,7 @@ public class Game {
             playerCharacter.useRelics(frame, currentRoom);
             playerCharacter.statusHandler(frame, false);
 
-            int response = Main.responseHandler(frame, playerCharacter, 1, currentRoom.getExits().size()) - 1;
+            int response = Main.getIntegerResponse(frame, playerCharacter, 1, currentRoom.getExits().size()) - 1;
             //this should be moved somewhere else, or make a new pure water room every time
             if (currentRoom instanceof PureWaterRoom room) {
                 room.setFountainUsed(false);

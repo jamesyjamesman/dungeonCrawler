@@ -20,6 +20,7 @@ public abstract class BuffItem extends Item {
         this.highBound = 0;
         setName("Suspicious Can");
         setDescription("A can of... something. It's chunky.");
+        this.setShopWeight(5);
     }
 
     @Override

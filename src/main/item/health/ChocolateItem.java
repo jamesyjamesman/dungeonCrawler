@@ -7,5 +7,6 @@ public class ChocolateItem extends HealthItem{
         this.setRestorationRange(5, 15);
         this.setAddedAbsorption(3);
         this.setValue(10);
+        this.setShopWeight(6);
     }
 }

@@ -14,7 +14,7 @@ public class Battle {
         while (!room.getEnemies().isEmpty()) {
             readEnemies(frame, room, player);
 
-            int enemyIndex = Main.responseHandler(frame, player, 1, room.getEnemies().size()) - 1;
+            int enemyIndex = Main.getIntegerResponse(frame, player, 1, room.getEnemies().size()) - 1;
             SwingRenderer.appendMainLabelText(frame, "", true);
             Enemy enemy = room.getEnemies().get(enemyIndex);
             player.attack(frame, enemy);

@@ -23,9 +23,9 @@ public class ShopRoom extends Room {
         this.description = "You see a cold glow from a small opening in the wall, and approach it.";
         this.id = 8394;
         this.type = RoomType.SPECIAL;
-        this.roomsRequired = 20;
+        this.roomsRequired = 10;
         this.numExits = 2;
-        this.selectionWeight = 3;
+        this.selectionWeight = 2;
         this.itemList = ItemInit.itemInit();
     }
 
@@ -67,6 +67,42 @@ public class ShopRoom extends Room {
         renderShopUI(frame, player);
     }
 
+    public void instantiateWares() {
+        int numWares = new Random().nextInt(3,7);
+        ArrayList<Item> newWares = new ArrayList<>();
+
+        int totalItemWeight = getTotalItemWeight();
+
+        for (int i = 0; i < numWares; i++) {
+            Item item = getWeightedItem(totalItemWeight);
+            Item itemClone = item.clone();
+            newWares.add(itemClone);
+        }
+
+        this.wares = newWares;
+    }
+
+    public int getTotalItemWeight() {
+        int totalWeight = 0;
+        for (Item item : this.itemList) {
+            totalWeight += item.getShopWeight();
+        }
+        return totalWeight;
+    }
+
+    public Item getWeightedItem(int totalWeight) {
+        int randomWeight = new Random().nextInt(totalWeight);
+        for (Item item : this.itemList) {
+            int weight = item.getShopWeight();
+            randomWeight -= weight;
+            if (randomWeight < 0) {
+                return item;
+            }
+        }
+        System.out.println("This code should be inaccessible!");
+        return null;
+    }
+
     public void closeShop() {
         this.open = false;
     }
@@ -77,19 +113,7 @@ public class ShopRoom extends Room {
     public boolean isOpen() {
         return this.open;
     }
-    public void instantiateWares() {
-        int numWares = new Random().nextInt(3,7);
-        ArrayList<Item> newWares = new ArrayList<>();
 
-        for (int i = 0; i < numWares; i++) {
-            int randomItemIndex = new Random().nextInt(this.itemList.size());
-            Item item = this.itemList.get(randomItemIndex);
-            Item itemClone = item.clone();
-            newWares.add(itemClone);
-        }
-
-        this.wares = newWares;
-    }
     public ArrayList<Item> getWares() {
         return this.wares;
     }

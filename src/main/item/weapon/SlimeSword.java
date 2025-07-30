@@ -6,5 +6,6 @@ public class SlimeSword extends Weapon {
         this.setName("Slimy Sword");
         this.setDescription("A now slime-covered sword from an adventurer before you.");
         this.setValue(12);
+        this.setShopWeight(0);
     }
 }

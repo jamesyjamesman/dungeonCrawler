@@ -7,5 +7,6 @@ public class ShortSword extends Weapon {
         this.setDescription("A completely unremarkable short sword. " +
                 "...Actually, this might just be a normal sword broken in half.");
         this.setValue(8);
+        this.setShopWeight(4);
     }
 }

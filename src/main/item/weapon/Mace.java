@@ -6,5 +6,6 @@ public class Mace extends Weapon {
         this.setName("Rusty Mace");
         this.setDescription("A dilapidated old mace. You're surprised it still works!");
         this.setValue(12);
+        this.setShopWeight(2);
     }
 }

@@ -6,5 +6,6 @@ public class PureAppleItem extends HealthItem {
         this.setDescription("The purified water cleansed any rot this apple once had. It looks perfect!");
         this.setValue(10);
         setRestorationRange(5, 10);
+        this.setShopWeight(1);
     }
 }

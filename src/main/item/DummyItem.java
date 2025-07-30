@@ -1,5 +1,6 @@
 package main.item;
 
+@Deprecated
 public class DummyItem extends Item {
     public DummyItem() {
         this.setName("Dummy");

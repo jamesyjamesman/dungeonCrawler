@@ -17,6 +17,7 @@ public abstract class Relic extends Item {
         this.equipped = false;
         this.cursed = new Random().nextInt(5) == 0;
         this.relicID = null;
+        this.setShopWeight(0);
     }
 
     public void useRelic(JFrame frame, Player player, Room room) {}

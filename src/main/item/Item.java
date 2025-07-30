@@ -15,12 +15,14 @@ public abstract class Item implements Cloneable {
     int value;
     boolean stackable;
     double dropChance;
+    int shopWeight;
     public Item() {
         this.description = "";
         this.name = "";
         this.value = 0;
         this.stackable = true;
         this.dropChance = 1.0;
+        this.shopWeight = 10;
     }
 
     public void useItem(JFrame frame, Player player) {
@@ -77,6 +79,12 @@ public abstract class Item implements Cloneable {
     }
     public void setDropChance(double dropChance) {
         this.dropChance = dropChance;
+    }
+    public int getShopWeight() {
+        return this.shopWeight;
+    }
+    public void setShopWeight(int shopWeight) {
+        this.shopWeight = shopWeight;
     }
 
     @Override
