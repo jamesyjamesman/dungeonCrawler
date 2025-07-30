@@ -36,6 +36,7 @@ public class SwingRenderer extends JFrame {
         frame.setTitle("Dungeon Crawler");
         frame.setBounds(0, 0, screenWidth, screenHeight);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setIconImage(new ImageIcon(ClassLoader.getSystemResource("torch.png")).getImage());
 
         JLabel backgroundImageLabel = new JLabel(backgroundImage);
         backgroundImageLabel.setHorizontalAlignment(SwingConstants.LEFT);

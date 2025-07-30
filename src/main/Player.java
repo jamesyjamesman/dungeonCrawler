@@ -146,10 +146,10 @@ public class Player {
     public void checkInventory(JFrame frame) {
         SwingRenderer.clearInventoryPane(frame, false);
 
-        for (int i = 0; i < this.inventory.size(); i++) {
-            Item item = this.inventory.get(i).getFirst();
+        for (ArrayList<Item> items : this.inventory) {
+            Item item = items.getFirst();
             //Displays amount of items in parentheses (e.g. (x2)) if the amount is greater than 1
-            String amount = (this.inventory.get(i).size() > 1) ? " (x" + this.inventory.get(i).size() + ")" : "";
+            String amount = (items.size() > 1) ? " (x" + items.size() + ")" : "";
 
             String output = item.getName() + ((this.getCurrentRoom() instanceof ShopRoom shopRoom && shopRoom.isOpen()) ? " [" + item.getValue() + "G]" : "") + amount + ": " + item.getDescription();
             output = output.concat("\n");
@@ -168,8 +168,7 @@ public class Player {
         SwingRenderer.clearInventoryPane(frame, true);
         Color color;
 
-        for (int i = 0; i < this.equippedRelics.size(); i++) {
-            Relic relic = this.equippedRelics.get(i);
+        for (Relic relic : this.equippedRelics) {
             String output = relic.getName() + ": " + relic.getDescription();
             output += "\n";
             if (relic.isCursed()) {
@@ -460,9 +459,6 @@ public class Player {
 
     }
 
-    public void doFireDamage(JFrame frame) {
-    }
-
     public int getCurrentHealth() {
         return this.currentHealth;
     }
@@ -527,11 +523,8 @@ public class Player {
     public void addGold(int gold) {
         this.gold += gold;
     }
-    public boolean takeGold(int cost) {
-        if (this.gold >= cost) {
+    // Does not handle attempted pulls greater than balance
+    public void takeGold(int cost) {
             this.gold -= cost;
-            return true;
-        }
-        return false;
     }
 }
