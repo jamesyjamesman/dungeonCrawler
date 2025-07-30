@@ -171,7 +171,7 @@ public class Player {
         for (int i = 0; i < this.equippedRelics.size(); i++) {
             Relic relic = this.equippedRelics.get(i);
             String output = relic.getName() + ": " + relic.getDescription();
-            output = output.concat("\n\n");
+            output += "\n";
             if (relic.isCursed()) {
                 color = new Color(130, 30, 190);
             } else {
@@ -399,7 +399,7 @@ public class Player {
             output += "Your relic pouch capacity increased by " + relicCapChange + "!\n";
             changeRelicCap(relicCapChange);
         }
-        return output;
+        return output + "\n";
     }
     public void statusHandler(JFrame frame, boolean inBattle) {
         doPoisonDamage(frame);
