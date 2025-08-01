@@ -43,7 +43,7 @@ public class Battle {
             } else {
                 output = output.concat("\n");
             }
-            SwingRenderer.addEnemyLabel(frame, output, player, enemy, i);
+            SwingRenderer.addEnemyLabel(output, player, enemy, i);
         }
     }
 }

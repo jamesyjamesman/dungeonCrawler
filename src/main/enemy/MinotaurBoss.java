@@ -37,7 +37,7 @@ public class MinotaurBoss extends Boss {
         this.currentHealth += (int) (this.damage * 1.5);
         return 0;
     }
-    public int failedChargeAttack(JFrame frame) {
+    public int failedChargeAttack() {
         SwingRenderer.appendMainLabelText("The minotaur tries to charge at you, but falls over, smacking itself in the face.\n", false);
         this.currentHealth -= this.damage / 2;
         return angerAttack();
@@ -50,7 +50,7 @@ public class MinotaurBoss extends Boss {
         int randomChoice = new Random().nextInt(9);
 
         switch (randomChoice) {
-            case 0 -> damage = failedChargeAttack(frame);
+            case 0 -> damage = failedChargeAttack();
             case 1, 2 -> damage = angerAttack();
             case 3, 4, 5 -> damage = shriekAttack(player);
             case 6, 7 -> damage = chargeAttack();

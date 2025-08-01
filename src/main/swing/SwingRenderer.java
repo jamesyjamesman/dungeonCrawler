@@ -607,7 +607,7 @@ public class SwingRenderer extends JFrame {
         insertSimpleText(doc, newText, color);
     }
 
-    public static void addEnemyLabel(JFrame frame, String enemyText, Player player, Enemy enemy, int enemyIndex) {
+    public static void addEnemyLabel(String enemyText, Player player, Enemy enemy, int enemyIndex) {
         InventoryButton attackButton = new InventoryButton();
         InventoryButton checkButton = new InventoryButton();
 
