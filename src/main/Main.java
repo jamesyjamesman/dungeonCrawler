@@ -18,7 +18,7 @@ public class Main {
 
         SwingRenderer.renderer(frame);
 
-        Player playerCharacter = PlayerInit.playerInit(frame);
+        Player playerCharacter = PlayerInit.playerInit();
         app.setPlayer(playerCharacter);
 
         SwingRenderer.createPopup("Welcome to the simulation!\nYou will be presented choices on where to proceed.\nPress the appropriate button or type your answer in the field in the bottom left.\nGood luck!\n");

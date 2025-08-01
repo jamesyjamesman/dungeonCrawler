@@ -3,7 +3,6 @@ package main.item;
 import main.Player;
 import main.swing.SwingRenderer;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -32,7 +31,7 @@ public class Loot {
         this.items.add(item);
     }
 
-    public void dropLoot(JFrame frame, Player player) {
+    public void dropLoot(Player player) {
         player.addGold(this.getGold());
         SwingRenderer.appendMainLabelText("The enemy dropped " + this.getGold() + " gold!\n", false);
         for (int i = 0; i < this.getItems().size(); i++) {

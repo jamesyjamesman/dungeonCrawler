@@ -48,7 +48,7 @@ public class Enemy {
         player.checkStatus();
         SwingRenderer.changeLabelText("The " + getSpecies() + " died! You got " + getExperienceDropped() + " experience!\n", ComponentType.LABEL_DESCRIPTION);
 
-        this.getLoot().dropLoot(frame, player);
+        this.getLoot().dropLoot(player);
 
         enemyRoom.addDefeatedEnemy(this);
         enemyRoom.removeEnemy(this);
@@ -67,7 +67,7 @@ public class Enemy {
     }
 
     //very basic right now, could add a basic description, and attack descriptions for bosses.
-    public void checkInformation(JFrame frame) {
+    public void checkInformation() {
         String output = "";
         output += this.species.substring(0, 1).toUpperCase() + this.species.substring(1) + "\n";
         output += "HP: " + this.currentHealth + "/" + this.maxHealth + "\n";

@@ -4,10 +4,8 @@ import main.Player;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
-import javax.swing.*;
-
 public class PlayerInit {
-    public static Player playerInit(JFrame frame) {
+    public static Player playerInit() {
         SwingRenderer.appendMainLabelText("First, you'll need to name your character!\nPlease enter your character's name.", true);
         String playerName = "";
         while (playerName.isEmpty()) {

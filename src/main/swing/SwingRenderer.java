@@ -615,7 +615,7 @@ public class SwingRenderer extends JFrame {
         checkButton.setText(" Check ");
 
         attackButton.addActionListener(_ -> setTempText(Integer.toString(enemyIndex + 1)));
-        checkButton.addActionListener(_ -> enemy.checkInformation(frame));
+        checkButton.addActionListener(_ -> enemy.checkInformation());
 
         attackButton.setHorizontalAlignment(SwingConstants.LEFT);
         checkButton.setHorizontalAlignment(SwingConstants.LEFT);

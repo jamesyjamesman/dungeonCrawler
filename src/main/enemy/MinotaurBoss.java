@@ -18,21 +18,21 @@ public class MinotaurBoss extends Boss {
 
         this.setLoot(new Loot(30));
     }
-    public int chargeAttack(JFrame frame) {
+    public int chargeAttack() {
         SwingRenderer.appendMainLabelText("The minotaur charges at you, goring you with its horns!\n", false);
         return this.damage * 2;
     }
-    public int shriekAttack(JFrame frame, Player player) {
+    public int shriekAttack(Player player) {
         player.getCurrentStatuses().setWeakened(player.getCurrentStatuses().getWeakened() + 1);
         SwingRenderer.appendMainLabelText("The minotaur unleashes a piercing scream, wracking your nerves! (You gained a level of weakness).\n", false);
         return this.damage;
     }
-    public int angerAttack(JFrame frame) {
+    public int angerAttack() {
         SwingRenderer.appendMainLabelText("The minotaur is getting upset!\n", false);
         this.damage += 1;
         return 0;
     }
-    public int healAttack(JFrame frame) {
+    public int healAttack() {
         SwingRenderer.appendMainLabelText("The minotaur pulls out a large chunk of meat, ripping into it!\n", false);
         this.currentHealth += (int) (this.damage * 1.5);
         return 0;
@@ -40,7 +40,7 @@ public class MinotaurBoss extends Boss {
     public int failedChargeAttack(JFrame frame) {
         SwingRenderer.appendMainLabelText("The minotaur tries to charge at you, but falls over, smacking itself in the face.\n", false);
         this.currentHealth -= this.damage / 2;
-        return angerAttack(frame);
+        return angerAttack();
     }
 
     //minotaur is not affected by relic of bounciness (on purpose)
@@ -51,10 +51,10 @@ public class MinotaurBoss extends Boss {
 
         switch (randomChoice) {
             case 0 -> damage = failedChargeAttack(frame);
-            case 1, 2 -> damage = angerAttack(frame);
-            case 3, 4, 5 -> damage = shriekAttack(frame, player);
-            case 6, 7 -> damage = chargeAttack(frame);
-            case 8 -> damage = healAttack(frame);
+            case 1, 2 -> damage = angerAttack();
+            case 3, 4, 5 -> damage = shriekAttack(player);
+            case 6, 7 -> damage = chargeAttack();
+            case 8 -> damage = healAttack();
         }
 
         if (damage > 0) {

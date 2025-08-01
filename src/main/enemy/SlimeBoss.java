@@ -37,19 +37,19 @@ public class SlimeBoss extends Boss {
         this.setLoot(new Loot(20, items));
     }
 
-    public int slimeLaunchAttack(JFrame frame) {
+    public int slimeLaunchAttack() {
         int damage = this.damage + 1;
         SwingRenderer.appendMainLabelText("The slime launches a slimeball at you, hitting you square in the face!\n", false);
         return damage;
     }
 
-    public int slimeChargeAttack(JFrame frame) {
+    public int slimeChargeAttack() {
         int damage = this.damage - 1;
         SwingRenderer.appendMainLabelText("The slime jumps at you, knocking you down!\n", false);
         return damage;
     }
 
-    public int slimeWait(JFrame frame) {
+    public int slimeWait() {
         SwingRenderer.appendMainLabelText("The slime is taking a break.\n", false);
         return 0;
     }
@@ -66,11 +66,11 @@ public class SlimeBoss extends Boss {
         int randomChoice = new Random().nextInt(5);
 
         if (randomChoice < 2) { //40%
-            damage = slimeLaunchAttack(frame);
+            damage = slimeLaunchAttack();
         } else if (randomChoice < 4) { //40%
-            damage = slimeChargeAttack(frame);
+            damage = slimeChargeAttack();
         } else { //20%
-            damage = slimeWait(frame);
+            damage = slimeWait();
         }
         if (damage > 0) {
             SwingRenderer.addHealthText("You took " + damage + " damage from the slime!");
