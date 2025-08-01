@@ -6,7 +6,6 @@ import main.initialization.ItemInit;
 import main.item.Item;
 import main.swing.SwingRenderer;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -18,11 +17,11 @@ public class ItemRoom extends Room {
     }
 
     @Override
-    public void completeRoomActions(Player player, JFrame frame) {
+    public void completeRoomActions(Player player) {
         if (this.id == 12) {
             initializeItem();
         }
-        super.completeRoomActions(player, frame);
+        super.completeRoomActions(player);
 
         SwingRenderer.appendMainLabelText("Would you like to take the " + this.item.getName() + "? (y/n)", true);
 

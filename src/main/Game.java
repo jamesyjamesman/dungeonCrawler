@@ -7,25 +7,28 @@ import main.room.Room;
 import main.room.RoomType;
 import main.swing.SwingRenderer;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Game {
-    public static void gameLoop(Player playerCharacter, Room currentRoom, ArrayList<Room> rooms, JFrame frame) {
-        while (playerCharacter.getCurrentHealth() > 0) {
-            playerCharacter.setCurrentRoom(currentRoom);
+    public static void gameLoop() {
+        Player player = App.INSTANCE.getPlayer();
+        ArrayList<Room> rooms = App.INSTANCE.getRooms();
+        Room currentRoom = rooms.getFirst();
 
-            currentRoom.completeRoomActions(playerCharacter, frame);
+        while (player.getCurrentHealth() > 0) {
+            player.setCurrentRoom(currentRoom);
 
-            activateRooms(rooms, playerCharacter);
+            currentRoom.completeRoomActions(player);
+
+            activateRooms(rooms, player);
             ArrayList<Room> activeRooms = new ArrayList<>(getRandomActiveRooms(rooms));
-            createRoomExits(playerCharacter, activeRooms, currentRoom);
-            playerCharacter.useRelics(frame, currentRoom);
-            playerCharacter.statusHandler(false);
+            createRoomExits(player, activeRooms, currentRoom);
+            player.useRelics(currentRoom);
+            player.statusHandler(false);
 
-            int response = Main.getIntegerResponse(playerCharacter, 1, currentRoom.getExits().size()) - 1;
+            int response = Main.getIntegerResponse(player, 1, currentRoom.getExits().size()) - 1;
             //this should be moved somewhere else, or make a new pure water room every time
             if (currentRoom instanceof PureWaterRoom room) {
                 room.setFountainUsed(false);
@@ -34,7 +37,7 @@ public class Game {
             currentRoom.getExits().clear();
             currentRoom = nextRoom;
         }
-        playerCharacter.doDeathSequence();
+        player.doDeathSequence();
     }
 
     public static void createRoomExits(Player player, ArrayList<Room> activeRooms, Room room) {
@@ -58,8 +61,8 @@ public class Game {
         }
     }
 
-    //TODO: Figure out when to call this
-    public static void deactivateRelicRooms(ArrayList<Room> rooms) {
+    public static void deactivateRelicRooms() {
+        ArrayList<Room> rooms = App.INSTANCE.getRooms();
         for (Room checkRoom : rooms) {
             if (checkRoom.getType() == RoomType.RELIC) {
                 checkRoom.setActive(false);

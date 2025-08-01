@@ -5,7 +5,6 @@ import main.Player;
 import main.room.Room;
 import main.swing.SwingRenderer;
 
-import javax.swing.*;
 import java.util.Random;
 
 public class ShieldingRelic extends Relic {
@@ -16,7 +15,7 @@ public class ShieldingRelic extends Relic {
     }
 
     @Override
-    public void useRelic(JFrame frame, Player player, Room room) {
+    public void useRelic(Player player, Room room) {
         if (player.getAbsorption() < 5) {
             int absorptionAmount = new Random().nextInt(1, 3);
             player.addAbsorption(absorptionAmount);

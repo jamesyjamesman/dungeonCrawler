@@ -3,8 +3,6 @@ package main.room;
 import main.Player;
 import main.swing.SwingRenderer;
 
-import javax.swing.*;
-
 public class EndingRoom extends Room {
     public EndingRoom() {
         this.setId(9001);
@@ -23,8 +21,8 @@ public class EndingRoom extends Room {
     }
 
     @Override
-    public void completeRoomActions(Player player, JFrame frame) {
-        super.completeRoomActions(player, frame);
+    public void completeRoomActions(Player player) {
+        super.completeRoomActions(player);
         SwingRenderer.appendMainLabelText("You survived long enough to escape! You win!", true);
         while (true) {
             try {

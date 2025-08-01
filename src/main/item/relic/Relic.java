@@ -5,7 +5,6 @@ import main.item.Item;
 import main.room.Room;
 import main.swing.SwingRenderer;
 
-import javax.swing.*;
 import java.util.Random;
 
 public abstract class Relic extends Item {
@@ -20,7 +19,7 @@ public abstract class Relic extends Item {
         this.setShopWeight(0);
     }
 
-    public void useRelic(JFrame frame, Player player, Room room) {}
+    public void useRelic(Player player, Room room) {}
 
     @Override
     public void useItem(Player player) {

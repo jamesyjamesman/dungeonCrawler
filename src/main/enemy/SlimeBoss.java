@@ -11,7 +11,6 @@ import main.item.weapon.SlimeSpear;
 import main.item.weapon.SlimeSword;
 import main.swing.SwingRenderer;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -56,7 +55,7 @@ public class SlimeBoss extends Boss {
 
     //not good
     @Override
-    public void attack(JFrame frame, Player player) {
+    public void attack(Player player) {
         if (player.equippedRelicIndex(RelicID.SLIME) > -1
                 && new Random().nextInt(4) == 0) {
             SwingRenderer.appendMainLabelText("The attack from the " + this.species + " bounced right off!", false);
@@ -79,12 +78,12 @@ public class SlimeBoss extends Boss {
     }
 
     @Override
-    public int takeDamage(JFrame frame, int damage) {
+    public int takeDamage(int damage) {
         if (new Random().nextInt(5) == 0) {
             SwingRenderer.appendMainLabelText("Your attack bounced off of the slime's squishy exterior!\n", false);
             return 0;
         }
-        return super.takeDamage(frame, damage);
+        return super.takeDamage(damage);
     }
 
     @Override

@@ -7,7 +7,6 @@ import main.room.EnemyRoom;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
-import javax.swing.*;
 import java.util.Random;
 
 public class Enemy {
@@ -32,7 +31,7 @@ public class Enemy {
         this.loot = new Loot();
     }
 
-    public int takeDamage(JFrame frame, int damage) {
+    public int takeDamage(int damage) {
         int oldHealth = this.currentHealth;
         this.currentHealth -= damage;
         if (this.currentHealth < 0) {
@@ -42,7 +41,7 @@ public class Enemy {
         return damage;
     }
 
-    public void death(JFrame frame, Player player, EnemyRoom enemyRoom) {
+    public void death(Player player, EnemyRoom enemyRoom) {
         player.changeExperience(getExperienceDropped());
         player.levelUp();
         player.checkStatus();
@@ -55,7 +54,7 @@ public class Enemy {
         player.checkInventory();
     }
 
-    public void attack(JFrame frame, Player player) {
+    public void attack(Player player) {
         if (player.equippedRelicIndex(RelicID.SLIME) != -1
             && new Random().nextInt(4) == 0) {
             SwingRenderer.addHealthText("The attack from the " + this.species + " bounced right off!");

@@ -4,7 +4,6 @@ import main.Player;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
-import javax.swing.*;
 import java.util.ArrayList;
 
 public class Room {
@@ -32,7 +31,7 @@ public class Room {
         this.selectionWeight = 10;
     }
 
-    public void completeRoomActions(Player player, JFrame frame) {
+    public void completeRoomActions(Player player) {
         SwingRenderer.changeBackgroundImage(this.backgroundFileName);
         SwingRenderer.changeLabelText(this.description, ComponentType.LABEL_DESCRIPTION);
         player.incrementRoomsTraversed();

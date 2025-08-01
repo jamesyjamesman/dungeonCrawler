@@ -1,14 +1,22 @@
 package main;
 
+import main.item.relic.Relic;
+import main.room.Room;
+
 import javax.swing.*;
+import java.util.ArrayList;
 
 public enum App {
 
     INSTANCE();
 
-    public JFrame frame;
+    private JFrame frame;
 
-    public Player player;
+    private Player player;
+
+    private ArrayList<Relic> unusedRelics;
+
+    private ArrayList<Room> rooms;
 
     public App getInstance() {
         return INSTANCE;
@@ -24,5 +32,17 @@ public enum App {
     }
     public void setPlayer(Player newPlayer) {
         player = newPlayer;
+    }
+    public ArrayList<Relic> getUnusedRelics() {
+        return unusedRelics;
+    }
+    public void setUnusedRelics(ArrayList<Relic> newUnusedRelics) {
+        unusedRelics = newUnusedRelics;
+    }
+    public ArrayList<Room> getRooms() {
+        return rooms;
+    }
+    public void setRooms(ArrayList<Room> newRooms) {
+        rooms = newRooms;
     }
 }

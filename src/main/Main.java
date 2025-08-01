@@ -1,33 +1,36 @@
 package main;
 
 import main.initialization.PlayerInit;
+import main.initialization.RelicInit;
 import main.initialization.RoomInit;
-import main.room.Room;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
 import javax.swing.*;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        initializeApp();
+        JFrame frame = App.INSTANCE.getFrame();
+
+        SwingRenderer.renderer(frame);
+
+        SwingRenderer.createPopup("Welcome to the simulation!\nYou will be presented choices on where to proceed.\nPress the appropriate button or type your answer in the field in the bottom left.\nGood luck!\n");
+
+        Game.gameLoop();
+    }
+
+    public static void initializeApp() {
         App app = App.INSTANCE.getInstance();
         JFrame frame = SwingRenderer.componentFactory();
         app.setFrame(frame);
 
-        SwingRenderer.renderer(frame);
+        Player player = PlayerInit.playerInit();
+        app.setPlayer(player);
 
-        Player playerCharacter = PlayerInit.playerInit();
-        app.setPlayer(playerCharacter);
-
-        SwingRenderer.createPopup("Welcome to the simulation!\nYou will be presented choices on where to proceed.\nPress the appropriate button or type your answer in the field in the bottom left.\nGood luck!\n");
-
-        ArrayList<Room> rooms = RoomInit.roomInit();
-
-        Room firstRoom = rooms.getFirst();
-
-        Game.gameLoop(playerCharacter, firstRoom, rooms, frame);
+        app.setUnusedRelics(RelicInit.relicInit());
+        app.setRooms(RoomInit.roomInit());
     }
 
     public static int getIntegerResponse(Player player, int lowerBound, int upperBound) {

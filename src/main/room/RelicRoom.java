@@ -1,13 +1,13 @@
 package main.room;
 
+import main.App;
+import main.Game;
 import main.Main;
 import main.Player;
-import main.initialization.RelicInit;
 import main.item.relic.Relic;
 import main.item.relic.RelicID;
 import main.swing.SwingRenderer;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -20,9 +20,9 @@ public class RelicRoom extends Room {
     }
 
     @Override
-    public void completeRoomActions(Player player, JFrame frame) {
+    public void completeRoomActions(Player player) {
         initializeRelic();
-        super.completeRoomActions(player, frame);
+        super.completeRoomActions(player);
 
         if (this.hasCorpse) {
             SwingRenderer.appendMainLabelText("Would you like to ...look through the corpse? (y/n)\n", true);
@@ -43,15 +43,14 @@ public class RelicRoom extends Room {
         SwingRenderer.appendMainLabelText("You chose to forgo the loot...", false);
     }
 
-    //TODO: figure out how to stop repeat relics;
     public void initializeRelic() {
-        ArrayList<Relic> relicList = RelicInit.relicInit();
+        ArrayList<Relic> relicList = App.INSTANCE.getUnusedRelics();
         Relic newRelic = relicList.get(new Random().nextInt(relicList.size()));
-        //this does not allow players to ever obtain a relic if they deny taking it.
-//        relicList.remove(newRelic);
-//        if (relicList.isEmpty()) {
-//                Game.deactivateRelicRooms(rooms);
-//        }
+//        this does not allow players to ever obtain a relic if they deny taking it.
+        relicList.remove(newRelic);
+        if (relicList.isEmpty()) {
+                Game.deactivateRelicRooms();
+        }
         if (this.hasCorpse) {
             newRelic.setCursed(new Random().nextInt(5) != 0);
         }

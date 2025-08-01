@@ -7,7 +7,6 @@ import main.item.Item;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -30,28 +29,28 @@ public class ShopRoom extends Room {
     }
 
     @Override
-    public void completeRoomActions(Player player, JFrame frame) {
-        super.completeRoomActions(player, frame);
+    public void completeRoomActions(Player player) {
+        super.completeRoomActions(player);
         SwingRenderer.appendMainLabelText("Would you like to bug the shopkeeper?", true);
         boolean goToShop = Main.parseResponseAsBoolean();
         if (goToShop) {
             openShop();
-            renderShopUI(frame, player);
+            renderShopUI(player);
             SwingRenderer.UIUpdater(player);
             Main.waitForResponse();
         }
         closeShop();
     }
 
-    public void renderShopUI(JFrame frame, Player player) {
+    public void renderShopUI(Player player) {
         SwingRenderer.appendMainLabelText("Hello there adventurer... welcome to my shop. Buy something, if you dare...\n", true);
         for (int i = 0; i < this.getWares().size(); i++) {
-            SwingRenderer.addShopLabel(frame, player, this.getWares().get(i), this);
+            SwingRenderer.addShopLabel(player, this.getWares().get(i), this);
         }
         SwingRenderer.appendMainLabelText("\nEnter anything to exit the shop!\n", false);
     }
 
-    public void sellItem(JFrame frame, Item item, Player player) {
+    public void sellItem(Item item, Player player) {
         if (player.getGold() < item.getValue()) {
             SwingRenderer.changeLabelText("You don't have enough gold!", ComponentType.LABEL_ERROR);
             return;
@@ -64,7 +63,7 @@ public class ShopRoom extends Room {
         player.takeGold(item.getValue());
         this.wares.remove(item);
         SwingRenderer.UIUpdater(player);
-        renderShopUI(frame, player);
+        renderShopUI(player);
     }
 
     public void instantiateWares() {

@@ -646,10 +646,10 @@ public class SwingRenderer extends JFrame {
         insertSimpleText(doc, roomAppearance);
     }
 
-    public static void addShopLabel(JFrame frame, Player player, Item item, ShopRoom shopRoom) {
+    public static void addShopLabel(Player player, Item item, ShopRoom shopRoom) {
         InventoryButton buyButton = new InventoryButton();
         buyButton.setText(" Buy ");
-        buyButton.addActionListener(_ -> shopRoom.sellItem(frame, item, player));
+        buyButton.addActionListener(_ -> shopRoom.sellItem(item, player));
         buyButton.setHorizontalAlignment(SwingConstants.LEFT);
 
         JTextPane mainPane = (JTextPane) componentGrabber(ComponentType.PANE_MAIN);

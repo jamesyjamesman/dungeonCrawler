@@ -10,7 +10,6 @@ import main.room.ShopRoom;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
@@ -52,9 +51,9 @@ public class Player {
         this.equippedWeapon = null;
         this.gold = 0;
     }
-    public void attack(JFrame frame, Enemy enemy) {
+    public void attack(Enemy enemy) {
         int totalDamage = weakenAttack(calculateTotalAttack());
-        int damageDealt = enemy.takeDamage(frame, totalDamage);
+        int damageDealt = enemy.takeDamage(totalDamage);
         if (damageDealt > 0) {
             SwingRenderer.appendMainLabelText("The " + enemy.getSpecies() + " took " + totalDamage + " damage!\n", false);
         }
@@ -276,9 +275,9 @@ public class Player {
         this.damage += damageIncrease;
     }
 
-    public void useRelics(JFrame frame, Room room) {
+    public void useRelics(Room room) {
         for (Relic equippedRelic : this.equippedRelics) {
-            equippedRelic.useRelic(frame, this, room);
+            equippedRelic.useRelic(this, room);
         }
     }
 

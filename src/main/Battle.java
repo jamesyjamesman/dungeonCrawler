@@ -5,34 +5,32 @@ import main.item.relic.RelicID;
 import main.room.EnemyRoom;
 import main.swing.SwingRenderer;
 
-import javax.swing.*;
-
 public class Battle {
 
-    public static void battleLoop(JFrame frame, Player player, EnemyRoom room) {
+    public static void battleLoop(Player player, EnemyRoom room) {
         SwingRenderer.appendMainLabelText("\nThe battle has begun!\n", false);
         while (!room.getEnemies().isEmpty()) {
-            readEnemies(frame, room, player);
+            readEnemies(room, player);
 
             int enemyIndex = Main.getIntegerResponse(player, 1, room.getEnemies().size()) - 1;
             SwingRenderer.appendMainLabelText("", true);
             Enemy enemy = room.getEnemies().get(enemyIndex);
-            player.attack(frame, enemy);
+            player.attack(enemy);
             //this should just be in takeDamage but this is fine for now
             if (enemy.getCurrentHealth() <= 0) {
-                enemy.death(frame, player, room);
+                enemy.death(player, room);
             }
 
             //enemies attack player
             for (int i = 0; i < room.getEnemies().size(); i++) {
                 Enemy enemyAttacker = room.getEnemies().get(i);
-                enemyAttacker.attack(frame, player);
+                enemyAttacker.attack(player);
             }
         }
         SwingRenderer.appendMainLabelText("The enemies were defeated!", true);
     }
 
-    public static void readEnemies(JFrame frame, EnemyRoom room, Player player) {
+    public static void readEnemies(EnemyRoom room, Player player) {
         for (int i = 0; i < room.getEnemies().size(); i++) {
             Enemy enemy = room.getEnemies().get(i);
             String species = enemy.getSpecies();
