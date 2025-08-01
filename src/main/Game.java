@@ -2,7 +2,6 @@ package main;
 
 import main.item.relic.ForesightRelic;
 import main.item.relic.RelicID;
-import main.room.PureWaterRoom;
 import main.room.Room;
 import main.room.RoomType;
 import main.swing.SwingRenderer;
@@ -29,10 +28,6 @@ public class Game {
             player.statusHandler(false);
 
             int response = Main.getIntegerResponse(player, 1, currentRoom.getExits().size()) - 1;
-            //this should be moved somewhere else, or make a new pure water room every time
-            if (currentRoom instanceof PureWaterRoom room) {
-                room.setFountainUsed(false);
-            }
             Room nextRoom = currentRoom.getExits().get(response);
             currentRoom.getExits().clear();
             currentRoom = nextRoom;

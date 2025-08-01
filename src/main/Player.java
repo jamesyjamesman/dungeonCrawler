@@ -473,6 +473,9 @@ public class Player {
     public void incrementRoomsTraversed() {
         this.roomsTraversed += 1;
     }
+    public void setRoomsTraversed(int roomsTraversed) {
+        this.roomsTraversed = roomsTraversed;
+    }
     public int getRoomsTraversed() {
         return this.roomsTraversed;
     }

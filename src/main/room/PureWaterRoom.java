@@ -18,6 +18,7 @@ public class PureWaterRoom extends Room {
 
     @Override
     public void completeRoomActions(Player player) {
+        this.fountainUsed = false;
         super.completeRoomActions(player);
         SwingRenderer.appendMainLabelText("""
                 You sense this fountain has some purifying properties.
