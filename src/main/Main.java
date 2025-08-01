@@ -2,23 +2,17 @@ package main;
 
 import main.initialization.PlayerInit;
 import main.initialization.RoomInit;
-import main.item.Item;
-import main.item.relic.Relic;
-import main.room.ItemRoom;
 import main.room.Room;
-import main.room.RoomType;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
 import javax.swing.*;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         JFrame frame = SwingRenderer.componentFactory();
-//        SwingRenderer.createIntroductionPopup(frame);
         SwingRenderer.createPopup(frame, "Welcome to the simulation!\nYou will be presented choices on where to proceed.\nPress the appropriate button or type your answer in the field in the bottom left.\nGood luck!\n");
         Player playerCharacter = PlayerInit.playerInit(frame);
         ArrayList<Room> rooms = RoomInit.roomInit();
@@ -27,32 +21,7 @@ public class Main {
 
         Game.gameLoop(playerCharacter, firstRoom, rooms, frame);
     }
-    //this needs a refactor
-    //potential solution: create a relicRoom class that extends itemRoom, then make that portion of this a method on that.
-    //otherwise, that portion could just be a method on itemRoom with the check as well.
-    //add a boolean to itemRooms to indicate whether its item should be randomized or not, then make
-    //a method to do so on the room itself.
-    public static void roomChecker(Room currentRoom, ArrayList<Room> rooms, ArrayList<Relic> relicList, ArrayList<Item> itemList) {
 
-        if (currentRoom.getType() == RoomType.RELIC) {
-            ItemRoom newRoom = (ItemRoom) currentRoom;
-            Relic newRelic = relicList.get(new Random().nextInt(relicList.size()));
-            //this does not allow players to ever obtain a relic if they deny taking it.
-            relicList.remove(newRelic);
-            if (relicList.isEmpty()) {
-                Game.deactivateRelicRooms(rooms);
-            }
-            if (newRoom.getId() == 10) {
-                newRelic.setCursed(new Random().nextInt(5) != 0);
-            }
-            newRoom.setItem(newRelic);
-        }
-        if (currentRoom.getId() == 12) {
-            ItemRoom newRoom = (ItemRoom) currentRoom;
-            Item item = itemList.get(new Random().nextInt(itemList.size()));
-            newRoom.setItem(item);
-        }
-    }
     public static int getIntegerResponse(JFrame frame, Player player, int lowerBound, int upperBound) {
         String originalResponse = SwingRenderer.getTempText(frame).toLowerCase();
         String newResponse;

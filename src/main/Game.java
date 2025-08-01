@@ -1,10 +1,6 @@
 package main;
 
-import main.initialization.ItemInit;
-import main.initialization.RelicInit;
-import main.item.Item;
 import main.item.relic.ForesightRelic;
-import main.item.relic.Relic;
 import main.item.relic.RelicID;
 import main.room.PureWaterRoom;
 import main.room.Room;
@@ -18,12 +14,8 @@ import java.util.Random;
 
 public class Game {
     public static void gameLoop(Player playerCharacter, Room currentRoom, ArrayList<Room> rooms, JFrame frame) {
-        ArrayList<Relic> relicList = RelicInit.relicInit();
-        //this shouldn't be here
-        ArrayList<Item> itemList = ItemInit.itemInit();
         while (playerCharacter.getCurrentHealth() > 0) {
             playerCharacter.setCurrentRoom(currentRoom);
-            Main.roomChecker(currentRoom, rooms, relicList, itemList);
 
             currentRoom.completeRoomActions(playerCharacter, frame);
 
@@ -66,6 +58,7 @@ public class Game {
         }
     }
 
+    //TODO: Figure out when to call this
     public static void deactivateRelicRooms(ArrayList<Room> rooms) {
         for (Room checkRoom : rooms) {
             if (checkRoom.getType() == RoomType.RELIC) {
