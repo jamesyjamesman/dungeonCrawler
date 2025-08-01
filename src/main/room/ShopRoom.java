@@ -32,38 +32,38 @@ public class ShopRoom extends Room {
     @Override
     public void completeRoomActions(Player player, JFrame frame) {
         super.completeRoomActions(player, frame);
-        SwingRenderer.appendMainLabelText(frame, "Would you like to bug the shopkeeper?", true);
-        boolean goToShop = Main.parseResponseAsBoolean(frame);
+        SwingRenderer.appendMainLabelText("Would you like to bug the shopkeeper?", true);
+        boolean goToShop = Main.parseResponseAsBoolean();
         if (goToShop) {
             openShop();
             renderShopUI(frame, player);
-            SwingRenderer.UIUpdater(frame, player);
-            Main.waitForResponse(frame);
+            SwingRenderer.UIUpdater(player);
+            Main.waitForResponse();
         }
         closeShop();
     }
 
     public void renderShopUI(JFrame frame, Player player) {
-        SwingRenderer.appendMainLabelText(frame, "Hello there adventurer... welcome to my shop. Buy something, if you dare...\n", true);
+        SwingRenderer.appendMainLabelText("Hello there adventurer... welcome to my shop. Buy something, if you dare...\n", true);
         for (int i = 0; i < this.getWares().size(); i++) {
             SwingRenderer.addShopLabel(frame, player, this.getWares().get(i), this);
         }
-        SwingRenderer.appendMainLabelText(frame, "\nEnter anything to exit the shop!\n", false);
+        SwingRenderer.appendMainLabelText("\nEnter anything to exit the shop!\n", false);
     }
 
     public void sellItem(JFrame frame, Item item, Player player) {
         if (player.getGold() < item.getValue()) {
-            SwingRenderer.changeLabelText(frame, "You don't have enough gold!", ComponentType.LABEL_ERROR);
+            SwingRenderer.changeLabelText("You don't have enough gold!", ComponentType.LABEL_ERROR);
             return;
         }
-        boolean inventoryFull = player.addItemToInventory(frame, item);
+        boolean inventoryFull = player.addItemToInventory(item);
         if (inventoryFull) {
-            SwingRenderer.changeLabelText(frame, "Your inventory is full!", ComponentType.LABEL_ERROR);
+            SwingRenderer.changeLabelText("Your inventory is full!", ComponentType.LABEL_ERROR);
             return;
         }
         player.takeGold(item.getValue());
         this.wares.remove(item);
-        SwingRenderer.UIUpdater(frame, player);
+        SwingRenderer.UIUpdater(player);
         renderShopUI(frame, player);
     }
 

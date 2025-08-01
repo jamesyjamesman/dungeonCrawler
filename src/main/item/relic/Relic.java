@@ -23,10 +23,10 @@ public abstract class Relic extends Item {
     public void useRelic(JFrame frame, Player player, Room room) {}
 
     @Override
-    public void useItem(JFrame frame, Player player) {
-        if(this.equipped) {player.unequipRelic(frame, this);}
-        else {player.equipRelic(frame, this);}
-        SwingRenderer.UIUpdater(frame, player);
+    public void useItem(Player player) {
+        if(this.equipped) {player.unequipRelic(this);}
+        else {player.equipRelic(this);}
+        SwingRenderer.UIUpdater(player);
     }
 
     public boolean isCursed() {

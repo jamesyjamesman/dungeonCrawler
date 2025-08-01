@@ -44,25 +44,25 @@ public class Enemy {
 
     public void death(JFrame frame, Player player, EnemyRoom enemyRoom) {
         player.changeExperience(getExperienceDropped());
-        player.levelUp(frame);
-        player.checkStatus(frame);
-        SwingRenderer.changeLabelText(frame, "The " + getSpecies() + " died! You got " + getExperienceDropped() + " experience!\n", ComponentType.LABEL_DESCRIPTION);
+        player.levelUp();
+        player.checkStatus();
+        SwingRenderer.changeLabelText("The " + getSpecies() + " died! You got " + getExperienceDropped() + " experience!\n", ComponentType.LABEL_DESCRIPTION);
 
         this.getLoot().dropLoot(frame, player);
 
         enemyRoom.addDefeatedEnemy(this);
         enemyRoom.removeEnemy(this);
-        player.checkInventory(frame);
+        player.checkInventory();
     }
 
     public void attack(JFrame frame, Player player) {
         if (player.equippedRelicIndex(RelicID.SLIME) != -1
             && new Random().nextInt(4) == 0) {
-            SwingRenderer.addHealthText(frame, "The attack from the " + this.species + " bounced right off!");
+            SwingRenderer.addHealthText("The attack from the " + this.species + " bounced right off!");
                 return;
         }
-        SwingRenderer.addHealthText(frame, "The " + this.species + " attacked you, dealing " + this.damage + " damage!");
-        player.takeDamage(frame, this.damage);
+        SwingRenderer.addHealthText("The " + this.species + " attacked you, dealing " + this.damage + " damage!");
+        player.takeDamage(this.damage);
         //will get more complex with weapons, etc.
     }
 
@@ -73,7 +73,7 @@ public class Enemy {
         output += "HP: " + this.currentHealth + "/" + this.maxHealth + "\n";
         output += "EXP: " + this.experienceDropped + "\n";
         output += "ATK DMG: " + this.damage + "\n";
-        SwingRenderer.changeLabelText(frame, output, ComponentType.LABEL_DESCRIPTION);
+        SwingRenderer.changeLabelText(output, ComponentType.LABEL_DESCRIPTION);
     }
 
     public void reset() {

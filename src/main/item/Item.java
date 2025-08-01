@@ -7,8 +7,6 @@ import main.room.PureWaterRoom;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
-import javax.swing.*;
-
 public abstract class Item implements Cloneable {
     String description;
     String name;
@@ -25,27 +23,27 @@ public abstract class Item implements Cloneable {
         this.shopWeight = 10;
     }
 
-    public void useItem(JFrame frame, Player player) {
-       SwingRenderer.UIUpdater(frame, player);
+    public void useItem(Player player) {
+       SwingRenderer.UIUpdater(player);
     }
 
-    public void cleanseItem(JFrame frame, Player player) {
+    public void cleanseItem(Player player) {
         if (this instanceof Relic relic && relic.isCursed()) {
             relic.setCursed(false);
-            SwingRenderer.changeLabelText(frame, "The " + relic.getName() + " was cured!", ComponentType.LABEL_ERROR);
+            SwingRenderer.changeLabelText("The " + relic.getName() + " was cured!", ComponentType.LABEL_ERROR);
             if (relic.isEquipped(player)) {
                 player.getCurrentStatuses().setCursed(player.getCurrentStatuses().getCursed() - 1);
             }
         } else if (this.getName().equals("Apple")) {
-            player.discardItem(frame, this);
-            player.addItemToInventory(frame, new PureAppleItem());
-            SwingRenderer.changeLabelText(frame, "The apple was purified!", ComponentType.LABEL_ERROR);
+            player.discardItem(this);
+            player.addItemToInventory(new PureAppleItem());
+            SwingRenderer.changeLabelText("The apple was purified!", ComponentType.LABEL_ERROR);
         } else {
-            SwingRenderer.changeLabelText(frame, "You put the " + this.getName() + " in the fountain, but nothing happened.", ComponentType.LABEL_ERROR);
+            SwingRenderer.changeLabelText("You put the " + this.getName() + " in the fountain, but nothing happened.", ComponentType.LABEL_ERROR);
         }
         ((PureWaterRoom) player.getCurrentRoom()).setFountainUsed(true);
-        SwingRenderer.appendMainLabelText(frame, "The fountain ran dry!", false);
-        SwingRenderer.UIUpdater(frame, player);
+        SwingRenderer.appendMainLabelText("The fountain ran dry!", false);
+        SwingRenderer.UIUpdater(player);
     }
 
 

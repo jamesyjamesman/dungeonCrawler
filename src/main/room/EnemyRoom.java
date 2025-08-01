@@ -22,7 +22,7 @@ public class EnemyRoom extends Room {
     @Override
     public void completeRoomActions(Player player, JFrame frame) {
         super.completeRoomActions(player, frame);
-        SwingRenderer.appendMainLabelText(frame, this.battleInitiationMessage, true);
+        SwingRenderer.appendMainLabelText(this.battleInitiationMessage, true);
         Battle.battleLoop(frame, player, this);
         reset();
     }

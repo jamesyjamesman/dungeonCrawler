@@ -24,15 +24,15 @@ public class ItemRoom extends Room {
         }
         super.completeRoomActions(player, frame);
 
-        SwingRenderer.appendMainLabelText(frame, "Would you like to take the " + this.item.getName() + "? (y/n)", true);
+        SwingRenderer.appendMainLabelText("Would you like to take the " + this.item.getName() + "? (y/n)", true);
 
-        boolean wantsItem = Main.parseResponseAsBoolean(frame);
+        boolean wantsItem = Main.parseResponseAsBoolean();
         if (wantsItem) {
-            player.itemPickup(frame, this.item);
-            player.checkInventory(frame);
+            player.itemPickup(this.item);
+            player.checkInventory();
             return;
         }
-        SwingRenderer.appendMainLabelText(frame, "You chose to forgo the loot...", false);
+        SwingRenderer.appendMainLabelText("You chose to forgo the loot...", false);
     }
 
     public void initializeItem() {

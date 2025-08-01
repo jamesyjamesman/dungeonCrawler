@@ -21,11 +21,11 @@ public class Game {
 
             activateRooms(rooms, playerCharacter);
             ArrayList<Room> activeRooms = new ArrayList<>(getRandomActiveRooms(rooms));
-            createRoomExits(frame, playerCharacter, activeRooms, currentRoom);
+            createRoomExits(playerCharacter, activeRooms, currentRoom);
             playerCharacter.useRelics(frame, currentRoom);
-            playerCharacter.statusHandler(frame, false);
+            playerCharacter.statusHandler(false);
 
-            int response = Main.getIntegerResponse(frame, playerCharacter, 1, currentRoom.getExits().size()) - 1;
+            int response = Main.getIntegerResponse(playerCharacter, 1, currentRoom.getExits().size()) - 1;
             //this should be moved somewhere else, or make a new pure water room every time
             if (currentRoom instanceof PureWaterRoom room) {
                 room.setFountainUsed(false);
@@ -34,12 +34,12 @@ public class Game {
             currentRoom.getExits().clear();
             currentRoom = nextRoom;
         }
-        playerCharacter.doDeathSequence(frame);
+        playerCharacter.doDeathSequence();
     }
 
-    public static void createRoomExits(JFrame frame, Player player, ArrayList<Room> activeRooms, Room room) {
-        SwingRenderer.appendMainLabelText(frame, "Where would you like to go?\n", true);
-        SwingRenderer.appendMainLabelText(frame, "You see " + room.getNumExits() + " exit" + Main.pluralChecker(room.getNumExits()) + ".\n", false);
+    public static void createRoomExits(Player player, ArrayList<Room> activeRooms, Room room) {
+        SwingRenderer.appendMainLabelText("Where would you like to go?\n", true);
+        SwingRenderer.appendMainLabelText("You see " + room.getNumExits() + " exit" + Main.pluralChecker(room.getNumExits()) + ".\n", false);
 
         for (int i = 0; i < room.getNumExits(); i++) {
             room.addExit(getWeightedRoom(activeRooms));
@@ -54,7 +54,7 @@ public class Game {
             } else {
                 output = output.concat("\n");
             }
-            SwingRenderer.addRoomLabel(frame, i, output);
+            SwingRenderer.addRoomLabel(i, output);
         }
     }
 

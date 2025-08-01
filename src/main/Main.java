@@ -12,9 +12,17 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        App app = App.INSTANCE.getInstance();
         JFrame frame = SwingRenderer.componentFactory();
-        SwingRenderer.createPopup(frame, "Welcome to the simulation!\nYou will be presented choices on where to proceed.\nPress the appropriate button or type your answer in the field in the bottom left.\nGood luck!\n");
+        app.setFrame(frame);
+
+        SwingRenderer.renderer(frame);
+
         Player playerCharacter = PlayerInit.playerInit(frame);
+        app.setPlayer(playerCharacter);
+
+        SwingRenderer.createPopup("Welcome to the simulation!\nYou will be presented choices on where to proceed.\nPress the appropriate button or type your answer in the field in the bottom left.\nGood luck!\n");
+
         ArrayList<Room> rooms = RoomInit.roomInit();
 
         Room firstRoom = rooms.getFirst();
@@ -22,12 +30,12 @@ public class Main {
         Game.gameLoop(playerCharacter, firstRoom, rooms, frame);
     }
 
-    public static int getIntegerResponse(JFrame frame, Player player, int lowerBound, int upperBound) {
-        String originalResponse = SwingRenderer.getTempText(frame).toLowerCase();
+    public static int getIntegerResponse(Player player, int lowerBound, int upperBound) {
+        String originalResponse = SwingRenderer.getTempText().toLowerCase();
         String newResponse;
         boolean once = false;
         while (true) {
-            newResponse = SwingRenderer.getTempText(frame).toLowerCase();
+            newResponse = SwingRenderer.getTempText().toLowerCase();
             if (newResponse.isEmpty()) {
                 continue;
             }
@@ -35,30 +43,30 @@ public class Main {
                 continue;
             }
             once = true;
-            String promptResponse = checkForCommands(frame, player, newResponse);
+            String promptResponse = checkForCommands(player, newResponse);
             int response;
             try {
                 response = Integer.parseInt(promptResponse);
             } catch(NumberFormatException e) {
-                SwingRenderer.changeLabelText(frame, "Invalid response!", ComponentType.LABEL_ERROR);
+                SwingRenderer.changeLabelText("Invalid response!", ComponentType.LABEL_ERROR);
                 continue;
             }
             if (response > upperBound || response < lowerBound) {
-                SwingRenderer.changeLabelText(frame, "Out of bounds!", ComponentType.LABEL_ERROR);
+                SwingRenderer.changeLabelText("Out of bounds!", ComponentType.LABEL_ERROR);
                 continue;
             }
             return response;
         }
     }
 
-    public static boolean parseResponseAsBoolean(JFrame frame) {
+    public static boolean parseResponseAsBoolean() {
         //this could be done better
-        SwingRenderer.changeAnswerVisibility(frame, true);
-        String originalResponse = SwingRenderer.getTempText(frame);
+        SwingRenderer.changeAnswerVisibility(true);
+        String originalResponse = SwingRenderer.getTempText();
         String newResponse;
         boolean once = false;
         while (true) {
-            newResponse = SwingRenderer.getTempText(frame);
+            newResponse = SwingRenderer.getTempText();
             if (newResponse.isEmpty()) {
                 continue;
             }
@@ -67,20 +75,20 @@ public class Main {
             }
             once = true;
             if (newResponse.equals("y") || newResponse.equals("yes")) {
-                SwingRenderer.changeAnswerVisibility(frame, false);
+                SwingRenderer.changeAnswerVisibility(false);
                 return true;
             } else if (newResponse.equals("n") || newResponse.equals("no")) {
-                SwingRenderer.changeAnswerVisibility(frame, false);
+                SwingRenderer.changeAnswerVisibility(false);
                 return false;
             }
-            SwingRenderer.changeLabelText(frame, "Invalid response!", ComponentType.LABEL_ERROR);
+            SwingRenderer.changeLabelText("Invalid response!", ComponentType.LABEL_ERROR);
         }
     }
 
     //TODO: add okay button similar to yes/no
-    public static void waitForResponse(JFrame frame) {
+    public static void waitForResponse() {
         while (true) {
-            String response = SwingRenderer.getTempText(frame);
+            String response = SwingRenderer.getTempText();
             if (response.isEmpty()) {
                 continue;
             }
@@ -88,12 +96,12 @@ public class Main {
         }
     }
 
-    public static String checkForCommands(JFrame frame, Player player, String input) {
+    public static String checkForCommands(Player player, String input) {
         Scanner promptScanner = new Scanner(System.in);
         while (true) {
             switch (input) {
                 //debug commands
-                case "kill" -> player.takeDamage(frame, 1000000);
+                case "kill" -> player.takeDamage(1000000);
                 case "godmode" -> {
                     player.increaseDamage(1000);
                     player.addAbsorption(100000);

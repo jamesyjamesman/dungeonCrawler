@@ -1,10 +1,8 @@
 package main.room;
 
-import main.Game;
 import main.Main;
 import main.Player;
 import main.initialization.RelicInit;
-import main.item.Item;
 import main.item.relic.Relic;
 import main.item.relic.RelicID;
 import main.swing.SwingRenderer;
@@ -27,22 +25,22 @@ public class RelicRoom extends Room {
         super.completeRoomActions(player, frame);
 
         if (this.hasCorpse) {
-            SwingRenderer.appendMainLabelText(frame, "Would you like to ...look through the corpse? (y/n)\n", true);
+            SwingRenderer.appendMainLabelText("Would you like to ...look through the corpse? (y/n)\n", true);
         } else {
-            SwingRenderer.appendMainLabelText(frame, "Would you like to take the " + this.relic.getName() + " from the pedestal? (y/n)", true);
+            SwingRenderer.appendMainLabelText("Would you like to take the " + this.relic.getName() + " from the pedestal? (y/n)", true);
         }
 
         if (player.equippedRelicIndex(RelicID.CURSE_DETECTION) > -1 && this.relic.isCursed()) {
-            SwingRenderer.appendMainLabelText(frame, "Warning! The " + this.relic.getName() + " is cursed!", false);
+            SwingRenderer.appendMainLabelText("Warning! The " + this.relic.getName() + " is cursed!", false);
         }
 
-        boolean wantsItem = Main.parseResponseAsBoolean(frame);
+        boolean wantsItem = Main.parseResponseAsBoolean();
         if (wantsItem) {
-            player.itemPickup(frame, this.relic);
-            player.checkInventory(frame);
+            player.itemPickup(this.relic);
+            player.checkInventory();
             return;
         }
-        SwingRenderer.appendMainLabelText(frame, "You chose to forgo the loot...", false);
+        SwingRenderer.appendMainLabelText("You chose to forgo the loot...", false);
     }
 
     //TODO: figure out how to stop repeat relics;
@@ -54,7 +52,7 @@ public class RelicRoom extends Room {
 //        if (relicList.isEmpty()) {
 //                Game.deactivateRelicRooms(rooms);
 //        }
-        if (this.getId() == 10) {
+        if (this.hasCorpse) {
             newRelic.setCursed(new Random().nextInt(5) != 0);
         }
         this.setRelic(newRelic);

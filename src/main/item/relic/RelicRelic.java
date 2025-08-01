@@ -3,8 +3,6 @@ package main.item.relic;
 import main.Player;
 import main.swing.SwingRenderer;
 
-import javax.swing.*;
-
 public class RelicRelic extends Relic {
     public RelicRelic() {
         setName("Relic of Relics");
@@ -13,23 +11,23 @@ public class RelicRelic extends Relic {
     }
 
     @Override
-    public void useItem(JFrame frame, Player player) {
+    public void useItem(Player player) {
         if (this.isEquipped(player)) {
             int relicsOverCapacity = player.getEquippedRelics().size() - (player.getRelicCap() - 3);
             if (relicsOverCapacity > 0) {
-                SwingRenderer.appendMainLabelText(frame, "You have too many relics equipped to remove this relic!\n" + "Unequip " + relicsOverCapacity + " relics to remove this relic.", false);
-                SwingRenderer.UIUpdater(frame, player);
+                SwingRenderer.appendMainLabelText("You have too many relics equipped to remove this relic!\n" + "Unequip " + relicsOverCapacity + " relics to remove this relic.", false);
+                SwingRenderer.UIUpdater(player);
                 return;
             }
-            if (player.unequipRelic(frame, this)) {
+            if (player.unequipRelic(this)) {
                 player.changeRelicCap(-3);
             }
         }
         else {
-            if (player.equipRelic(frame, this)) {
+            if (player.equipRelic(this)) {
                 player.changeRelicCap(3);
             }
         }
-        SwingRenderer.UIUpdater(frame, player);
+        SwingRenderer.UIUpdater(player);
     }
 }

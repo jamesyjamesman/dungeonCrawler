@@ -33,12 +33,12 @@ public class Room {
     }
 
     public void completeRoomActions(Player player, JFrame frame) {
-        SwingRenderer.changeBackgroundImage(frame, this.backgroundFileName);
-        SwingRenderer.changeLabelText(frame, this.description, ComponentType.LABEL_DESCRIPTION);
+        SwingRenderer.changeBackgroundImage(this.backgroundFileName);
+        SwingRenderer.changeLabelText(this.description, ComponentType.LABEL_DESCRIPTION);
         player.incrementRoomsTraversed();
-        player.checkStatus(frame);
-        player.checkInventory(frame);
-        player.checkRelics(frame);
+        player.checkStatus();
+        player.checkInventory();
+        player.checkRelics();
     }
 
     public RoomType getType() {

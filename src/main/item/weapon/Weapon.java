@@ -4,8 +4,6 @@ import main.Player;
 import main.item.Item;
 import main.swing.SwingRenderer;
 
-import javax.swing.*;
-
 //should be abstract
 public class Weapon extends Item {
     int damage;
@@ -15,13 +13,13 @@ public class Weapon extends Item {
     }
 
     @Override
-    public void useItem(JFrame frame, Player player) {
+    public void useItem(Player player) {
         if (this.isEquipped(player)) {
-            player.setEquippedWeapon(frame, null);
+            player.setEquippedWeapon(null);
         } else {
-            player.setEquippedWeapon(frame, this);
+            player.setEquippedWeapon(this);
         }
-        SwingRenderer.UIUpdater(frame, player);
+        SwingRenderer.UIUpdater(player);
     }
 
     public void setDamage(int damage) {

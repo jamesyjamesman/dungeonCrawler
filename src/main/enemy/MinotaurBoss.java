@@ -19,26 +19,26 @@ public class MinotaurBoss extends Boss {
         this.setLoot(new Loot(30));
     }
     public int chargeAttack(JFrame frame) {
-        SwingRenderer.appendMainLabelText(frame, "The minotaur charges at you, goring you with its horns!\n", false);
+        SwingRenderer.appendMainLabelText("The minotaur charges at you, goring you with its horns!\n", false);
         return this.damage * 2;
     }
     public int shriekAttack(JFrame frame, Player player) {
         player.getCurrentStatuses().setWeakened(player.getCurrentStatuses().getWeakened() + 1);
-        SwingRenderer.appendMainLabelText(frame, "The minotaur unleashes a piercing scream, wracking your nerves! (You gained a level of weakness).\n", false);
+        SwingRenderer.appendMainLabelText("The minotaur unleashes a piercing scream, wracking your nerves! (You gained a level of weakness).\n", false);
         return this.damage;
     }
     public int angerAttack(JFrame frame) {
-        SwingRenderer.appendMainLabelText(frame, "The minotaur is getting upset!\n", false);
+        SwingRenderer.appendMainLabelText("The minotaur is getting upset!\n", false);
         this.damage += 1;
         return 0;
     }
     public int healAttack(JFrame frame) {
-        SwingRenderer.appendMainLabelText(frame, "The minotaur pulls out a large chunk of meat, ripping into it!\n", false);
+        SwingRenderer.appendMainLabelText("The minotaur pulls out a large chunk of meat, ripping into it!\n", false);
         this.currentHealth += (int) (this.damage * 1.5);
         return 0;
     }
     public int failedChargeAttack(JFrame frame) {
-        SwingRenderer.appendMainLabelText(frame, "The minotaur tries to charge at you, but falls over, smacking itself in the face.\n", false);
+        SwingRenderer.appendMainLabelText("The minotaur tries to charge at you, but falls over, smacking itself in the face.\n", false);
         this.currentHealth -= this.damage / 2;
         return angerAttack(frame);
     }
@@ -58,9 +58,9 @@ public class MinotaurBoss extends Boss {
         }
 
         if (damage > 0) {
-            SwingRenderer.addHealthText(frame, "You took " + damage + " damage from the minotaur!");
+            SwingRenderer.addHealthText("You took " + damage + " damage from the minotaur!");
         }
-        player.takeDamage(frame, damage);
+        player.takeDamage(damage);
     }
 
     @Override

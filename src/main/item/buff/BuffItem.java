@@ -4,7 +4,6 @@ import main.Player;
 import main.item.Item;
 import main.swing.SwingRenderer;
 
-import javax.swing.*;
 import java.util.Random;
 
 public abstract class BuffItem extends Item {
@@ -24,11 +23,11 @@ public abstract class BuffItem extends Item {
     }
 
     @Override
-    public void useItem(JFrame frame, Player player) {
+    public void useItem(Player player) {
         randomizeAmountChanged();
-        SwingRenderer.appendMainLabelText(frame, "You crack open the can, plug your nose, and manage to force its contents down your throat.", false);
-        player.discardItem(frame, this);
-        SwingRenderer.UIUpdater(frame, player);
+        SwingRenderer.appendMainLabelText("You crack open the can, plug your nose, and manage to force its contents down your throat.", false);
+        player.discardItem(this);
+        SwingRenderer.UIUpdater(player);
     }
 
     //sets amount changed from the lower bound to the upper bound - 1

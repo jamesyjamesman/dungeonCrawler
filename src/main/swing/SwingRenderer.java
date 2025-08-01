@@ -1,5 +1,6 @@
 package main.swing;
 
+import main.App;
 import main.Player;
 import main.enemy.Enemy;
 import main.item.Item;
@@ -81,13 +82,13 @@ public class SwingRenderer extends JFrame {
         layeredPane.setLayer(inventorySwitches, 78);
 
         InventoryButton switchInventory = new InventoryButton();
-        switchInventory.addActionListener(_ -> makeInventoryVisible(frame));
+        switchInventory.addActionListener(_ -> makeInventoryVisible());
         switchInventory.setName("switchInventory");
         switchInventory.setText("Inventory");
         inventorySwitches.add(switchInventory);
 
         InventoryButton switchRelics = new InventoryButton();
-        switchRelics.addActionListener(_ -> makeRelicsVisible(frame));
+        switchRelics.addActionListener(_ -> makeRelicsVisible());
         switchRelics.setText("Relics");
         switchRelics.setName("switchRelics");
         inventorySwitches.add(switchRelics);
@@ -184,7 +185,7 @@ public class SwingRenderer extends JFrame {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     hidePopup(popupShadow, popupPanel);
-                    setInputFocus(frame);
+                    setInputFocus();
                 }
             }
 
@@ -202,151 +203,152 @@ public class SwingRenderer extends JFrame {
             @Override
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
-                renderer(frame, backgroundImage);
+                renderer(frame);
             }
         });
-        renderer(frame, backgroundImage);
         return frame;
     }
 
-    public static void renderer(JFrame frame, Icon backgroundImage) {
+    public static void renderer(JFrame frame) {
+        ImageIcon backgroundImage = new ImageIcon(ClassLoader.getSystemResource("default_background.png"));
         int imageWidth = backgroundImage.getIconWidth();
         int imageHeight = backgroundImage.getIconHeight();
 
         int frameHeight = frame.getHeight();
         int frameWidth = frame.getWidth();
 
-        Component background = componentGrabber(frame, ComponentType.LABEL_IMAGE_BACKGROUND);
+        Component background = componentGrabber(ComponentType.LABEL_IMAGE_BACKGROUND);
         background.setSize(imageWidth, imageHeight);
 
-        Component description = componentGrabber(frame, ComponentType.LABEL_DESCRIPTION);
+        Component description = componentGrabber(ComponentType.LABEL_DESCRIPTION);
         description.setSize(300, 200);
 
-        Component descriptionShadow = componentGrabber(frame, ComponentType.SHADOW_DESCRIPTION);
+        Component descriptionShadow = componentGrabber(ComponentType.SHADOW_DESCRIPTION);
         descriptionShadow.setSize(300, 200);
 
         int statusLabelWidth = 200;
         int labelHeight = 200;
 
-        Component status = componentGrabber(frame, ComponentType.LABEL_STATUS);
+        Component status = componentGrabber(ComponentType.LABEL_STATUS);
         status.setBounds(frameWidth - statusLabelWidth, 0, statusLabelWidth, labelHeight);
 
-        Component statusShadow = componentGrabber(frame, ComponentType.SHADOW_STATUS);
+        Component statusShadow = componentGrabber(ComponentType.SHADOW_STATUS);
         statusShadow.setBounds(frameWidth - statusLabelWidth, 0, statusLabelWidth, labelHeight);
 
         int labelWidth = 400;
         labelHeight = 450;
 
-        Component inventory = componentGrabber(frame, ComponentType.PANE_INVENTORY);
+        Component inventory = componentGrabber(ComponentType.PANE_INVENTORY);
         inventory.setBounds(frameWidth - labelWidth, frameHeight - labelHeight, labelWidth, labelHeight);
 
-        Component inventoryShadow = componentGrabber(frame, ComponentType.SHADOW_INVENTORY);
+        Component inventoryShadow = componentGrabber(ComponentType.SHADOW_INVENTORY);
         inventoryShadow.setBounds(frameWidth - labelWidth, frameHeight - labelHeight, labelWidth, labelHeight);
 
-        Component relics = componentGrabber(frame, ComponentType.PANE_RELIC);
+        Component relics = componentGrabber(ComponentType.PANE_RELIC);
         relics.setBounds(frameWidth - labelWidth, frameHeight - labelHeight, labelWidth, labelHeight);
 
-        Component invSwitches = componentGrabber(frame, ComponentType.PANEL_INVENTORY_SWITCH);
+        Component invSwitches = componentGrabber(ComponentType.PANEL_INVENTORY_SWITCH);
         invSwitches.setBounds(frameWidth - labelWidth, frameHeight - labelHeight - 25, labelWidth, 25);
 
         int userInputHeight = 100;
         int userInputWidth = 600;
 
-        Component input = componentGrabber(frame, ComponentType.TEXTFIELD_INPUT);
+        Component input = componentGrabber(ComponentType.TEXTFIELD_INPUT);
         input.setBounds(0, frameHeight - userInputHeight, userInputWidth, userInputHeight);
 
-        Component inputShadow = componentGrabber(frame, ComponentType.SHADOW_INPUT);
+        Component inputShadow = componentGrabber(ComponentType.SHADOW_INPUT);
         inputShadow.setBounds(0, frameHeight - userInputHeight, userInputWidth, userInputHeight);
 
         int errorTextLabelWidth = 600;
         int errorTextLabelHeight = 50;
 
-        Component error = componentGrabber(frame, ComponentType.LABEL_ERROR);
+        Component error = componentGrabber(ComponentType.LABEL_ERROR);
         error.setBounds(0, frameHeight - errorTextLabelHeight - userInputHeight - 25, errorTextLabelWidth, errorTextLabelHeight);
 
-        Component errorShadow = componentGrabber(frame, ComponentType.SHADOW_ERROR);
+        Component errorShadow = componentGrabber(ComponentType.SHADOW_ERROR);
         errorShadow.setBounds(0, frameHeight - errorTextLabelHeight - userInputHeight - 25, errorTextLabelWidth, errorTextLabelHeight);
 
         int mainTextLabelHeight = 300;
         int mainTextLabelWidth = 600;
 
-        Component main = componentGrabber(frame, ComponentType.PANE_MAIN);
+        Component main = componentGrabber(ComponentType.PANE_MAIN);
         main.setBounds(0, frameHeight - mainTextLabelHeight - errorTextLabelHeight - userInputHeight - 25, mainTextLabelWidth, mainTextLabelHeight);
 
-        Component mainShadow = componentGrabber(frame, ComponentType.SHADOW_MAIN);
+        Component mainShadow = componentGrabber(ComponentType.SHADOW_MAIN);
         mainShadow.setBounds(0, frameHeight - mainTextLabelHeight - errorTextLabelHeight - userInputHeight - 25, mainTextLabelWidth, mainTextLabelHeight);
 
-        Component yesOrNo = componentGrabber(frame, ComponentType.PANEL_YES_OR_NO);
+        Component yesOrNo = componentGrabber(ComponentType.PANEL_YES_OR_NO);
         yesOrNo.setBounds(0, frameHeight - errorTextLabelHeight - userInputHeight - 50, mainTextLabelWidth, 25);
 
         int healthLabelHeight = 200;
         int healthLabelWidth = 300;
 
-        Component health = componentGrabber(frame, ComponentType.PANE_HEALTH);
+        Component health = componentGrabber(ComponentType.PANE_HEALTH);
         health.setBounds(frameWidth - healthLabelWidth - statusLabelWidth, 0, healthLabelWidth, healthLabelHeight);
 
-        Component healthShadow = componentGrabber(frame, ComponentType.SHADOW_HEALTH);
+        Component healthShadow = componentGrabber(ComponentType.SHADOW_HEALTH);
         healthShadow.setBounds(frameWidth - healthLabelWidth - statusLabelWidth, 0, healthLabelWidth, healthLabelHeight);
 
         int popupPanelWidth = 500;
         int popupPanelHeight = 400;
 
-        Component popupPanel = componentGrabber(frame, ComponentType.PANEL_POPUP);
+        Component popupPanel = componentGrabber(ComponentType.PANEL_POPUP);
         popupPanel.setBounds(frameWidth/2 - popupPanelWidth/2, frameHeight/2 - popupPanelHeight/2, popupPanelWidth, popupPanelHeight);
 
-        Component popupShadow = componentGrabber(frame, ComponentType.SHADOW_POPUP);
+        Component popupShadow = componentGrabber(ComponentType.SHADOW_POPUP);
         popupShadow.setBounds(0, 0, frameWidth, frameHeight);
     }
 
-    public static Component componentGrabber(JFrame frame, ComponentType type) {
+    public static Component componentGrabber(ComponentType type) {
         return switch (type) {
-            case PANE_MAIN -> getComponentByName(frame, "main");
-            case SHADOW_MAIN -> getComponentByName(frame, "mainShadow");
-            case BUTTON_NO -> getComponentByName(frame, "no");
-            case BUTTON_YES -> getComponentByName(frame, "yes");
-            case LABEL_TEMP -> getComponentByName(frame, "temp");
-            case PANE_POPUP -> getComponentByName(frame, "popupPane");
-            case PANE_RELIC -> getComponentByName(frame, "relics");
-            case LABEL_ERROR -> getComponentByName(frame, "error");
-            case PANE_HEALTH -> getComponentByName(frame, "health");
-            case PANEL_POPUP -> getComponentByName(frame, "popup");
-            case BUTTON_POPUP -> getComponentByName(frame, "popupButton");
-            case BUTTON_RELIC -> getComponentByName(frame, "switchRelics");
-            case LABEL_STATUS -> getComponentByName(frame, "status");
-            case SHADOW_ERROR -> getComponentByName(frame, "errorShadow");
-            case SHADOW_INPUT -> getComponentByName(frame, "userInputShadow");
-            case SHADOW_POPUP -> getComponentByName(frame, "popupShadow");
-            case SHADOW_HEALTH -> getComponentByName(frame, "healthShadow");
-            case SHADOW_STATUS -> getComponentByName(frame, "statusShadow");
-            case PANE_INVENTORY -> getComponentByName(frame, "inventory");
-            case TEXTFIELD_INPUT -> getComponentByName(frame, "input");
-            case BUTTON_INVENTORY -> getComponentByName(frame, "switchInventory");
-            case SHADOW_INVENTORY -> getComponentByName(frame, "inventoryShadow");
-            case LABEL_DESCRIPTION -> getComponentByName(frame, "description");
-            case SHADOW_DESCRIPTION -> getComponentByName(frame, "descriptionShadow");
-            case PANEL_YES_OR_NO -> getComponentByName(frame, "yesOrNo");
-            case LABEL_IMAGE_BACKGROUND -> getComponentByName(frame, "background");
-            case PANEL_INVENTORY_SWITCH -> getComponentByName(frame, "inventorySwitches");
+            case PANE_MAIN -> getComponentByName("main");
+            case SHADOW_MAIN -> getComponentByName("mainShadow");
+            case BUTTON_NO -> getComponentByName("no");
+            case BUTTON_YES -> getComponentByName("yes");
+            case LABEL_TEMP -> getComponentByName("temp");
+            case PANE_POPUP -> getComponentByName("popupPane");
+            case PANE_RELIC -> getComponentByName("relics");
+            case LABEL_ERROR -> getComponentByName("error");
+            case PANE_HEALTH -> getComponentByName("health");
+            case PANEL_POPUP -> getComponentByName("popup");
+            case BUTTON_POPUP -> getComponentByName("popupButton");
+            case BUTTON_RELIC -> getComponentByName("switchRelics");
+            case LABEL_STATUS -> getComponentByName("status");
+            case SHADOW_ERROR -> getComponentByName("errorShadow");
+            case SHADOW_INPUT -> getComponentByName("userInputShadow");
+            case SHADOW_POPUP -> getComponentByName("popupShadow");
+            case SHADOW_HEALTH -> getComponentByName("healthShadow");
+            case SHADOW_STATUS -> getComponentByName("statusShadow");
+            case PANE_INVENTORY -> getComponentByName("inventory");
+            case TEXTFIELD_INPUT -> getComponentByName("input");
+            case BUTTON_INVENTORY -> getComponentByName("switchInventory");
+            case SHADOW_INVENTORY -> getComponentByName("inventoryShadow");
+            case LABEL_DESCRIPTION -> getComponentByName("description");
+            case SHADOW_DESCRIPTION -> getComponentByName("descriptionShadow");
+            case PANEL_YES_OR_NO -> getComponentByName("yesOrNo");
+            case LABEL_IMAGE_BACKGROUND -> getComponentByName("background");
+            case PANEL_INVENTORY_SWITCH -> getComponentByName("inventorySwitches");
         };
     }
 
-    public static Component getComponentByName(JFrame frame, String name) {
+    public static Component getComponentByName(String name) {
+        JFrame frame = App.INSTANCE.getFrame();
         return Arrays.stream(frame.getLayeredPane().getComponents())
                 .filter(component -> component.getName().equals(name))
                 .toList()
                 .getFirst();
     }
 
-    public static void UIUpdater(JFrame frame, Player player) {
-        player.checkInventory(frame);
-        player.checkRelics(frame);
-        player.checkStatus(frame);
-        setInputFocus(frame);
+    public static void UIUpdater(Player player) {
+        player.checkInventory();
+        player.checkRelics();
+        player.checkStatus();
+        setInputFocus();
     }
 
-    public static void addHealthText(JFrame frame, String newText) {
+    public static void addHealthText(String newText) {
         newText = newText + "\n";
-        JTextPane healthPane = (JTextPane) componentGrabber(frame, ComponentType.PANE_HEALTH);
+        JTextPane healthPane = (JTextPane) componentGrabber(ComponentType.PANE_HEALTH);
         Document doc = healthPane.getStyledDocument();
         SimpleAttributeSet attributeSet = new SimpleAttributeSet();
         StyleConstants.setBold(attributeSet, true);
@@ -394,25 +396,25 @@ public class SwingRenderer extends JFrame {
         return style;
     }
 
-        public static void changeAnswerVisibility(JFrame frame, boolean visible) {
-        componentGrabber(frame, ComponentType.PANEL_YES_OR_NO).setVisible(visible);
+        public static void changeAnswerVisibility(boolean visible) {
+        componentGrabber(ComponentType.PANEL_YES_OR_NO).setVisible(visible);
     }
 
-    public static void changeLabelText(JFrame frame, String newText, ComponentType componentType) {
+    public static void changeLabelText(String newText, ComponentType componentType) {
         newText = HTMLifyString(newText);
 
     //Can throw an exception
-        JLabel label = (JLabel) componentGrabber(frame, componentType);
+        JLabel label = (JLabel) componentGrabber(componentType);
         label.setText(newText);
     }
 
-    public static void setTempText(JFrame frame, String text) {
-        JLabel tempText = (JLabel) getComponentByName(frame, "temp");
+    public static void setTempText(String text) {
+        JLabel tempText = (JLabel) getComponentByName("temp");
         tempText.setText(text);
     }
 
-    public static void appendMainLabelText(JFrame frame, String addedText, boolean clear) {
-        JTextPane mainPane = (JTextPane) componentGrabber(frame, ComponentType.PANE_MAIN);
+    public static void appendMainLabelText(String addedText, boolean clear) {
+        JTextPane mainPane = (JTextPane) componentGrabber(ComponentType.PANE_MAIN);
         Document doc = mainPane.getStyledDocument();
         SimpleAttributeSet attributeSet = new SimpleAttributeSet();
         StyleConstants.setBold(attributeSet, true);
@@ -434,18 +436,18 @@ public class SwingRenderer extends JFrame {
         return oldText + "<br>" + addedText;
     }
 
-    public static void makeInventoryVisible(JFrame frame) {
-        JTextPane inventoryPane = (JTextPane) componentGrabber(frame, ComponentType.PANE_INVENTORY);
-        JTextPane relicPane = (JTextPane) componentGrabber(frame, ComponentType.PANE_RELIC);
-        setInputFocus(frame);
+    public static void makeInventoryVisible() {
+        JTextPane inventoryPane = (JTextPane) componentGrabber(ComponentType.PANE_INVENTORY);
+        JTextPane relicPane = (JTextPane) componentGrabber(ComponentType.PANE_RELIC);
+        setInputFocus();
         inventoryPane.setVisible(true);
         relicPane.setVisible(false);
     }
 
-    public static void makeRelicsVisible(JFrame frame) {
-        JTextPane inventoryPane = (JTextPane) componentGrabber(frame, ComponentType.PANE_INVENTORY);
-        JTextPane relicPane = (JTextPane) componentGrabber(frame, ComponentType.PANE_RELIC);
-        setInputFocus(frame);
+    public static void makeRelicsVisible() {
+        JTextPane inventoryPane = (JTextPane) componentGrabber(ComponentType.PANE_INVENTORY);
+        JTextPane relicPane = (JTextPane) componentGrabber(ComponentType.PANE_RELIC);
+        setInputFocus();
         inventoryPane.setVisible(false);
         relicPane.setVisible(true);
     }
@@ -460,28 +462,28 @@ public class SwingRenderer extends JFrame {
         userInput.setText("");
     }
 
-    public static String getTempText(JFrame frame) {
-        JLabel tempLabel = (JLabel) getComponentByName(frame, "temp");
+    public static String getTempText() {
+        JLabel tempLabel = (JLabel) getComponentByName("temp");
         String output = tempLabel.getText();
         tempLabel.setText("");
-        setInputFocus(frame);
+        setInputFocus();
         return output;
     }
 
     //if called after a button is pressed, the button click animation does not function properly
-    public static void setInputFocus(JFrame frame) {
-        if (componentGrabber(frame, ComponentType.PANEL_POPUP).isVisible()) {
+    public static void setInputFocus() {
+        if (componentGrabber(ComponentType.PANEL_POPUP).isVisible()) {
             return;
         }
-        componentGrabber(frame, ComponentType.TEXTFIELD_INPUT).requestFocusInWindow();
+        componentGrabber(ComponentType.TEXTFIELD_INPUT).requestFocusInWindow();
     }
 
-    public static void clearInventoryPane(JFrame frame, boolean relics) {
+    public static void clearInventoryPane(boolean relics) {
         JTextPane pane;
         if (relics) {
-            pane = (JTextPane) componentGrabber(frame, ComponentType.PANE_RELIC);
+            pane = (JTextPane) componentGrabber(ComponentType.PANE_RELIC);
         } else {
-            pane = (JTextPane) componentGrabber(frame, ComponentType.PANE_INVENTORY);
+            pane = (JTextPane) componentGrabber(ComponentType.PANE_INVENTORY);
         }
         Document doc = pane.getStyledDocument();
         try {
@@ -494,36 +496,36 @@ public class SwingRenderer extends JFrame {
         pane.repaint();
     }
 
-    public static void addItemLabel(JFrame frame, String newItemText, Player player, Item item, Color color) {
+    public static void addItemLabel(String newItemText, Player player, Item item, Color color) {
         if (item instanceof Relic relic && relic.isEquipped(player)) {
-            addRelicLabel(frame, newItemText, player, relic, color);
+            addRelicLabel(newItemText, player, relic, color);
         } else if (item instanceof Weapon weapon) {
-            addWeaponLabel(frame, newItemText, player, weapon);
+            addWeaponLabel(newItemText, player, weapon);
         } else {
-            addInventoryLabel(frame, newItemText, player, item, color);
+            addInventoryLabel(newItemText, player, item, color);
         }
     }
 
-    public static void addInventoryLabel(JFrame frame, String newText, Player player, Item item, Color color) {
+    public static void addInventoryLabel(String newText, Player player, Item item, Color color) {
         InventoryButton useButton = new InventoryButton();
         InventoryButton dropButton = new InventoryButton();
 
         if (player.getCurrentRoom() instanceof PureWaterRoom pureRoom && !pureRoom.getFountainUsed()) {
             useButton.setText(" Cleanse ");
-            useButton.addActionListener(_ -> item.cleanseItem(frame, player));
+            useButton.addActionListener(_ -> item.cleanseItem(player));
         } else {
-            useButton.addActionListener(_ -> item.useItem(frame, player));
+            useButton.addActionListener(_ -> item.useItem(player));
             if (player.getCurrentRoom() instanceof ShopRoom) {
                 dropButton.setText(" Sell ");
                 dropButton.addActionListener(_ -> {
-                    player.sellItem(frame, item);
-                    SwingRenderer.changeLabelText(frame, "The " + item.getName() + " was sold!", ComponentType.LABEL_ERROR);
+                    player.sellItem(item);
+                    SwingRenderer.changeLabelText("The " + item.getName() + " was sold!", ComponentType.LABEL_ERROR);
                 });
             } else {
                 dropButton.setText(" Drop ");
                 dropButton.addActionListener(_ -> {
-                    player.discardItem(frame, item);
-                    SwingRenderer.changeLabelText(frame, "The " + item.getName() + " was dropped!", ComponentType.LABEL_ERROR);
+                    player.discardItem(item);
+                    SwingRenderer.changeLabelText("The " + item.getName() + " was dropped!", ComponentType.LABEL_ERROR);
                 });
             }
             if (item instanceof Relic) {
@@ -535,7 +537,7 @@ public class SwingRenderer extends JFrame {
             useButton.setHorizontalAlignment(SwingConstants.LEFT);
             dropButton.setHorizontalAlignment(SwingConstants.LEFT);
 
-            JTextPane inventoryPane = (JTextPane) componentGrabber(frame, ComponentType.PANE_INVENTORY);
+            JTextPane inventoryPane = (JTextPane) componentGrabber(ComponentType.PANE_INVENTORY);
             Document doc = inventoryPane.getStyledDocument();
             inventoryPane.setCaretPosition(doc.getLength());
             inventoryPane.insertComponent(useButton);
@@ -545,7 +547,7 @@ public class SwingRenderer extends JFrame {
             insertSimpleText(doc, newText, color);
     }
 
-    public static void addWeaponLabel(JFrame frame, String newText, Player player, Weapon weapon) {
+    public static void addWeaponLabel(String newText, Player player, Weapon weapon) {
         InventoryButton useButton = new InventoryButton();
         InventoryButton dropButton = new InventoryButton();
 
@@ -557,23 +559,23 @@ public class SwingRenderer extends JFrame {
         if (player.getCurrentRoom() instanceof ShopRoom) {
             dropButton.setText(" Sell ");
             dropButton.addActionListener(_ -> {
-                player.sellItem(frame, weapon);
-                SwingRenderer.changeLabelText(frame, "The " + weapon.getName() + " was sold!", ComponentType.LABEL_ERROR);
+                player.sellItem(weapon);
+                SwingRenderer.changeLabelText("The " + weapon.getName() + " was sold!", ComponentType.LABEL_ERROR);
             });
         } else {
             dropButton.setText(" Drop ");
             dropButton.addActionListener(_ -> {
-                player.discardItem(frame, weapon);
-                SwingRenderer.changeLabelText(frame, "The " + weapon.getName() + " was dropped!", ComponentType.LABEL_ERROR);
+                player.discardItem(weapon);
+                SwingRenderer.changeLabelText("The " + weapon.getName() + " was dropped!", ComponentType.LABEL_ERROR);
             });
         }
 
-        useButton.addActionListener(_ -> weapon.useItem(frame, player));
+        useButton.addActionListener(_ -> weapon.useItem(player));
 
         useButton.setHorizontalAlignment(SwingConstants.LEFT);
         dropButton.setHorizontalAlignment(SwingConstants.LEFT);
 
-        JTextPane inventoryPane = (JTextPane) componentGrabber(frame, ComponentType.PANE_INVENTORY);
+        JTextPane inventoryPane = (JTextPane) componentGrabber(ComponentType.PANE_INVENTORY);
         Document doc = inventoryPane.getStyledDocument();
         inventoryPane.setCaretPosition(doc.getLength());
         inventoryPane.insertComponent(useButton);
@@ -586,18 +588,18 @@ public class SwingRenderer extends JFrame {
         insertSimpleText(doc, newText);
     }
 
-    public static void addRelicLabel(JFrame frame, String newText, Player player, Relic relic, Color color) {
+    public static void addRelicLabel(String newText, Player player, Relic relic, Color color) {
         InventoryButton useButton = new InventoryButton();
 
         if (player.getCurrentRoom() instanceof PureWaterRoom pureRoom && !pureRoom.getFountainUsed()) {
             useButton.setText(" Cleanse ");
-            useButton.addActionListener(_ -> relic.cleanseItem(frame, player));
+            useButton.addActionListener(_ -> relic.cleanseItem(player));
         } else {
             useButton.setText(" Unequip ");
-            useButton.addActionListener(_ -> relic.useItem(frame, player));
+            useButton.addActionListener(_ -> relic.useItem(player));
         }
 
-        JTextPane inventoryPane = (JTextPane) componentGrabber(frame, ComponentType.PANE_RELIC);
+        JTextPane inventoryPane = (JTextPane) componentGrabber(ComponentType.PANE_RELIC);
         Document doc = inventoryPane.getStyledDocument();
         inventoryPane.setCaretPosition(doc.getLength());
         inventoryPane.insertComponent(useButton);
@@ -612,13 +614,13 @@ public class SwingRenderer extends JFrame {
         attackButton.setText(" Attack ");
         checkButton.setText(" Check ");
 
-        attackButton.addActionListener(_ -> setTempText(frame, Integer.toString(enemyIndex + 1)));
+        attackButton.addActionListener(_ -> setTempText(Integer.toString(enemyIndex + 1)));
         checkButton.addActionListener(_ -> enemy.checkInformation(frame));
 
         attackButton.setHorizontalAlignment(SwingConstants.LEFT);
         checkButton.setHorizontalAlignment(SwingConstants.LEFT);
 
-        JTextPane mainPane = (JTextPane) componentGrabber(frame, ComponentType.PANE_MAIN);
+        JTextPane mainPane = (JTextPane) componentGrabber(ComponentType.PANE_MAIN);
         Document doc = mainPane.getStyledDocument();
         mainPane.setCaretPosition(doc.getLength());
         mainPane.insertComponent(attackButton);
@@ -630,13 +632,13 @@ public class SwingRenderer extends JFrame {
         insertSimpleText(doc, enemyText);
     }
 
-    public static void addRoomLabel(JFrame frame, int roomIndex, String roomAppearance) {
+    public static void addRoomLabel(int roomIndex, String roomAppearance) {
         InventoryButton roomButton = new InventoryButton();
         roomButton.setText(" Go ");
-        roomButton.addActionListener(_ -> setTempText(frame, Integer.toString(roomIndex + 1)));
+        roomButton.addActionListener(_ -> setTempText(Integer.toString(roomIndex + 1)));
         roomButton.setHorizontalAlignment(SwingConstants.LEFT);
 
-        JTextPane mainPane = (JTextPane) componentGrabber(frame, ComponentType.PANE_MAIN);
+        JTextPane mainPane = (JTextPane) componentGrabber(ComponentType.PANE_MAIN);
         Document doc = mainPane.getStyledDocument();
         mainPane.setCaretPosition(doc.getLength());
         mainPane.insertComponent(roomButton);
@@ -650,7 +652,7 @@ public class SwingRenderer extends JFrame {
         buyButton.addActionListener(_ -> shopRoom.sellItem(frame, item, player));
         buyButton.setHorizontalAlignment(SwingConstants.LEFT);
 
-        JTextPane mainPane = (JTextPane) componentGrabber(frame, ComponentType.PANE_MAIN);
+        JTextPane mainPane = (JTextPane) componentGrabber(ComponentType.PANE_MAIN);
         Document doc = mainPane.getStyledDocument();
         mainPane.setCaretPosition(doc.getLength());
         mainPane.insertComponent(buyButton);
@@ -686,13 +688,13 @@ public class SwingRenderer extends JFrame {
         }
     }
 
-    public static void changeBackgroundImage(JFrame frame, String fileName) {
-        ((JLabel) componentGrabber(frame, ComponentType.LABEL_IMAGE_BACKGROUND)).setIcon(new ImageIcon(ClassLoader.getSystemResource(fileName)));
+    public static void changeBackgroundImage(String fileName) {
+        ((JLabel) componentGrabber(ComponentType.LABEL_IMAGE_BACKGROUND)).setIcon(new ImageIcon(ClassLoader.getSystemResource(fileName)));
     }
 
-    public static void createPopup(JFrame frame, String popupText) {
-        JPanel panel = (JPanel) componentGrabber(frame, ComponentType.PANEL_POPUP);
-        JLabel shadow = (JLabel) componentGrabber(frame, ComponentType.SHADOW_POPUP);
+    public static void createPopup(String popupText) {
+        JPanel panel = (JPanel) componentGrabber(ComponentType.PANEL_POPUP);
+        JLabel shadow = (JLabel) componentGrabber(ComponentType.SHADOW_POPUP);
         JTextPane pane = (JTextPane) panel.getComponent(0);
         Document doc = pane.getStyledDocument();
         SimpleAttributeSet attributeSet = new SimpleAttributeSet();

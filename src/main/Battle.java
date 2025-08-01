@@ -10,12 +10,12 @@ import javax.swing.*;
 public class Battle {
 
     public static void battleLoop(JFrame frame, Player player, EnemyRoom room) {
-        SwingRenderer.appendMainLabelText(frame, "\nThe battle has begun!\n", false);
+        SwingRenderer.appendMainLabelText("\nThe battle has begun!\n", false);
         while (!room.getEnemies().isEmpty()) {
             readEnemies(frame, room, player);
 
-            int enemyIndex = Main.getIntegerResponse(frame, player, 1, room.getEnemies().size()) - 1;
-            SwingRenderer.appendMainLabelText(frame, "", true);
+            int enemyIndex = Main.getIntegerResponse(player, 1, room.getEnemies().size()) - 1;
+            SwingRenderer.appendMainLabelText("", true);
             Enemy enemy = room.getEnemies().get(enemyIndex);
             player.attack(frame, enemy);
             //this should just be in takeDamage but this is fine for now
@@ -29,7 +29,7 @@ public class Battle {
                 enemyAttacker.attack(frame, player);
             }
         }
-        SwingRenderer.appendMainLabelText(frame, "The enemies were defeated!", true);
+        SwingRenderer.appendMainLabelText("The enemies were defeated!", true);
     }
 
     public static void readEnemies(JFrame frame, EnemyRoom room, Player player) {
