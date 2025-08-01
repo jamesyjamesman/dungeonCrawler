@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 public class EnemyInit {
     static ArrayList<Enemy> enemyList = new ArrayList<>();
-    static ArrayList<Boss> bossList = new ArrayList<>();
     public static ArrayList<Enemy> enemyInit() {
             MageEnemy goblinMage = new MageEnemy();
             goblinMage.setMaxHealth(7);
@@ -60,22 +59,5 @@ public class EnemyInit {
             enemyList.add(orc);
 
         return enemyList;
-    }
-    public static ArrayList<Boss> bossInit() {
-            Boss slimeBoss = new SlimeBoss();
-            slimeBoss.setMaxHealth(30);
-            slimeBoss.setSpecies("slime");
-            slimeBoss.setDamage(3);
-            slimeBoss.setExperienceDropped(30);
-            bossList.add(slimeBoss);
-
-            Boss minotaurBoss = new MinotaurBoss();
-            minotaurBoss.setMaxHealth(50);
-            minotaurBoss.setSpecies("minotaur");
-            minotaurBoss.setDamage(5);
-            minotaurBoss.setExperienceDropped(100);
-            bossList.add(minotaurBoss);
-
-        return bossList;
     }
 }
