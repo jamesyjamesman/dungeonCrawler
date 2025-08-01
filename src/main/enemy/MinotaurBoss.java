@@ -11,6 +11,11 @@ import java.util.Random;
 
 public class MinotaurBoss extends Boss {
     public MinotaurBoss() {
+        this.setMaxHealth(50);
+        this.setSpecies("minotaur");
+        this.setDamage(5);
+        this.setExperienceDropped(100);
+
         this.setLoot(new Loot(30));
     }
     public int chargeAttack(JFrame frame) {
