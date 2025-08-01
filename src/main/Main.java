@@ -7,7 +7,6 @@ import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
 import javax.swing.*;
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,8 +15,6 @@ public class Main {
 
         SwingRenderer.renderer(frame);
 
-        SwingRenderer.createPopup("Welcome to the simulation!\nYou will be presented choices on where to proceed.\nPress the appropriate button or type your answer in the field in the bottom left.\nGood luck!\n");
-
         Game.gameLoop();
     }
 
@@ -25,6 +22,7 @@ public class Main {
         App app = App.INSTANCE.getInstance();
         JFrame frame = SwingRenderer.componentFactory();
         app.setFrame(frame);
+        SwingRenderer.createPopup("Welcome to the simulation!\nYou will be presented choices on where to proceed.\nPress the appropriate button or type your answer in the field in the bottom left.\nGood luck!\n");
 
         Player player = PlayerInit.playerInit();
         app.setPlayer(player);
@@ -100,21 +98,23 @@ public class Main {
     }
 
     public static String checkForCommands(Player player, String input) {
-        Scanner promptScanner = new Scanner(System.in);
-        while (true) {
-            switch (input) {
-                //debug commands
-                case "kill" -> player.takeDamage(1000000);
-                case "godmode" -> {
-                    player.increaseDamage(1000);
-                    player.addAbsorption(100000);
-                }
-                default -> {
-                    return input;
-                }
+        switch (input) {
+            //debug commands
+            case "/kill" -> player.takeDamage(1000000);
+            case "/travel" -> player.setRoomsTraversed(1000);
+            case "/godmode" -> {
+                player.increaseDamage(1000);
+                player.addAbsorption(100000);
             }
-            input = promptScanner.nextLine();
+            case "/disease" -> {
+                Statuses statuses = player.getCurrentStatuses();
+                statuses.setWeakened(1000);
+                statuses.setCursed(1000);
+                statuses.setPoison(1000);
+            }
         }
+        SwingRenderer.UIUpdater(player);
+        return input;
     }
 
     public static String pluralChecker(int numThings) {
