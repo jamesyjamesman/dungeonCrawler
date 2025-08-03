@@ -11,7 +11,8 @@ public class InventoryBuffItem extends BuffItem {
     @Override
     public void useItem(Player player) {
         super.useItem(player);
-        SwingRenderer.addHealthText("You're not sure how, but your " + this.statType + " increased by " + this.amountChanged + ".");
+        SwingRenderer.addHealthText("Forcing yourself to swallow the contents of the can, your " + this.statType + " somehow increased by " + this.amountChanged + ".");
         player.changeInventoryCap(this.amountChanged);
+        SwingRenderer.UIUpdater(player);
     }
 }

@@ -12,11 +12,12 @@ public class RelicPouchBuffItem extends BuffItem {
     @Override
     public void useItem(Player player) {
         super.useItem(player);
-        if (amountChanged > 0) {
-            SwingRenderer.addHealthText("You're not sure how, but your " + this.statType + " increased by " + this.amountChanged + ".");
+        if (this.amountChanged > 0) {
+            SwingRenderer.addHealthText("Forcing yourself to swallow the contents of the can, your " + this.statType + " somehow increased by " + this.amountChanged + ".");
+            player.changeRelicCap(this.amountChanged);
         } else {
-            SwingRenderer.addHealthText("Ew. That one was a dud.");
+            SwingRenderer.addHealthText("Drinking that... was not worth it.");
         }
-        player.changeRelicCap(this.amountChanged);
+        SwingRenderer.UIUpdater(player);
     }
 }

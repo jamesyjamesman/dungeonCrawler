@@ -24,14 +24,14 @@ public class ShopRoom extends Room {
         this.type = RoomType.SPECIAL;
         this.roomsRequired = 10;
         this.numExits = 2;
-        this.selectionWeight = 2;
+        this.selectionWeight = 1;
         this.itemList = ItemInit.itemInit();
     }
 
     @Override
     public void completeRoomActions(Player player) {
         super.completeRoomActions(player);
-        SwingRenderer.appendTextPane("Would you like to bug the shopkeeper?", true, ComponentType.PANE_MAIN);
+        SwingRenderer.appendTextPane("Would you like to visit the shopkeeper?", true, ComponentType.PANE_MAIN);
         boolean goToShop = Main.parseResponseAsBoolean();
         if (goToShop) {
             openShop();
