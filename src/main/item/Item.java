@@ -30,19 +30,19 @@ public abstract class Item implements Cloneable {
     public void cleanseItem(Player player) {
         if (this instanceof Relic relic && relic.isCursed()) {
             relic.setCursed(false);
-            SwingRenderer.changeLabelText("The " + relic.getName() + " was cured!", ComponentType.LABEL_ERROR);
+            SwingRenderer.appendLabelText("The " + relic.getName() + " was cured!", true, ComponentType.LABEL_ERROR);
             if (relic.isEquipped(player)) {
                 player.getCurrentStatuses().setCursed(player.getCurrentStatuses().getCursed() - 1);
             }
         } else if (this.getName().equals("Apple")) {
             player.discardItem(this);
             player.addItemToInventory(new PureAppleItem());
-            SwingRenderer.changeLabelText("The apple was purified!", ComponentType.LABEL_ERROR);
+            SwingRenderer.appendLabelText("The apple was purified!", true, ComponentType.LABEL_DESCRIPTION);
         } else {
-            SwingRenderer.changeLabelText("You put the " + this.getName() + " in the fountain, but nothing happened.", ComponentType.LABEL_ERROR);
+            SwingRenderer.appendLabelText("You put the " + this.getName() + " in the fountain, but nothing happened.", true, ComponentType.LABEL_DESCRIPTION);
         }
         ((PureWaterRoom) player.getCurrentRoom()).setFountainUsed(true);
-        SwingRenderer.appendMainLabelText("The fountain ran dry!", false);
+        SwingRenderer.appendTextPane("The fountain ran dry!", false, ComponentType.LABEL_DESCRIPTION);
         SwingRenderer.UIUpdater(player);
     }
 

@@ -3,17 +3,18 @@ package main;
 import main.enemy.Enemy;
 import main.item.relic.RelicID;
 import main.room.EnemyRoom;
+import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
 public class Battle {
 
     public static void battleLoop(Player player, EnemyRoom room) {
-        SwingRenderer.appendMainLabelText("\nThe battle has begun!\n", false);
+        SwingRenderer.appendTextPane("\nThe battle has begun!\n", false, ComponentType.PANE_MAIN);
         while (!room.getEnemies().isEmpty()) {
             readEnemies(room, player);
 
             int enemyIndex = Main.getIntegerResponse(player, 1, room.getEnemies().size()) - 1;
-            SwingRenderer.appendMainLabelText("", true);
+            SwingRenderer.appendTextPane("", true, ComponentType.PANE_MAIN);
             Enemy enemy = room.getEnemies().get(enemyIndex);
             player.attack(enemy);
             //this should just be in takeDamage but this is fine for now
@@ -27,7 +28,7 @@ public class Battle {
                 enemyAttacker.attack(player);
             }
         }
-        SwingRenderer.appendMainLabelText("The enemies were defeated!", true);
+        SwingRenderer.appendTextPane("The enemies were defeated!", true, ComponentType.PANE_MAIN);
     }
 
     public static void readEnemies(EnemyRoom room, Player player) {

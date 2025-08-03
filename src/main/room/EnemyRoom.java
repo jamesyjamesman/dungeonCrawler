@@ -3,6 +3,7 @@ package main.room;
 import main.Battle;
 import main.Player;
 import main.enemy.Enemy;
+import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class EnemyRoom extends Room {
     @Override
     public void completeRoomActions(Player player) {
         super.completeRoomActions(player);
-        SwingRenderer.appendMainLabelText(this.battleInitiationMessage, true);
+        SwingRenderer.appendTextPane(this.battleInitiationMessage, true, ComponentType.PANE_MAIN);
         Battle.battleLoop(player, this);
         reset();
     }

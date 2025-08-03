@@ -31,7 +31,7 @@ public class ShopRoom extends Room {
     @Override
     public void completeRoomActions(Player player) {
         super.completeRoomActions(player);
-        SwingRenderer.appendMainLabelText("Would you like to bug the shopkeeper?", true);
+        SwingRenderer.appendTextPane("Would you like to bug the shopkeeper?", true, ComponentType.PANE_MAIN);
         boolean goToShop = Main.parseResponseAsBoolean();
         if (goToShop) {
             openShop();
@@ -43,21 +43,21 @@ public class ShopRoom extends Room {
     }
 
     public void renderShopUI(Player player) {
-        SwingRenderer.appendMainLabelText("Hello there adventurer... welcome to my shop. Buy something, if you dare...\n", true);
+        SwingRenderer.appendTextPane("Hello there adventurer... welcome to my shop. Buy something, if you dare...\n", true, ComponentType.PANE_MAIN);
         for (int i = 0; i < this.getWares().size(); i++) {
             SwingRenderer.addShopLabel(player, this.getWares().get(i), this);
         }
-        SwingRenderer.appendMainLabelText("\nEnter anything to exit the shop!\n", false);
+        SwingRenderer.appendTextPane("\nEnter anything to exit the shop!\n", false, ComponentType.PANE_MAIN);
     }
 
     public void sellItem(Item item, Player player) {
         if (player.getGold() < item.getValue()) {
-            SwingRenderer.changeLabelText("You don't have enough gold!", ComponentType.LABEL_ERROR);
+            SwingRenderer.appendLabelText("You don't have enough gold!", true, ComponentType.LABEL_ERROR);
             return;
         }
         boolean inventoryFull = player.addItemToInventory(item);
         if (inventoryFull) {
-            SwingRenderer.changeLabelText("Your inventory is full!", ComponentType.LABEL_ERROR);
+            SwingRenderer.appendLabelText("Your inventory is full!", true, ComponentType.LABEL_ERROR);
             return;
         }
         player.takeGold(item.getValue());

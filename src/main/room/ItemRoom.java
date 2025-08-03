@@ -1,6 +1,5 @@
 package main.room;
 
-import main.Main;
 import main.Player;
 import main.initialization.ItemInit;
 import main.item.Item;
@@ -22,16 +21,8 @@ public class ItemRoom extends Room {
             initializeItem();
         }
         super.completeRoomActions(player);
-
-        SwingRenderer.appendMainLabelText("Would you like to take the " + this.item.getName() + "? (y/n)", true);
-
-        boolean wantsItem = Main.parseResponseAsBoolean();
-        if (wantsItem) {
-            player.itemPickup(this.item);
-            player.checkInventory();
-            return;
-        }
-        SwingRenderer.appendMainLabelText("You chose to forgo the loot...", false);
+        player.itemPickup(this.item);
+        SwingRenderer.UIUpdater(player);
     }
 
     public void initializeItem() {

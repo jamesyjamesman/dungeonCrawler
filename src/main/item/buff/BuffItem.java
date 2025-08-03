@@ -2,6 +2,7 @@ package main.item.buff;
 
 import main.Player;
 import main.item.Item;
+import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
 import java.util.Random;
@@ -25,7 +26,7 @@ public abstract class BuffItem extends Item {
     @Override
     public void useItem(Player player) {
         randomizeAmountChanged();
-        SwingRenderer.appendMainLabelText("You crack open the can, plug your nose, and manage to force its contents down your throat.", false);
+        SwingRenderer.appendTextPane("You crack open the can, plug your nose, and manage to force its contents down your throat.", false, ComponentType.PANE_MAIN);
         player.discardItem(this);
         SwingRenderer.UIUpdater(player);
     }

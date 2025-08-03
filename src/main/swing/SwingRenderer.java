@@ -400,11 +400,14 @@ public class SwingRenderer extends JFrame {
         componentGrabber(ComponentType.PANEL_YES_OR_NO).setVisible(visible);
     }
 
-    public static void changeLabelText(String newText, ComponentType componentType) {
+    public static void appendLabelText(String newText, boolean clear, ComponentType componentType) {
+        JLabel label = (JLabel) componentGrabber(componentType);
+        if (!clear) {
+            String oldText = unHTMLifyString(label.getText());
+            newText = oldText + newText;
+        }
         newText = HTMLifyString(newText);
 
-    //Can throw an exception
-        JLabel label = (JLabel) componentGrabber(componentType);
         label.setText(newText);
     }
 
@@ -413,8 +416,8 @@ public class SwingRenderer extends JFrame {
         tempText.setText(text);
     }
 
-    public static void appendMainLabelText(String addedText, boolean clear) {
-        JTextPane mainPane = (JTextPane) componentGrabber(ComponentType.PANE_MAIN);
+    public static void appendTextPane(String addedText, boolean clear, ComponentType componentType) {
+        JTextPane mainPane = (JTextPane) componentGrabber(componentType);
         Document doc = mainPane.getStyledDocument();
         SimpleAttributeSet attributeSet = new SimpleAttributeSet();
         StyleConstants.setBold(attributeSet, true);
@@ -455,6 +458,12 @@ public class SwingRenderer extends JFrame {
     public static String HTMLifyString(String input) {
         input = input.replaceAll("\n", "<br>");
         return "<html>" + input + "</html>";
+    }
+
+    public static String unHTMLifyString(String input) {
+        input = input.replaceAll("<br>", "\n");
+        input = input.replaceAll("<html>", "");
+        return input.replaceAll("</html>", "");
     }
 
     public static void setTempText(JTextField userInput, JLabel temp) {
@@ -519,13 +528,13 @@ public class SwingRenderer extends JFrame {
                 dropButton.setText(" Sell ");
                 dropButton.addActionListener(_ -> {
                     player.sellItem(item);
-                    SwingRenderer.changeLabelText("The " + item.getName() + " was sold!", ComponentType.LABEL_ERROR);
+                    SwingRenderer.appendLabelText("The " + item.getName() + " was sold!", true, ComponentType.LABEL_ERROR);
                 });
             } else {
                 dropButton.setText(" Drop ");
                 dropButton.addActionListener(_ -> {
                     player.discardItem(item);
-                    SwingRenderer.changeLabelText("The " + item.getName() + " was dropped!", ComponentType.LABEL_ERROR);
+                    SwingRenderer.appendLabelText("The " + item.getName() + " was dropped!", true, ComponentType.LABEL_ERROR);
                 });
             }
             if (item instanceof Relic) {
@@ -560,13 +569,13 @@ public class SwingRenderer extends JFrame {
             dropButton.setText(" Sell ");
             dropButton.addActionListener(_ -> {
                 player.sellItem(weapon);
-                SwingRenderer.changeLabelText("The " + weapon.getName() + " was sold!", ComponentType.LABEL_ERROR);
+                SwingRenderer.appendLabelText("The " + weapon.getName() + " was sold!", true, ComponentType.LABEL_ERROR);
             });
         } else {
             dropButton.setText(" Drop ");
             dropButton.addActionListener(_ -> {
                 player.discardItem(weapon);
-                SwingRenderer.changeLabelText("The " + weapon.getName() + " was dropped!", ComponentType.LABEL_ERROR);
+                SwingRenderer.appendLabelText("The " + weapon.getName() + " was dropped!", true, ComponentType.LABEL_ERROR);
             });
         }
 

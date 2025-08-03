@@ -3,7 +3,7 @@ package main.enemy;
 import main.Player;
 import main.item.Loot;
 import main.item.relic.CurseHealRelic;
-import main.item.relic.Relic;
+import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
 import java.util.Random;
@@ -15,29 +15,29 @@ public class MinotaurBoss extends Boss {
         this.setDamage(5);
         this.setExperienceDropped(100);
 
-        this.setLoot(new Loot(30));
+        this.setLoot(new Loot(30, new CurseHealRelic()));
     }
     public int chargeAttack() {
-        SwingRenderer.appendMainLabelText("The minotaur charges at you, goring you with its horns!\n", false);
+        SwingRenderer.appendTextPane("The minotaur charges at you, goring you with its horns!\n", false, ComponentType.PANE_MAIN);
         return this.damage * 2;
     }
     public int shriekAttack(Player player) {
         player.getCurrentStatuses().setWeakened(player.getCurrentStatuses().getWeakened() + 1);
-        SwingRenderer.appendMainLabelText("The minotaur unleashes a piercing scream, wracking your nerves! (You gained a level of weakness).\n", false);
+        SwingRenderer.appendTextPane("The minotaur unleashes a piercing scream, wracking your nerves! (You gained a level of weakness).\n", false, ComponentType.PANE_MAIN);
         return this.damage;
     }
     public int angerAttack() {
-        SwingRenderer.appendMainLabelText("The minotaur is getting upset!\n", false);
+        SwingRenderer.appendTextPane("The minotaur is getting upset!\n", false, ComponentType.PANE_MAIN);
         this.damage += 1;
         return 0;
     }
     public int healAttack() {
-        SwingRenderer.appendMainLabelText("The minotaur pulls out a large chunk of meat, ripping into it!\n", false);
+        SwingRenderer.appendTextPane("The minotaur pulls out a large chunk of meat, ripping into it!\n", false, ComponentType.PANE_MAIN);
         this.currentHealth += (int) (this.damage * 1.5);
         return 0;
     }
     public int failedChargeAttack() {
-        SwingRenderer.appendMainLabelText("The minotaur tries to charge at you, but falls over, smacking itself in the face.\n", false);
+        SwingRenderer.appendTextPane("The minotaur tries to charge at you, but falls over, smacking itself in the face.\n", false, ComponentType.PANE_MAIN);
         this.currentHealth -= this.damage / 2;
         return angerAttack();
     }
@@ -62,8 +62,4 @@ public class MinotaurBoss extends Boss {
         player.takeDamage(damage);
     }
 
-    @Override
-    public Relic initializeBossRelic() {
-        return new CurseHealRelic();
-    }
 }

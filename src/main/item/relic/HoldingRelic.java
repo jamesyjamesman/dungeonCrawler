@@ -1,6 +1,7 @@
 package main.item.relic;
 
 import main.Player;
+import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
 public class HoldingRelic extends Relic {
@@ -15,7 +16,7 @@ public class HoldingRelic extends Relic {
         if (this.isEquipped(player)) {
             int itemsOverCapacity = player.calculateInventorySize() - (player.getInventoryCap() - 10);
             if (itemsOverCapacity > 0) {
-                SwingRenderer.appendMainLabelText("You have too many items to remove this relic!\n" + "Remove " + itemsOverCapacity + " items from your inventory to remove this relic.", false);
+                SwingRenderer.appendTextPane("You have too many items to remove this relic!\n" + "Remove " + itemsOverCapacity + " items from your inventory to remove this relic.", false, ComponentType.PANE_MAIN);
                 SwingRenderer.UIUpdater(player);
                 return;
             }

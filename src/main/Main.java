@@ -49,11 +49,11 @@ public class Main {
             try {
                 response = Integer.parseInt(promptResponse);
             } catch(NumberFormatException e) {
-                SwingRenderer.changeLabelText("Invalid response!", ComponentType.LABEL_ERROR);
+                SwingRenderer.appendLabelText("Invalid response!", true, ComponentType.LABEL_ERROR);
                 continue;
             }
             if (response > upperBound || response < lowerBound) {
-                SwingRenderer.changeLabelText("Out of bounds!", ComponentType.LABEL_ERROR);
+                SwingRenderer.appendLabelText("Out of bounds!", true, ComponentType.LABEL_ERROR);
                 continue;
             }
             return response;
@@ -82,7 +82,7 @@ public class Main {
                 SwingRenderer.changeAnswerVisibility(false);
                 return false;
             }
-            SwingRenderer.changeLabelText("Invalid response!", ComponentType.LABEL_ERROR);
+            SwingRenderer.appendLabelText("Invalid response!", true, ComponentType.LABEL_ERROR);
         }
     }
 

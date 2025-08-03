@@ -33,7 +33,7 @@ public class Room {
 
     public void completeRoomActions(Player player) {
         SwingRenderer.changeBackgroundImage(this.backgroundFileName);
-        SwingRenderer.changeLabelText(this.description, ComponentType.LABEL_DESCRIPTION);
+        SwingRenderer.appendLabelText(this.description + "\n", true, ComponentType.LABEL_DESCRIPTION);
         player.incrementRoomsTraversed();
         player.checkStatus();
         player.checkInventory();

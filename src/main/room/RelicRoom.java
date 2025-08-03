@@ -2,10 +2,9 @@ package main.room;
 
 import main.App;
 import main.Game;
-import main.Main;
 import main.Player;
 import main.item.relic.Relic;
-import main.item.relic.RelicID;
+import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
 import java.util.ArrayList;
@@ -25,22 +24,11 @@ public class RelicRoom extends Room {
         super.completeRoomActions(player);
 
         if (this.hasCorpse) {
-            SwingRenderer.appendMainLabelText("Would you like to ...look through the corpse? (y/n)\n", true);
-        } else {
-            SwingRenderer.appendMainLabelText("Would you like to take the " + this.relic.getName() + " from the pedestal? (y/n)", true);
+            SwingRenderer.appendLabelText("Upon further inspection, you see something shiny in the pile of bones. Hesitating slightly, you grab it.\n", false, ComponentType.LABEL_DESCRIPTION);
         }
 
-        if (player.equippedRelicIndex(RelicID.CURSE_DETECTION) > -1 && this.relic.isCursed()) {
-            SwingRenderer.appendMainLabelText("Warning! The " + this.relic.getName() + " is cursed!", false);
-        }
-
-        boolean wantsItem = Main.parseResponseAsBoolean();
-        if (wantsItem) {
-            player.itemPickup(this.relic);
-            player.checkInventory();
-            return;
-        }
-        SwingRenderer.appendMainLabelText("You chose to forgo the loot...", false);
+        player.itemPickup(this.relic);
+        SwingRenderer.UIUpdater(player);
     }
 
     public void initializeRelic() {

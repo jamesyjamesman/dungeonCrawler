@@ -4,6 +4,7 @@ import main.item.relic.ForesightRelic;
 import main.item.relic.RelicID;
 import main.room.Room;
 import main.room.RoomType;
+import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
 import java.util.ArrayList;
@@ -36,8 +37,8 @@ public class Game {
     }
 
     public static void createRoomExits(Player player, ArrayList<Room> activeRooms, Room room) {
-        SwingRenderer.appendMainLabelText("Where would you like to go?\n", true);
-        SwingRenderer.appendMainLabelText("You see " + room.getNumExits() + " exit" + Main.pluralChecker(room.getNumExits()) + ".\n", false);
+        SwingRenderer.appendTextPane("Where would you like to go?\n", true, ComponentType.PANE_MAIN);
+        SwingRenderer.appendTextPane("You see " + room.getNumExits() + " exit" + Main.pluralChecker(room.getNumExits()) + ".\n", false, ComponentType.PANE_MAIN);
 
         for (int i = 0; i < room.getNumExits(); i++) {
             room.addExit(getWeightedRoom(activeRooms));

@@ -4,11 +4,10 @@ import main.Player;
 import main.item.Item;
 import main.item.Loot;
 import main.item.buff.HealthBuffItem;
-import main.item.relic.Relic;
-import main.item.relic.RelicID;
 import main.item.relic.SlimeRelic;
 import main.item.weapon.SlimeSpear;
 import main.item.weapon.SlimeSword;
+import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
 import java.util.ArrayList;
@@ -28,39 +27,36 @@ public class SlimeBoss extends Boss {
 
         slimeSword.setDropChance(0.7);
         slimeSpear.setDropChance(0.3);
+        healthBuff.setDropChance(0.8);
         healthBuff.setBounds(4, 10);
 
         items.add(slimeSword);
         items.add(slimeSpear);
         items.add(healthBuff);
+        items.add(new SlimeRelic());
         this.setLoot(new Loot(20, items));
     }
 
     public int slimeLaunchAttack() {
         int damage = this.damage + 1;
-        SwingRenderer.appendMainLabelText("The slime launches a slimeball at you, hitting you square in the face!\n", false);
+        SwingRenderer.appendTextPane("The slime launches a slimeball at you, hitting you square in the face!\n", false, ComponentType.PANE_MAIN);
         return damage;
     }
 
     public int slimeChargeAttack() {
         int damage = this.damage - 1;
-        SwingRenderer.appendMainLabelText("The slime jumps at you, knocking you down!\n", false);
+        SwingRenderer.appendTextPane("The slime jumps at you, knocking you down!\n", false, ComponentType.PANE_MAIN);
         return damage;
     }
 
     public int slimeWait() {
-        SwingRenderer.appendMainLabelText("The slime is taking a break.\n", false);
+        SwingRenderer.appendTextPane("The slime is taking a break.\n", false, ComponentType.PANE_MAIN);
         return 0;
     }
 
     //not good
     @Override
     public void attack(Player player) {
-        if (player.equippedRelicIndex(RelicID.SLIME) > -1
-                && new Random().nextInt(4) == 0) {
-            SwingRenderer.appendMainLabelText("The attack from the " + this.species + " bounced right off!", false);
-            return;
-        }
         int damage;
         int randomChoice = new Random().nextInt(5);
 
@@ -80,14 +76,10 @@ public class SlimeBoss extends Boss {
     @Override
     public int takeDamage(int damage) {
         if (new Random().nextInt(5) == 0) {
-            SwingRenderer.appendMainLabelText("Your attack bounced off of the slime's squishy exterior!\n", false);
+            SwingRenderer.appendTextPane("Your attack bounced off of the slime's squishy exterior!\n", false, ComponentType.PANE_MAIN);
             return 0;
         }
         return super.takeDamage(damage);
     }
 
-    @Override
-    public Relic initializeBossRelic() {
-        return new SlimeRelic();
-    }
 }

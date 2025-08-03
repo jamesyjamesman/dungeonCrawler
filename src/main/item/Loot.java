@@ -1,6 +1,7 @@
 package main.item;
 
 import main.Player;
+import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
 import java.util.ArrayList;
@@ -33,14 +34,14 @@ public class Loot {
 
     public void dropLoot(Player player) {
         player.addGold(this.getGold());
-        SwingRenderer.appendMainLabelText("The enemy dropped " + this.getGold() + " gold!\n", false);
+        SwingRenderer.appendLabelText("The enemy dropped " + this.getGold() + " gold!\n", false, ComponentType.LABEL_DESCRIPTION);
         for (int i = 0; i < this.getItems().size(); i++) {
             Item item = this.getItems().get(i);
             if (new Random().nextDouble(0, 1) > item.getDropChance()) {
                 continue;
             }
             Item itemClone = item.clone();
-            SwingRenderer.appendMainLabelText("The enemy dropped a " + itemClone.getName() + "!\n", false);
+            SwingRenderer.appendLabelText("The enemy dropped a " + itemClone.getName() + "!\n", false, ComponentType.LABEL_DESCRIPTION);
             player.itemPickup(itemClone);
         }
     }

@@ -55,7 +55,7 @@ public class Player {
         int totalDamage = weakenAttack(calculateTotalAttack());
         int damageDealt = enemy.takeDamage(totalDamage);
         if (damageDealt > 0) {
-            SwingRenderer.appendMainLabelText("The " + enemy.getSpecies() + " took " + totalDamage + " damage!\n", false);
+            SwingRenderer.appendTextPane("The " + enemy.getSpecies() + " took " + totalDamage + " damage!\n", false, ComponentType.PANE_MAIN);
         }
     }
 
@@ -65,26 +65,16 @@ public class Player {
 
     public void itemPickup(Item item) {
         if (calculateInventorySize() >= this.inventoryCap) {
-            SwingRenderer.appendMainLabelText("Your inventory is full!\nEnter anything to continue, if your inventory is still full the item will be lost.", false);
+            SwingRenderer.appendTextPane("Your inventory is full!\nEnter anything to continue, if your inventory is still full the item will be lost.", false, ComponentType.PANE_MAIN);
             Main.waitForResponse();
             if (calculateInventorySize() >= this.inventoryCap) {
-                SwingRenderer.appendMainLabelText("Your inventory is still full... The " + item.getName() + " remains where it was.", false);
+                SwingRenderer.appendTextPane("Your inventory is still full... The " + item.getName() + " remains where it was.", false, ComponentType.PANE_MAIN);
                 return;
             }
         }
         addItemToInventory(item);
 
-        if (item instanceof Relic && getEquippedRelics().size() < this.relicCap) {
-            SwingRenderer.appendMainLabelText("Would you like to equip the " + item.getName() + " now? (y/n)", true);
-            boolean wantsEquipped = Main.parseResponseAsBoolean();
-            if (wantsEquipped) {
-                item.useItem(this);
-                SwingRenderer.appendMainLabelText("The " + item.getName() + " has been equipped!", false);
-                checkRelics();
-                return;
-            }
-        }
-        SwingRenderer.appendMainLabelText("You stash the " + item.getName() + " in your bag.\n", false);
+        SwingRenderer.appendLabelText("You stash the " + item.getName() + " in your bag.\n", false, ComponentType.LABEL_DESCRIPTION);
     }
 
     public boolean addItemToInventory(Item item) {
@@ -210,7 +200,7 @@ public class Player {
         output = output.concat("Inventory: " + calculateInventorySize() + "/" + this.inventoryCap + "\n");
         output = output.concat("Relics: " + this.equippedRelics.size() + "/" + this.relicCap + "\n");
         output = output.concat(statusEffectChecker());
-        SwingRenderer.changeLabelText(output, ComponentType.LABEL_STATUS);
+        SwingRenderer.appendLabelText(output, true, ComponentType.LABEL_STATUS);
     }
 
     public String statusEffectChecker() {
@@ -283,7 +273,7 @@ public class Player {
 
     public boolean equipRelic(Relic relic) {
         if (getEquippedRelics().size() >= this.relicCap) {
-            SwingRenderer.changeLabelText("You cannot equip any more relics!", ComponentType.LABEL_ERROR);
+            SwingRenderer.appendLabelText("You cannot equip any more relics!", true, ComponentType.LABEL_ERROR);
             return false;
         }
         relic.setEquipped(true);
@@ -291,7 +281,7 @@ public class Player {
         int relicIndex = this.findItemInInventory(relic);
         this.inventory.remove(relicIndex);
         if (relic.isCursed()) {
-            SwingRenderer.changeLabelText("Oh no! the " + relic.getName() + " was cursed!", ComponentType.LABEL_ERROR);
+            SwingRenderer.appendLabelText("Oh no! the " + relic.getName() + " was cursed!", true, ComponentType.LABEL_ERROR);
             this.currentStatuses.setCursed(this.currentStatuses.getCursed() + 1);
         }
         checkStatus();
@@ -300,24 +290,24 @@ public class Player {
 
     public boolean unequipRelic(Relic relic){
         if (relic.isCursed()) {
-            SwingRenderer.changeLabelText("The relic is welded to you painfully. You can't remove it!", ComponentType.LABEL_ERROR);
+            SwingRenderer.appendLabelText("The relic is welded to you painfully. You can't remove it!", true, ComponentType.LABEL_ERROR);
             return false;
         }
 
         boolean inventoryFull = addItemToInventory(relic);
         if (inventoryFull) {
-            SwingRenderer.changeLabelText("Your inventory is full; the relic could not be unequipped!", ComponentType.LABEL_ERROR);
+            SwingRenderer.appendLabelText("Your inventory is full; the relic could not be unequipped!", true, ComponentType.LABEL_ERROR);
             return false;
         }
         relic.setEquipped(false);
-        SwingRenderer.changeLabelText("The " + relic.getName() + " was unequipped!", ComponentType.LABEL_ERROR);
+        SwingRenderer.appendLabelText("The " + relic.getName() + " was unequipped!", true, ComponentType.LABEL_ERROR);
         getEquippedRelics().remove(relic);
         return true;
     }
 
     public void doDeathSequence() {
         checkStatus();
-        SwingRenderer.appendMainLabelText("\"Ack! It's too much for me!\" " + getName() + " exclaims.\n" + getName() + " falls to their knees... then to the ground.\n" + "GAME OVER!", true);
+        SwingRenderer.appendTextPane("\"Ack! It's too much for me!\" " + getName() + " exclaims.\n" + getName() + " falls to their knees... then to the ground.\n" + "GAME OVER!", true, ComponentType.PANE_MAIN);
         while (true) {
             try {
                 Thread.sleep(5000);
@@ -511,7 +501,7 @@ public class Player {
     }
     public void setEquippedWeapon(Weapon weapon) {
         if (this.equippedWeapon != null && weapon != null) {
-            SwingRenderer.changeLabelText("You cannot equip more than one weapon!", ComponentType.LABEL_ERROR);
+            SwingRenderer.appendLabelText("You cannot equip more than one weapon!", true, ComponentType.LABEL_ERROR);
             return;
         }
         this.equippedWeapon = weapon;

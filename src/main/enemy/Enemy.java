@@ -45,7 +45,7 @@ public class Enemy {
         player.changeExperience(getExperienceDropped());
         player.levelUp();
         player.checkStatus();
-        SwingRenderer.changeLabelText("The " + getSpecies() + " died! You got " + getExperienceDropped() + " experience!\n", ComponentType.LABEL_DESCRIPTION);
+        SwingRenderer.appendLabelText("The " + getSpecies() + " died! You got " + getExperienceDropped() + " experience!\n", false, ComponentType.LABEL_DESCRIPTION);
 
         this.getLoot().dropLoot(player);
 
@@ -72,7 +72,7 @@ public class Enemy {
         output += "HP: " + this.currentHealth + "/" + this.maxHealth + "\n";
         output += "EXP: " + this.experienceDropped + "\n";
         output += "ATK DMG: " + this.damage + "\n";
-        SwingRenderer.changeLabelText(output, ComponentType.LABEL_DESCRIPTION);
+        SwingRenderer.appendLabelText(output, true, ComponentType.LABEL_DESCRIPTION);
     }
 
     public void reset() {
