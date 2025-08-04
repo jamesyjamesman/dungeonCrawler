@@ -101,21 +101,37 @@ public class Main {
     public static String checkForCommands(Player player, String input) {
         int spaceIndex = input.lastIndexOf(" ");
         String truncatedString;
+        int secondaryNumber;
         if (spaceIndex != -1) {
+            secondaryNumber = Integer.parseInt(input.substring(spaceIndex + 1));
             truncatedString = input.substring(0, spaceIndex);
         } else {
+            secondaryNumber = 1000;
             truncatedString = input;
         }
             switch (truncatedString) {
                     //debug commands
-            case "/kill" -> player.takeDamage(1000000);
-            case "/travel" -> player.setRoomsTraversed(1000);
-            case "/rich" -> player.addGold(1000000);
+            case "/kill" -> player.takeDamage(secondaryNumber);
+            case "/travel" -> player.setRoomsTraversed(secondaryNumber);
+            case "/rich" -> player.addGold(secondaryNumber);
+            //doesn't really do anything helpful
+            case "/auto" -> {
+                Thread loopThread = new Thread(() -> {
+                    while (true) {
+                        SwingRenderer.setTempText("1");
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+                loopThread.start();
+            }
             case "/goto" -> {
-                int roomID = Integer.parseInt(input.substring(spaceIndex + 1));
                 Room newRoom;
                 try {
-                    newRoom = Room.getRoomByID(roomID);
+                    newRoom = Room.getRoomByID(secondaryNumber);
                 } catch (NullPointerException e) {
                     SwingRenderer.appendLabelText("Room not found!", true, ComponentType.LABEL_ERROR);
                     return input;
@@ -125,22 +141,22 @@ public class Main {
                 SwingRenderer.setTempText("1");
             }
             case "/experienced" -> {
-                player.changeExperience(1000);
+                player.changeExperience(secondaryNumber);
                 player.levelUp();
             }
             case "/bagofholding" -> {
-                player.setRelicCap(1000);
-                player.setInventoryCap(1000);
+                player.setRelicCap(secondaryNumber);
+                player.setInventoryCap(secondaryNumber);
             }
             case "/godmode" -> {
-                player.increaseDamage(1000);
-                player.addAbsorption(100000);
+                player.increaseDamage(secondaryNumber);
+                player.addAbsorption(secondaryNumber);
             }
             case "/disease" -> {
                 Statuses statuses = player.getCurrentStatuses();
-                statuses.setWeakened(1000);
-                statuses.setCursed(1000);
-                statuses.setPoison(1000);
+                statuses.setWeakened(secondaryNumber);
+                statuses.setCursed(secondaryNumber);
+                statuses.setPoison(secondaryNumber);
             }
         }
         SwingRenderer.UIUpdater(player);

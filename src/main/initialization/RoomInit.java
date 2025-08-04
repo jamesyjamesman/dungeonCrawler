@@ -13,7 +13,7 @@ public class RoomInit {
         Room startRoom = new Room();
         startRoom.setId(0);
         startRoom.setNumExits(2);
-        startRoom.setDescription("An empty room.");
+        startRoom.setDescription("The room is empty except for a hole in the ceiling. Sunlight pours through, vines creeping down the cracked bricks. They're out of reach.");
         startRoom.setAppearance("For some reason, it invokes a sense of nostalgia.");
         startRoom.setSelectionWeight(5);
         roomList.add(startRoom);
