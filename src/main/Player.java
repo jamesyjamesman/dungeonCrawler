@@ -478,11 +478,17 @@ public class Player {
     public int getInventoryCap() {
         return this.inventoryCap;
     }
+    public void setInventoryCap(int inventoryCap) {
+        this.inventoryCap = inventoryCap;
+    }
     public void changeInventoryCap(int capChange) {
         this.inventoryCap += capChange;
     }
     public int getRelicCap() {
         return this.relicCap;
+    }
+    public void setRelicCap(int relicCap) {
+        this.relicCap = relicCap;
     }
     public void changeRelicCap(int relicCap) {
         this.relicCap += relicCap;

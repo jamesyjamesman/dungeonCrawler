@@ -1,8 +1,10 @@
 package main.enemy;
 
+import main.App;
 import main.Player;
 import main.item.Loot;
 import main.item.relic.CurseHealRelic;
+import main.room.EnemyRoom;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
@@ -38,7 +40,11 @@ public class MinotaurBoss extends Boss {
     }
     public int failedChargeAttack() {
         SwingRenderer.appendTextPane("The minotaur tries to charge at you, but falls over, smacking itself in the face.\n", false, ComponentType.PANE_MAIN);
-        this.currentHealth -= this.damage / 2;
+        takeDamage(this.damage / 2);
+        //thi
+        if (this.getCurrentHealth() <= 0) {
+            death(App.INSTANCE.getPlayer(), (EnemyRoom) App.INSTANCE.getPlayer().getCurrentRoom());
+        }
         return angerAttack();
     }
 

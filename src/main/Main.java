@@ -3,6 +3,7 @@ package main;
 import main.initialization.PlayerInit;
 import main.initialization.RelicInit;
 import main.initialization.RoomInit;
+import main.room.Room;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
@@ -98,10 +99,39 @@ public class Main {
     }
 
     public static String checkForCommands(Player player, String input) {
-        switch (input) {
-            //debug commands
+        int spaceIndex = input.lastIndexOf(" ");
+        String truncatedString;
+        if (spaceIndex != -1) {
+            truncatedString = input.substring(0, spaceIndex);
+        } else {
+            truncatedString = input;
+        }
+            switch (truncatedString) {
+                    //debug commands
             case "/kill" -> player.takeDamage(1000000);
             case "/travel" -> player.setRoomsTraversed(1000);
+            case "/rich" -> player.addGold(1000000);
+            case "/goto" -> {
+                int roomID = Integer.parseInt(input.substring(spaceIndex + 1));
+                Room newRoom;
+                try {
+                    newRoom = Room.getRoomByID(roomID);
+                } catch (NullPointerException e) {
+                    SwingRenderer.appendLabelText("Room not found!", true, ComponentType.LABEL_ERROR);
+                    return input;
+                }
+                Room currentRoom = player.getCurrentRoom();
+                currentRoom.getExits().set(0, newRoom);
+                SwingRenderer.setTempText("1");
+            }
+            case "/experienced" -> {
+                player.changeExperience(1000);
+                player.levelUp();
+            }
+            case "/bagofholding" -> {
+                player.setRelicCap(1000);
+                player.setInventoryCap(1000);
+            }
             case "/godmode" -> {
                 player.increaseDamage(1000);
                 player.addAbsorption(100000);

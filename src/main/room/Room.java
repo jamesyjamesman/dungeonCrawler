@@ -1,5 +1,6 @@
 package main.room;
 
+import main.App;
 import main.Player;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
@@ -38,6 +39,16 @@ public class Room {
         player.checkStatus();
         player.checkInventory();
         player.checkRelics();
+    }
+
+    public static Room getRoomByID(int id) {
+        ArrayList<Room> rooms = App.INSTANCE.getRooms();
+        for (Room room : rooms) {
+            if (room.id == id) {
+                return room;
+            }
+        }
+        return null;
     }
 
     public RoomType getType() {

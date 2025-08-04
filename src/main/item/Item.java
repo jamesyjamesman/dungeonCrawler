@@ -37,7 +37,7 @@ public abstract class Item implements Cloneable {
         } else if (this.getName().equals("Apple")) {
             player.discardItem(this);
             player.addItemToInventory(new PureAppleItem());
-            SwingRenderer.appendLabelText("The apple was purified!\n", true, ComponentType.LABEL_DESCRIPTION);
+            SwingRenderer.appendLabelText("The apple was purified!\n", false, ComponentType.LABEL_DESCRIPTION);
         } else {
             SwingRenderer.appendLabelText("You put the " + this.getName() + " in the fountain, but nothing happened.\n", false, ComponentType.LABEL_DESCRIPTION);
         }
