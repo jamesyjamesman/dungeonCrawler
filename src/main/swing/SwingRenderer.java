@@ -11,6 +11,7 @@ import main.room.PureWaterRoom;
 import main.room.ShopRoom;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.text.*;
 import java.awt.*;
@@ -39,13 +40,16 @@ public class SwingRenderer extends JFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setIconImage(new ImageIcon(ClassLoader.getSystemResource("torch.png")).getImage());
 
+        JLayeredPane layeredPane = new JLayeredPane();
+
+        // Background
         JLabel backgroundImageLabel = new JLabel(backgroundImage);
         backgroundImageLabel.setHorizontalAlignment(SwingConstants.LEFT);
         backgroundImageLabel.setName("background");
-        JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.add(backgroundImageLabel);
         layeredPane.setLayer(backgroundImageLabel, -5);
 
+        // Description pane
         DungeonLabel descriptionTextLabel = new DungeonLabel();
         descriptionTextLabel.setName("description");
         layeredPane.add(descriptionTextLabel);
@@ -53,6 +57,7 @@ public class SwingRenderer extends JFrame {
         ShadowLabel descriptionShadow = new ShadowLabel(layeredPane);
         descriptionShadow.setName("descriptionShadow");
 
+        // Status pane
         DungeonLabel statusTextLabel = new DungeonLabel();
         statusTextLabel.setName("status");
         layeredPane.add(statusTextLabel);
@@ -60,6 +65,7 @@ public class SwingRenderer extends JFrame {
         ShadowLabel statusShadow = new ShadowLabel(layeredPane);
         statusShadow.setName("statusShadow");
 
+        // Inventory pane
         DungeonTextPane inventoryPane = new DungeonTextPane();
         inventoryPane.setName("inventory");
         layeredPane.add(inventoryPane);
@@ -67,12 +73,14 @@ public class SwingRenderer extends JFrame {
         ShadowLabel inventoryShadow = new ShadowLabel(layeredPane);
         inventoryShadow.setName("inventoryShadow");
 
+        // Relics pane
         DungeonTextPane relicPane = new DungeonTextPane();
         relicPane.setName("relics");
         relicPane.setVisible(false);
         layeredPane.add(relicPane);
         layeredPane.setLayer(relicPane, 3);
 
+        // Inventory toggle controls
         DungeonPanel inventorySwitches = new DungeonPanel();
         inventorySwitches.setBackground(Color.black);
         inventorySwitches.setForeground(Color.white);
@@ -93,15 +101,17 @@ public class SwingRenderer extends JFrame {
         switchRelics.setName("switchRelics");
         inventorySwitches.add(switchRelics);
 
+        // Temporary text panel
         JLabel tempText = new JLabel();
         tempText.setName("temp");
         tempText.setVisible(false);
         layeredPane.add(tempText);
         layeredPane.setLayer(tempText, 2);
 
+        // User input pane
         JTextField userInput = new JTextField();
         userInput.setName("input");
-        userInput.setBorder(new LineBorder(new Color(0,0,0,0)));
+        userInput.setBorder(new EmptyBorder(8, 8, 8, 8)); //top,left,bottom,right
         userInput.setForeground(Color.white);
         userInput.setOpaque(false);
         userInput.setCaretColor(Color.white);
@@ -111,6 +121,7 @@ public class SwingRenderer extends JFrame {
         ShadowLabel userInputShadow = new ShadowLabel(layeredPane);
         userInputShadow.setName("userInputShadow");
 
+        // Error pane
         DungeonLabel errorTextLabel = new DungeonLabel();
         errorTextLabel.setName("error");
         layeredPane.add(errorTextLabel);
@@ -118,6 +129,7 @@ public class SwingRenderer extends JFrame {
         ShadowLabel errorShadow = new ShadowLabel(layeredPane);
         errorShadow.setName("errorShadow");
 
+        // Main pane
         DungeonTextPane mainTextPane = new DungeonTextPane();
         mainTextPane.setName("main");
         layeredPane.add(mainTextPane);
@@ -125,6 +137,7 @@ public class SwingRenderer extends JFrame {
         ShadowLabel mainShadow = new ShadowLabel(layeredPane);
         mainShadow.setName("mainShadow");
 
+        // Yes/no panel
         JPanel yesOrNo = new JPanel();
         yesOrNo.setName("yesOrNo");
         yesOrNo.setOpaque(false);
@@ -145,6 +158,7 @@ public class SwingRenderer extends JFrame {
         layeredPane.add(yesOrNo);
         layeredPane.setLayer(yesOrNo, 83);
 
+        // Health pane
         DungeonTextPane healthPane = new DungeonTextPane();
         healthPane.setName("health");
         layeredPane.add(healthPane);
@@ -152,6 +166,7 @@ public class SwingRenderer extends JFrame {
         ShadowLabel healthShadow = new ShadowLabel(layeredPane);
         healthShadow.setName("healthShadow");
 
+        // Popup panel
         DungeonPanel popupPanel = new DungeonPanel();
         popupPanel.setName("popup");
         popupPanel.setVisible(false);
@@ -214,80 +229,85 @@ public class SwingRenderer extends JFrame {
         int imageWidth = backgroundImage.getIconWidth();
         int imageHeight = backgroundImage.getIconHeight();
 
-        int frameHeight = frame.getHeight();
+        int frameHeight = frame.getHeight() - 37;
         int frameWidth = frame.getWidth();
+
+        int boxPad = 8;
 
         Component background = componentGrabber(ComponentType.LABEL_IMAGE_BACKGROUND);
         background.setSize(imageWidth, imageHeight);
 
         Component description = componentGrabber(ComponentType.LABEL_DESCRIPTION);
-        description.setSize(300, 200);
+        description.setBounds(boxPad, boxPad, 300, 200);
+        // description.setSize(300, 200);
 
         Component descriptionShadow = componentGrabber(ComponentType.SHADOW_DESCRIPTION);
-        descriptionShadow.setSize(300, 200);
+        descriptionShadow.setBounds(boxPad, boxPad, 300, 200);
+        // descriptionShadow.setSize(300, 200);
 
         int statusLabelWidth = 200;
-        int labelHeight = 200;
+        int statusLabelHeight = 200;
 
         Component status = componentGrabber(ComponentType.LABEL_STATUS);
-        status.setBounds(frameWidth - statusLabelWidth, 0, statusLabelWidth, labelHeight);
+        status.setBounds(frameWidth - statusLabelWidth - boxPad, boxPad, statusLabelWidth, statusLabelHeight);
 
         Component statusShadow = componentGrabber(ComponentType.SHADOW_STATUS);
-        statusShadow.setBounds(frameWidth - statusLabelWidth, 0, statusLabelWidth, labelHeight);
+        statusShadow.setBounds(frameWidth - statusLabelWidth - boxPad, boxPad, statusLabelWidth, statusLabelHeight);
 
-        int labelWidth = 400;
-        labelHeight = 450;
+        int invWidth = 400;
+        int invHeight = 458;
+        int invCtrlHeight = 25;
 
         Component inventory = componentGrabber(ComponentType.PANE_INVENTORY);
-        inventory.setBounds(frameWidth - labelWidth, frameHeight - labelHeight, labelWidth, labelHeight);
+        inventory.setBounds(frameWidth - invWidth - boxPad, frameHeight - invHeight - boxPad, invWidth, invHeight);
 
         Component inventoryShadow = componentGrabber(ComponentType.SHADOW_INVENTORY);
-        inventoryShadow.setBounds(frameWidth - labelWidth, frameHeight - labelHeight, labelWidth, labelHeight);
+        inventoryShadow.setBounds(frameWidth - invWidth - boxPad, frameHeight - invHeight - boxPad, invWidth, invHeight);
 
         Component relics = componentGrabber(ComponentType.PANE_RELIC);
-        relics.setBounds(frameWidth - labelWidth, frameHeight - labelHeight, labelWidth, labelHeight);
+        relics.setBounds(frameWidth - invWidth - boxPad, frameHeight - invHeight - boxPad, invWidth, invHeight);
 
         Component invSwitches = componentGrabber(ComponentType.PANEL_INVENTORY_SWITCH);
-        invSwitches.setBounds(frameWidth - labelWidth, frameHeight - labelHeight - 25, labelWidth, 25);
+        invSwitches.setBounds(frameWidth - invWidth - boxPad, frameHeight - invHeight - invCtrlHeight - boxPad, invWidth, invCtrlHeight);
 
-        int userInputHeight = 100;
         int userInputWidth = 600;
+        int userInputHeight = 32;
 
         Component input = componentGrabber(ComponentType.TEXTFIELD_INPUT);
-        input.setBounds(0, frameHeight - userInputHeight, userInputWidth, userInputHeight);
+        input.setBounds(boxPad, frameHeight - userInputHeight - boxPad, userInputWidth, userInputHeight);
 
         Component inputShadow = componentGrabber(ComponentType.SHADOW_INPUT);
-        inputShadow.setBounds(0, frameHeight - userInputHeight, userInputWidth, userInputHeight);
+        inputShadow.setBounds(boxPad, frameHeight - userInputHeight - boxPad, userInputWidth, userInputHeight);
 
-        int errorTextLabelWidth = 600;
-        int errorTextLabelHeight = 50;
+        int errorWidth = 600;
+        int errorHeight = 32;
 
         Component error = componentGrabber(ComponentType.LABEL_ERROR);
-        error.setBounds(0, frameHeight - errorTextLabelHeight - userInputHeight - 25, errorTextLabelWidth, errorTextLabelHeight);
+        error.setBounds(boxPad, frameHeight - errorHeight - userInputHeight - boxPad, errorWidth, errorHeight);
 
         Component errorShadow = componentGrabber(ComponentType.SHADOW_ERROR);
-        errorShadow.setBounds(0, frameHeight - errorTextLabelHeight - userInputHeight - 25, errorTextLabelWidth, errorTextLabelHeight);
+        errorShadow.setBounds(boxPad, frameHeight - errorHeight - userInputHeight - boxPad, errorWidth, errorHeight);
 
-        int mainTextLabelHeight = 300;
-        int mainTextLabelWidth = 600;
+        int mainWidth = 600;
+        int mainHeight = 300;
 
         Component main = componentGrabber(ComponentType.PANE_MAIN);
-        main.setBounds(0, frameHeight - mainTextLabelHeight - errorTextLabelHeight - userInputHeight - 25, mainTextLabelWidth, mainTextLabelHeight);
+        main.setBounds(boxPad, frameHeight - mainHeight - errorHeight - userInputHeight - boxPad * 2, mainWidth, mainHeight);
 
         Component mainShadow = componentGrabber(ComponentType.SHADOW_MAIN);
-        mainShadow.setBounds(0, frameHeight - mainTextLabelHeight - errorTextLabelHeight - userInputHeight - 25, mainTextLabelWidth, mainTextLabelHeight);
+        mainShadow.setBounds(boxPad, frameHeight - mainHeight - errorHeight - userInputHeight - boxPad * 2, mainWidth, mainHeight);
 
         Component yesOrNo = componentGrabber(ComponentType.PANEL_YES_OR_NO);
-        yesOrNo.setBounds(0, frameHeight - errorTextLabelHeight - userInputHeight - 50, mainTextLabelWidth, 25);
+        yesOrNo.setBounds(boxPad, frameHeight - errorHeight - userInputHeight - 50, mainWidth, 25);
 
-        int healthLabelHeight = 200;
-        int healthLabelWidth = 300;
+        int healthWidth = 300;
+        int healthHeight = 200;
 
         Component health = componentGrabber(ComponentType.PANE_HEALTH);
-        health.setBounds(frameWidth - healthLabelWidth - statusLabelWidth, 0, healthLabelWidth, healthLabelHeight);
+        health.setBounds(frameWidth - healthWidth - statusLabelWidth - boxPad, boxPad, healthWidth, healthHeight);
 
         Component healthShadow = componentGrabber(ComponentType.SHADOW_HEALTH);
-        healthShadow.setBounds(frameWidth - healthLabelWidth - statusLabelWidth, 0, healthLabelWidth, healthLabelHeight);
+        healthShadow.setBounds(frameWidth - healthWidth - statusLabelWidth - boxPad, boxPad, healthWidth, healthHeight);
 
         int popupPanelWidth = 500;
         int popupPanelHeight = 400;
@@ -673,14 +693,16 @@ public class SwingRenderer extends JFrame {
         String itemInformation = itemName + " (" + itemValue + "G): " + itemDescription + "\n";
 
         insertSimpleText(doc, itemInformation);
+
     }
 
     public static void insertSimpleText(Document doc, String text) {
         SimpleAttributeSet attributeSet = new SimpleAttributeSet();
         StyleConstants.setBold(attributeSet, true);
         StyleConstants.setForeground(attributeSet, Color.white);
+        StyleConstants.setSpaceAbove(attributeSet, 16f);
         try {
-            doc.insertString(doc.getLength(), text, attributeSet);
+            doc.insertString(doc.getLength(), " " + text, attributeSet);
         } catch (BadLocationException e) {
             throw new RuntimeException(e);
         }
@@ -690,8 +712,9 @@ public class SwingRenderer extends JFrame {
         SimpleAttributeSet attributeSet = new SimpleAttributeSet();
         StyleConstants.setBold(attributeSet, true);
         StyleConstants.setForeground(attributeSet, color);
+        StyleConstants.setSpaceAbove(attributeSet, 16f);
         try {
-            doc.insertString(doc.getLength(), text, attributeSet);
+            doc.insertString(doc.getLength(), " " + text, attributeSet);
         } catch (BadLocationException e) {
             throw new RuntimeException(e);
         }
