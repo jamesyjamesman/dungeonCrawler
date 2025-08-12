@@ -23,11 +23,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
 public class SwingRenderer extends JFrame {
 
     public static JFrame componentFactory() {
-        ImageIcon backgroundImage = new ImageIcon(ClassLoader.getSystemResource("default_background.png"));
-
         Rectangle screenSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
         int screenWidth = (int) screenSize.getWidth();
         int screenHeight = (int) screenSize.getHeight();
@@ -43,8 +42,9 @@ public class SwingRenderer extends JFrame {
         JLayeredPane layeredPane = new JLayeredPane();
 
         // Background
-        JLabel backgroundImageLabel = new JLabel(backgroundImage);
-        backgroundImageLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        ImageIcon backgroundImage = new ImageIcon(ClassLoader.getSystemResource("default_background.png"));
+        JLabel backgroundImageLabel = new JLabel(resizeBackground(backgroundImage, frame.getWidth()));
+        backgroundImageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         backgroundImageLabel.setName("background");
         layeredPane.add(backgroundImageLabel);
         layeredPane.setLayer(backgroundImageLabel, -5);
@@ -221,29 +221,24 @@ public class SwingRenderer extends JFrame {
                 renderer(frame);
             }
         });
+
         return frame;
     }
 
     public static void renderer(JFrame frame) {
-        ImageIcon backgroundImage = new ImageIcon(ClassLoader.getSystemResource("default_background.png"));
-        int imageWidth = backgroundImage.getIconWidth();
-        int imageHeight = backgroundImage.getIconHeight();
-
         int frameHeight = frame.getHeight() - 37;
         int frameWidth = frame.getWidth();
 
         int boxPad = 8;
 
-        Component background = componentGrabber(ComponentType.LABEL_IMAGE_BACKGROUND);
-        background.setSize(imageWidth, imageHeight);
+        JLabel background = (JLabel) componentGrabber(ComponentType.LABEL_IMAGE_BACKGROUND);
+        background.setSize(frameWidth, frameHeight);
 
         Component description = componentGrabber(ComponentType.LABEL_DESCRIPTION);
         description.setBounds(boxPad, boxPad, 300, 200);
-        // description.setSize(300, 200);
 
         Component descriptionShadow = componentGrabber(ComponentType.SHADOW_DESCRIPTION);
         descriptionShadow.setBounds(boxPad, boxPad, 300, 200);
-        // descriptionShadow.setSize(300, 200);
 
         int statusLabelWidth = 200;
         int statusLabelHeight = 200;
@@ -721,7 +716,25 @@ public class SwingRenderer extends JFrame {
     }
 
     public static void changeBackgroundImage(String fileName) {
-        ((JLabel) componentGrabber(ComponentType.LABEL_IMAGE_BACKGROUND)).setIcon(new ImageIcon(ClassLoader.getSystemResource(fileName)));
+        JFrame frame = App.INSTANCE.getFrame();
+        int frameWidth = frame.getWidth();
+
+        ImageIcon backgroundImage = new ImageIcon(ClassLoader.getSystemResource(fileName));
+        ((JLabel) componentGrabber(ComponentType.LABEL_IMAGE_BACKGROUND)).setIcon(resizeBackground(backgroundImage, frameWidth));
+    }
+
+    public static ImageIcon resizeBackground(ImageIcon backgroundImage, int frameWidth) {
+        int imageWidth = backgroundImage.getIconWidth();
+        int imageHeight = backgroundImage.getIconHeight();
+
+        // Resize the image by starting with the width of the frame and then
+        // use the ratio between the width of the frame and the width of the
+        // image to calculate the correct height of the image. This preserves
+        // the aspect ratio.
+        float ratio = (float) frameWidth / imageWidth;
+
+        Image resizedImage = backgroundImage.getImage().getScaledInstance(frameWidth, (int) (imageHeight * ratio), java.awt.Image.SCALE_SMOOTH);
+        return new ImageIcon(resizedImage);
     }
 
     public static void createPopup(String popupText) {
