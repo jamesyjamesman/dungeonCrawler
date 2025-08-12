@@ -116,6 +116,7 @@ public class RoomInit {
         minotaurBossRoom.setBattleInitiationMessage("Before you can do anything, it opens its blood red eyes, glaring at you.");
         minotaurBossRoom.setType(RoomType.BOSS);
         minotaurBossRoom.setSelectionWeight(4);
+        minotaurBossRoom.setBackgroundFileName("minotaur_background.png");
         roomList.add(minotaurBossRoom);
 
 
