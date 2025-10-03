@@ -12,7 +12,6 @@ import main.room.ShopRoom;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
@@ -226,6 +225,7 @@ public class SwingRenderer extends JFrame {
     }
 
     public static void renderer(JFrame frame) {
+        //todo: figure out why this?
         int frameHeight = frame.getHeight() - 37;
         int frameWidth = frame.getWidth();
 

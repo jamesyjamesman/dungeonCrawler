@@ -10,21 +10,21 @@ import main.swing.SwingRenderer;
 import java.util.Random;
 
 public class Enemy {
-    int maxHealth;
-    int currentHealth;
-    int damage;
-    int armor;
-    int evasiveness;
-    int experienceDropped;
-    String species;
-    String damageType;
-    Loot loot;
+    private int maxHealth;
+    private int currentHealth;
+    private int damage;
+//    private int armor;
+//    private int evasiveness;
+    private int experienceDropped;
+    private String species;
+    private String damageType;
+    private Loot loot;
     public Enemy() {
         this.maxHealth = 0;
         this.currentHealth = 0;
         this.damage = 0;
-        this.armor = 0;
-        this.evasiveness = 0;
+//        this.armor = 0;
+//        this.evasiveness = 0;
         this.experienceDropped = 0;
         this.species = "";
         this.damageType = "";
@@ -39,6 +39,13 @@ public class Enemy {
             return oldHealth;
         }
         return damage;
+    }
+
+    public void heal(int health) {
+        this.currentHealth += health;
+        if (this.currentHealth > maxHealth) {
+            this.currentHealth = maxHealth;
+        }
     }
 
     public void death(Player player, EnemyRoom enemyRoom) {
@@ -85,6 +92,9 @@ public class Enemy {
     }
     public void setDamage(int damage) {
         this.damage = damage;
+    }
+    public int getDamage() {
+        return this.damage;
     }
     public void setSpecies(String species) {
         this.species = species;

@@ -38,13 +38,13 @@ public class SlimeBoss extends Boss {
     }
 
     public int slimeLaunchAttack() {
-        int damage = this.damage + 1;
+        int damage = this.getDamage() + 1;
         SwingRenderer.appendTextPane("The slime launches a slimeball at you, hitting you square in the face!\n", false, ComponentType.PANE_MAIN);
         return damage;
     }
 
     public int slimeChargeAttack() {
-        int damage = this.damage - 1;
+        int damage = this.getDamage() - 1;
         SwingRenderer.appendTextPane("The slime jumps at you, knocking you down!\n", false, ComponentType.PANE_MAIN);
         return damage;
     }

@@ -21,26 +21,26 @@ public class MinotaurBoss extends Boss {
     }
     public int chargeAttack() {
         SwingRenderer.appendTextPane("The minotaur charges at you, goring you with its horns!\n", false, ComponentType.PANE_MAIN);
-        return this.damage * 2;
+        return this.getDamage() * 2;
     }
     public int shriekAttack(Player player) {
         player.getCurrentStatuses().setWeakened(player.getCurrentStatuses().getWeakened() + 1);
         SwingRenderer.appendTextPane("The minotaur unleashes a piercing scream, wracking your nerves! (You gained a level of weakness).\n", false, ComponentType.PANE_MAIN);
-        return this.damage;
+        return this.getDamage();
     }
     public int angerAttack() {
         SwingRenderer.appendTextPane("The minotaur is getting upset!\n", false, ComponentType.PANE_MAIN);
-        this.damage += 1;
+        this.setDamage(this.getDamage() + 1);
         return 0;
     }
     public int healAttack() {
         SwingRenderer.appendTextPane("The minotaur pulls out a large chunk of meat, ripping into it!\n", false, ComponentType.PANE_MAIN);
-        this.currentHealth += (int) (this.damage * 1.5);
+        this.heal((int) (this.getDamage() * 1.5));
         return 0;
     }
     public int failedChargeAttack() {
         SwingRenderer.appendTextPane("The minotaur tries to charge at you, but falls over, smacking itself in the face.\n", false, ComponentType.PANE_MAIN);
-        takeDamage(this.damage / 2);
+        takeDamage(this.getDamage() / 2);
         //thi
         if (this.getCurrentHealth() <= 0) {
             death(App.INSTANCE.getPlayer(), (EnemyRoom) App.INSTANCE.getPlayer().getCurrentRoom());

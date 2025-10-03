@@ -1,10 +1,10 @@
 package main;
 
 public class Statuses {
-    int poison;
-    int cursed;
-    int fire;
-    int weakened;
+    private int poison;
+    private int cursed;
+    private int fire;
+    private int weakened;
     public Statuses() {
         this.poison = 0;
         this.cursed = 0;
