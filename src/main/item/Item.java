@@ -32,7 +32,7 @@ public abstract class Item implements Cloneable {
             relic.setCursed(false);
             SwingRenderer.appendLabelText("The " + relic.getName() + " was cured!", true, ComponentType.LABEL_ERROR);
             if (relic.isEquipped(player)) {
-                player.getCurrentStatuses().setCursed(player.getCurrentStatuses().getCursed() - 1);
+                player.getCurrentStatuses().addCursed(-1);
             }
         } else if (this.getName().equals("Apple")) {
             player.discardItem(this);
