@@ -6,16 +6,16 @@ import main.item.Item;
 import java.util.Random;
 
 public abstract class BuffItem extends Item {
-    String statType;
-    int amountChanged;
-    int lowBound;
-    int highBound;
-    public BuffItem() {
-        this.statType = "";
+    protected final String statName;
+    protected int amountChanged;
+    private final int lowBound;
+    private final int highBound;
+    public BuffItem(int lowBound, int highBound, String statName) {
+        this.statName = statName;
         this.setValue(10);
         this.amountChanged = 0;
-        this.lowBound = 0;
-        this.highBound = 0;
+        this.lowBound = lowBound;
+        this.highBound = highBound;
         setName("Suspicious Can");
         setDescription("A can of... something. It's chunky.");
         this.setShopWeight(4);
@@ -33,8 +33,15 @@ public abstract class BuffItem extends Item {
         this.amountChanged = new Random().nextInt(this.lowBound, this.highBound);
     }
 
-    public void setBounds(int lowBound, int highBound) {
-        this.lowBound = lowBound;
-        this.highBound = highBound;
+    public int getLowBound() {
+        return this.lowBound;
+    }
+
+    public int getHighBound() {
+        return this.highBound;
+    }
+
+    public String getStatName() {
+        return this.statName;
     }
 }

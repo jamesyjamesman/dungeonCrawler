@@ -39,8 +39,7 @@ public class EnemyInit {
             sword.setDropChance(0.2);
             items.add(sword);
 
-            DamageBuffItem damageBuff = new DamageBuffItem();
-            damageBuff.setBounds(1 ,2);
+            DamageBuffItem damageBuff = new DamageBuffItem(1, 2);
             damageBuff.setDropChance(0.1);
 
             items.add(damageBuff);

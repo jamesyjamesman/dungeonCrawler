@@ -23,12 +23,11 @@ public class SlimeBoss extends Boss {
         ArrayList<Item> items = new ArrayList<>();
         SlimeSword slimeSword = new SlimeSword();
         SlimeSpear slimeSpear = new SlimeSpear();
-        HealthBuffItem healthBuff = new HealthBuffItem();
+        HealthBuffItem healthBuff = new HealthBuffItem(4, 10);
 
         slimeSword.setDropChance(0.7);
         slimeSpear.setDropChance(0.3);
         healthBuff.setDropChance(0.8);
-        healthBuff.setBounds(4, 10);
 
         items.add(slimeSword);
         items.add(slimeSpear);

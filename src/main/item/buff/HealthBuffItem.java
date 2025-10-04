@@ -5,14 +5,16 @@ import main.swing.SwingRenderer;
 
 public class HealthBuffItem extends BuffItem {
     public HealthBuffItem() {
-        this.setBounds(1, 4);
-        this.statType = "maximum health";
+        this(1, 4);
+    }
+    public HealthBuffItem(int lowBound, int highBound) {
+        super(lowBound, highBound, "maximum health");
     }
 
     @Override
     public void useItem(Player player) {
         super.useItem(player);
-        SwingRenderer.addHealthText("Forcing yourself to swallow the contents of the can, your " + this.statType + " somehow increased by " + this.amountChanged + ".");
+        SwingRenderer.addHealthText("Forcing yourself to swallow the contents of the can, your " + this.statName + " somehow increased by " + this.amountChanged + ".");
         player.changeMaxHealth(this.amountChanged);
         SwingRenderer.UIUpdater(player);
     }
