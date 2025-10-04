@@ -282,7 +282,7 @@ public class Player {
         this.inventory.remove(relicIndex);
         if (relic.isCursed()) {
             SwingRenderer.appendLabelText("Oh no! the " + relic.getName() + " was cursed!", true, ComponentType.LABEL_ERROR);
-            this.currentStatuses.setCursed(this.currentStatuses.getCursed() + 1);
+            this.currentStatuses.addCursed(1);
         }
         checkStatus();
         return true;
@@ -403,7 +403,7 @@ public class Player {
         int finalDamage = initialDamage / (weaknessLevel + 1);
     // 1 - (1/(n+1)) chance to decrease weakness level by one
         if (new Random().nextInt(weaknessLevel + 1) != 0) {
-            this.currentStatuses.setWeakened(this.currentStatuses.getWeakened() - 1);
+            this.currentStatuses.addWeakened(-1);
             SwingRenderer.addHealthText("Your weakness level decreased by one!");
         }
         return finalDamage;

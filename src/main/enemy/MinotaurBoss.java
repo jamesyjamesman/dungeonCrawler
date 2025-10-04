@@ -24,7 +24,7 @@ public class MinotaurBoss extends Boss {
         return this.getDamage() * 2;
     }
     public int shriekAttack(Player player) {
-        player.getCurrentStatuses().setWeakened(player.getCurrentStatuses().getWeakened() + 1);
+        player.getCurrentStatuses().addWeakened(1);
         SwingRenderer.appendTextPane("The minotaur unleashes a piercing scream, wracking your nerves! (You gained a level of weakness).\n", false, ComponentType.PANE_MAIN);
         return this.getDamage();
     }

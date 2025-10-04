@@ -27,14 +27,26 @@ public class Statuses {
     public void setPoison(int poison) {
         this.poison = poison;
     }
+    public void addPoison(int poison) {
+        this.poison += poison;
+    }
     public void setCursed(int cursed) {
         this.cursed = cursed;
+    }
+    public void addCursed(int cursed) {
+        this.cursed += cursed;
     }
     public void setFire(int fire) {
         this.fire = fire;
     }
+    public void addFire(int fire) {
+        this.fire += fire;
+    }
     public void setWeakened(int weakened) {
         this.weakened = weakened;
+    }
+    public void addWeakened(int weakened) {
+        this.weakened += weakened;
     }
 
 }
