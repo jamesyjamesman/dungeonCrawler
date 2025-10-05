@@ -11,12 +11,24 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class RelicRoom extends Room {
-    boolean hasCorpse;
-    Relic relic;
-    public RelicRoom(boolean hasCorpse) {
-        this.hasCorpse = hasCorpse;
+    private final boolean hasCorpse;
+    //todo make relic final if possible
+    private Relic relic;
+
+    public RelicRoom(RelicRoomBuilder builder) {
+        super(builder);
+        this.hasCorpse = builder.hasCorpse;
         this.relic = null;
     }
+
+//    public static class RoomBuilder {
+//        private boolean hasCorpse;
+//
+//        public RoomBuilder hasCorpse(boolean hasCorpse) {
+//            this.hasCorpse = hasCorpse;
+//            return this;
+//        }
+//    }
 
     @Override
     public void completeRoomActions(Player player) {
