@@ -23,5 +23,9 @@ public class EnemyRoomBuilder<T extends EnemyRoomBuilder<T>> extends RoomBuilder
         return new EnemyRoom(this);
     }
 
+    public BossRoom buildBoss() {
+        return new BossRoom(this);
+    }
+
 
 }

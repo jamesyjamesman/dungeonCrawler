@@ -109,30 +109,39 @@ public class RoomInit {
 
         roomList.add(ambushRoom);
 
+        ArrayList<Enemy> slimeArray = new ArrayList<>();
+        slimeArray.add(new SlimeBoss());
 
-        BossRoom slimeBossRoom = new BossRoom();
-        slimeBossRoom.setRoomsRequired(20);
-        slimeBossRoom.setNumExits(5);
-        slimeBossRoom.setId(13);
-        slimeBossRoom.setAppearance("An unfamiliar room with blue goop coating the entrance. It smells strongly of fruit.");
-        slimeBossRoom.addEnemies(new SlimeBoss());
-        slimeBossRoom.setDescription("You walk into the room, blue slime squishing under your feet. A large blue slime sits in the center of the room.");
-        slimeBossRoom.setBattleInitiationMessage("The massive slime starts vibrating intensely, and then launches at you.");
-        slimeBossRoom.setType(RoomType.BOSS);
-        slimeBossRoom.setSelectionWeight(5);
-        slimeBossRoom.setBackgroundFileName("slime_background.png");
+        BossRoom slimeBossRoom = new EnemyRoomBuilder<>()
+                .roomsRequired(20)
+                .numExits(5)
+                .id(13)
+                .appearance("An unfamiliar room with blue goop coating the entrance. It smells strongly of fruit.")
+                .enemies(slimeArray)
+                .description("You walk into the room, blue slime squishing under your feet. A large blue slime sits in the center of the room.")
+                .battleInitiationMessage("The massive slime starts vibrating intensely, and then launches at you.")
+                .type(RoomType.BOSS)
+                .selectionWeight(5)
+                .backgroundFileName("slime_background.png")
+                .buildBoss();
+
         roomList.add(slimeBossRoom);
 
-        BossRoom minotaurBossRoom = new BossRoom();
-        minotaurBossRoom.setRoomsRequired(50);
-        minotaurBossRoom.setNumExits(4);
-        minotaurBossRoom.setId(100);
-        minotaurBossRoom.addEnemies(new MinotaurBoss());
-        minotaurBossRoom.setDescription("A massive minotaur stands silently in the center of the room.");
-        minotaurBossRoom.setBattleInitiationMessage("Before you can do anything, it opens its blood red eyes, glaring at you.");
-        minotaurBossRoom.setType(RoomType.BOSS);
-        minotaurBossRoom.setSelectionWeight(4);
-        minotaurBossRoom.setBackgroundFileName("minotaur_background.png");
+        ArrayList<Enemy> minotaurArray = new ArrayList<>();
+        minotaurArray.add(new MinotaurBoss());
+
+        BossRoom minotaurBossRoom = new EnemyRoomBuilder<>()
+                .roomsRequired(50)
+                .numExits(4)
+                .id(100)
+                .enemies(minotaurArray)
+                .description("A massive minotaur stands silently in the center of the room.")
+                .battleInitiationMessage("Before you can do anything, it opens its blood red eyes, glaring at you.")
+                .type(RoomType.BOSS)
+                .selectionWeight(4)
+                .backgroundFileName("minotaur_background.png")
+                .buildBoss();
+
         roomList.add(minotaurBossRoom);
 
 

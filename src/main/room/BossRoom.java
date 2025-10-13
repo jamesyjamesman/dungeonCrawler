@@ -4,8 +4,8 @@ import main.Player;
 
 public class BossRoom extends EnemyRoom {
     boolean completed;
-    public BossRoom() {
-        this.active = false;
+    public BossRoom(EnemyRoomBuilder<?> builder) {
+        super(builder);
         this.completed = false;
     }
 
@@ -18,7 +18,7 @@ public class BossRoom extends EnemyRoom {
     @Override
     public void completeRoomActions(Player player) {
         super.completeRoomActions(player);
-        this.active = false;
+        this.setActive(false);
         this.completed = true;
     }
 }
