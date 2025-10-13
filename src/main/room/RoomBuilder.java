@@ -9,6 +9,7 @@ package main.room;
         protected RoomType type;
         protected int roomsRequired;
         protected int selectionWeight;
+        protected boolean disabled;
 
         public T self() {
             return (T) this;
@@ -46,11 +47,17 @@ package main.room;
 
         public T roomsRequired(int roomsRequired) {
             this.roomsRequired = roomsRequired;
+            this.disabled = true;
             return self();
         }
 
         public T selectionWeight(int selectionWeight) {
             this.selectionWeight = selectionWeight;
+            return self();
+        }
+
+        public T disabled(boolean disabled) {
+            this.disabled = disabled;
             return self();
         }
 

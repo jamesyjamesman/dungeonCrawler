@@ -9,14 +9,15 @@ import main.swing.SwingRenderer;
 import java.util.ArrayList;
 
 public class EnemyRoom extends Room {
-    ArrayList<Enemy> enemies;
-    ArrayList<Enemy> defeatedEnemies;
-    String battleInitiationMessage;
-    public EnemyRoom() {
-        super();
-        this.enemies = new ArrayList<>();
+    private final ArrayList<Enemy> enemies;
+    private final ArrayList<Enemy> defeatedEnemies;
+    private final String battleInitiationMessage;
+
+    public EnemyRoom(EnemyRoomBuilder<?> builder) {
+        super(builder);
         this.defeatedEnemies = new ArrayList<>();
-        this.battleInitiationMessage = "";
+        this.enemies = builder.enemies != null ? builder.enemies : new ArrayList<>();
+        this.battleInitiationMessage = builder.battleInitiationMessage != null ? builder.battleInitiationMessage : "";
     }
 
     @Override
@@ -47,8 +48,4 @@ public class EnemyRoom extends Room {
     public ArrayList<Enemy> getEnemies() {
         return this.enemies;
     }
-    public void setBattleInitiationMessage(String battleInitiationMessage) {
-        this.battleInitiationMessage = battleInitiationMessage;
-    }
-
 }

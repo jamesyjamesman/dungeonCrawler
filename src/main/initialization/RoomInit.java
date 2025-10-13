@@ -76,27 +76,37 @@ public class RoomInit {
 
         ArrayList<Enemy> enemyList = EnemyInit.enemyInit();
 
-        EnemyRoom goblinRoom = new EnemyRoom();
-        goblinRoom.setId(2);
-        goblinRoom.setNumExits(4);
-        goblinRoom.setDescription("You enter the room... Waking up a goblin in a tattered cloak. It wearily blinks, before jumping up.");
-        goblinRoom.setBattleInitiationMessage("The goblin pulls out a small wooden wand, ready to cast spells at you!");
-        goblinRoom.setAppearance("You can't see much, but you can hear some echoing chatter.");
-        goblinRoom.addEnemies(enemyList.getFirst());
-        goblinRoom.setType(RoomType.ENEMY);
+        //todo: fix this
+        ArrayList<Enemy> goblinRoomEnemies = new ArrayList<>();
+        goblinRoomEnemies.add(enemyList.getFirst());
+
+        EnemyRoom goblinRoom = new EnemyRoomBuilder<>()
+                .id(2)
+                .numExits(4)
+                .description("You enter the room... Waking up a goblin in a tattered cloak. It wearily blinks, before jumping up.")
+                .battleInitiationMessage("The goblin pulls out a small wooden wand, ready to cast spells at you!")
+                .appearance("You can't see much, but you can hear some echoing chatter.")
+                .enemies(goblinRoomEnemies)
+                .type(RoomType.ENEMY)
+                .build();
+
         roomList.add(goblinRoom);
 
-        EnemyRoom ambushRoom = new EnemyRoom();
-        ambushRoom.setId(11);
-        ambushRoom.setNumExits(3);
-        ambushRoom.setDescription("You enter the ro-");
-        ambushRoom.setBattleInitiationMessage("Oh no! a goblin and orc were waiting for you, catching you by surprise!");
-        ambushRoom.addEnemies(enemyList.get(1));
-        ambushRoom.addEnemies(enemyList.get(2));
-        ambushRoom.setType(RoomType.ENEMY);
-        ambushRoom.setSelectionWeight(8);
-        ambushRoom.setActive(false);
-        ambushRoom.setRoomsRequired(10);
+        ArrayList<Enemy> ambushRoomEnemies = new ArrayList<>();
+        ambushRoomEnemies.add(enemyList.get(1));
+        ambushRoomEnemies.add(enemyList.get(2));
+
+        EnemyRoom ambushRoom = new EnemyRoomBuilder<>()
+                .id(11)
+                .numExits(3)
+                .description("You enter the ro-")
+                .battleInitiationMessage("Oh no! a goblin and orc were waiting for you, catching you by surprise!")
+                .enemies(ambushRoomEnemies)
+                .type(RoomType.ENEMY)
+                .selectionWeight(8)
+                .roomsRequired(10)
+                .build();
+
         roomList.add(ambushRoom);
 
 

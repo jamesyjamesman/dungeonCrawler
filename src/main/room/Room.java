@@ -15,6 +15,7 @@ public class Room {
     //can be final?
     private ArrayList<Room> exits;
     private final int numExits;
+    //todo: remove active boolean
     private boolean active;
     private final RoomType type;
     private final int roomsRequired;
@@ -34,7 +35,7 @@ public class Room {
         this.roomsRequired = builder.roomsRequired;
         this.selectionWeight = builder.selectionWeight != 0 ? builder.selectionWeight : 10;
 
-        this.active = true;
+        this.active = !builder.disabled;
         this.exits = new ArrayList<>();
     }
 
