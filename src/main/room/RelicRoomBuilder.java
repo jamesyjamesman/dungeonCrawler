@@ -1,16 +1,16 @@
 package main.room;
 
-public class RelicRoomBuilder extends RoomBuilder {
+public class RelicRoomBuilder<T extends RelicRoomBuilder<T>> extends RoomBuilder<T> {
 
     protected boolean hasCorpse;
 
-    public RelicRoomBuilder hasCorpse(boolean hasCorpse) {
+    public T hasCorpse(boolean hasCorpse) {
         this.hasCorpse = hasCorpse;
-        return this;
+        return self();
     }
 
     @Override
-    public Room build() {
+    public RelicRoom build() {
         return new RelicRoom(this);
     }
 }

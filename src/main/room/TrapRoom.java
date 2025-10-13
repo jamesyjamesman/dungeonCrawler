@@ -5,9 +5,9 @@ import main.swing.SwingRenderer;
 
 public class TrapRoom extends Room {
     int damageDealt;
-    public TrapRoom() {
-        super();
-        this.damageDealt = 5;
+    public TrapRoom(TrapRoomBuilder<?> builder) {
+        super(builder);
+        this.damageDealt = builder.damageDealt != 0 ? builder.damageDealt : 3;
     }
 
     @Override

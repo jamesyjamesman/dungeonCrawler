@@ -1,6 +1,6 @@
 package main.room;
 
-    public class RoomBuilder {
+    public class RoomBuilder<T extends RoomBuilder<T>> {
         protected String appearance;
         protected String description;
         protected String backgroundFileName;
@@ -10,44 +10,48 @@ package main.room;
         protected int roomsRequired;
         protected int selectionWeight;
 
-        public RoomBuilder appearance(String appearance) {
+        public T self() {
+            return (T) this;
+        }
+
+        public T appearance(String appearance) {
             this.appearance = appearance;
-            return this;
+            return self();
         }
 
-        public RoomBuilder description(String description) {
+        public T description(String description) {
             this.description = description;
-            return this;
+            return self();
         }
 
-        public RoomBuilder backgroundFileName(String backgroundFileName) {
+        public T backgroundFileName(String backgroundFileName) {
             this.backgroundFileName = backgroundFileName;
-            return this;
+            return self();
         }
 
-        public RoomBuilder id(int id) {
+        public T id(int id) {
             this.id = id;
-            return this;
+            return self();
         }
 
-        public RoomBuilder numExits(int numExits) {
+        public T numExits(int numExits) {
             this.numExits = numExits;
-            return this;
+            return self();
         }
 
-        public RoomBuilder type(RoomType type) {
+        public T type(RoomType type) {
             this.type = type;
-            return this;
+            return self();
         }
 
-        public RoomBuilder roomsRequired(int roomsRequired) {
+        public T roomsRequired(int roomsRequired) {
             this.roomsRequired = roomsRequired;
-            return this;
+            return self();
         }
 
-        public RoomBuilder selectionWeight(int selectionWeight) {
+        public T selectionWeight(int selectionWeight) {
             this.selectionWeight = selectionWeight;
-            return this;
+            return self();
         }
 
         public Room build() {

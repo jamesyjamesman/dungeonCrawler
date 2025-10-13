@@ -15,20 +15,11 @@ public class RelicRoom extends Room {
     //todo make relic final if possible
     private Relic relic;
 
-    public RelicRoom(RelicRoomBuilder builder) {
+    public RelicRoom(RelicRoomBuilder<?> builder) {
         super(builder);
         this.hasCorpse = builder.hasCorpse;
         this.relic = null;
     }
-
-//    public static class RoomBuilder {
-//        private boolean hasCorpse;
-//
-//        public RoomBuilder hasCorpse(boolean hasCorpse) {
-//            this.hasCorpse = hasCorpse;
-//            return this;
-//        }
-//    }
 
     @Override
     public void completeRoomActions(Player player) {

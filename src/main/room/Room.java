@@ -20,7 +20,7 @@ public class Room {
     private final int roomsRequired;
     private final int selectionWeight;
 
-    public Room(RoomBuilder builder) {
+    public Room(RoomBuilder<?> builder) {
         this.appearance = builder.appearance != null ? builder.appearance :
                 "It looks like a completely normal room from here.";
         this.description = builder.description != null ? builder.description :
@@ -36,61 +36,6 @@ public class Room {
 
         this.active = true;
         this.exits = new ArrayList<>();
-    }
-
-    public static class RoomBuilder {
-        private String appearance;
-        private String description;
-        private String backgroundFileName;
-        private int id;
-        private int numExits;
-        private RoomType type;
-        private int roomsRequired;
-        private int selectionWeight;
-
-        public RoomBuilder appearance(String appearance) {
-            this.appearance = appearance;
-            return this;
-        }
-
-        public RoomBuilder description(String description) {
-            this.description = description;
-            return this;
-        }
-
-        public RoomBuilder backgroundFileName(String backgroundFileName) {
-            this.backgroundFileName = backgroundFileName;
-            return this;
-        }
-
-        public RoomBuilder id(int id) {
-            this.id = id;
-            return this;
-        }
-
-        public RoomBuilder numExits(int numExits) {
-            this.numExits = numExits;
-            return this;
-        }
-
-        public RoomBuilder type(RoomType type) {
-            this.type = type;
-            return this;
-        }
-
-        public RoomBuilder roomsRequired(int roomsRequired) {
-            this.roomsRequired = roomsRequired;
-            return this;
-        }
-
-        public RoomBuilder selectionWeight(int selectionWeight) {
-            this.selectionWeight = selectionWeight;
-            return this;
-        }
-
-        public Room build() {
-            return new Room(this);
-        }
     }
 
     public void completeRoomActions(Player player) {
