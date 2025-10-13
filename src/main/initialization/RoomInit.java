@@ -221,9 +221,45 @@ public class RoomInit {
         roomList.add(randomRoom);
 
         //there is a chance that someone might not want to leave, and be forced if this is the only exit.
-        roomList.add(new EndingRoom());
-        roomList.add(new PureWaterRoom());
-        roomList.add(new ShopRoom());
+        EndingRoom endingRoom = new RoomBuilder<>()
+                .id(9001)
+                .numExits(1)
+                .description("""
+                    At last, your journey is over. A simple room, with just an old wooden staircase upwards.
+                    You can smell fresh air for the first time in a while. You don't hesitate to rush up the stairs, and find yourself
+                    in an old wine cellar. You head up further, finding yourself in a rustic bar.
+                    Before anyone has a chance to say anything, you dash out the door, raising your arms, feeling the sun on your shoulders.
+                    Freedom.""")
+                .appearance("You get the sense your journey is finally over.")
+                .roomsRequired(100)
+                .selectionWeight(1)
+                .type(RoomType.SPECIAL)
+                .buildEnding();
+
+        roomList.add(endingRoom);
+
+        PureWaterRoom pureRoom = new RoomBuilder<>()
+                .id(9002)
+                .numExits(4)
+                .description("You walk into the room, and see a fountain with flowing water. The water is almost luminescent.")
+                .appearance("You can hear rushing water, but that's about it.")
+                .selectionWeight(3)
+                .type(RoomType.SPECIAL)
+                .buildPure();
+
+        roomList.add(pureRoom);
+
+        ShopRoom shopRoom = new RoomBuilder<>()
+                .appearance("You can hear a bell ringing. It's inviting?")
+                .description("You see a cold glow from a small opening in the wall, and approach it.")
+                .id(8394)
+                .type(RoomType.SPECIAL)
+                .roomsRequired(10)
+                .numExits(2)
+                .selectionWeight(1)
+                .buildShop();
+
+        roomList.add(shopRoom);
 
         return roomList;
     }

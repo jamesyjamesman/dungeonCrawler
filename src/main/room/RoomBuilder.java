@@ -64,4 +64,16 @@ package main.room;
         public Room build() {
             return new Room(this);
         }
+
+        public EndingRoom buildEnding() {
+            return new EndingRoom(this);
+        }
+
+        public ShopRoom buildShop() {
+            return new ShopRoom(this);
+        }
+
+        public PureWaterRoom buildPure() {
+            return new PureWaterRoom(this);
+        }
 }
