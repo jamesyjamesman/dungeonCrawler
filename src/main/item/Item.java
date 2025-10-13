@@ -3,7 +3,7 @@ package main.item;
 import main.Player;
 import main.item.health.PureAppleItem;
 import main.item.relic.Relic;
-import main.room.PureWaterRoom;
+//import main.room.PureWaterRoom;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
@@ -41,7 +41,7 @@ public abstract class Item implements Cloneable {
         } else {
             SwingRenderer.appendLabelText("You put the " + this.getName() + " in the fountain, but nothing happened.\n", false, ComponentType.LABEL_DESCRIPTION);
         }
-        ((PureWaterRoom) player.getCurrentRoom()).setFountainUsed(true);
+//        ((PureWaterRoom) player.getCurrentRoom()).setFountainUsed(true);
         SwingRenderer.appendLabelText("The fountain ran dry!", false, ComponentType.LABEL_DESCRIPTION);
         SwingRenderer.UIUpdater(player);
     }

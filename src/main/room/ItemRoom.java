@@ -9,15 +9,15 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class ItemRoom extends Room {
-    Item item;
-    public ItemRoom() {
-        super();
-        this.item = null;
+    private Item item;
+    public ItemRoom(ItemRoomBuilder<?> builder) {
+        super(builder);
+        this.item = builder.item != null ? builder.item : null;
     }
 
     @Override
     public void completeRoomActions(Player player) {
-        if (this.id == 12) {
+        if (this.getId() == 12) {
             initializeItem();
         }
         super.completeRoomActions(player);

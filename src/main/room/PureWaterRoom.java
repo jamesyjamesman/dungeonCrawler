@@ -7,14 +7,9 @@ import main.swing.SwingRenderer;
 
 public class PureWaterRoom extends Room {
     boolean fountainUsed;
-    public PureWaterRoom() {
+    public PureWaterRoom(RoomBuilder<?> builder) {
+        super(builder);
         this.fountainUsed = false;
-        this.setId(9002);
-        this.setNumExits(4);
-        this.setDescription("You walk into the room, and see a fountain with flowing water. The water is almost luminescent.");
-        this.setAppearance("You can hear rushing water, but that's about it.");
-        this.setSelectionWeight(3);
-        this.setType(RoomType.SPECIAL);
     }
 
     @Override
@@ -29,7 +24,6 @@ public class PureWaterRoom extends Room {
     }
 
     //cleansing logic in Item.cleanseItem();
-
     public void setFountainUsed(boolean used) {
         this.fountainUsed = used;
     }

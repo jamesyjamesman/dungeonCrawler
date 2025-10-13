@@ -14,6 +14,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+//potentially make a "stats" object for player -- would cut this in about half
 public class Player {
     private final String name;
     private int maxHealth;

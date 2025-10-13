@@ -14,17 +14,10 @@ public class ShopRoom extends Room {
     ArrayList<Item> wares;
     ArrayList<Item> itemList;
     boolean open;
-    public ShopRoom() {
+    public ShopRoom(RoomBuilder<?> builder) {
+        super(builder);
         this.wares = new ArrayList<>();
-        this.active = false;
         this.open = false;
-        this.appearance = "You can hear a bell ringing. It's inviting?";
-        this.description = "You see a cold glow from a small opening in the wall, and approach it.";
-        this.id = 8394;
-        this.type = RoomType.SPECIAL;
-        this.roomsRequired = 10;
-        this.numExits = 2;
-        this.selectionWeight = 1;
         this.itemList = ItemInit.itemInit();
     }
 
