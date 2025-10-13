@@ -144,39 +144,44 @@ public class RoomInit {
 
         roomList.add(minotaurBossRoom);
 
+        ItemRoom appleRoom = new ItemRoomBuilder<>()
+                .id(3)
+                .numExits(3)
+                .description("You enter the room. It's empty, except for a small apple on a pedestal.")
+                .appearance("You can't see much, but you can smell a faintly sweet scent coming from the doorway.")
+                .type(RoomType.ITEM)
+                .selectionWeight(7)
+                .item(new AppleItem())
+                .build();
 
-        ItemRoom appleRoom = new ItemRoom();
-        appleRoom.setItem(new AppleItem());
-        appleRoom.setId(3);
-        appleRoom.setNumExits(3);
-        appleRoom.setDescription("You enter the room. It's empty, except for a small apple on a pedestal.");
-        appleRoom.setAppearance("You can't see much, but you can smell a faintly sweet scent coming from the doorway.");
-        appleRoom.setType(RoomType.ITEM);
-        appleRoom.setSelectionWeight(7);
         roomList.add(appleRoom);
 
-        ItemRoom chocolateRoom = new ItemRoom();
-        chocolateRoom.setItem(new ChocolateItem());
-        chocolateRoom.setId(4);
-        chocolateRoom.setNumExits(1);
-        chocolateRoom.setDescription("""
+        ItemRoom chocolateRoom = new ItemRoomBuilder<>()
+                .item(new ChocolateItem())
+                .id(4)
+                .numExits(1)
+                .description("""
                 It couldn't be... Lost after all this time... But you found it, in a dank cave...
-                The legendary Torpedo Chocolate Bar™!!!!""");
-        chocolateRoom.setAppearance("There's a positively delightful aroma emanating from this passageway.");
-        chocolateRoom.setType(RoomType.ITEM);
-        chocolateRoom.setSelectionWeight(3);
+                The legendary Torpedo Chocolate Bar™!!!!""")
+                .appearance("There's a positively delightful aroma emanating from this passageway.")
+                .type(RoomType.ITEM)
+                .selectionWeight(3)
+                .build();
+
         roomList.add(chocolateRoom);
 
-        ItemRoom lavaRoom = new ItemRoom();
-        lavaRoom.setId(1001);
-        lavaRoom.setDescription("""
+        ItemRoom lavaRoom = new ItemRoomBuilder<>()
+                .id(1001)
+                .description("""
                 You walk into the room. There's flowing lava coming from the ceiling and down the walls, pooling on the floor.
-                Near one of the pools lies a freshly and perfectly cooked steak. Alright, then.""");
-        lavaRoom.setAppearance("It smells like a barbeque. There's a soft orange glow emanating from the entrance.");
-        lavaRoom.setType(RoomType.ITEM);
-        lavaRoom.setSelectionWeight(5);
-        lavaRoom.setItem(new SteakItem());
-        lavaRoom.setNumExits(3);
+                Near one of the pools lies a freshly and perfectly cooked steak. Alright, then.""")
+                .appearance("It smells like a barbeque. There's a soft orange glow emanating from the entrance.")
+                .type(RoomType.ITEM)
+                .selectionWeight(5)
+                .item(new SteakItem())
+                .numExits(3)
+                .build();
+
         roomList.add(lavaRoom);
 
         RelicRoom relicRoom = new RelicRoomBuilder<>()
@@ -205,13 +210,14 @@ public class RoomInit {
         //item added later (TODO change that?)
         roomList.add(corpseRoom);
 
-        ItemRoom randomRoom = new ItemRoom();
+        ItemRoom randomRoom = new ItemRoomBuilder<>()
+                .id(12)
+                .description("You walk into a room. It's empty, except for something on the ground.")
+                .numExits(3)
+                .type(RoomType.ITEM)
+                .selectionWeight(6)
+                .build();
         //item added later (TODO change that?)
-        randomRoom.setId(12);
-        randomRoom.setDescription("You walk into a room. It's empty, except for something on the ground.");
-        randomRoom.setNumExits(3);
-        randomRoom.setType(RoomType.ITEM);
-        randomRoom.setSelectionWeight(6);
         roomList.add(randomRoom);
 
         //there is a chance that someone might not want to leave, and be forced if this is the only exit.
