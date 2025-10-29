@@ -1,5 +1,6 @@
 package main;
 
+import main.entity.Player;
 import main.item.relic.Relic;
 import main.room.Room;
 

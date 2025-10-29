@@ -1,8 +1,8 @@
 package main.room;
 
 import main.Battle;
-import main.Player;
-import main.enemy.Enemy;
+import main.entity.Player;
+import main.entity.enemy.Enemy;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 

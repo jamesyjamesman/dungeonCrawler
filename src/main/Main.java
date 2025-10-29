@@ -1,5 +1,6 @@
 package main;
 
+import main.entity.Player;
 import main.initialization.PlayerInit;
 import main.initialization.RelicInit;
 import main.initialization.RoomInit;

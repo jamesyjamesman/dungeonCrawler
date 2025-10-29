@@ -1,6 +1,6 @@
 package main.item;
 
-import main.Player;
+import main.entity.Player;
 import main.item.health.PureAppleItem;
 import main.item.relic.Relic;
 import main.room.PureWaterRoom;

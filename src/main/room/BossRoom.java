@@ -1,6 +1,6 @@
 package main.room;
 
-import main.Player;
+import main.entity.Player;
 
 public class BossRoom extends EnemyRoom {
     boolean completed;

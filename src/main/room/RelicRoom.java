@@ -2,7 +2,7 @@ package main.room;
 
 import main.App;
 import main.Game;
-import main.Player;
+import main.entity.Player;
 import main.item.relic.Relic;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;

@@ -1,6 +1,6 @@
 package main.room;
 
-import main.enemy.Enemy;
+import main.entity.enemy.Enemy;
 
 import java.util.ArrayList;
 

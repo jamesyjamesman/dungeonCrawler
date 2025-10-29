@@ -1,8 +1,8 @@
 package main.swing;
 
 import main.App;
-import main.Player;
-import main.enemy.Enemy;
+import main.entity.Player;
+import main.entity.enemy.Enemy;
 import main.item.Item;
 import main.item.relic.Relic;
 import main.item.relic.RelicID;

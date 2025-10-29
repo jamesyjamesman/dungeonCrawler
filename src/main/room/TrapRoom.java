@@ -1,6 +1,6 @@
 package main.room;
 
-import main.Player;
+import main.entity.Player;
 import main.swing.SwingRenderer;
 
 public class TrapRoom extends Room {
