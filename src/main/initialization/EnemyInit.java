@@ -15,30 +15,20 @@ public class EnemyInit {
     static ArrayList<Enemy> enemyList = new ArrayList<>();
     public static ArrayList<Enemy> enemyInit() {
             Enemy goblinMage = new Enemy(Species.GOBLIN, 7, 2, 3);
-            Wand wand = new Wand();
-            wand.setDropChance(0.15);
-            goblinMage.setLoot(new Loot(2, wand));
+            goblinMage.setLoot(new Loot(2, new Wand(0.15)));
             enemyList.add(goblinMage);
 
             Enemy goblin = new Enemy(Species.GOBLIN, 8, 1, 3);
             ArrayList<Item> items = new ArrayList<>();
 
-            ShortSword sword = new ShortSword();
-            sword.setDropChance(0.2);
-            items.add(sword);
-
-            DamageBuffItem damageBuff = new DamageBuffItem(1, 2);
-            damageBuff.setDropChance(0.1);
-
-            items.add(damageBuff);
+            items.add(new ShortSword(0.2));
+            items.add(new DamageBuffItem(0.1, 0, 1));
 
             goblin.setLoot(new Loot(3, items));
             enemyList.add(goblin);
 
             Enemy orc = new Enemy(Species.ORC, 12, 2, 7);
-            Mace mace = new Mace();
-            mace.setDropChance(0.05);
-            orc.setLoot(new Loot(5, mace));
+            orc.setLoot(new Loot(5, new Mace(0.05)));
             enemyList.add(orc);
 
         return enemyList;

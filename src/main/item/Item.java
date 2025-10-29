@@ -8,19 +8,19 @@ import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
 public abstract class Item implements Cloneable {
-    String description;
-    String name;
-    int value;
-    boolean stackable;
-    double dropChance;
-    int shopWeight;
-    public Item() {
-        this.description = "";
-        this.name = "";
-        this.value = 0;
-        this.stackable = true;
-        this.dropChance = 1.0;
-        this.shopWeight = 10;
+    private final String description;
+    private final String name;
+    private final int value;
+    private final boolean stackable;
+    private final double dropChance;
+    private final int shopWeight;
+    public Item(String name, String description, int value, boolean stackable, double dropChance, int shopWeight) {
+        this.description = description;
+        this.name = name;
+        this.value = value;
+        this.stackable = stackable;
+        this.dropChance = dropChance;
+        this.shopWeight = shopWeight;
     }
 
     public void useItem(Player player) {
@@ -47,26 +47,14 @@ public abstract class Item implements Cloneable {
     }
 
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
     public String getDescription() {
         return this.description;
-    }
-    public void setName(String name) {
-        this.name = name;
     }
     public String getName() {
         return this.name;
     }
-    public void setValue(int value) {
-        this.value = value;
-    }
     public int getValue() {
         return this.value;
-    }
-    public void setStackable(boolean stackable) {
-        this.stackable = stackable;
     }
     public boolean isStackable() {
         return this.stackable;
@@ -74,14 +62,8 @@ public abstract class Item implements Cloneable {
     public double getDropChance() {
         return this.dropChance;
     }
-    public void setDropChance(double dropChance) {
-        this.dropChance = dropChance;
-    }
     public int getShopWeight() {
         return this.shopWeight;
-    }
-    public void setShopWeight(int shopWeight) {
-        this.shopWeight = shopWeight;
     }
 
     @Override

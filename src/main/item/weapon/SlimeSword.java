@@ -2,10 +2,15 @@ package main.item.weapon;
 
 public class SlimeSword extends Weapon {
     public SlimeSword() {
-        this.setDamage(2);
-        this.setName("Slimy Sword");
-        this.setDescription("A now slime-covered sword from an adventurer before you.");
-        this.setValue(12);
-        this.setShopWeight(0);
+        this(1);
+    }
+    public SlimeSword(double dropChance) {
+        super("Slimy Sword",
+                "A now slime-covered sword from an adventurer before you.",
+                12,
+                dropChance,
+                0,
+                2
+                );
     }
 }

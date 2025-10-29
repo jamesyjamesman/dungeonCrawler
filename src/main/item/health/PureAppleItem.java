@@ -2,10 +2,15 @@ package main.item.health;
 
 public class PureAppleItem extends HealthItem {
     public PureAppleItem() {
-        this.setName("Pure Apple");
-        this.setDescription("The purified water cleansed any rot this apple once had. It looks perfect!");
-        this.setValue(10);
-        setRestorationRange(5, 10);
-        this.setShopWeight(1);
+        this(1);
+    }
+    public PureAppleItem(double dropChance) {
+        super("Pure Apple",
+                "The purified water cleansed any rot this apple once had. It looks perfect!",
+                10,
+                dropChance,
+                1,
+                5,
+                10);
     }
 }

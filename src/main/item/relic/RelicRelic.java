@@ -6,9 +6,13 @@ import main.swing.SwingRenderer;
 
 public class RelicRelic extends Relic {
     public RelicRelic() {
-        setName("Relic of Relics");
-        setType(RelicID.RELICS);
-        setDescription("Er, somehow, equipping this relic lets you equip 2 more relics?");
+        this(1);
+    }
+    public RelicRelic(double dropChance) {
+        super("Relic of Relics",
+                "Er, somehow, equipping this relic lets you equip 2 more relics?",
+                dropChance,
+                RelicID.RELICS);
     }
 
     @Override

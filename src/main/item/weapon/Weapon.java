@@ -7,9 +7,9 @@ import main.swing.SwingRenderer;
 //should be abstract
 public class Weapon extends Item {
     int damage;
-    public Weapon() {
-        this.damage = 0;
-        setStackable(false);
+    public Weapon(String name, String description, int value, double dropChance, int shopWeight, int damage) {
+        super(name, description, value, false, dropChance, shopWeight);
+        this.damage = damage;
     }
 
     @Override
@@ -22,9 +22,6 @@ public class Weapon extends Item {
         SwingRenderer.UIUpdater(player);
     }
 
-    public void setDamage(int damage) {
-        this.damage = damage;
-    }
     public boolean isEquipped(Player player) {
         return this == player.getEquippedWeapon();
     }

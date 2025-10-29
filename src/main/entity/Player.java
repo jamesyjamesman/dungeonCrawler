@@ -259,7 +259,6 @@ public class Player extends Entity {
             SwingRenderer.appendLabelText("You cannot equip any more relics!", true, ComponentType.LABEL_ERROR);
             return false;
         }
-        relic.setEquipped(true);
         this.equippedRelics.add(relic);
         int relicIndex = this.findItemInInventory(relic);
         this.inventory.remove(relicIndex);
@@ -282,7 +281,6 @@ public class Player extends Entity {
             SwingRenderer.appendLabelText("Your inventory is full; the relic could not be unequipped!", true, ComponentType.LABEL_ERROR);
             return false;
         }
-        relic.setEquipped(false);
         SwingRenderer.appendLabelText("The " + relic.getName() + " was unequipped!", true, ComponentType.LABEL_ERROR);
         getEquippedRelics().remove(relic);
         return true;
