@@ -33,7 +33,7 @@ public class Game {
             currentRoom.getExits().clear();
             currentRoom = nextRoom;
         }
-        player.doDeathSequence();
+        player.die();
     }
 
     public static void createRoomExits(Player player, ArrayList<Room> activeRooms, Room room) {

@@ -1,5 +1,6 @@
 package main.initialization;
 
+import main.Species;
 import main.enemy.*;
 import main.item.Item;
 import main.item.Loot;
@@ -13,26 +14,13 @@ import java.util.ArrayList;
 public class EnemyInit {
     static ArrayList<Enemy> enemyList = new ArrayList<>();
     public static ArrayList<Enemy> enemyInit() {
-            MageEnemy goblinMage = new MageEnemy();
-            goblinMage.setMaxHealth(7);
-            goblinMage.setSpecies("goblin");
-            goblinMage.setDamage(2);
-            //not implemented yet
-//            goblinMage.currentMana = 100;
-//            goblinMage.maxMana = 100;
-            //not implemented, but should definitely be an enum
-            goblinMage.setDamageType("magic");
-            goblinMage.setExperienceDropped(3);
+            Enemy goblinMage = new Enemy(Species.GOBLIN, 7, 2, 3);
             Wand wand = new Wand();
             wand.setDropChance(0.15);
             goblinMage.setLoot(new Loot(2, wand));
             enemyList.add(goblinMage);
 
-            Enemy goblin = new Enemy();
-            goblin.setMaxHealth(8);
-            goblin.setSpecies("goblin");
-            goblin.setDamage(1);
-            goblin.setExperienceDropped(3);
+            Enemy goblin = new Enemy(Species.GOBLIN, 8, 1, 3);
             ArrayList<Item> items = new ArrayList<>();
 
             ShortSword sword = new ShortSword();
@@ -47,11 +35,7 @@ public class EnemyInit {
             goblin.setLoot(new Loot(3, items));
             enemyList.add(goblin);
 
-            Enemy orc = new Enemy();
-            orc.setMaxHealth(12);
-            orc.setSpecies("orc");
-            orc.setDamage(2);
-            orc.setExperienceDropped(7);
+            Enemy orc = new Enemy(Species.ORC, 12, 2, 7);
             Mace mace = new Mace();
             mace.setDropChance(0.05);
             orc.setLoot(new Loot(5, mace));

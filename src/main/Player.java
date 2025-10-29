@@ -31,7 +31,7 @@ public class Player extends Entity {
     private Weapon equippedWeapon;
     private int gold;
     public Player(String newName) {
-        super(20, 20, 3);
+        super(Species.PLAYER, 20, 3);
         this.name = newName;
         this.inventory = new ArrayList<>();
         this.equippedRelics = new ArrayList<>();
@@ -51,7 +51,7 @@ public class Player extends Entity {
         int totalDamage = weakenAttack(calculateTotalAttack());
         int damageDealt = enemy.takeDamage(totalDamage);
         if (damageDealt > 0) {
-            SwingRenderer.appendTextPane("The " + enemy.getSpecies() + " took " + totalDamage + " damage!\n", false, ComponentType.PANE_MAIN);
+            SwingRenderer.appendTextPane("The " + enemy.speciesToStringLower() + " took " + totalDamage + " damage!\n", false, ComponentType.PANE_MAIN);
         }
     }
 
@@ -226,7 +226,7 @@ public class Player extends Entity {
 
     //todo fix stuff
     @Override
-    public void takeDamage(int damage) {
+    public int takeDamage(int damage) {
         if (this.absorption > 0) {
             this.absorption -= damage;
             if (this.absorption < 0) {
@@ -234,7 +234,7 @@ public class Player extends Entity {
                 this.absorption = 0;
             } else {
                 checkStatus();
-                return;
+                return damage;
             }
         }
 //        this.currentHealth -= damage;
@@ -243,6 +243,7 @@ public class Player extends Entity {
 //            doDeathSequence();
 //        }
         checkStatus();
+        return damage;
     }
 
     public void useRelics(Room room) {
@@ -285,7 +286,8 @@ public class Player extends Entity {
         return true;
     }
 
-    public void doDeathSequence() {
+    @Override
+    public void die() {
         checkStatus();
         SwingRenderer.appendTextPane("\"Ack! It's too much for me!\" " + getName() + " exclaims.\n" + getName() + " falls to their knees... then to the ground.\n" + "GAME OVER!", true, ComponentType.PANE_MAIN);
         while (true) {

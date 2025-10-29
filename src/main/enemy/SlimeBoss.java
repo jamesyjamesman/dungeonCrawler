@@ -1,6 +1,7 @@
 package main.enemy;
 
 import main.Player;
+import main.Species;
 import main.item.Item;
 import main.item.Loot;
 import main.item.buff.HealthBuffItem;
@@ -15,10 +16,7 @@ import java.util.Random;
 
 public class SlimeBoss extends Boss {
     public SlimeBoss() {
-        this.setMaxHealth(30);
-        this.setSpecies("slime");
-        this.setDamage(3);
-        this.setExperienceDropped(30);
+        super(Species.SLIME, 30, 3, 30);
 
         ArrayList<Item> items = new ArrayList<>();
         SlimeSword slimeSword = new SlimeSword();

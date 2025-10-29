@@ -2,6 +2,7 @@ package main.enemy;
 
 import main.App;
 import main.Player;
+import main.Species;
 import main.item.Loot;
 import main.item.relic.CurseHealRelic;
 import main.room.EnemyRoom;
@@ -12,10 +13,7 @@ import java.util.Random;
 
 public class MinotaurBoss extends Boss {
     public MinotaurBoss() {
-        this.setMaxHealth(50);
-        this.setSpecies("minotaur");
-        this.setDamage(5);
-        this.setExperienceDropped(100);
+        super(Species.MINOTAUR, 50, 5, 100);
 
         this.setLoot(new Loot(30, new CurseHealRelic()));
     }
@@ -43,7 +41,7 @@ public class MinotaurBoss extends Boss {
         takeDamage(this.getDamage() / 2);
         //thi
         if (this.getCurrentHealth() <= 0) {
-            death(App.INSTANCE.getPlayer(), (EnemyRoom) App.INSTANCE.getPlayer().getCurrentRoom());
+            die();
         }
         return angerAttack();
     }
