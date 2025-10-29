@@ -8,9 +8,13 @@ import java.util.Random;
 
 public class RegenerationRelic extends Relic {
     public RegenerationRelic() {
-        setName("Relic of Regeneration");
-        setType(RelicID.REGENERATION);
-        setDescription("This mystical artifact will heal you on occasion.");
+        this(1);
+    }
+    public RegenerationRelic(double dropChance) {
+        super("Relic of Regeneration",
+                "This mystical artifact will heal you on occasion.",
+                dropChance,
+                RelicID.REGENERATION);
     }
 
     @Override

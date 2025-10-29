@@ -8,22 +8,19 @@ import main.swing.SwingRenderer;
 import java.util.Random;
 
 public abstract class Relic extends Item {
-    boolean equipped;
     boolean cursed;
     RelicID relicID;
-    public Relic(){
-        this.setValue(25);
-        this.equipped = false;
+    public Relic(String name, String description, double dropChance, RelicID relicID) {
+        super(name, description, 25, true, dropChance, 0);
         this.cursed = new Random().nextInt(5) == 0;
         this.relicID = null;
-        this.setShopWeight(0);
     }
 
     public void useRelic(Player player, Room room) {}
 
     @Override
     public void useItem(Player player) {
-        if(this.equipped) {player.unequipRelic(this);}
+        if(this.isEquipped(player)) {player.unequipRelic(this);}
         else {player.equipRelic(this);}
         SwingRenderer.UIUpdater(player);
     }
@@ -34,9 +31,6 @@ public abstract class Relic extends Item {
 
     public void setCursed(boolean cursed) {
         this.cursed = cursed;
-    }
-    public void setEquipped(boolean equipped) {
-        this.equipped = equipped;
     }
     //instead of having a boolean on the object itself, this method could just check players relic bag
     public boolean isEquipped(Player player) {

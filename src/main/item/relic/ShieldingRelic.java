@@ -9,9 +9,13 @@ import java.util.Random;
 
 public class ShieldingRelic extends Relic {
     public ShieldingRelic() {
-        setName("Relic of Shielding");
-        setType(RelicID.SHIELDING);
-        setDescription("A shimmering relic that gives a constant source of shielding, but only up to a limited amount.");
+        this(1);
+    }
+    public ShieldingRelic(double dropChance) {
+        super("Relic of Shielding",
+                "A shimmering relic that gives a constant source of shielding, but only up to a limited amount.",
+                dropChance,
+                RelicID.SHIELDING);
     }
 
     @Override

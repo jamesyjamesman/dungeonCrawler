@@ -2,9 +2,13 @@ package main.item.relic;
 
 public class CurseHealRelic extends Relic {
     public CurseHealRelic() {
-        setName("Relic of Cursed Healing");
-        setType(RelicID.CURSE_HEAL);
-        setDescription("This interesting relic inverts the twisted energies from cursed relics, healing you instead.");
+        this(1);
+    }
+    public CurseHealRelic(double dropChance) {
+        super("Relic of Cursed Healing",
+            "This interesting relic inverts the twisted energies from cursed relics, healing you instead.",
+            dropChance,
+            RelicID.CURSE_HEAL);
         setCursed(true);
     }
 }

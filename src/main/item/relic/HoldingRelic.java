@@ -6,9 +6,13 @@ import main.swing.SwingRenderer;
 
 public class HoldingRelic extends Relic {
     public HoldingRelic() {
-        setName("Relic of Holding");
-        setType(RelicID.HOLDING);
-        setDescription("A strange relic that somehow fits many things in a small amulet.");
+        this(1);
+    }
+    public HoldingRelic(double dropChance) {
+        super("Relic of Holding",
+                "A strange relic that somehow fits many things in a small amulet.",
+                dropChance,
+                RelicID.HOLDING);
     }
 
     @Override
