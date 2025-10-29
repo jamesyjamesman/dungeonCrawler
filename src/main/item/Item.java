@@ -8,19 +8,19 @@ import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
 public abstract class Item implements Cloneable {
-    String description;
-    String name;
-    int value;
-    boolean stackable;
-    double dropChance;
-    int shopWeight;
-    public Item() {
-        this.description = "";
-        this.name = "";
-        this.value = 0;
-        this.stackable = true;
-        this.dropChance = 1.0;
-        this.shopWeight = 10;
+    private final String description;
+    private final String name;
+    private final int value;
+    private final boolean stackable;
+    private final double dropChance;
+    private final int shopWeight;
+    public Item(String description, String name, int value, boolean stackable, double dropChance, int shopWeight) {
+        this.description = description;
+        this.name = name;
+        this.value = value;
+        this.stackable = stackable;
+        this.dropChance = dropChance;
+        this.shopWeight = shopWeight;
     }
 
     public void useItem(Player player) {
