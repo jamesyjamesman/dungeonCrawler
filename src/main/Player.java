@@ -398,6 +398,8 @@ public class Player {
         doCurseDamage();
     }
 
+    //todo: consider moving these to the statuses class
+
     public int weakenAttack(int initialDamage) {
         int weaknessLevel = this.currentStatuses.getWeakened();
         if (weaknessLevel == 0) {return initialDamage;}

@@ -12,8 +12,7 @@ public class Room {
     private final String description;
     private final String backgroundFileName;
     private final int id;
-    //can be final?
-    private ArrayList<Room> exits;
+    private final ArrayList<Room> exits;
     private final int numExits;
     //todo: remove active boolean
     private boolean active;
