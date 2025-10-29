@@ -226,7 +226,6 @@ public class Player extends Entity {
         return "";
     }
 
-    //todo fix stuff
     @Override
     public int takeDamage(int damage) {
         if (this.absorption > 0) {
@@ -239,11 +238,7 @@ public class Player extends Entity {
                 return damage;
             }
         }
-//        this.currentHealth -= damage;
-//        if (this.currentHealth <= 0) {
-//            this.currentHealth = 0;
-//            doDeathSequence();
-//        }
+        damage = super.takeDamage(damage);
         checkStatus();
         return damage;
     }
