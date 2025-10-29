@@ -30,7 +30,7 @@ public class HealthItem extends Item {
         } else {
             if (this.maxHealthChange != 0) {
                 SwingRenderer.addHealthText("Wow! A surge of power courses through you... your maximum health has increased by " + this.maxHealthChange + "!");
-                player.changeMaxHealth(this.maxHealthChange);
+                player.increaseMaxHealth(this.maxHealthChange);
             }
             if (this.addedAbsorption != 0) {
                 SwingRenderer.addHealthText("Wow! An aura of healthiness surrounds you... You gained " + this.addedAbsorption + " points of absorption!");

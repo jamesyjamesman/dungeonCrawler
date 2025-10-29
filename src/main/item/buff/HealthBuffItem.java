@@ -15,7 +15,7 @@ public class HealthBuffItem extends BuffItem {
     public void useItem(Player player) {
         super.useItem(player);
         SwingRenderer.addHealthText("Forcing yourself to swallow the contents of the can, your " + this.statName + " somehow increased by " + this.amountChanged + ".");
-        player.changeMaxHealth(this.amountChanged);
+        player.increaseMaxHealth(this.amountChanged);
         SwingRenderer.UIUpdater(player);
     }
 }

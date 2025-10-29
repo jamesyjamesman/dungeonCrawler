@@ -15,12 +15,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 //potentially make a "stats" object for player -- would cut this in about half
-public class Player {
+public class Player extends Entity {
     private final String name;
-    private int maxHealth;
-    private int currentHealth;
     private int roomsTraversed;
-    private int damage;
     private final ArrayList<ArrayList<Item>> inventory;
     private final ArrayList<Relic> equippedRelics;
     private int absorption;
@@ -34,13 +31,11 @@ public class Player {
     private Weapon equippedWeapon;
     private int gold;
     public Player(String newName) {
+        super(20, 20, 3);
         this.name = newName;
-        this.maxHealth = 20;
-        this.currentHealth = 20;
         this.inventory = new ArrayList<>();
         this.equippedRelics = new ArrayList<>();
         this.roomsTraversed = 0;
-        this.damage = 3;
         this.absorption = 0;
         this.inventoryCap = 10;
         this.relicCap = 3;
@@ -61,7 +56,7 @@ public class Player {
     }
 
     public int calculateTotalAttack() {
-        return this.damage + ((this.equippedWeapon != null) ? this.equippedWeapon.getDamage() : 0);
+        return getDamage() + ((this.equippedWeapon != null) ? this.equippedWeapon.getDamage() : 0);
     }
 
     public void itemPickup(Item item) {
@@ -195,7 +190,7 @@ public class Player {
         output = output.concat("Level " + this.level + (this.level < 10 ? " (" + this.experience + "/" + this.expToNextLevel + " exp)" : ""));
         output = output.concat("\n");
         output = output.concat("Gold: " + this.gold + "\n");
-        output = output.concat("Health: " + (this.currentHealth + this.absorption) + "/" + this.maxHealth + "\n");
+        output = output.concat("Health: " + (getCurrentHealth() + this.absorption) + "/" + getMaxHealth() + "\n");
         output = output.concat("Attack damage: " + calculateTotalAttack() + "\n");
         output = output.concat("Rooms traveled: " + this.roomsTraversed + "\n");
         output = output.concat("Inventory: " + calculateInventorySize() + "/" + this.inventoryCap + "\n");
@@ -229,6 +224,8 @@ public class Player {
         return "";
     }
 
+    //todo fix stuff
+    @Override
     public void takeDamage(int damage) {
         if (this.absorption > 0) {
             this.absorption -= damage;
@@ -240,30 +237,12 @@ public class Player {
                 return;
             }
         }
-        this.currentHealth -= damage;
-        if (this.currentHealth <= 0) {
-            this.currentHealth = 0;
-            doDeathSequence();
-        }
+//        this.currentHealth -= damage;
+//        if (this.currentHealth <= 0) {
+//            this.currentHealth = 0;
+//            doDeathSequence();
+//        }
         checkStatus();
-    }
-    public int heal(int health) {
-        this.currentHealth += health;
-        if (this.currentHealth > this.maxHealth) {
-            int healthHealed = health - (this.currentHealth - this.maxHealth);
-            this.currentHealth = this.maxHealth;
-            return healthHealed;
-        }
-        return health;
-    }
-
-    public void changeMaxHealth(int health) {
-            this.maxHealth += health;
-            this.currentHealth += health;
-        }
-
-    public void increaseDamage(int damageIncrease) {
-        this.damage += damageIncrease;
     }
 
     public void useRelics(Room room) {
@@ -374,7 +353,7 @@ public class Player {
         }
         if (maxHealthChange != 0) {
             output += "Your maximum health increased by " + maxHealthChange + "!\n";
-            changeMaxHealth(maxHealthChange);
+            increaseMaxHealth(maxHealthChange);
         }
         if (inventoryCapChange != 0) {
             output += "Your inventory size increased by " + inventoryCapChange + "!\n";
@@ -451,9 +430,6 @@ public class Player {
 
     }
 
-    public int getCurrentHealth() {
-        return this.currentHealth;
-    }
     public ArrayList<Relic> getEquippedRelics() {
         return this.equippedRelics;
     }
