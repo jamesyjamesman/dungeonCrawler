@@ -8,12 +8,12 @@ import main.swing.SwingRenderer;
 import java.util.Random;
 
 public abstract class Relic extends Item {
-    boolean cursed;
-    RelicID relicID;
+    private boolean cursed;
+    private final RelicID relicID;
     public Relic(String name, String description, double dropChance, RelicID relicID) {
         super(name, description, 25, true, dropChance, 0);
         this.cursed = new Random().nextInt(5) == 0;
-        this.relicID = null;
+        this.relicID = relicID;
     }
 
     public void useRelic(Player player, Room room) {}
@@ -38,8 +38,5 @@ public abstract class Relic extends Item {
     }
     public RelicID getType() {
         return this.relicID;
-    }
-    public void setType(RelicID relicID) {
-        this.relicID = relicID;
     }
 }
