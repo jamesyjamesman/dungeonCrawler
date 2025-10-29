@@ -1,4 +1,4 @@
-package main;
+package main.entity;
 
 public abstract class Entity {
     private int maxHealth;

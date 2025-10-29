@@ -1,11 +1,9 @@
-package main.enemy;
+package main.entity.enemy;
 
-import main.App;
-import main.Player;
-import main.Species;
+import main.entity.Player;
+import main.entity.Species;
 import main.item.Loot;
 import main.item.relic.CurseHealRelic;
-import main.room.EnemyRoom;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 

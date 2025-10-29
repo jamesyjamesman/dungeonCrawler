@@ -1,7 +1,7 @@
 package main.room;
 
 import main.App;
-import main.Player;
+import main.entity.Player;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 

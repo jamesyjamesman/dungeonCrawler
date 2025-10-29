@@ -1,6 +1,6 @@
 package main.item.buff;
 
-import main.Player;
+import main.entity.Player;
 import main.item.Item;
 
 import java.util.Random;

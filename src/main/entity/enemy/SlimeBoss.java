@@ -1,7 +1,7 @@
-package main.enemy;
+package main.entity.enemy;
 
-import main.Player;
-import main.Species;
+import main.entity.Player;
+import main.entity.Species;
 import main.item.Item;
 import main.item.Loot;
 import main.item.buff.HealthBuffItem;

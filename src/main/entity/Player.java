@@ -1,6 +1,8 @@
-package main;
+package main.entity;
 
-import main.enemy.Enemy;
+import main.Main;
+import main.Statuses;
+import main.entity.enemy.Enemy;
 import main.item.Item;
 import main.item.relic.Relic;
 import main.item.relic.RelicID;

@@ -1,7 +1,7 @@
 package main.initialization;
 
-import main.Species;
-import main.enemy.*;
+import main.entity.Species;
+import main.entity.enemy.*;
 import main.item.Item;
 import main.item.Loot;
 import main.item.buff.DamageBuffItem;

@@ -1,6 +1,6 @@
 package main.initialization;
 
-import main.enemy.*;
+import main.entity.enemy.*;
 import main.item.health.*;
 import main.room.*;
 

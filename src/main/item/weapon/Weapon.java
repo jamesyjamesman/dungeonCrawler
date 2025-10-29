@@ -1,6 +1,6 @@
 package main.item.weapon;
 
-import main.Player;
+import main.entity.Player;
 import main.item.Item;
 import main.swing.SwingRenderer;
 

@@ -1,6 +1,7 @@
 package main;
 
-import main.enemy.Enemy;
+import main.entity.Player;
+import main.entity.enemy.Enemy;
 import main.item.relic.RelicID;
 import main.room.EnemyRoom;
 import main.swing.ComponentType;
@@ -17,10 +18,6 @@ public class Battle {
             SwingRenderer.appendTextPane("", true, ComponentType.PANE_MAIN);
             Enemy enemy = room.getEnemies().get(enemyIndex);
             player.attack(enemy);
-            //this should just be in takeDamage but this is fine for now
-            if (enemy.getCurrentHealth() <= 0) {
-                enemy.die();
-            }
 
             //enemies attack player
             for (int i = 0; i < room.getEnemies().size(); i++) {

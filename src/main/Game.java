@@ -1,5 +1,6 @@
 package main;
 
+import main.entity.Player;
 import main.item.relic.ForesightRelic;
 import main.item.relic.RelicID;
 import main.room.Room;
