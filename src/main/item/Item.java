@@ -14,7 +14,7 @@ public abstract class Item implements Cloneable {
     private final boolean stackable;
     private final double dropChance;
     private final int shopWeight;
-    public Item(String description, String name, int value, boolean stackable, double dropChance, int shopWeight) {
+    public Item(String name, String description, int value, boolean stackable, double dropChance, int shopWeight) {
         this.description = description;
         this.name = name;
         this.value = value;
