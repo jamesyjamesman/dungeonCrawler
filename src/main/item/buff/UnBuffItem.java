@@ -7,11 +7,13 @@ import java.util.Random;
 
 public class UnBuffItem extends BuffItem {
     public UnBuffItem() {
-        this(2, 7);
+        this(1, 2, 7);
     }
-
     public UnBuffItem(int lowBound, int highBound) {
-        super(lowBound, highBound, "poison");
+        this(1, lowBound, highBound);
+    }
+    public UnBuffItem(double dropChance, int lowBound, int highBound) {
+        super(dropChance, lowBound, highBound, "poison");
     }
 
     @Override

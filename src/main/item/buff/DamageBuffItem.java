@@ -5,10 +5,13 @@ import main.swing.SwingRenderer;
 
 public class DamageBuffItem extends BuffItem {
     public DamageBuffItem() {
-        this(1, 3);
+        this(1, 1, 3);
     }
     public DamageBuffItem(int lowBound, int highBound) {
-        super(lowBound, highBound, "attack damage");
+        this(1, lowBound, highBound);
+    }
+    public DamageBuffItem(double dropChance, int lowBound, int highBound) {
+        super(dropChance, lowBound, highBound, "attack damage");
     }
 
     @Override

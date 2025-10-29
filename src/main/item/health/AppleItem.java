@@ -1,6 +1,10 @@
 package main.item.health;
 
 public class AppleItem extends HealthItem {
+    public AppleItem() {
+        this(1);
+    }
+
     public AppleItem(double dropChance) {
         super("An apple you found in the cave system. It doesn't seem too fresh.",
                 "Apple",

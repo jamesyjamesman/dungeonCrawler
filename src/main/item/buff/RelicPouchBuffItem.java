@@ -5,10 +5,13 @@ import main.swing.SwingRenderer;
 
 public class RelicPouchBuffItem extends BuffItem {
     public RelicPouchBuffItem() {
-        this(0, 2);
+        this(1, 0, 2);
     }
     public RelicPouchBuffItem(int lowBound, int highBound) {
-        super(lowBound, highBound, "relic pouch capacity");
+        this(1, lowBound, highBound);
+    }
+    public RelicPouchBuffItem(double dropChance, int lowBound, int highBound) {
+        super(dropChance, lowBound, highBound, "relic pouch capacity");
     }
 
     @Override

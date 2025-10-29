@@ -1,6 +1,9 @@
 package main.item.health;
 
 public class ChocolateItem extends HealthItem {
+    public ChocolateItem() {
+        this(1);
+    }
     public ChocolateItem(double dropChance) {
         super("Torpedo Chocolate Bar",
                 "A legendary chocolate bar thought to be long-lost. You're salivating just looking at it.",
