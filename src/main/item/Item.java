@@ -47,26 +47,14 @@ public abstract class Item implements Cloneable {
     }
 
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
     public String getDescription() {
         return this.description;
-    }
-    public void setName(String name) {
-        this.name = name;
     }
     public String getName() {
         return this.name;
     }
-    public void setValue(int value) {
-        this.value = value;
-    }
     public int getValue() {
         return this.value;
-    }
-    public void setStackable(boolean stackable) {
-        this.stackable = stackable;
     }
     public boolean isStackable() {
         return this.stackable;
@@ -74,14 +62,8 @@ public abstract class Item implements Cloneable {
     public double getDropChance() {
         return this.dropChance;
     }
-    public void setDropChance(double dropChance) {
-        this.dropChance = dropChance;
-    }
     public int getShopWeight() {
         return this.shopWeight;
-    }
-    public void setShopWeight(int shopWeight) {
-        this.shopWeight = shopWeight;
     }
 
     @Override

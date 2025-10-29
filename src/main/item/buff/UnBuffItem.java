@@ -19,7 +19,7 @@ public class UnBuffItem extends BuffItem {
     @Override
     public void useItem(Player player) {
         super.useItem(player);
-        int poisonAmount = new Random().nextInt(getLowBound(), getHighBound());
+        int poisonAmount = randomizeAmountChanged();
         player.getCurrentStatuses().addPoison(poisonAmount);
         SwingRenderer.addHealthText("Blegh! You think that was meatballs. At some point.\nYou don't feel so good... You received " + poisonAmount + " levels of poison.");
         SwingRenderer.UIUpdater(player);

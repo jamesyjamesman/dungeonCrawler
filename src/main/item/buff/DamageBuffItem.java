@@ -17,8 +17,9 @@ public class DamageBuffItem extends BuffItem {
     @Override
     public void useItem(Player player) {
         super.useItem(player);
-        SwingRenderer.addHealthText("You force down the contents of the can, your " + this.statName + " somehow increased by " + this.amountChanged + ".");
-        player.increaseDamage(this.amountChanged);
+        int amountChanged = randomizeAmountChanged();
+        SwingRenderer.addHealthText("You force down the contents of the can, your " + this.statName + " somehow increased by " + amountChanged + ".");
+        player.increaseDamage(amountChanged);
         SwingRenderer.UIUpdater(player);
     }
 }
