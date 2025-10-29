@@ -32,7 +32,7 @@ public abstract class Relic extends Item {
     public void setCursed(boolean cursed) {
         this.cursed = cursed;
     }
-    //instead of having a boolean on the object itself, this method could just check players relic bag
+
     public boolean isEquipped(Player player) {
         return player.equippedRelicIndex(this.relicID) != -1;
     }
