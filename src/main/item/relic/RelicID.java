@@ -9,5 +9,6 @@ public enum RelicID {
     REGENERATION,
     RELICS,
     SHIELDING,
-    SLIME
+    SLIME,
+    CURE
 }
