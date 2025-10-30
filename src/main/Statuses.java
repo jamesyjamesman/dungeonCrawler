@@ -1,5 +1,7 @@
 package main;
 
+import main.swing.SwingRenderer;
+
 public class Statuses {
     private int poison;
     private int cursed;

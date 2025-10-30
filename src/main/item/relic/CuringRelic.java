@@ -28,6 +28,7 @@ public class CuringRelic extends Relic {
         if (removalIndex <= 0) {
             playerStatuses.addPoison(-1);
             SwingRenderer.addHealthText("The " + getName() + " removed a level of poison!");
+            SwingRenderer.UIUpdater(player);
             return;
         }
 
@@ -35,10 +36,12 @@ public class CuringRelic extends Relic {
         if (removalIndex <= 0) {
             playerStatuses.addWeakened(-1);
             SwingRenderer.addHealthText("The " + getName() + " removed a level of weakness!");
+            SwingRenderer.UIUpdater(player);
             return;
         }
 
         playerStatuses.addFire(-1);
         SwingRenderer.addHealthText("The " + getName() + " removed a level of fire!");
+        SwingRenderer.UIUpdater(player);
     }
 }

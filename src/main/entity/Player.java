@@ -70,6 +70,11 @@ public class Player extends Entity {
                 return;
             }
         }
+        if (item instanceof Relic relic && equippedRelicIndex(relic.getType()) != -1 && findItemInInventory(item) != -1) {
+            addGold(20);
+            SwingRenderer.appendLabelText("You got an additional 20 gold!\n", false, ComponentType.LABEL_DESCRIPTION);
+            return;
+        }
         addItemToInventory(item);
 
         SwingRenderer.appendLabelText("You stash the " + item.getName() + " in your bag.\n", false, ComponentType.LABEL_DESCRIPTION);
@@ -169,7 +174,7 @@ public class Player extends Entity {
 
     public int findItemInInventory(Item item) {
         for (int i = 0; i < this.inventory.size(); i++) {
-            if (this.inventory.get(i).getFirst().equals(item)) {
+            if (this.inventory.get(i).getFirst().getName().equals(item.getName())) {
                 return i;
             }
         }

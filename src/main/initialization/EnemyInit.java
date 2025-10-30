@@ -33,8 +33,10 @@ public class EnemyInit {
             enemyList.add(orc);
 
             Enemy sickGoblin = new SickEnemy(Species.GOBLIN, 6, 3, 11);
-            //todo change to 0.1
-            sickGoblin.setLoot(new Loot(5, new CuringRelic(1)));
+            ArrayList<Item> sickItems = new ArrayList<>();
+            sickItems.add(new CuringRelic(0.1));
+            sickItems.add(new ShortSword(0.2));
+            sickGoblin.setLoot(new Loot(5, sickItems));
             enemyList.add(sickGoblin);
 
         return enemyList;
