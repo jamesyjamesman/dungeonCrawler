@@ -22,6 +22,9 @@ public class CuringRelic extends Relic {
     public void useRelic(Player player, Room room) {
         Statuses playerStatuses = player.getCurrentStatuses();
         int totalStatusCount = playerStatuses.getPoison() + playerStatuses.getWeakened() + playerStatuses.getFire();
+        if (totalStatusCount == 0) {
+            return;
+        }
         int removalIndex = new Random().nextInt(totalStatusCount);
 
         removalIndex -= playerStatuses.getPoison();

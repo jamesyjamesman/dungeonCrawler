@@ -1,6 +1,7 @@
 package main.item;
 
 import main.entity.Player;
+import main.item.relic.Relic;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
@@ -37,6 +38,12 @@ public class Loot {
         SwingRenderer.appendLabelText("The enemy dropped " + this.getGold() + " gold!\n", false, ComponentType.LABEL_DESCRIPTION);
         for (int i = 0; i < this.getItems().size(); i++) {
             Item item = this.getItems().get(i);
+            if (item instanceof Relic relic && player.hasRelic(relic)) {
+                int halfBackGuarantee = relic.getValue() / 2;
+                player.addGold(halfBackGuarantee);
+                SwingRenderer.appendLabelText("You got an additional " + halfBackGuarantee + " gold!\n", false, ComponentType.LABEL_DESCRIPTION);
+                continue;
+            }
             if (new Random().nextDouble(0, 1) > item.getDropChance()) {
                 continue;
             }
