@@ -8,8 +8,14 @@ import main.swing.SwingRenderer;
 import java.util.Random;
 
 public class CuringRelic extends Relic {
-    public CuringRelic(String name, String description, double dropChance, RelicID relicID) {
-        super(name, description, dropChance, relicID);
+    public CuringRelic() {
+        this(1);
+    }
+    public CuringRelic(double dropChance) {
+        super("Beghold's Infinite Exilir of Curing",
+                "A suspicious bottle. It smells like cherries. If you take a swig, the level of red liquid doesn't go down.",
+                dropChance,
+                RelicID.CURE);
     }
 
     @Override

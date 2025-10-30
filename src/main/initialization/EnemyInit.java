@@ -5,6 +5,7 @@ import main.entity.enemy.*;
 import main.item.Item;
 import main.item.Loot;
 import main.item.buff.DamageBuffItem;
+import main.item.relic.CuringRelic;
 import main.item.weapon.Mace;
 import main.item.weapon.ShortSword;
 import main.item.weapon.Wand;
@@ -30,6 +31,11 @@ public class EnemyInit {
             Enemy orc = new Enemy(Species.ORC, 12, 2, 7);
             orc.setLoot(new Loot(5, new Mace(0.05)));
             enemyList.add(orc);
+
+            Enemy sickGoblin = new SickEnemy(Species.GOBLIN, 6, 3, 11);
+            //todo change to 0.1
+            sickGoblin.setLoot(new Loot(5, new CuringRelic(1)));
+            enemyList.add(sickGoblin);
 
         return enemyList;
     }

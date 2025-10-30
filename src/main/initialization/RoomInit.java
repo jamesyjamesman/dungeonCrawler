@@ -109,6 +109,22 @@ public class RoomInit {
 
         roomList.add(ambushRoom);
 
+        ArrayList <Enemy> infirmaryEnemies = new ArrayList<>();
+        infirmaryEnemies.add(enemyList.get(3));
+
+        EnemyRoom infirmary = new EnemyRoomBuilder<>()
+                .id(10001)
+                .numExits(4)
+                .description("You walk into a room, full of cheap beds and medical equipment. A small goblin sees you enter, and slowly climbs out of bed.")
+                .battleInitiationMessage("The goblin coughs, and pulls out a short sword, ready to attack!")
+                .enemies(infirmaryEnemies)
+                .type(RoomType.ENEMY)
+                .selectionWeight(3)
+                .roomsRequired(15)
+                .build();
+
+        roomList.add(infirmary);
+
         ArrayList<Enemy> slimeArray = new ArrayList<>();
         slimeArray.add(new SlimeBoss());
 
