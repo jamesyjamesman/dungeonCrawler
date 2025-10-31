@@ -2,7 +2,6 @@ package main.item.relic;
 
 import main.entity.Player;
 import main.item.Item;
-import main.room.Room;
 import main.swing.SwingRenderer;
 
 import java.util.Random;
@@ -16,7 +15,7 @@ public abstract class Relic extends Item {
         this.relicID = relicID;
     }
 
-    public void useRelic(Player player, Room room) {}
+    public void useRelic(Player player) {}
 
     @Override
     public void useItem(Player player) {

@@ -1,8 +1,8 @@
 package main.item.relic;
 
+import main.App;
 import main.Statuses;
 import main.entity.Player;
-import main.room.Room;
 import main.swing.SwingRenderer;
 
 import java.util.Random;
@@ -19,7 +19,10 @@ public class CuringRelic extends Relic {
     }
 
     @Override
-    public void useRelic(Player player, Room room) {
+    public void useRelic(Player player) {
+        if (!(App.INSTANCE.getState() == App.State.ROOM_END || App.INSTANCE.getState() == App.State.PLAYER_TURN)) {
+            return;
+        }
         Statuses playerStatuses = player.getCurrentStatuses();
         int totalStatusCount = playerStatuses.getPoison() + playerStatuses.getWeakened() + playerStatuses.getFire();
         if (totalStatusCount == 0) {

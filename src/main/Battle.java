@@ -11,14 +11,18 @@ public class Battle {
 
     public static void battleLoop(Player player, EnemyRoom room) {
         SwingRenderer.appendTextPane("\nThe battle has begun!\n", false, ComponentType.PANE_MAIN);
+        App.INSTANCE.setState(App.State.BATTLE_START);
         while (!room.getEnemies().isEmpty()) {
             readEnemies(room, player);
 
+            App.INSTANCE.setState(App.State.PLAYER_TURN);
+            player.useRelics();
             int enemyIndex = Main.getIntegerResponse(player, 1, room.getEnemies().size()) - 1;
             SwingRenderer.appendTextPane("", true, ComponentType.PANE_MAIN);
             Enemy enemy = room.getEnemies().get(enemyIndex);
             player.attack(enemy);
 
+            App.INSTANCE.setState(App.State.ENEMY_TURN);
             //enemies attack player
             for (int i = 0; i < room.getEnemies().size(); i++) {
                 Enemy enemyAttacker = room.getEnemies().get(i);

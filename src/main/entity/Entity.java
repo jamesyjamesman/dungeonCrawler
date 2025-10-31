@@ -68,7 +68,7 @@ public abstract class Entity {
     public int takeDamage(int damage) {
         int oldHealth = this.currentHealth;
         this.currentHealth -= damage;
-        if (this.currentHealth < 0) {
+        if (this.currentHealth <= 0) {
             this.currentHealth = 0;
             die();
             return oldHealth;

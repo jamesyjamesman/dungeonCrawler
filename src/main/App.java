@@ -11,6 +11,14 @@ public enum App {
 
     INSTANCE();
 
+    public enum State {
+        DEFAULT,
+        ROOM_END,
+        BATTLE_START,
+        PLAYER_TURN,
+        ENEMY_TURN
+    }
+
     private JFrame frame;
 
     private Player player;
@@ -18,6 +26,8 @@ public enum App {
     private ArrayList<Relic> unusedRelics;
 
     private ArrayList<Room> rooms;
+
+    private State state = State.DEFAULT;
 
     public App getInstance() {
         return INSTANCE;
@@ -45,5 +55,11 @@ public enum App {
     }
     public void setRooms(ArrayList<Room> newRooms) {
         rooms = newRooms;
+    }
+    public void setState(State state) {
+        this.state = state;
+    }
+    public State getState() {
+        return this.state;
     }
 }

@@ -247,9 +247,9 @@ public class Player extends Entity {
         return damage;
     }
 
-    public void useRelics(Room room) {
+    public void useRelics() {
         for (Relic equippedRelic : this.equippedRelics) {
-            equippedRelic.useRelic(this, room);
+            equippedRelic.useRelic(this);
         }
     }
 
