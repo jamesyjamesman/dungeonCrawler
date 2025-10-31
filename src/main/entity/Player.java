@@ -116,8 +116,12 @@ public class Player extends Entity {
     }
 
     public void sellItem(Item item) {
-        discardItem(item);
-        this.addGold(item.getValue());
+        if (item instanceof Relic relic && relic.isCursed()) {
+            SwingRenderer.appendLabelText("The shopkeep looks at you coldly, and refuses to take the " + relic.getName() + ".\n", false, ComponentType.LABEL_DESCRIPTION);
+        } else {
+            discardItem(item);
+            this.addGold(item.getValue());
+        }
         SwingRenderer.UIUpdater(this);
     }
 
@@ -146,7 +150,8 @@ public class Player extends Entity {
             //Displays amount of items in parentheses (e.g. (x2)) if the amount is greater than 1
             String amount = (items.size() > 1) ? " (x" + items.size() + ")" : "";
 
-            String output = item.getName() + ((this.getCurrentRoom() instanceof ShopRoom shopRoom && shopRoom.isOpen()) ? " [" + item.getValue() + "G]" : "") + amount + ": " + item.getDescription();
+            //cinema
+            String output = item.getName() + ((this.getCurrentRoom() instanceof ShopRoom shopRoom && shopRoom.isOpen() && !(item instanceof Relic relic && relic.isCursed())) ? " [" + item.getValue() + "G]" : "") + amount + ": " + item.getDescription();
             output = output.concat("\n");
             Color color;
             if (item instanceof Relic relic && relic.isCursed() && equippedRelicIndex(RelicID.CURSE_DETECTION) != -1) {

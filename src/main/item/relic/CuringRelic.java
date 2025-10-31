@@ -16,6 +16,7 @@ public class CuringRelic extends Relic {
                 "A suspicious bottle. It smells like cherries. If you take a swig, the level of red liquid doesn't go down.",
                 dropChance,
                 RelicID.CURE);
+        setCursed(false);
     }
 
     @Override
