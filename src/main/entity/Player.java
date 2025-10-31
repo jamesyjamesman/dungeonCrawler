@@ -1,5 +1,6 @@
 package main.entity;
 
+import main.App;
 import main.Main;
 import main.Statuses;
 import main.entity.enemy.Enemy;
@@ -67,6 +68,10 @@ public class Player extends Entity {
             Main.waitForResponse();
             if (calculateInventorySize() >= this.inventoryCap) {
                 SwingRenderer.appendTextPane("Your inventory is still full... The " + item.getName() + " remains where it was.", false, ComponentType.PANE_MAIN);
+                // relic is removed from unused relics as soon as it is generated, so it has to be put back
+                if (item instanceof Relic relic && relic.isFindable()) {
+                    App.INSTANCE.addUnusedRelic(relic);
+                }
                 return;
             }
         }
@@ -120,6 +125,9 @@ public class Player extends Entity {
         int itemIndex = findItemInInventory(item);
         if (itemIndex == -1) {
             System.out.println("Error! This code should not be reachable (Item.java)");
+        }
+        if (item instanceof Relic relic && relic.isFindable()) {
+            App.INSTANCE.addUnusedRelic(relic);
         }
         if (this.inventory.get(itemIndex).size() == 1) {
             this.inventory.remove(itemIndex);

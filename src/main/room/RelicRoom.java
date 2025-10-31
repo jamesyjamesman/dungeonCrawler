@@ -37,7 +37,7 @@ public class RelicRoom extends Room {
     public void initializeRelic() {
         ArrayList<Relic> relicList = App.INSTANCE.getUnusedRelics();
         Relic newRelic = relicList.get(new Random().nextInt(relicList.size()));
-//        this does not allow players to ever obtain a relic if they deny taking it.
+//        added back when sold or if not picked up in Player.itemPickup().
         relicList.remove(newRelic);
         if (relicList.isEmpty()) {
                 Game.deactivateRelicRooms();

@@ -50,6 +50,9 @@ public enum App {
     public void setUnusedRelics(ArrayList<Relic> newUnusedRelics) {
         unusedRelics = newUnusedRelics;
     }
+    public void addUnusedRelic(Relic relic) {
+        this.unusedRelics.add(relic);
+    }
     public ArrayList<Room> getRooms() {
         return rooms;
     }

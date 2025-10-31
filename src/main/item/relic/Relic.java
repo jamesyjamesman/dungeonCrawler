@@ -27,6 +27,12 @@ public abstract class Relic extends Item {
     public boolean isCursed() {
         return this.cursed;
     }
+    public boolean isFindable() {
+        return switch(this.relicID) {
+            case RelicID.CURSE_HEAL, RelicID.SLIME, RelicID.CURE -> false;
+            default -> true;
+        };
+    }
 
     public void setCursed(boolean cursed) {
         this.cursed = cursed;
