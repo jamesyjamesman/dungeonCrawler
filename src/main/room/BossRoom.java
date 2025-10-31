@@ -4,8 +4,8 @@ import main.entity.Player;
 
 public class BossRoom extends EnemyRoom {
     boolean completed;
-    public BossRoom(EnemyRoomBuilder<?> builder) {
-        super(builder);
+    public BossRoom(EnemyRoomBuilder<?> builder, int maxEnemies) {
+        super(builder, maxEnemies);
         this.completed = false;
     }
 

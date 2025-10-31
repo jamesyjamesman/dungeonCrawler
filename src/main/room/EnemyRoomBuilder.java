@@ -30,7 +30,7 @@ public class EnemyRoomBuilder<T extends EnemyRoomBuilder<T>> extends RoomBuilder
     }
 
     public BossRoom buildBoss() {
-        return new BossRoom(this);
+        return new BossRoom(this, this.maxEnemies);
     }
 
 

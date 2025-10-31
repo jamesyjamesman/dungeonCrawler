@@ -86,7 +86,8 @@ public class RoomInit {
                 .description("You enter the room... Waking up a goblin in a tattered cloak. It wearily blinks, before jumping up.")
                 .battleInitiationMessage("The goblin pulls out a small wooden wand, ready to cast spells at you!")
                 .appearance("You can't see much, but you can hear some echoing chatter.")
-                .enemies(goblinRoomEnemies)
+                .allowedEnemies(goblinRoomEnemies)
+                .maxEnemies(1)
                 .type(RoomType.ENEMY)
                 .build();
 
@@ -100,8 +101,9 @@ public class RoomInit {
                 .id(11)
                 .numExits(3)
                 .description("You enter the ro-")
-                .battleInitiationMessage("Oh no! a goblin and orc were waiting for you, catching you by surprise!")
-                .enemies(ambushRoomEnemies)
+                .battleInitiationMessage("Oh no! a camp of enemies were waiting for you, catching you by surprise!")
+                .allowedEnemies(ambushRoomEnemies)
+                .maxEnemies(3)
                 .type(RoomType.ENEMY)
                 .selectionWeight(8)
                 .roomsRequired(10)
@@ -111,13 +113,15 @@ public class RoomInit {
 
         ArrayList <Enemy> infirmaryEnemies = new ArrayList<>();
         infirmaryEnemies.add(enemyList.get(3));
+        infirmaryEnemies.add(enemyList.get(1));
 
         EnemyRoom infirmary = new EnemyRoomBuilder<>()
                 .id(10001)
                 .numExits(4)
                 .description("You walk into a room, full of cheap beds and medical equipment. A small goblin sees you enter, and slowly climbs out of bed.")
                 .battleInitiationMessage("The goblin coughs, and pulls out a short sword, ready to attack!")
-                .enemies(infirmaryEnemies)
+                .allowedEnemies(infirmaryEnemies)
+                .maxEnemies(3)
                 .type(RoomType.ENEMY)
                 .selectionWeight(3)
                 .roomsRequired(15)
@@ -133,7 +137,8 @@ public class RoomInit {
                 .numExits(5)
                 .id(13)
                 .appearance("An unfamiliar room with blue goop coating the entrance. It smells strongly of fruit.")
-                .enemies(slimeArray)
+                .allowedEnemies(slimeArray)
+                .maxEnemies(1)
                 .description("You walk into the room, blue slime squishing under your feet. A large blue slime sits in the center of the room.")
                 .battleInitiationMessage("The massive slime starts vibrating intensely, and then launches at you.")
                 .type(RoomType.BOSS)
@@ -150,7 +155,8 @@ public class RoomInit {
                 .roomsRequired(50)
                 .numExits(4)
                 .id(100)
-                .enemies(minotaurArray)
+                .allowedEnemies(minotaurArray)
+                .maxEnemies(1)
                 .description("A massive minotaur stands silently in the center of the room.")
                 .battleInitiationMessage("Before you can do anything, it opens its blood red eyes, glaring at you.")
                 .type(RoomType.BOSS)
