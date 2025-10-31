@@ -16,11 +16,14 @@ public class Enemy extends Entity {
 //    private int armor;
 //    private int evasiveness;
     private final int experienceDropped;
+    //lowest level the player can be to encounter the enemy
+    private final int minimumLevel;
     private final String damageType;
     private Loot loot;
-    public Enemy(Species species, int health, int damage, int experienceDropped) {
+    public Enemy(Species species, int health, int damage, int experienceDropped, int minimumLevel) {
         super(species, health, damage);
         this.experienceDropped = experienceDropped;
+        this.minimumLevel = minimumLevel;
 //        this.armor = 0;
 //        this.evasiveness = 0;
         this.damageType = "";
@@ -77,5 +80,8 @@ public class Enemy extends Entity {
     }
     public void setLoot(Loot loot) {
         this.loot = loot;
+    }
+    public int getMinimumLevel() {
+        return this.minimumLevel;
     }
 }
