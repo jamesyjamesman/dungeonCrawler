@@ -129,15 +129,12 @@ public class RoomInit {
 
         roomList.add(infirmary);
 
-        ArrayList<Enemy> slimeArray = new ArrayList<>();
-        slimeArray.add(new SlimeBoss());
-
         BossRoom slimeBossRoom = new EnemyRoomBuilder<>()
                 .roomsRequired(20)
                 .numExits(5)
                 .id(13)
                 .appearance("An unfamiliar room with blue goop coating the entrance. It smells strongly of fruit.")
-                .allowedEnemies(slimeArray)
+                .allowedEnemies(new SlimeBoss())
                 .maxEnemies(1)
                 .description("You walk into the room, blue slime squishing under your feet. A large blue slime sits in the center of the room.")
                 .battleInitiationMessage("The massive slime starts vibrating intensely, and then launches at you.")
@@ -148,14 +145,11 @@ public class RoomInit {
 
         roomList.add(slimeBossRoom);
 
-        ArrayList<Enemy> minotaurArray = new ArrayList<>();
-        minotaurArray.add(new MinotaurBoss());
-
         BossRoom minotaurBossRoom = new EnemyRoomBuilder<>()
                 .roomsRequired(50)
                 .numExits(4)
                 .id(100)
-                .allowedEnemies(minotaurArray)
+                .allowedEnemies(new MinotaurBoss())
                 .maxEnemies(1)
                 .description("A massive minotaur stands silently in the center of the room.")
                 .battleInitiationMessage("Before you can do anything, it opens its blood red eyes, glaring at you.")
@@ -165,6 +159,20 @@ public class RoomInit {
                 .buildBoss();
 
         roomList.add(minotaurBossRoom);
+
+        BossRoom dragonBossRoom = new EnemyRoomBuilder<>()
+                .roomsRequired(100)
+                .numExits(2)
+                .id(10012)
+                .allowedEnemies(new DragonBoss())
+                .maxEnemies(1)
+                .description("You saunter into a room, gold coins flowing around your feet. You look up, and see a massive dragon towering over you, fire lazily exiting its mouth. You feel a little less confident.")
+                .appearance("The air looks hazy near the entrance. You can feel the heat from here.")
+                .type(RoomType.BOSS)
+                .selectionWeight(3)
+                .buildBoss();
+
+        roomList.add(dragonBossRoom);
 
         ItemRoom appleRoom = new ItemRoomBuilder<>()
                 .id(3)
@@ -253,7 +261,7 @@ public class RoomInit {
                     Before anyone has a chance to say anything, you dash out the door, raising your arms, feeling the sun on your shoulders.
                     Freedom.""")
                 .appearance("You get the sense your journey is finally over.")
-                .roomsRequired(100)
+                .roomsRequired(125)
                 .selectionWeight(1)
                 .type(RoomType.SPECIAL)
                 .buildEnding();

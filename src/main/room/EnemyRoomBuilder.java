@@ -14,6 +14,13 @@ public class EnemyRoomBuilder<T extends EnemyRoomBuilder<T>> extends RoomBuilder
         return self();
     }
 
+    public T allowedEnemies(Enemy enemy) {
+        ArrayList<Enemy> enemies = new ArrayList<>();
+        enemies.add(enemy);
+        this.allowedEnemies = enemies;
+        return self();
+    }
+
     public T battleInitiationMessage(String battleInitiationMessage) {
         this.battleInitiationMessage = battleInitiationMessage;
         return self();
