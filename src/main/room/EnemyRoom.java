@@ -30,6 +30,9 @@ public class EnemyRoom extends Room {
         SwingRenderer.appendTextPane(this.battleInitiationMessage, true, ComponentType.PANE_MAIN);
         Battle.battleLoop(player, this);
         this.enemies = randomizeEnemies(this.maxEnemies);
+        for (Enemy enemy : this.enemies) {
+            enemy.heal(enemy.getMaxHealth());
+        }
     }
 
     public ArrayList<Enemy> randomizeEnemies(int maxEnemies) {

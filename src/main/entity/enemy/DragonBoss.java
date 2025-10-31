@@ -68,7 +68,7 @@ public class DragonBoss extends Boss {
     }
 
     public void deepBreath() {
-        SwingRenderer.appendTextPane("The " + speciesToStringLower() + "takes a deep, rumbling breath...", false, ComponentType.PANE_MAIN);
+        SwingRenderer.appendTextPane("The " + speciesToStringLower() + "takes a deep, rumbling breath...\n", false, ComponentType.PANE_MAIN);
         this.breathCharged = true;
     }
 
@@ -84,13 +84,13 @@ public class DragonBoss extends Boss {
     }
 
     public void cower() {
-        SwingRenderer.appendTextPane("The " + speciesToStringLower() + " curls up, defending itself with its iron-hard wings.", false, ComponentType.PANE_MAIN);
+        SwingRenderer.appendTextPane("The " + speciesToStringLower() + " curls up, defending itself with its iron-hard wings.\n", false, ComponentType.PANE_MAIN);
         this.defendCount = new Random().nextInt(2, 5);
     }
 
     public void meditate() {
         heal(new Random().nextInt(7, 12));
-        SwingRenderer.appendTextPane("The " + speciesToStringLower() + " nurses its wounds...", false, ComponentType.PANE_MAIN);
+        SwingRenderer.appendTextPane("The " + speciesToStringLower() + " nurses its wounds...\n", false, ComponentType.PANE_MAIN);
     }
 
     @Override
