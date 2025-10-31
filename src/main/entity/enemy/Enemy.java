@@ -42,7 +42,6 @@ public class Enemy extends Entity {
 
         this.getLoot().dropLoot(player);
 
-        enemyRoom.addDefeatedEnemy(this);
         enemyRoom.removeEnemy(this);
         player.checkInventory();
     }

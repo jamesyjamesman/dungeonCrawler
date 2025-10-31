@@ -1,5 +1,6 @@
 package main.room;
 
+import main.App;
 import main.Battle;
 import main.entity.Player;
 import main.entity.enemy.Enemy;
@@ -7,16 +8,19 @@ import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class EnemyRoom extends Room {
-    private final ArrayList<Enemy> enemies;
-    private final ArrayList<Enemy> defeatedEnemies;
+    private final ArrayList<Enemy> allowedEnemies;
+    private ArrayList<Enemy> enemies;
     private final String battleInitiationMessage;
+    private final int maxEnemies;
 
-    public EnemyRoom(EnemyRoomBuilder<?> builder) {
+    public EnemyRoom(EnemyRoomBuilder<?> builder, int maxEnemies) {
         super(builder);
-        this.defeatedEnemies = new ArrayList<>();
-        this.enemies = builder.enemies != null ? builder.enemies : new ArrayList<>();
+        this.maxEnemies = maxEnemies;
+        this.allowedEnemies = builder.allowedEnemies;
+        this.enemies = randomizeEnemies(maxEnemies);
         this.battleInitiationMessage = builder.battleInitiationMessage != null ? builder.battleInitiationMessage : "";
     }
 
@@ -25,25 +29,24 @@ public class EnemyRoom extends Room {
         super.completeRoomActions(player);
         SwingRenderer.appendTextPane(this.battleInitiationMessage, true, ComponentType.PANE_MAIN);
         Battle.battleLoop(player, this);
-        reset();
+        this.enemies = randomizeEnemies(this.maxEnemies);
     }
 
-    public void reset() {
-        addEnemies(this.defeatedEnemies);
-        for (Enemy enemy : this.enemies) {enemy.reset();}
-        this.defeatedEnemies.clear();
+    public ArrayList<Enemy> randomizeEnemies(int maxEnemies) {
+        int numEnemies = new Random().nextInt(maxEnemies) + 1;
+        ArrayList<Enemy> levelCompliantEnemies = new ArrayList<>(
+                this.allowedEnemies.stream()
+                .filter(enemy -> App.INSTANCE.getPlayer().getLevel() >= enemy.getMinimumLevel())
+                .toList());
+        ArrayList<Enemy> newEnemies = new ArrayList<>();
+        while (newEnemies.size() < numEnemies) {
+            newEnemies.add(levelCompliantEnemies.get(new Random().nextInt(levelCompliantEnemies.size())));
+        }
+        return newEnemies;
     }
-    public void addEnemies(ArrayList<Enemy> enemies) {
-        this.enemies.addAll(enemies);
-    }
-    public void addEnemies(Enemy enemy) {
-        this.enemies.add(enemy);
-    }
+
     public void removeEnemy(Enemy enemy) {
         this.enemies.remove(enemy);
-    }
-    public void addDefeatedEnemy(Enemy enemy) {
-        this.defeatedEnemies.add(enemy);
     }
     public ArrayList<Enemy> getEnemies() {
         return this.enemies;

@@ -518,4 +518,7 @@ public class Player extends Entity {
     public void takeGold(int cost) {
             this.gold -= cost;
     }
+    public int getLevel() {
+        return this.level;
+    }
 }
