@@ -26,7 +26,8 @@ public class Game {
             activateRooms(rooms, player);
             ArrayList<Room> activeRooms = new ArrayList<>(getRandomActiveRooms(rooms));
             createRoomExits(player, activeRooms, currentRoom);
-            player.useRelics(currentRoom);
+            App.INSTANCE.setState(App.State.ROOM_END);
+            player.useRelics();
             player.statusHandler(false);
 
             int response = Main.getIntegerResponse(player, 1, currentRoom.getExits().size()) - 1;

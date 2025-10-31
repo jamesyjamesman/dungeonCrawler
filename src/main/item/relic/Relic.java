@@ -2,7 +2,6 @@ package main.item.relic;
 
 import main.entity.Player;
 import main.item.Item;
-import main.room.Room;
 import main.swing.SwingRenderer;
 
 import java.util.Random;
@@ -16,7 +15,7 @@ public abstract class Relic extends Item {
         this.relicID = relicID;
     }
 
-    public void useRelic(Player player, Room room) {}
+    public void useRelic(Player player) {}
 
     @Override
     public void useItem(Player player) {
@@ -27,6 +26,12 @@ public abstract class Relic extends Item {
 
     public boolean isCursed() {
         return this.cursed;
+    }
+    public boolean isFindable() {
+        return switch(this.relicID) {
+            case RelicID.CURSE_HEAL, RelicID.SLIME, RelicID.CURE -> false;
+            default -> true;
+        };
     }
 
     public void setCursed(boolean cursed) {

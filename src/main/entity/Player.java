@@ -1,5 +1,6 @@
 package main.entity;
 
+import main.App;
 import main.Main;
 import main.Statuses;
 import main.entity.enemy.Enemy;
@@ -67,6 +68,10 @@ public class Player extends Entity {
             Main.waitForResponse();
             if (calculateInventorySize() >= this.inventoryCap) {
                 SwingRenderer.appendTextPane("Your inventory is still full... The " + item.getName() + " remains where it was.", false, ComponentType.PANE_MAIN);
+                // relic is removed from unused relics as soon as it is generated, so it has to be put back
+                if (item instanceof Relic relic && relic.isFindable()) {
+                    App.INSTANCE.addUnusedRelic(relic);
+                }
                 return;
             }
         }
@@ -111,8 +116,12 @@ public class Player extends Entity {
     }
 
     public void sellItem(Item item) {
-        discardItem(item);
-        this.addGold(item.getValue());
+        if (item instanceof Relic relic && relic.isCursed()) {
+            SwingRenderer.appendLabelText("The shopkeep looks at you coldly, and refuses to take the " + relic.getName() + ".\n", false, ComponentType.LABEL_DESCRIPTION);
+        } else {
+            discardItem(item);
+            this.addGold(item.getValue());
+        }
         SwingRenderer.UIUpdater(this);
     }
 
@@ -120,6 +129,9 @@ public class Player extends Entity {
         int itemIndex = findItemInInventory(item);
         if (itemIndex == -1) {
             System.out.println("Error! This code should not be reachable (Item.java)");
+        }
+        if (item instanceof Relic relic && relic.isFindable()) {
+            App.INSTANCE.addUnusedRelic(relic);
         }
         if (this.inventory.get(itemIndex).size() == 1) {
             this.inventory.remove(itemIndex);
@@ -138,6 +150,7 @@ public class Player extends Entity {
             //Displays amount of items in parentheses (e.g. (x2)) if the amount is greater than 1
             String amount = (items.size() > 1) ? " (x" + items.size() + ")" : "";
 
+            //cinema
             String output = item.getName() + ((this.getCurrentRoom() instanceof ShopRoom shopRoom && shopRoom.isOpen()) ? " [" + item.getValue() + "G]" : "") + amount + ": " + item.getDescription();
             output = output.concat("\n");
             Color color;
@@ -247,9 +260,9 @@ public class Player extends Entity {
         return damage;
     }
 
-    public void useRelics(Room room) {
+    public void useRelics() {
         for (Relic equippedRelic : this.equippedRelics) {
-            equippedRelic.useRelic(this, room);
+            equippedRelic.useRelic(this);
         }
     }
 
