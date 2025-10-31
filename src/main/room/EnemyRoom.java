@@ -51,4 +51,7 @@ public class EnemyRoom extends Room {
     public ArrayList<Enemy> getEnemies() {
         return this.enemies;
     }
+    public void addEnemy(Enemy enemy) {
+        this.enemies.add(enemy);
+    }
 }
