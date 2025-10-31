@@ -389,6 +389,7 @@ public class Player extends Entity {
     }
     public void statusHandler(boolean inBattle) {
         doPoisonDamage();
+        doFireDamage();
         if (inBattle) {
             return;
         }
@@ -407,6 +408,16 @@ public class Player extends Entity {
             SwingRenderer.addHealthText("Your weakness level decreased by one!");
         }
         return finalDamage;
+    }
+
+    public void doFireDamage() {
+        int fireLevel = this.currentStatuses.getFire();
+        if (fireLevel == 0) {
+            return;
+        }
+        takeDamage(1);
+        SwingRenderer.addHealthText("You took damage from burning! Your burning level is now " + (fireLevel - 1) + ".");
+        this.currentStatuses.setFire(fireLevel - 1);
     }
 
     public void doPoisonDamage() {
