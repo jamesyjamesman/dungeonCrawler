@@ -6,6 +6,7 @@ import main.swing.SwingRenderer;
 
 import java.util.Random;
 
+//status attacks pierce through reflection. either put it on attack or leave it, cause its kinda interesting anyway
 public class SickEnemy extends Enemy {
     public SickEnemy(Species species, int health, int damage, int experienceDropped) {
         super(species, health, damage, experienceDropped);
