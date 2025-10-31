@@ -5,6 +5,7 @@ import main.Main;
 import main.Statuses;
 import main.entity.enemy.Enemy;
 import main.item.Item;
+import main.item.relic.DamageRelic;
 import main.item.relic.Relic;
 import main.item.relic.RelicID;
 import main.item.weapon.Weapon;
@@ -59,7 +60,10 @@ public class Player extends Entity {
     }
 
     public int calculateTotalAttack() {
-        return getDamage() + ((this.equippedWeapon != null) ? this.equippedWeapon.getDamage() : 0);
+        int weaponDamage = (this.equippedWeapon != null) ? this.equippedWeapon.getDamage() : 0;
+        int damageRelicIndex = equippedRelicIndex(RelicID.DAMAGE);
+        int relicDamage = (damageRelicIndex != -1) ? ((DamageRelic) getEquippedRelics().get(damageRelicIndex)).getDamage() : 0;
+        return getDamage() + weaponDamage + relicDamage;
     }
 
     public void itemPickup(Item item) {

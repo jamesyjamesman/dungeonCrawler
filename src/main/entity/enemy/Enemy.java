@@ -6,6 +6,7 @@ import main.entity.Player;
 import main.entity.Species;
 import main.item.Loot;
 import main.item.relic.RelicID;
+import main.item.relic.SlimeRelic;
 import main.room.EnemyRoom;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
@@ -48,10 +49,9 @@ public class Enemy extends Entity {
 
     public void attack(Player player) {
         // todo this should probably be in player?
-        if (player.equippedRelicIndex(RelicID.SLIME) != -1
-            && new Random().nextInt(4) == 0) {
+        if (SlimeRelic.slimeBounce(player)) {
             SwingRenderer.addHealthText("The attack from the " + speciesToStringLower() + " bounced right off!");
-                return;
+            return;
         }
 
         SwingRenderer.addHealthText("The " + speciesToStringLower() + " attacked you, dealing " + getDamage() + " damage!");
