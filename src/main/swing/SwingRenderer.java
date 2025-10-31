@@ -539,7 +539,7 @@ public class SwingRenderer extends JFrame {
             useButton.addActionListener(_ -> item.cleanseItem(player));
         } else {
             useButton.addActionListener(_ -> item.useItem(player));
-            if (player.getCurrentRoom() instanceof ShopRoom) {
+            if (player.getCurrentRoom() instanceof ShopRoom shopRoom && shopRoom.isOpen()) {
                 dropButton.setText(" Sell ");
                 dropButton.addActionListener(_ -> {
                     player.sellItem(item);
@@ -580,7 +580,7 @@ public class SwingRenderer extends JFrame {
         } else {
             useButton.setText(" Unequip ");
         }
-        if (player.getCurrentRoom() instanceof ShopRoom) {
+        if (player.getCurrentRoom() instanceof ShopRoom shopRoom && shopRoom.isOpen()) {
             dropButton.setText(" Sell ");
             dropButton.addActionListener(_ -> {
                 player.sellItem(weapon);

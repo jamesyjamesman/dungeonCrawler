@@ -151,7 +151,7 @@ public class Player extends Entity {
             String amount = (items.size() > 1) ? " (x" + items.size() + ")" : "";
 
             //cinema
-            String output = item.getName() + ((this.getCurrentRoom() instanceof ShopRoom shopRoom && shopRoom.isOpen() && !(item instanceof Relic relic && relic.isCursed())) ? " [" + item.getValue() + "G]" : "") + amount + ": " + item.getDescription();
+            String output = item.getName() + ((this.getCurrentRoom() instanceof ShopRoom shopRoom && shopRoom.isOpen()) ? " [" + item.getValue() + "G]" : "") + amount + ": " + item.getDescription();
             output = output.concat("\n");
             Color color;
             if (item instanceof Relic relic && relic.isCursed() && equippedRelicIndex(RelicID.CURSE_DETECTION) != -1) {
