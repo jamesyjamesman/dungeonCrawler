@@ -22,8 +22,10 @@ public class ShieldingRelic extends Relic {
     public void useRelic(Player player) {
         if (player.getAbsorption() < 5 && App.INSTANCE.getState() == App.State.PLAYER_TURN) {
             int absorptionAmount = new Random().nextInt(0, 3);
-            player.addAbsorption(absorptionAmount);
-            SwingRenderer.addHealthText("Your Relic of Shielding gave you " + absorptionAmount + " point" + Main.pluralChecker(absorptionAmount) + " of absorption!");
+            if (absorptionAmount > 0) {
+                player.addAbsorption(absorptionAmount);
+                SwingRenderer.addHealthText("Your Relic of Shielding gave you " + absorptionAmount + " point" + Main.pluralChecker(absorptionAmount) + " of absorption!");
+            }
         }
     }
 }
