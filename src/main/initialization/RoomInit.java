@@ -168,6 +168,7 @@ public class RoomInit {
                 .maxEnemies(1)
                 .description("You saunter into a room, gold coins flowing around your feet. You look up, and see a massive dragon towering over you, fire lazily exiting its mouth. You feel a little less confident.")
                 .appearance("The air looks hazy near the entrance. You can feel the heat from here.")
+                .battleInitiationMessage("The dragon unleashes a torrent of flame into the air, and stomps towards you!!")
                 .type(RoomType.BOSS)
                 .selectionWeight(3)
                 .buildBoss();

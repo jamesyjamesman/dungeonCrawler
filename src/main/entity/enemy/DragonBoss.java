@@ -33,14 +33,18 @@ public class DragonBoss extends Boss {
             meditate();
             return;
         }
-        int randomNumber = new Random().nextInt(12);
+        if (this.breathCharged) {
+            dragonBreath(player);
+            return;
+        }
+        int randomNumber = new Random().nextInt(13);
         switch (randomNumber) {
-            case 0 -> super.attack(player);
-            case 1 -> dragonBreath(player);
-            case 2 -> deepBreath();
-            case 3 -> bite(player);
-            case 4 -> intimidate(player);
-            case 5 -> {
+            case 0, 1, 2 -> super.attack(player);
+            case 3, 4, 5 -> dragonBreath(player);
+            case 6, 7 -> deepBreath();
+            case 8, 9 -> bite(player);
+            case 10, 11 -> intimidate(player);
+            case 12 -> {
                 if (getCurrentHealth() <= getMaxHealth() / 2 ) {
                     cower();
                 } else {
@@ -64,7 +68,7 @@ public class DragonBoss extends Boss {
     }
 
     public void deepBreath() {
-        SwingRenderer.appendLabelText("The " + speciesToStringLower() + "takes a deep, rumbling breath...", false, ComponentType.PANE_MAIN);
+        SwingRenderer.appendTextPane("The " + speciesToStringLower() + "takes a deep, rumbling breath...", false, ComponentType.PANE_MAIN);
         this.breathCharged = true;
     }
 
@@ -80,20 +84,20 @@ public class DragonBoss extends Boss {
     }
 
     public void cower() {
-        SwingRenderer.appendLabelText("The " + speciesToStringLower() + " curls up, defending itself with its iron-hard wings.", false, ComponentType.PANE_MAIN);
+        SwingRenderer.appendTextPane("The " + speciesToStringLower() + " curls up, defending itself with its iron-hard wings.", false, ComponentType.PANE_MAIN);
         this.defendCount = new Random().nextInt(2, 5);
     }
 
     public void meditate() {
         heal(new Random().nextInt(7, 12));
-        SwingRenderer.appendLabelText("The " + speciesToStringLower() + " nurses its wounds...", false, ComponentType.PANE_MAIN);
+        SwingRenderer.appendTextPane("The " + speciesToStringLower() + " nurses its wounds...", false, ComponentType.PANE_MAIN);
     }
 
     @Override
     public int takeDamage(int damage) {
         if (this.defendCount > 0) {
             this.defendCount--;
-            SwingRenderer.appendLabelText("The attack bounced harmlessly off of the dragon's wings!", false, ComponentType.PANE_MAIN);
+            SwingRenderer.appendTextPane("The attack bounced harmlessly off of the dragon's wings!", false, ComponentType.PANE_MAIN);
             return 0;
         }
         return super.takeDamage(damage);
