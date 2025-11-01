@@ -74,7 +74,7 @@ public class SlimeBoss extends Boss {
             return 0;
         }
         if (new Random().nextInt(10) == 0) {
-            SwingRenderer.appendTextPane("Your attack cut through the slime's exterior... Forming into another slime!\n", false, ComponentType.PANE_MAIN);
+            SwingRenderer.appendTextPane("Your attack cut a chunk off the slime's exterior... It formed into another slime!\n", false, ComponentType.PANE_MAIN);
             Enemy slimeEnemy = new Enemy(Species.SLIME, 7, 2, 5, 1);
             slimeEnemy.setLoot(new Loot(4, new SlimeChunk(1)));
             ((EnemyRoom) App.INSTANCE.getPlayer().getCurrentRoom()).addEnemy(slimeEnemy);
