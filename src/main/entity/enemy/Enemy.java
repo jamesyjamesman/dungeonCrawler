@@ -22,13 +22,17 @@ public class Enemy extends Entity {
     private final String damageType;
     private Loot loot;
     public Enemy(Species species, int health, int damage, int experienceDropped, int minimumLevel) {
+        this(species, health, damage, experienceDropped, minimumLevel, new Loot());
+    }
+
+    public Enemy(Species species, int health, int damage, int experienceDropped, int minimumLevel, Loot loot) {
         super(species, health, damage);
         this.experienceDropped = experienceDropped;
         this.minimumLevel = minimumLevel;
 //        this.armor = 0;
 //        this.evasiveness = 0;
         this.damageType = "";
-        this.loot = new Loot();
+        this.loot = loot;
     }
 
     @Override

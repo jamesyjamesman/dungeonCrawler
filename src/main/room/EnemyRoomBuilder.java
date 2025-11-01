@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class EnemyRoomBuilder<T extends EnemyRoomBuilder<T>> extends RoomBuilder<T> {
     ArrayList<Enemy> allowedEnemies;
+    boolean spawnExact = false;
     int maxEnemies;
     String battleInitiationMessage;
 
@@ -31,13 +32,18 @@ public class EnemyRoomBuilder<T extends EnemyRoomBuilder<T>> extends RoomBuilder
         return self();
     }
 
+    public T spawnExact() {
+        this.spawnExact = true;
+        return self();
+    }
+
     @Override
     public EnemyRoom build() {
-        return new EnemyRoom(this, this.maxEnemies);
+        return new EnemyRoom(this, this.maxEnemies, this.spawnExact);
     }
 
     public BossRoom buildBoss() {
-        return new BossRoom(this, this.maxEnemies);
+        return new BossRoom(this, this.maxEnemies, this.spawnExact);
     }
 
 

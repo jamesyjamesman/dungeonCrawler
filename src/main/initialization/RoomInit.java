@@ -1,7 +1,11 @@
 package main.initialization;
 
+import main.entity.Species;
 import main.entity.enemy.*;
+import main.item.Loot;
+import main.item.buff.RelicPouchBuffItem;
 import main.item.health.*;
+import main.item.weapon.*;
 import main.room.*;
 
 import java.util.ArrayList;
@@ -129,6 +133,30 @@ public class RoomInit {
 
         roomList.add(infirmary);
 
+        ArrayList<Enemy> bigEnemyRoomEnemies = new ArrayList<>();
+
+        bigEnemyRoomEnemies.add(new Enemy(Species.ZOMBIE, 13, 4, 12, 3, new Loot(10, new ChocolateItem(0.6))));
+        bigEnemyRoomEnemies.add(new Enemy(Species.SKELETON, 8, 4, 9, 2, new Loot(6, new Bow(0.2))));
+        bigEnemyRoomEnemies.add(new Enemy(Species.ORC, 20, 7, 25, 4, new Loot(14, new Mace(0.4))));
+        bigEnemyRoomEnemies.add(new Enemy(Species.GOBLIN, 6, 2, 5, 1, new Loot(4, new ShortSword(0.2))));
+        bigEnemyRoomEnemies.add(new Enemy(Species.SLIME, 12, 3, 9, 1, new Loot(6, new SlimeSword(0.1))));
+        bigEnemyRoomEnemies.add(new Enemy(Species.SKELETON, 16, 9, 30, 5, new Loot(20, new RelicPouchBuffItem(0.25, 1, 2))));
+
+        EnemyRoom lotsaEnemies = new EnemyRoomBuilder<>()
+                .id(235)
+                .numExits(6)
+                .description("Woah! It's an enemy hub!")
+                .appearance("You hear some loud echoing chatter.")
+                .battleInitiationMessage("The enemies turn their heads, picking up their weapons and charging at you.")
+                .roomsRequired(25)
+                .allowedEnemies(bigEnemyRoomEnemies)
+                .maxEnemies(5)
+                .type(RoomType.ENEMY)
+                .selectionWeight(4)
+                .build();
+
+        roomList.add(lotsaEnemies);
+
         BossRoom slimeBossRoom = new EnemyRoomBuilder<>()
                 .roomsRequired(20)
                 .numExits(5)
@@ -174,6 +202,27 @@ public class RoomInit {
                 .buildBoss();
 
         roomList.add(dragonBossRoom);
+
+        ArrayList<Enemy> bosses = new ArrayList<>();
+        bosses.add(new SlimeBoss());
+        bosses.add(new MinotaurBoss());
+        bosses.add(new DragonBoss());
+
+        BossRoom nightmareRoom = new EnemyRoomBuilder<>()
+                .roomsRequired(150)
+                .numExits(5)
+                .id(937)
+                .allowedEnemies(bosses)
+                .maxEnemies(3)
+                .description("The hair stands up on the back of your neck. It's like a nightmare...")
+                .appearance("The energy coming from this room is incomprehensible. You could cut the sheer power in the air with a knife.")
+                .battleInitiationMessage("Every boss attacks!!")
+                .selectionWeight(1)
+                .type(RoomType.BOSS)
+                .spawnExact()
+                .buildBoss();
+
+        roomList.add(nightmareRoom);
 
         ItemRoom appleRoom = new ItemRoomBuilder<>()
                 .id(3)

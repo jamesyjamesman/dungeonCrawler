@@ -15,10 +15,12 @@ public class EnemyRoom extends Room {
     private ArrayList<Enemy> enemies;
     private final String battleInitiationMessage;
     private final int maxEnemies;
+    private final boolean spawnExact;
 
-    public EnemyRoom(EnemyRoomBuilder<?> builder, int maxEnemies) {
+    public EnemyRoom(EnemyRoomBuilder<?> builder, int maxEnemies, boolean spawnExact) {
         super(builder);
         this.maxEnemies = maxEnemies;
+        this.spawnExact = spawnExact;
         this.allowedEnemies = builder.allowedEnemies;
         this.enemies = randomizeEnemies(maxEnemies);
         this.battleInitiationMessage = builder.battleInitiationMessage != null ? builder.battleInitiationMessage : "";
@@ -31,11 +33,14 @@ public class EnemyRoom extends Room {
         Battle.battleLoop(player, this);
         this.enemies = randomizeEnemies(this.maxEnemies);
         for (Enemy enemy : this.enemies) {
-            enemy.heal(enemy.getMaxHealth());
+            enemy.reset();
         }
     }
 
     public ArrayList<Enemy> randomizeEnemies(int maxEnemies) {
+        if (this.spawnExact) {
+            return this.allowedEnemies;
+        }
         int numEnemies = new Random().nextInt(maxEnemies) + 1;
         ArrayList<Enemy> levelCompliantEnemies = new ArrayList<>(
                 this.allowedEnemies.stream()
