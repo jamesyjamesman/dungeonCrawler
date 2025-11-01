@@ -100,6 +100,7 @@ public class RoomInit {
         ArrayList<Enemy> ambushRoomEnemies = new ArrayList<>();
         ambushRoomEnemies.add(enemyList.get(1));
         ambushRoomEnemies.add(enemyList.get(2));
+        ambushRoomEnemies.add(new Enemy(Species.SLIME, 20, 2, 12, 3, new Loot(8, new SlimeSpear(0.12))));
 
         EnemyRoom ambushRoom = new EnemyRoomBuilder<>()
                 .id(11)
