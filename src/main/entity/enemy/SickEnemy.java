@@ -8,8 +8,8 @@ import java.util.Random;
 
 //status attacks pierce through reflection. either put it on attack or leave it, cause its kinda interesting anyway
 public class SickEnemy extends Enemy {
-    public SickEnemy(Species species, int health, int damage, int experienceDropped) {
-        super(species, health, damage, experienceDropped);
+    public SickEnemy(Species species, int health, int damage, int experienceDropped, int minimumLevel) {
+        super(species, health, damage, experienceDropped, minimumLevel);
     }
 
     @Override

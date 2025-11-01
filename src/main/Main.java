@@ -113,6 +113,8 @@ public class Main {
             switch (truncatedString) {
                     //debug commands
             case "/kill" -> player.takeDamage(secondaryNumber);
+            case "/heal" -> player.heal(secondaryNumber);
+            case "/absorb" -> player.addAbsorption(secondaryNumber);
             case "/travel" -> player.setRoomsTraversed(secondaryNumber);
             case "/rich" -> player.addGold(secondaryNumber);
             //doesn't really do anything helpful

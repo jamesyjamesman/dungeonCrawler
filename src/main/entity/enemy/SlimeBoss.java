@@ -1,13 +1,16 @@
 package main.entity.enemy;
 
+import main.App;
 import main.entity.Player;
 import main.entity.Species;
 import main.item.Item;
 import main.item.Loot;
 import main.item.buff.HealthBuffItem;
+import main.item.health.SlimeChunk;
 import main.item.relic.SlimeRelic;
 import main.item.weapon.SlimeSpear;
 import main.item.weapon.SlimeSword;
+import main.room.EnemyRoom;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
@@ -19,14 +22,12 @@ public class SlimeBoss extends Boss {
         super(Species.SLIME, 30, 3, 30);
 
         ArrayList<Item> items = new ArrayList<>();
-        SlimeSword slimeSword = new SlimeSword(0.7);
-        SlimeSpear slimeSpear = new SlimeSpear(0.3);
-        HealthBuffItem healthBuff = new HealthBuffItem(0.8, 4, 10);
 
-        items.add(slimeSword);
-        items.add(slimeSpear);
-        items.add(healthBuff);
-        items.add(new SlimeRelic());
+        items.add(new SlimeSword(0.7));
+        items.add(new SlimeSpear(0.3));
+        items.add(new HealthBuffItem(0.8, 4, 10));
+        items.add(new SlimeRelic(1));
+        items.add(new SlimeChunk(1));
         this.setLoot(new Loot(20, items));
     }
 
@@ -71,6 +72,12 @@ public class SlimeBoss extends Boss {
         if (new Random().nextInt(5) == 0) {
             SwingRenderer.appendTextPane("Your attack bounced off of the slime's squishy exterior!\n", false, ComponentType.PANE_MAIN);
             return 0;
+        }
+        if (new Random().nextInt(10) == 0) {
+            SwingRenderer.appendTextPane("Your attack cut through the slime's exterior... Forming into another slime!\n", false, ComponentType.PANE_MAIN);
+            Enemy slimeEnemy = new Enemy(Species.SLIME, 7, 2, 5, 1);
+            slimeEnemy.setLoot(new Loot(4, new SlimeChunk(1)));
+            ((EnemyRoom) App.INSTANCE.getPlayer().getCurrentRoom()).addEnemy(slimeEnemy);
         }
         return super.takeDamage(damage);
     }

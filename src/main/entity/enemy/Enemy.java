@@ -6,6 +6,7 @@ import main.entity.Player;
 import main.entity.Species;
 import main.item.Loot;
 import main.item.relic.RelicID;
+import main.item.relic.SlimeRelic;
 import main.room.EnemyRoom;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
@@ -16,15 +17,22 @@ public class Enemy extends Entity {
 //    private int armor;
 //    private int evasiveness;
     private final int experienceDropped;
+    //lowest level the player can be to encounter the enemy
+    private final int minimumLevel;
     private final String damageType;
     private Loot loot;
-    public Enemy(Species species, int health, int damage, int experienceDropped) {
+    public Enemy(Species species, int health, int damage, int experienceDropped, int minimumLevel) {
+        this(species, health, damage, experienceDropped, minimumLevel, new Loot());
+    }
+
+    public Enemy(Species species, int health, int damage, int experienceDropped, int minimumLevel, Loot loot) {
         super(species, health, damage);
         this.experienceDropped = experienceDropped;
+        this.minimumLevel = minimumLevel;
 //        this.armor = 0;
 //        this.evasiveness = 0;
         this.damageType = "";
-        this.loot = new Loot();
+        this.loot = loot;
     }
 
     @Override
@@ -39,17 +47,15 @@ public class Enemy extends Entity {
 
         this.getLoot().dropLoot(player);
 
-        enemyRoom.addDefeatedEnemy(this);
         enemyRoom.removeEnemy(this);
         player.checkInventory();
     }
 
     public void attack(Player player) {
         // todo this should probably be in player?
-        if (player.equippedRelicIndex(RelicID.SLIME) != -1
-            && new Random().nextInt(4) == 0) {
+        if (SlimeRelic.slimeBounce(player)) {
             SwingRenderer.addHealthText("The attack from the " + speciesToStringLower() + " bounced right off!");
-                return;
+            return;
         }
 
         SwingRenderer.addHealthText("The " + speciesToStringLower() + " attacked you, dealing " + getDamage() + " damage!");
@@ -77,5 +83,8 @@ public class Enemy extends Entity {
     }
     public void setLoot(Loot loot) {
         this.loot = loot;
+    }
+    public int getMinimumLevel() {
+        return this.minimumLevel;
     }
 }

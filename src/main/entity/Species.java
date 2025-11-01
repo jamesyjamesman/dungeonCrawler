@@ -5,5 +5,8 @@ public enum Species {
     GOBLIN,
     ORC,
     SLIME,
-    MINOTAUR
+    MINOTAUR,
+    ZOMBIE,
+    DRAGON,
+    SKELETON
 }

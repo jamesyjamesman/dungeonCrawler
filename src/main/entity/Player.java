@@ -5,6 +5,7 @@ import main.Main;
 import main.Statuses;
 import main.entity.enemy.Enemy;
 import main.item.Item;
+import main.item.relic.DamageRelic;
 import main.item.relic.Relic;
 import main.item.relic.RelicID;
 import main.item.weapon.Weapon;
@@ -59,7 +60,10 @@ public class Player extends Entity {
     }
 
     public int calculateTotalAttack() {
-        return getDamage() + ((this.equippedWeapon != null) ? this.equippedWeapon.getDamage() : 0);
+        int weaponDamage = (this.equippedWeapon != null) ? this.equippedWeapon.getDamage() : 0;
+        int damageRelicIndex = equippedRelicIndex(RelicID.DAMAGE);
+        int relicDamage = (damageRelicIndex != -1) ? ((DamageRelic) getEquippedRelics().get(damageRelicIndex)).getDamage() : 0;
+        return getDamage() + weaponDamage + relicDamage;
     }
 
     public void itemPickup(Item item) {
@@ -385,6 +389,7 @@ public class Player extends Entity {
     }
     public void statusHandler(boolean inBattle) {
         doPoisonDamage();
+        doFireDamage();
         if (inBattle) {
             return;
         }
@@ -403,6 +408,16 @@ public class Player extends Entity {
             SwingRenderer.addHealthText("Your weakness level decreased by one!");
         }
         return finalDamage;
+    }
+
+    public void doFireDamage() {
+        int fireLevel = this.currentStatuses.getFire();
+        if (fireLevel == 0) {
+            return;
+        }
+        takeDamage(1);
+        SwingRenderer.addHealthText("You took damage from burning! Your burning level is now " + (fireLevel - 1) + ".");
+        this.currentStatuses.setFire(fireLevel - 1);
     }
 
     public void doPoisonDamage() {
@@ -517,5 +532,8 @@ public class Player extends Entity {
     // Does not handle attempted pulls greater than balance
     public void takeGold(int cost) {
             this.gold -= cost;
+    }
+    public int getLevel() {
+        return this.level;
     }
 }

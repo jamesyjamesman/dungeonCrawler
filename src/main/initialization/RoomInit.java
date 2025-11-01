@@ -1,7 +1,11 @@
 package main.initialization;
 
+import main.entity.Species;
 import main.entity.enemy.*;
+import main.item.Loot;
+import main.item.buff.RelicPouchBuffItem;
 import main.item.health.*;
+import main.item.weapon.*;
 import main.room.*;
 
 import java.util.ArrayList;
@@ -86,7 +90,8 @@ public class RoomInit {
                 .description("You enter the room... Waking up a goblin in a tattered cloak. It wearily blinks, before jumping up.")
                 .battleInitiationMessage("The goblin pulls out a small wooden wand, ready to cast spells at you!")
                 .appearance("You can't see much, but you can hear some echoing chatter.")
-                .enemies(goblinRoomEnemies)
+                .allowedEnemies(goblinRoomEnemies)
+                .maxEnemies(1)
                 .type(RoomType.ENEMY)
                 .build();
 
@@ -95,13 +100,15 @@ public class RoomInit {
         ArrayList<Enemy> ambushRoomEnemies = new ArrayList<>();
         ambushRoomEnemies.add(enemyList.get(1));
         ambushRoomEnemies.add(enemyList.get(2));
+        ambushRoomEnemies.add(new Enemy(Species.SLIME, 20, 2, 12, 3, new Loot(8, new SlimeSpear(0.12))));
 
         EnemyRoom ambushRoom = new EnemyRoomBuilder<>()
                 .id(11)
                 .numExits(3)
                 .description("You enter the ro-")
-                .battleInitiationMessage("Oh no! a goblin and orc were waiting for you, catching you by surprise!")
-                .enemies(ambushRoomEnemies)
+                .battleInitiationMessage("Oh no! a camp of enemies were waiting for you, catching you by surprise!")
+                .allowedEnemies(ambushRoomEnemies)
+                .maxEnemies(3)
                 .type(RoomType.ENEMY)
                 .selectionWeight(8)
                 .roomsRequired(10)
@@ -111,13 +118,15 @@ public class RoomInit {
 
         ArrayList <Enemy> infirmaryEnemies = new ArrayList<>();
         infirmaryEnemies.add(enemyList.get(3));
+        infirmaryEnemies.add(enemyList.get(1));
 
         EnemyRoom infirmary = new EnemyRoomBuilder<>()
                 .id(10001)
                 .numExits(4)
                 .description("You walk into a room, full of cheap beds and medical equipment. A small goblin sees you enter, and slowly climbs out of bed.")
                 .battleInitiationMessage("The goblin coughs, and pulls out a short sword, ready to attack!")
-                .enemies(infirmaryEnemies)
+                .allowedEnemies(infirmaryEnemies)
+                .maxEnemies(3)
                 .type(RoomType.ENEMY)
                 .selectionWeight(3)
                 .roomsRequired(15)
@@ -125,15 +134,37 @@ public class RoomInit {
 
         roomList.add(infirmary);
 
-        ArrayList<Enemy> slimeArray = new ArrayList<>();
-        slimeArray.add(new SlimeBoss());
+        ArrayList<Enemy> bigEnemyRoomEnemies = new ArrayList<>();
+
+        bigEnemyRoomEnemies.add(new Enemy(Species.ZOMBIE, 13, 4, 12, 3, new Loot(10, new ChocolateItem(0.6))));
+        bigEnemyRoomEnemies.add(new Enemy(Species.SKELETON, 8, 4, 9, 2, new Loot(6, new Bow(0.2))));
+        bigEnemyRoomEnemies.add(new Enemy(Species.ORC, 20, 7, 25, 4, new Loot(14, new Mace(0.4))));
+        bigEnemyRoomEnemies.add(new Enemy(Species.GOBLIN, 6, 2, 5, 1, new Loot(4, new ShortSword(0.2))));
+        bigEnemyRoomEnemies.add(new Enemy(Species.SLIME, 12, 3, 9, 1, new Loot(6, new SlimeSword(0.1))));
+        bigEnemyRoomEnemies.add(new Enemy(Species.SKELETON, 16, 9, 30, 5, new Loot(20, new RelicPouchBuffItem(0.25, 1, 2))));
+
+        EnemyRoom lotsaEnemies = new EnemyRoomBuilder<>()
+                .id(235)
+                .numExits(6)
+                .description("Woah! It's an enemy hub!")
+                .appearance("You hear some loud echoing chatter.")
+                .battleInitiationMessage("The enemies turn their heads, picking up their weapons and charging at you.")
+                .roomsRequired(25)
+                .allowedEnemies(bigEnemyRoomEnemies)
+                .maxEnemies(5)
+                .type(RoomType.ENEMY)
+                .selectionWeight(4)
+                .build();
+
+        roomList.add(lotsaEnemies);
 
         BossRoom slimeBossRoom = new EnemyRoomBuilder<>()
                 .roomsRequired(20)
                 .numExits(5)
                 .id(13)
                 .appearance("An unfamiliar room with blue goop coating the entrance. It smells strongly of fruit.")
-                .enemies(slimeArray)
+                .allowedEnemies(new SlimeBoss())
+                .maxEnemies(1)
                 .description("You walk into the room, blue slime squishing under your feet. A large blue slime sits in the center of the room.")
                 .battleInitiationMessage("The massive slime starts vibrating intensely, and then launches at you.")
                 .type(RoomType.BOSS)
@@ -143,14 +174,12 @@ public class RoomInit {
 
         roomList.add(slimeBossRoom);
 
-        ArrayList<Enemy> minotaurArray = new ArrayList<>();
-        minotaurArray.add(new MinotaurBoss());
-
         BossRoom minotaurBossRoom = new EnemyRoomBuilder<>()
                 .roomsRequired(50)
                 .numExits(4)
                 .id(100)
-                .enemies(minotaurArray)
+                .allowedEnemies(new MinotaurBoss())
+                .maxEnemies(1)
                 .description("A massive minotaur stands silently in the center of the room.")
                 .battleInitiationMessage("Before you can do anything, it opens its blood red eyes, glaring at you.")
                 .type(RoomType.BOSS)
@@ -159,6 +188,42 @@ public class RoomInit {
                 .buildBoss();
 
         roomList.add(minotaurBossRoom);
+
+        BossRoom dragonBossRoom = new EnemyRoomBuilder<>()
+                .roomsRequired(100)
+                .numExits(2)
+                .id(10012)
+                .allowedEnemies(new DragonBoss())
+                .maxEnemies(1)
+                .description("You saunter into a room, gold coins flowing around your feet. You look up, and see a massive dragon towering over you, fire lazily exiting its mouth. You feel a little less confident.")
+                .appearance("The air looks hazy near the entrance. You can feel the heat from here.")
+                .battleInitiationMessage("The dragon unleashes a torrent of flame into the air, and stomps towards you!!")
+                .type(RoomType.BOSS)
+                .selectionWeight(3)
+                .buildBoss();
+
+        roomList.add(dragonBossRoom);
+
+        ArrayList<Enemy> bosses = new ArrayList<>();
+        bosses.add(new SlimeBoss());
+        bosses.add(new MinotaurBoss());
+        bosses.add(new DragonBoss());
+
+        BossRoom nightmareRoom = new EnemyRoomBuilder<>()
+                .roomsRequired(150)
+                .numExits(5)
+                .id(937)
+                .allowedEnemies(bosses)
+                .maxEnemies(3)
+                .description("The hair stands up on the back of your neck. It's like a nightmare...")
+                .appearance("The energy coming from this room is incomprehensible. You could cut the sheer power in the air with a knife.")
+                .battleInitiationMessage("Every boss attacks!!")
+                .selectionWeight(1)
+                .type(RoomType.BOSS)
+                .spawnExact()
+                .buildBoss();
+
+        roomList.add(nightmareRoom);
 
         ItemRoom appleRoom = new ItemRoomBuilder<>()
                 .id(3)
@@ -247,7 +312,7 @@ public class RoomInit {
                     Before anyone has a chance to say anything, you dash out the door, raising your arms, feeling the sun on your shoulders.
                     Freedom.""")
                 .appearance("You get the sense your journey is finally over.")
-                .roomsRequired(100)
+                .roomsRequired(125)
                 .selectionWeight(1)
                 .type(RoomType.SPECIAL)
                 .buildEnding();
