@@ -213,7 +213,7 @@ public class Player extends Entity {
         output = output.concat("Level " + this.level + (this.level < 10 ? " (" + this.experience + "/" + this.expToNextLevel + " exp)" : ""));
         output = output.concat("\n");
         output = output.concat("Gold: " + this.gold + "\n");
-        output = output.concat("Health: " + (getCurrentHealth() + this.absorption) + "/" + getMaxHealth() + "\n");
+        output = output.concat("Health: " + getCurrentHealth() + ((this.absorption > 0) ? " (+" + this.absorption + ")" : "") + " / " + getMaxHealth() + "\n");
         output = output.concat("Attack damage: " + calculateTotalAttack() + "\n");
         output = output.concat("Rooms traveled: " + this.roomsTraversed + "\n");
         output = output.concat("Inventory: " + calculateInventorySize() + "/" + this.inventoryCap + "\n");
