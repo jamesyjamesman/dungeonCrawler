@@ -13,7 +13,7 @@ import main.swing.SwingRenderer;
 
 import java.util.Random;
 
-public class Enemy extends Entity {
+public class Enemy extends Entity implements Cloneable {
 //    private int armor;
 //    private int evasiveness;
     private final int experienceDropped;
@@ -86,5 +86,15 @@ public class Enemy extends Entity {
     }
     public int getMinimumLevel() {
         return this.minimumLevel;
+    }
+
+    @Override
+    public Enemy clone() {
+        try {
+            return (Enemy) super.clone();
+            //loot doesnt need to be cloned because it works like a blueprint
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

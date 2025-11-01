@@ -39,7 +39,7 @@ public class EnemyRoom extends Room {
 
     public ArrayList<Enemy> randomizeEnemies(int maxEnemies) {
         if (this.spawnExact) {
-            return this.allowedEnemies;
+            return cloneEnemyList(this.allowedEnemies);
         }
         int numEnemies = new Random().nextInt(maxEnemies) + 1;
         ArrayList<Enemy> levelCompliantEnemies = new ArrayList<>(
@@ -48,7 +48,15 @@ public class EnemyRoom extends Room {
                 .toList());
         ArrayList<Enemy> newEnemies = new ArrayList<>();
         while (newEnemies.size() < numEnemies) {
-            newEnemies.add(levelCompliantEnemies.get(new Random().nextInt(levelCompliantEnemies.size())));
+            newEnemies.add(levelCompliantEnemies.get(new Random().nextInt(levelCompliantEnemies.size())).clone());
+        }
+        return newEnemies;
+    }
+
+    public ArrayList<Enemy> cloneEnemyList(ArrayList<Enemy> enemies) {
+        ArrayList<Enemy> newEnemies = new ArrayList<>();
+        for (Enemy enemy : enemies) {
+            newEnemies.add(enemy.clone());
         }
         return newEnemies;
     }

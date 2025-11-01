@@ -2,6 +2,7 @@ package main.initialization;
 
 import main.entity.Species;
 import main.entity.enemy.*;
+import main.item.Item;
 import main.item.Loot;
 import main.item.buff.RelicPouchBuffItem;
 import main.item.health.*;
@@ -100,7 +101,10 @@ public class RoomInit {
         ArrayList<Enemy> ambushRoomEnemies = new ArrayList<>();
         ambushRoomEnemies.add(enemyList.get(1));
         ambushRoomEnemies.add(enemyList.get(2));
-        ambushRoomEnemies.add(new Enemy(Species.SLIME, 20, 2, 12, 3, new Loot(8, new SlimeSpear(0.12))));
+        ArrayList<Item> slimyDrops = new ArrayList<>();
+        slimyDrops.add(new SlimeChunk(1));
+        slimyDrops.add(new SlimeSpear(0.12));
+        ambushRoomEnemies.add(new Enemy(Species.SLIME, 20, 3, 12, 3, new Loot(8, slimyDrops)));
 
         EnemyRoom ambushRoom = new EnemyRoomBuilder<>()
                 .id(11)
@@ -140,7 +144,10 @@ public class RoomInit {
         bigEnemyRoomEnemies.add(new Enemy(Species.SKELETON, 8, 4, 9, 2, new Loot(6, new Bow(0.2))));
         bigEnemyRoomEnemies.add(new Enemy(Species.ORC, 20, 7, 25, 4, new Loot(14, new Mace(0.4))));
         bigEnemyRoomEnemies.add(new Enemy(Species.GOBLIN, 6, 2, 5, 1, new Loot(4, new ShortSword(0.2))));
-        bigEnemyRoomEnemies.add(new Enemy(Species.SLIME, 12, 3, 9, 1, new Loot(6, new SlimeSword(0.1))));
+        ArrayList<Item> slimeDrops = new ArrayList<>();
+        slimeDrops.add(new SlimeChunk(0.8));
+        slimeDrops.add(new SlimeSword(0.1));
+        bigEnemyRoomEnemies.add(new Enemy(Species.SLIME, 12, 3, 9, 1, new Loot(6, slimeDrops)));
         bigEnemyRoomEnemies.add(new Enemy(Species.SKELETON, 16, 9, 30, 5, new Loot(20, new RelicPouchBuffItem(0.25, 1, 2))));
 
         EnemyRoom lotsaEnemies = new EnemyRoomBuilder<>()

@@ -68,7 +68,7 @@ public class DragonBoss extends Boss {
     }
 
     public void deepBreath() {
-        SwingRenderer.appendTextPane("The " + speciesToStringLower() + "takes a deep, rumbling breath...\n", false, ComponentType.PANE_MAIN);
+        SwingRenderer.appendTextPane("The " + speciesToStringLower() + " takes a deep, rumbling breath...\n", false, ComponentType.PANE_MAIN);
         this.breathCharged = true;
     }
 

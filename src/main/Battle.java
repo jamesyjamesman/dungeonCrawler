@@ -17,6 +17,7 @@ public class Battle {
 
             App.INSTANCE.setState(App.State.PLAYER_TURN);
             player.useRelics();
+            player.statusHandler(true);
             int enemyIndex = Main.getIntegerResponse(player, 1, room.getEnemies().size()) - 1;
             SwingRenderer.appendTextPane("", true, ComponentType.PANE_MAIN);
             Enemy enemy = room.getEnemies().get(enemyIndex);
