@@ -1,0 +1,110 @@
+.inventoryContainer {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 30%;
+    height: 60%;
+}
+
+.inventoryElement {
+    background-color: black;
+    color: white;
+    opacity: 80%;
+    height: 90%;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+.inventoryButtonContainer {
+    text-align: center;
+    top: 0;
+}
+
+.inventoryButton {
+    background-color: black;
+    color: white;
+    border: white;
+    border-radius: 3px;
+    height: 100%;
+}
+
+.mainContainer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50%;
+    height: 60%;
+}
+
+.input {
+    height: 20%;
+    color: white;
+    background-color: black;
+    opacity: 80%;
+    width: 100%;
+    border: 0 none;
+}
+
+.errorDiv {
+    height: 20%;
+    color: white;
+    background-color: black;
+    opacity: 80%;
+}
+
+.mainDiv {
+    height: 55%;
+    color: white;
+    background-color: black;
+    opacity: 80%;
+    margin-bottom: 5%;
+}
+
+.descriptionDiv {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 30%;
+    width: 50%;
+    background-color: black;
+    color: white;
+    opacity: 80%;
+}
+
+.statusContainer {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 30%;
+    width: 40%;
+    text-align: center;
+}
+
+.statusTicker {
+    position: relative;
+    background-color: black;
+    color: white;
+    opacity: 80%;
+    width: 50%;
+    height: 100%;
+}
+
+.statusChecker {
+    position: relative;
+    background-color: black;
+    color: white;
+    opacity: 80%;
+    width: 50%;
+    height: 100%;
+}
+
+body {
+    background-image: url("../default_background.png");
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    background-color: black;
+}
