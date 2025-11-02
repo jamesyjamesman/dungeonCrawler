@@ -7,10 +7,12 @@
 }
 
 .inventoryElement {
+    position: absolute;
     background-color: black;
     color: white;
     opacity: 80%;
     height: 90%;
+    width: 100%
 }
 
 .invisible {

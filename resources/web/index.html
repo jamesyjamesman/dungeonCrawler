@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -23,11 +24,11 @@
 
     <div class="inventoryContainer">
         <div class="inventoryButtonContainer">
-            <button class="inventoryButton">Inventory</button>
-            <button class="inventoryButton">Relics</button>
+            <button class="inventoryButton" onclick="inventoryVisible()">Inventory</button>
+            <button class="inventoryButton" onclick="relicsVisible()">Relics</button>
         </div>
-        <div class="inventoryElement">Inventory Content</div>
-        <div class="inventoryElement invisible">Relic Content</div>
+        <div id="inventory" class="inventoryElement">Inventory Content</div>
+        <div id="relics" class="inventoryElement invisible">Relic Content</div>
     </div>
 
 </body>
