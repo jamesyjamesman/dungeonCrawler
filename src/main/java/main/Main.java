@@ -1,5 +1,6 @@
 package main;
 
+import io.javalin.Javalin;
 import main.entity.Player;
 import main.initialization.PlayerInit;
 import main.initialization.RelicInit;
@@ -12,6 +13,17 @@ import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
+
+        var app = Javalin.create(config -> config.staticFiles.add("/web"))
+                .start(7070);
+
+        //stops caching, which allows for "hot reloads"
+        app.before("/**", ctx -> {
+            ctx.header("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+            ctx.header("Pragma", "no-cache");
+            ctx.header("Expires", "0"); // Or a date in the past
+        });
+
         initializeApp();
         JFrame frame = App.INSTANCE.getFrame();
 
