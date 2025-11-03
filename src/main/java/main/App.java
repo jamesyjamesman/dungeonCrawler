@@ -1,5 +1,6 @@
 package main;
 
+import io.javalin.Javalin;
 import main.entity.Player;
 import main.item.relic.Relic;
 import main.room.Room;
@@ -19,6 +20,8 @@ public enum App {
         ENEMY_TURN
     }
 
+    private Javalin server;
+
     private JFrame frame;
 
     private Player player;
@@ -31,6 +34,12 @@ public enum App {
 
     public App getInstance() {
         return INSTANCE;
+    }
+    public Javalin getServer() {
+        return this.server;
+    }
+    public void setServer(Javalin server) {
+        this.server = server;
     }
     public JFrame getFrame() {
         return frame;

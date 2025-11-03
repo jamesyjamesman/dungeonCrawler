@@ -287,17 +287,9 @@ public class Player extends Entity {
     }
 
     public boolean unequipRelic(Relic relic){
-        if (relic.isCursed()) {
-            SwingRenderer.appendLabelText("The relic is welded to you painfully. You can't remove it!", true, ComponentType.LABEL_ERROR);
+        if (relic.isCursed() || addItemToInventory(relic)) {
             return false;
         }
-
-        boolean inventoryFull = addItemToInventory(relic);
-        if (inventoryFull) {
-            SwingRenderer.appendLabelText("Your inventory is full; the relic could not be unequipped!", true, ComponentType.LABEL_ERROR);
-            return false;
-        }
-        SwingRenderer.appendLabelText("The " + relic.getName() + " was unequipped!", true, ComponentType.LABEL_ERROR);
         getEquippedRelics().remove(relic);
         return true;
     }

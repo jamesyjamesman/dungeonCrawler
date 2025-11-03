@@ -13,9 +13,10 @@ import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
-
-        var app = Javalin.create(config -> config.staticFiles.add("/web"))
+        Javalin app = Javalin.create(config -> config.staticFiles.add("/web"))
                 .start(7070);
+
+        App.INSTANCE.setServer(app);
 
         //stops caching, which allows for "hot reloads"
         app.before("/**", ctx -> {

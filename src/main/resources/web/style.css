@@ -110,3 +110,21 @@ body {
     background-size: 100% auto;
     background-color: black;
 }
+
+#popup {
+    position: absolute;
+    background-color: black;
+    opacity: 80%;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    text-align: center;
+}
+
+#popupText {
+    margin-top: 25%;
+    white-space: pre;
+    color: white;
+}
