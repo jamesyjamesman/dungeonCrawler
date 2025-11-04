@@ -5,6 +5,7 @@ import main.entity.Player;
 import main.initialization.PlayerInit;
 import main.initialization.RelicInit;
 import main.initialization.RoomInit;
+import main.requests.RequestHandler;
 import main.room.Room;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
@@ -17,6 +18,7 @@ public class Main {
                 .start(7070);
 
         App.INSTANCE.setServer(app);
+        RequestHandler.handler();
 
         //stops caching, which allows for "hot reloads"
         app.before("/**", ctx -> {
@@ -24,13 +26,6 @@ public class Main {
             ctx.header("Pragma", "no-cache");
             ctx.header("Expires", "0"); // Or a date in the past
         });
-
-        initializeApp();
-        JFrame frame = App.INSTANCE.getFrame();
-
-        SwingRenderer.renderer(frame);
-
-        Game.gameLoop();
     }
 
     public static void initializeApp() {
@@ -44,6 +39,10 @@ public class Main {
 
         app.setUnusedRelics(RelicInit.relicInit());
         app.setRooms(RoomInit.roomInit());
+
+        SwingRenderer.renderer(frame);
+
+        Game.gameLoop();
     }
 
     public static int getIntegerResponse(Player player, int lowerBound, int upperBound) {

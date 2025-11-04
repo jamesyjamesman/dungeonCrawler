@@ -20,7 +20,6 @@ import java.util.Random;
 
 //potentially make a "stats" object for player -- would cut this in about half
 public class Player extends Entity {
-    private final String name;
     private int roomsTraversed;
     private final ArrayList<ArrayList<Item>> inventory;
     private final ArrayList<Relic> equippedRelics;
@@ -34,9 +33,8 @@ public class Player extends Entity {
     private final Statuses currentStatuses;
     private Weapon equippedWeapon;
     private int gold;
-    public Player(String newName) {
+    public Player() {
         super(Species.PLAYER, 20, 3);
-        this.name = newName;
         this.inventory = new ArrayList<>();
         this.equippedRelics = new ArrayList<>();
         this.roomsTraversed = 0;
@@ -455,7 +453,7 @@ public class Player extends Entity {
         return this.equippedRelics;
     }
     public String getName() {
-        return this.name;
+        return "you";
     }
     public ArrayList<ArrayList<Item>> getInventory() {
         return this.inventory;
