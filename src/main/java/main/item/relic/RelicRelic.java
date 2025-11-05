@@ -1,8 +1,6 @@
 package main.item.relic;
 
 import main.entity.Player;
-import main.swing.ComponentType;
-import main.swing.SwingRenderer;
 
 public class RelicRelic extends Relic {
     public RelicRelic() {
@@ -20,8 +18,6 @@ public class RelicRelic extends Relic {
         if (this.isEquipped(player)) {
             int relicsOverCapacity = player.getEquippedRelics().size() - (player.getRelicCap() - 3);
             if (relicsOverCapacity > 0) {
-                SwingRenderer.appendTextPane("You have too many relics equipped to remove this relic!\n" + "Unequip " + relicsOverCapacity + " relics to remove this relic.", false, ComponentType.PANE_MAIN);
-                SwingRenderer.UIUpdater(player);
                 return;
             }
             if (player.unequipRelic(this)) {
@@ -33,6 +29,5 @@ public class RelicRelic extends Relic {
                 player.changeRelicCap(3);
             }
         }
-        SwingRenderer.UIUpdater(player);
     }
 }

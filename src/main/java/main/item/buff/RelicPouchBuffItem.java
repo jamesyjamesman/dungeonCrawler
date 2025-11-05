@@ -1,7 +1,6 @@
 package main.item.buff;
 
 import main.entity.Player;
-import main.swing.SwingRenderer;
 
 public class RelicPouchBuffItem extends BuffItem {
     public RelicPouchBuffItem() {
@@ -19,11 +18,8 @@ public class RelicPouchBuffItem extends BuffItem {
         super.useItem(player);
         int amountChanged = randomizeAmountChanged();
         if (amountChanged > 0) {
-            SwingRenderer.addHealthText("Forcing yourself to swallow the contents of the can, your " + this.statName + " somehow increased by " + amountChanged + ".");
             player.changeRelicCap(amountChanged);
         } else {
-            SwingRenderer.addHealthText("Drinking that... was not worth it.");
         }
-        SwingRenderer.UIUpdater(player);
     }
 }

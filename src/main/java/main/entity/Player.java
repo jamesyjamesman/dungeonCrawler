@@ -11,8 +11,6 @@ import main.item.relic.RelicID;
 import main.item.weapon.Weapon;
 import main.room.Room;
 import main.room.ShopRoom;
-import main.swing.ComponentType;
-import main.swing.SwingRenderer;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -53,7 +51,6 @@ public class Player extends Entity {
         int totalDamage = weakenAttack(calculateTotalAttack());
         int damageDealt = enemy.takeDamage(totalDamage);
         if (damageDealt > 0) {
-            SwingRenderer.appendTextPane("The " + enemy.speciesToStringLower() + " took " + totalDamage + " damage!\n", false, ComponentType.PANE_MAIN);
         }
     }
 
@@ -66,10 +63,7 @@ public class Player extends Entity {
 
     public void itemPickup(Item item) {
         if (calculateInventorySize() >= this.inventoryCap) {
-            SwingRenderer.appendTextPane("Your inventory is full!\nEnter anything to continue, if your inventory is still full the item will be lost.", false, ComponentType.PANE_MAIN);
-            Main.waitForResponse();
             if (calculateInventorySize() >= this.inventoryCap) {
-                SwingRenderer.appendTextPane("Your inventory is still full... The " + item.getName() + " remains where it was.", false, ComponentType.PANE_MAIN);
                 // relic is removed from unused relics as soon as it is generated, so it has to be put back
                 if (item instanceof Relic relic && relic.isFindable()) {
                     App.INSTANCE.addUnusedRelic(relic);
@@ -79,7 +73,6 @@ public class Player extends Entity {
         }
         addItemToInventory(item);
 
-        SwingRenderer.appendLabelText("You stash the " + item.getName() + " in your bag.\n", false, ComponentType.LABEL_DESCRIPTION);
     }
 
     public boolean addItemToInventory(Item item) {
@@ -119,12 +112,10 @@ public class Player extends Entity {
 
     public void sellItem(Item item) {
         if (item instanceof Relic relic && relic.isCursed()) {
-            SwingRenderer.appendLabelText("The shopkeep looks at you coldly, and refuses to take the " + relic.getName() + ".\n", false, ComponentType.LABEL_DESCRIPTION);
         } else {
             discardItem(item);
             this.addGold(item.getValue());
         }
-        SwingRenderer.UIUpdater(this);
     }
 
     public void discardItem(Item item) {
@@ -140,12 +131,10 @@ public class Player extends Entity {
         } else {
             this.inventory.get(itemIndex).remove(item);
         }
-        SwingRenderer.UIUpdater(this);
     }
 
     //can cause index out of bounds
     public void checkInventory() {
-        SwingRenderer.clearInventoryPane(false);
 
         for (ArrayList<Item> items : this.inventory) {
             Item item = items.getFirst();
@@ -161,13 +150,11 @@ public class Player extends Entity {
             } else {
                 color = Color.white;
             }
-            SwingRenderer.addItemLabel(output, this, item, color);
         }
     }
 
     //this is very dry, but I wasn't sure how to use checkInventory due to the different types
     public void checkRelics() {
-        SwingRenderer.clearInventoryPane(true);
         Color color;
 
         for (Relic relic : this.equippedRelics) {
@@ -178,7 +165,6 @@ public class Player extends Entity {
             } else {
                 color = Color.white;
             }
-            SwingRenderer.addItemLabel(output, this, relic, color);
         }
     }
 
@@ -217,7 +203,6 @@ public class Player extends Entity {
         output = output.concat("Inventory: " + calculateInventorySize() + "/" + this.inventoryCap + "\n");
         output = output.concat("Relics: " + this.equippedRelics.size() + "/" + this.relicCap + "\n");
         output = output.concat(statusEffectChecker());
-        SwingRenderer.appendLabelText(output, true, ComponentType.LABEL_STATUS);
     }
 
     public String statusEffectChecker() {
@@ -270,14 +255,12 @@ public class Player extends Entity {
 
     public boolean equipRelic(Relic relic) {
         if (getEquippedRelics().size() >= this.relicCap) {
-            SwingRenderer.appendLabelText("You cannot equip any more relics!", true, ComponentType.LABEL_ERROR);
             return false;
         }
         this.equippedRelics.add(relic);
         int relicIndex = this.findItemInInventory(relic);
         this.inventory.remove(relicIndex);
         if (relic.isCursed()) {
-            SwingRenderer.appendLabelText("Oh no! the " + relic.getName() + " was cursed!", true, ComponentType.LABEL_ERROR);
             this.currentStatuses.addCursed(1);
         }
         checkStatus();
@@ -295,7 +278,6 @@ public class Player extends Entity {
     @Override
     public void die() {
         checkStatus();
-        SwingRenderer.appendTextPane("\"Ack! It's too much for me!\" " + getName() + " exclaims.\n" + getName() + " falls to their knees... then to the ground.\n" + "GAME OVER!", true, ComponentType.PANE_MAIN);
         while (true) {
             try {
                 Thread.sleep(5000);
@@ -315,7 +297,6 @@ public class Player extends Entity {
             output = levelUpEffects(this.level, output);
         }
         if (!output.isEmpty()) {
-            SwingRenderer.createPopup(output);
         }
     }
 
@@ -395,7 +376,6 @@ public class Player extends Entity {
     // 1 - (1/(n+1)) chance to decrease weakness level by one
         if (new Random().nextInt(weaknessLevel + 1) != 0) {
             this.currentStatuses.addWeakened(-1);
-            SwingRenderer.addHealthText("Your weakness level decreased by one!");
         }
         return finalDamage;
     }
@@ -406,7 +386,6 @@ public class Player extends Entity {
             return;
         }
         takeDamage(1);
-        SwingRenderer.addHealthText("You took damage from burning! Your burning level is now " + (fireLevel - 1) + ".");
         this.currentStatuses.setFire(fireLevel - 1);
     }
 
@@ -416,7 +395,6 @@ public class Player extends Entity {
             return;
         }
         takeDamage(poisonLevel);
-        SwingRenderer.addHealthText("You took " + poisonLevel + " poison damage! Your poison level is now " + (poisonLevel - 1) + ".");
         this.currentStatuses.setPoison(poisonLevel - 1);
     }
 
@@ -431,7 +409,6 @@ public class Player extends Entity {
                 totalDamage += new Random().nextInt(4);
             }
             if (totalDamage > 0) {
-                SwingRenderer.addHealthText("You took " + totalDamage + " damage from your cursed relics!");
                 takeDamage(totalDamage);
             }
         } else {
@@ -442,7 +419,6 @@ public class Player extends Entity {
             if (totalHeal > 0) {
                 int amountHealed = heal(totalHeal);
                 if (amountHealed > 0) {
-                    SwingRenderer.addHealthText("You gained " + amountHealed + " health from your cursed relics!");
                 }
             }
         }
@@ -505,7 +481,6 @@ public class Player extends Entity {
     }
     public void setEquippedWeapon(Weapon weapon) {
         if (this.equippedWeapon != null && weapon != null) {
-            SwingRenderer.appendLabelText("You cannot equip more than one weapon!", true, ComponentType.LABEL_ERROR);
             return;
         }
         this.equippedWeapon = weapon;

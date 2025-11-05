@@ -4,8 +4,6 @@ import main.App;
 import main.Battle;
 import main.entity.Player;
 import main.entity.enemy.Enemy;
-import main.swing.ComponentType;
-import main.swing.SwingRenderer;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -29,7 +27,6 @@ public class EnemyRoom extends Room {
     @Override
     public void completeRoomActions(Player player) {
         super.completeRoomActions(player);
-        SwingRenderer.appendTextPane(this.battleInitiationMessage, true, ComponentType.PANE_MAIN);
         Battle.battleLoop(player, this);
         this.enemies = randomizeEnemies(this.maxEnemies);
         for (Enemy enemy : this.enemies) {

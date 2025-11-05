@@ -5,7 +5,6 @@ import main.entity.Player;
 import main.item.relic.Relic;
 import main.room.Room;
 
-import javax.swing.*;
 import java.util.ArrayList;
 
 public enum App {
@@ -21,8 +20,6 @@ public enum App {
     }
 
     private Javalin server;
-
-    private JFrame frame;
 
     private Player player;
 
@@ -40,12 +37,6 @@ public enum App {
     }
     public void setServer(Javalin server) {
         this.server = server;
-    }
-    public JFrame getFrame() {
-        return frame;
-    }
-    public void setFrame(JFrame newFrame) {
-        frame = newFrame;
     }
     public Player getPlayer() {
         return player;

@@ -1,7 +1,6 @@
 package main.item.buff;
 
 import main.entity.Player;
-import main.swing.SwingRenderer;
 
 public class DamageBuffItem extends BuffItem {
     public DamageBuffItem() {
@@ -18,8 +17,6 @@ public class DamageBuffItem extends BuffItem {
     public void useItem(Player player) {
         super.useItem(player);
         int amountChanged = randomizeAmountChanged();
-        SwingRenderer.addHealthText("You force down the contents of the can, your " + this.statName + " somehow increased by " + amountChanged + ".");
         player.increaseDamage(amountChanged);
-        SwingRenderer.UIUpdater(player);
     }
 }

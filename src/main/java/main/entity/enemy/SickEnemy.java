@@ -2,7 +2,6 @@ package main.entity.enemy;
 
 import main.entity.Player;
 import main.entity.Species;
-import main.swing.SwingRenderer;
 
 import java.util.Random;
 
@@ -24,14 +23,12 @@ public class SickEnemy extends Enemy {
     public void sneeze(Player player) {
         int poisonAmount = new Random().nextInt(1,4);
         player.getCurrentStatuses().addPoison(poisonAmount);
-        SwingRenderer.addHealthText("The " + speciesToStringLower() + " sneezed on you! You gained " + poisonAmount + " levels of poison.");
     }
 
     public void grossAttack(Player player) {
         int poisonAmount = new Random().nextInt(3,7);
         super.attack(player);
         player.getCurrentStatuses().addPoison(poisonAmount);
-        SwingRenderer.addHealthText("...It was covered in snot. GROSS! You gained " + poisonAmount + " levels of poison.");
     }
 
 

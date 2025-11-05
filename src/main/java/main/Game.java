@@ -5,8 +5,6 @@ import main.item.relic.ForesightRelic;
 import main.item.relic.RelicID;
 import main.room.Room;
 import main.room.RoomType;
-import main.swing.ComponentType;
-import main.swing.SwingRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,28 +12,6 @@ import java.util.Random;
 import java.util.UUID;
 
 public class Game {
-    public static void gameLoop() {
-        Player player = App.INSTANCE.getPlayer();
-        ArrayList<Room> rooms = App.INSTANCE.getRooms();
-        Room currentRoom = rooms.getFirst();
-
-        while (player.getCurrentHealth() > 0) {
-            player.setCurrentRoom(currentRoom);
-
-            currentRoom.completeRoomActions(player);
-
-            activateRooms(rooms, player);
-            ArrayList<Room> activeRooms = new ArrayList<>(getRandomActiveRooms(rooms));
-            createRoomExits(player, activeRooms, currentRoom);
-            App.INSTANCE.setState(App.State.ROOM_END);
-            player.useRelics();
-            player.statusHandler(false);
-
-            int response = Main.getIntegerResponse(player, 1, currentRoom.getExits().size()) - 1;
-            currentRoom = currentRoom.getExits().get(response);
-        }
-        player.die();
-    }
 
     public static void roomChangeHandler(UUID uuid) {
         Player player = App.INSTANCE.getPlayer();
@@ -63,8 +39,6 @@ public class Game {
     }
 
     public static void createRoomExits(Player player, ArrayList<Room> activeRooms, Room room) {
-        SwingRenderer.appendTextPane("Where would you like to go?\n", true, ComponentType.PANE_MAIN);
-        SwingRenderer.appendTextPane("You see " + room.getNumExits() + " exit" + Main.pluralChecker(room.getNumExits()) + ".\n", false, ComponentType.PANE_MAIN);
         room.getExits().clear();
 
         for (int i = 0; i < room.getNumExits(); i++) {
@@ -80,7 +54,6 @@ public class Game {
             } else {
                 output = output.concat("\n");
             }
-            SwingRenderer.addRoomLabel(i, output);
         }
     }
 

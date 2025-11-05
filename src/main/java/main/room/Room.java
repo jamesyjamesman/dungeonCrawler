@@ -3,8 +3,6 @@ package main.room;
 import main.App;
 import main.Identifiable;
 import main.entity.Player;
-import main.swing.ComponentType;
-import main.swing.SwingRenderer;
 
 import java.util.ArrayList;
 
@@ -40,8 +38,6 @@ public class Room extends Identifiable {
     }
 
     public void completeRoomActions(Player player) {
-        SwingRenderer.changeBackgroundImage(this.backgroundFileName);
-        SwingRenderer.appendLabelText(this.description + "\n", true, ComponentType.LABEL_DESCRIPTION);
         player.incrementRoomsTraversed();
         player.checkStatus();
         player.checkInventory();

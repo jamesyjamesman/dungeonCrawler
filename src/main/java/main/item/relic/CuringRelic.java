@@ -3,7 +3,6 @@ package main.item.relic;
 import main.App;
 import main.Statuses;
 import main.entity.Player;
-import main.swing.SwingRenderer;
 
 import java.util.Random;
 
@@ -34,21 +33,15 @@ public class CuringRelic extends Relic {
         removalIndex -= playerStatuses.getPoison();
         if (removalIndex <= 0) {
             playerStatuses.addPoison(-1);
-            SwingRenderer.addHealthText("The " + getName() + " removed a level of poison!");
-            SwingRenderer.UIUpdater(player);
             return;
         }
 
         removalIndex -= playerStatuses.getWeakened();
         if (removalIndex <= 0) {
             playerStatuses.addWeakened(-1);
-            SwingRenderer.addHealthText("The " + getName() + " removed a level of weakness!");
-            SwingRenderer.UIUpdater(player);
             return;
         }
 
         playerStatuses.addFire(-1);
-        SwingRenderer.addHealthText("The " + getName() + " removed a level of fire!");
-        SwingRenderer.UIUpdater(player);
     }
 }

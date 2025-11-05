@@ -4,8 +4,6 @@ import main.App;
 import main.Game;
 import main.entity.Player;
 import main.item.relic.Relic;
-import main.swing.ComponentType;
-import main.swing.SwingRenderer;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -27,11 +25,9 @@ public class RelicRoom extends Room {
         super.completeRoomActions(player);
 
         if (this.hasCorpse) {
-            SwingRenderer.appendLabelText("Upon further inspection, you see something shiny in the pile of bones. Hesitating slightly, you grab it.\n", false, ComponentType.LABEL_DESCRIPTION);
         }
 
         player.itemPickup(this.relic);
-        SwingRenderer.UIUpdater(player);
     }
 
     public void initializeRelic() {

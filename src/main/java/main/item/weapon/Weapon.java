@@ -2,7 +2,6 @@ package main.item.weapon;
 
 import main.entity.Player;
 import main.item.Item;
-import main.swing.SwingRenderer;
 
 //should be abstract
 public class Weapon extends Item {
@@ -19,7 +18,6 @@ public class Weapon extends Item {
         } else {
             player.setEquippedWeapon(this);
         }
-        SwingRenderer.UIUpdater(player);
     }
 
     public boolean isEquipped(Player player) {

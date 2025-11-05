@@ -2,7 +2,6 @@ package main.item.relic;
 
 import main.App;
 import main.entity.Player;
-import main.swing.SwingRenderer;
 
 import java.util.Random;
 
@@ -25,7 +24,6 @@ public class RegenerationRelic extends Relic {
         if (new Random().nextInt(3) == 0) {
         int amountHealed = player.heal(new Random().nextInt(1,5));
         if (amountHealed != 0) {
-            SwingRenderer.addHealthText("Your Relic of Regeneration healed you for " + amountHealed + " health!");
             }
         }
     }

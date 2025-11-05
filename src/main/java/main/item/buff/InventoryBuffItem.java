@@ -1,7 +1,6 @@
 package main.item.buff;
 
 import main.entity.Player;
-import main.swing.SwingRenderer;
 
 public class InventoryBuffItem extends BuffItem {
     public InventoryBuffItem() {
@@ -18,8 +17,6 @@ public class InventoryBuffItem extends BuffItem {
     public void useItem(Player player) {
         super.useItem(player);
         int amountChanged = randomizeAmountChanged();
-        SwingRenderer.addHealthText("Forcing yourself to swallow the contents of the can, your " + this.statName + " somehow increased by " + amountChanged + ".");
         player.changeInventoryCap(amountChanged);
-        SwingRenderer.UIUpdater(player);
     }
 }

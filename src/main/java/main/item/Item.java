@@ -5,8 +5,6 @@ import main.entity.Player;
 import main.item.health.PureAppleItem;
 import main.item.relic.Relic;
 import main.room.PureWaterRoom;
-import main.swing.ComponentType;
-import main.swing.SwingRenderer;
 
 public abstract class Item extends Identifiable implements Cloneable {
     private final String description;
@@ -25,26 +23,20 @@ public abstract class Item extends Identifiable implements Cloneable {
     }
 
     public void useItem(Player player) {
-       SwingRenderer.UIUpdater(player);
     }
 
     public void cleanseItem(Player player) {
         if (this instanceof Relic relic && relic.isCursed()) {
             relic.setCursed(false);
-            SwingRenderer.appendLabelText("The " + relic.getName() + " was cured!", true, ComponentType.LABEL_ERROR);
             if (relic.isEquipped(player)) {
                 player.getCurrentStatuses().addCursed(-1);
             }
         } else if (this.getName().equals("Apple")) {
             player.discardItem(this);
             player.addItemToInventory(new PureAppleItem());
-            SwingRenderer.appendLabelText("The apple was purified!\n", false, ComponentType.LABEL_DESCRIPTION);
         } else {
-            SwingRenderer.appendLabelText("You put the " + this.getName() + " in the fountain, but nothing happened.\n", false, ComponentType.LABEL_DESCRIPTION);
         }
         ((PureWaterRoom) player.getCurrentRoom()).setFountainUsed(true);
-        SwingRenderer.appendLabelText("The fountain ran dry!", false, ComponentType.LABEL_DESCRIPTION);
-        SwingRenderer.UIUpdater(player);
     }
 
 

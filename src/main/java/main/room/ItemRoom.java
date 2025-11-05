@@ -3,7 +3,6 @@ package main.room;
 import main.entity.Player;
 import main.initialization.ItemInit;
 import main.item.Item;
-import main.swing.SwingRenderer;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -22,7 +21,6 @@ public class ItemRoom extends Room {
         }
         super.completeRoomActions(player);
         player.itemPickup(this.item);
-        SwingRenderer.UIUpdater(player);
     }
 
     public void initializeItem() {

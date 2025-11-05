@@ -1,9 +1,6 @@
 package main.item.buff;
 
 import main.entity.Player;
-import main.swing.SwingRenderer;
-
-import java.util.Random;
 
 public class UnBuffItem extends BuffItem {
     public UnBuffItem() {
@@ -21,7 +18,5 @@ public class UnBuffItem extends BuffItem {
         super.useItem(player);
         int poisonAmount = randomizeAmountChanged();
         player.getCurrentStatuses().addPoison(poisonAmount);
-        SwingRenderer.addHealthText("Blegh! You think that was meatballs. At some point.\nYou don't feel so good... You received " + poisonAmount + " levels of poison.");
-        SwingRenderer.UIUpdater(player);
     }
 }

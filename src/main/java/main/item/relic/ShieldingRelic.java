@@ -3,7 +3,6 @@ package main.item.relic;
 import main.App;
 import main.Main;
 import main.entity.Player;
-import main.swing.SwingRenderer;
 
 import java.util.Random;
 
@@ -24,7 +23,6 @@ public class ShieldingRelic extends Relic {
             int absorptionAmount = new Random().nextInt(0, 3);
             if (absorptionAmount > 0) {
                 player.addAbsorption(absorptionAmount);
-                SwingRenderer.addHealthText("Your Relic of Shielding gave you " + absorptionAmount + " point" + Main.pluralChecker(absorptionAmount) + " of absorption!");
             }
         }
     }

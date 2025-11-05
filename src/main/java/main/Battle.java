@@ -4,13 +4,10 @@ import main.entity.Player;
 import main.entity.enemy.Enemy;
 import main.item.relic.RelicID;
 import main.room.EnemyRoom;
-import main.swing.ComponentType;
-import main.swing.SwingRenderer;
 
 public class Battle {
 
     public static void battleLoop(Player player, EnemyRoom room) {
-        SwingRenderer.appendTextPane("\nThe battle has begun!\n", false, ComponentType.PANE_MAIN);
         App.INSTANCE.setState(App.State.BATTLE_START);
         while (!room.getEnemies().isEmpty()) {
             readEnemies(room, player);
@@ -18,9 +15,8 @@ public class Battle {
             App.INSTANCE.setState(App.State.PLAYER_TURN);
             player.useRelics();
             player.statusHandler(true);
-            int enemyIndex = Main.getIntegerResponse(player, 1, room.getEnemies().size()) - 1;
-            SwingRenderer.appendTextPane("", true, ComponentType.PANE_MAIN);
-            Enemy enemy = room.getEnemies().get(enemyIndex);
+            //todo hardcoded
+            Enemy enemy = room.getEnemies().get(1);
             player.attack(enemy);
 
             App.INSTANCE.setState(App.State.ENEMY_TURN);
@@ -30,7 +26,6 @@ public class Battle {
                 enemyAttacker.attack(player);
             }
         }
-        SwingRenderer.appendTextPane("The enemies were defeated!", true, ComponentType.PANE_MAIN);
     }
 
     public static void readEnemies(EnemyRoom room, Player player) {
@@ -44,7 +39,6 @@ public class Battle {
             } else {
                 output = output.concat("\n");
             }
-            SwingRenderer.addEnemyLabel(output, player, enemy, i);
         }
     }
 }

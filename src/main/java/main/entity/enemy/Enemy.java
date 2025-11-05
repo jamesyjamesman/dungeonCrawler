@@ -5,13 +5,8 @@ import main.entity.Entity;
 import main.entity.Player;
 import main.entity.Species;
 import main.item.Loot;
-import main.item.relic.RelicID;
 import main.item.relic.SlimeRelic;
 import main.room.EnemyRoom;
-import main.swing.ComponentType;
-import main.swing.SwingRenderer;
-
-import java.util.Random;
 
 public class Enemy extends Entity implements Cloneable {
 //    private int armor;
@@ -43,7 +38,6 @@ public class Enemy extends Entity implements Cloneable {
         player.changeExperience(getExperienceDropped());
         player.levelUp();
         player.checkStatus();
-        SwingRenderer.appendLabelText("The " + speciesToStringLower() + " died! You got " + getExperienceDropped() + " experience!\n", false, ComponentType.LABEL_DESCRIPTION);
 
         this.getLoot().dropLoot(player);
 
@@ -54,11 +48,9 @@ public class Enemy extends Entity implements Cloneable {
     public void attack(Player player) {
         // todo this should probably be in player?
         if (SlimeRelic.slimeBounce(player)) {
-            SwingRenderer.addHealthText("The attack from the " + speciesToStringLower() + " bounced right off!");
             return;
         }
 
-        SwingRenderer.addHealthText("The " + speciesToStringLower() + " attacked you, dealing " + getDamage() + " damage!");
         player.takeDamage(getDamage());
         //will get more complex with weapons, etc.
     }
@@ -70,7 +62,6 @@ public class Enemy extends Entity implements Cloneable {
         output += "HP: " + getCurrentHealth() + "/" + getMaxHealth() + "\n";
         output += "EXP: " + this.experienceDropped + "\n";
         output += "ATK DMG: " + getDamage() + "\n";
-        SwingRenderer.appendLabelText(output, true, ComponentType.LABEL_DESCRIPTION);
     }
 
     public void reset() {

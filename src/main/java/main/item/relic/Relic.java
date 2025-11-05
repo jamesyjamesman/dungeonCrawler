@@ -2,7 +2,6 @@ package main.item.relic;
 
 import main.entity.Player;
 import main.item.Item;
-import main.swing.SwingRenderer;
 
 import java.util.Random;
 
@@ -21,7 +20,6 @@ public abstract class Relic extends Item {
     public void useItem(Player player) {
         if(this.isEquipped(player)) {player.unequipRelic(this);}
         else {player.equipRelic(this);}
-        SwingRenderer.UIUpdater(player);
     }
 
     public boolean isCursed() {

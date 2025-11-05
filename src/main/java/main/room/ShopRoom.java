@@ -4,8 +4,6 @@ import main.Main;
 import main.entity.Player;
 import main.initialization.ItemInit;
 import main.item.Item;
-import main.swing.ComponentType;
-import main.swing.SwingRenderer;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -24,38 +22,27 @@ public class ShopRoom extends Room {
     @Override
     public void completeRoomActions(Player player) {
         super.completeRoomActions(player);
-        SwingRenderer.appendTextPane("Would you like to visit the shopkeeper?", true, ComponentType.PANE_MAIN);
-        boolean goToShop = Main.parseResponseAsBoolean();
-        if (goToShop) {
-            openShop();
-            renderShopUI(player);
-            SwingRenderer.UIUpdater(player);
-            Main.waitForResponse();
-        }
+        openShop();
+        renderShopUI(player);
+        //todo need to wait here
         closeShop();
     }
 
     public void renderShopUI(Player player) {
-        SwingRenderer.appendTextPane("Hello there adventurer... welcome to my shop. Buy something, if you dare...\n", true, ComponentType.PANE_MAIN);
         for (int i = 0; i < this.getWares().size(); i++) {
-            SwingRenderer.addShopLabel(player, this.getWares().get(i), this);
         }
-        SwingRenderer.appendTextPane("\nEnter anything to exit the shop!\n", false, ComponentType.PANE_MAIN);
     }
 
     public void sellItem(Item item, Player player) {
         if (player.getGold() < item.getValue()) {
-            SwingRenderer.appendLabelText("You don't have enough gold!", true, ComponentType.LABEL_ERROR);
             return;
         }
         boolean inventoryFull = player.addItemToInventory(item);
         if (inventoryFull) {
-            SwingRenderer.appendLabelText("Your inventory is full!", true, ComponentType.LABEL_ERROR);
             return;
         }
         player.takeGold(item.getValue());
         this.wares.remove(item);
-        SwingRenderer.UIUpdater(player);
         renderShopUI(player);
     }
 
