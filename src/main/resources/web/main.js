@@ -27,5 +27,15 @@ function relicsVisible() {
 }
 
 async function printRooms() {
-    $.ajax("/rooms/getCurrent");
+    let roomAppearances = await $.getJSON("/rooms/getPrintableRooms");
+    const mainDiv = $("#mainDiv");
+    mainDiv.html("");
+
+    for (let i = 0; i < roomAppearances.length; i++) {
+        const textParagraph = $("<p>" + roomAppearances[i] + "</p>");
+        const goButton = $("<button>Go</button>");
+        mainDiv.append(goButton);
+        mainDiv.append(textParagraph);
+    }
+
 }

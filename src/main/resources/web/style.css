@@ -56,7 +56,7 @@
     opacity: 80%;
 }
 
-.mainDiv {
+#mainDiv {
     height: 55%;
     color: white;
     background-color: black;
