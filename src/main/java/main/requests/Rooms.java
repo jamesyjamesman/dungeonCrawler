@@ -2,6 +2,7 @@ package main.requests;
 
 import io.javalin.Javalin;
 import main.App;
+import main.Game;
 import main.item.relic.RelicID;
 import main.room.Room;
 
@@ -19,6 +20,10 @@ public class Rooms {
                 exitStrings.add(room.getAppearance() + ((hasForesight) ? "(" + room.getNumExits() + " exits)" : ""));
             }
             ctx.json(exitStrings);
+        });
+        server.post("/rooms/change", ctx -> {
+            record RoomIndex(int index) {}
+            Game.roomChangeHandler(ctx.bodyAsClass(RoomIndex.class).index());
         });
 
 //        server.get("/inventory/unequipRelic");

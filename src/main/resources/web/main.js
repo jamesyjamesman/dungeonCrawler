@@ -1,7 +1,5 @@
 window.addEventListener("load", async () => {
-    $.ajax("/gameStart", {
-        method: "POST"
-    });
+    $.post("/gameStart");
     createPopup("Welcome to the simulation!\nYou will be presented choices on where to proceed.\nPress the appropriate button or type your answer in the field in the bottom left.\nGood luck!\n");
 });
 
@@ -33,9 +31,27 @@ async function printRooms() {
 
     for (let i = 0; i < roomAppearances.length; i++) {
         const textParagraph = $("<p>" + roomAppearances[i] + "</p>");
-        const goButton = $("<button>Go</button>");
+        const goButton = $(`<button onclick="goToRoom(${i})">Go</button>`);
         mainDiv.append(goButton);
         mainDiv.append(textParagraph);
     }
 
+}
+
+async function goToRoom(roomIndex) {
+
+    await fetch("rooms/change", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ index: roomIndex })
+    })
+
+    // await $.post("/rooms/change", {
+    //     contentType: "application/json",
+    //     index: roomIndex
+    // });
+
+    printRooms();
 }

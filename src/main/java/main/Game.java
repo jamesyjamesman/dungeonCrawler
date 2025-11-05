@@ -31,16 +31,31 @@ public class Game {
             player.statusHandler(false);
 
             int response = Main.getIntegerResponse(player, 1, currentRoom.getExits().size()) - 1;
-            Room nextRoom = currentRoom.getExits().get(response);
-            currentRoom.getExits().clear();
-            currentRoom = nextRoom;
+            currentRoom = currentRoom.getExits().get(response);
         }
         player.die();
+    }
+
+    public static void roomChangeHandler(int roomIndex) {
+        Player player = App.INSTANCE.getPlayer();
+        ArrayList<Room> rooms = App.INSTANCE.getRooms();
+        Room currentRoom = player.getCurrentRoom().getExits().get(roomIndex);
+        player.setCurrentRoom(currentRoom);
+
+        currentRoom.completeRoomActions(player);
+
+        activateRooms(rooms, player);
+        ArrayList<Room> activeRooms = new ArrayList<>(getRandomActiveRooms(rooms));
+        createRoomExits(player, activeRooms, currentRoom);
+        App.INSTANCE.setState(App.State.ROOM_END);
+        player.useRelics();
+        player.statusHandler(false);
     }
 
     public static void createRoomExits(Player player, ArrayList<Room> activeRooms, Room room) {
         SwingRenderer.appendTextPane("Where would you like to go?\n", true, ComponentType.PANE_MAIN);
         SwingRenderer.appendTextPane("You see " + room.getNumExits() + " exit" + Main.pluralChecker(room.getNumExits()) + ".\n", false, ComponentType.PANE_MAIN);
+        room.getExits().clear();
 
         for (int i = 0; i < room.getNumExits(); i++) {
             room.addExit(getWeightedRoom(activeRooms));
