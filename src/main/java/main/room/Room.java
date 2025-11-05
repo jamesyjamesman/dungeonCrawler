@@ -1,13 +1,14 @@
 package main.room;
 
 import main.App;
+import main.Identifiable;
 import main.entity.Player;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
 import java.util.ArrayList;
 
-public class Room {
+public class Room extends Identifiable {
     private final String appearance;
     private final String description;
     private final String backgroundFileName;

@@ -1,5 +1,6 @@
 package main.item;
 
+import main.Identifiable;
 import main.entity.Player;
 import main.item.health.PureAppleItem;
 import main.item.relic.Relic;
@@ -7,7 +8,7 @@ import main.room.PureWaterRoom;
 import main.swing.ComponentType;
 import main.swing.SwingRenderer;
 
-public abstract class Item implements Cloneable {
+public abstract class Item extends Identifiable implements Cloneable {
     private final String description;
     private final String name;
     private final int value;

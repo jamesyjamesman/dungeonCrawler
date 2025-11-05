@@ -6,5 +6,6 @@ public class RequestHandler {
     public static void handler() {
         GameRequests.game();
         Rooms.requestHandler();
+        PlayerRequests.playerRequests();
     }
 }

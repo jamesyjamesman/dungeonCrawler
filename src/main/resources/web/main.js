@@ -1,6 +1,7 @@
 window.addEventListener("load", async () => {
-    $.post("/gameStart");
+    let rooms = await postHelper("/gameStart", {});
     createPopup("Welcome to the simulation!\nYou will be presented choices on where to proceed.\nPress the appropriate button or type your answer in the field in the bottom left.\nGood luck!\n");
+    await printRooms(rooms);
 });
 
 function createPopup(popupText) {
@@ -16,7 +17,6 @@ function hidePopup() {
 function inventoryVisible() {
     $("#inventory").removeClass("invisible");
     $("#relics").addClass("invisible");
-    printRooms();
 }
 
 function relicsVisible() {
@@ -24,34 +24,32 @@ function relicsVisible() {
     $("#relics").removeClass("invisible");
 }
 
-async function printRooms() {
-    let roomAppearances = await $.getJSON("/rooms/getPrintableRooms");
+async function printRooms(rooms) {
+    let foresightRelicEquipped = await postHelper("/player/relicEquipped", {id: "FORESIGHT"});
     const mainDiv = $("#mainDiv");
     mainDiv.html("");
 
-    for (let i = 0; i < roomAppearances.length; i++) {
-        const textParagraph = $("<p>" + roomAppearances[i] + "</p>");
-        const goButton = $(`<button onclick="goToRoom(${i})">Go</button>`);
+    for (let i = 0; i < rooms.length; i++) {
+        const exitsString = `(${rooms[i].numExits} exits)`;
+        const textParagraph = $(`<p>${rooms[i].appearance} ${((foresightRelicEquipped) ? exitsString : "")}</p>`);
+        const goButton = $(`<button>Go</button>`).click(() => goToRoom(rooms[i].uuid));
         mainDiv.append(goButton);
         mainDiv.append(textParagraph);
     }
-
 }
 
-async function goToRoom(roomIndex) {
+async function goToRoom(uuid) {
 
-    await fetch("rooms/change", {
+    let rooms = await postHelper("rooms/change", { uuid: uuid });
+    await printRooms(rooms);
+}
+
+async function postHelper(path, json){
+    return await (await fetch(path, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ index: roomIndex })
-    })
-
-    // await $.post("/rooms/change", {
-    //     contentType: "application/json",
-    //     index: roomIndex
-    // });
-
-    printRooms();
+        body: JSON.stringify(json)
+    })).json();
 }

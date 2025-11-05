@@ -1,6 +1,8 @@
 package main.entity;
 
-public abstract class Entity {
+import main.Identifiable;
+
+public abstract class Entity extends Identifiable {
     private int maxHealth;
     private int currentHealth;
     private int damage;

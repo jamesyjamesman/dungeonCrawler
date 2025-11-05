@@ -11,5 +11,9 @@ public enum RelicID {
     SHIELDING,
     SLIME,
     CURE,
-    DAMAGE
+    DAMAGE;
+
+    public RelicID stringToID(String string) {
+        return RelicID.valueOf(string.toUpperCase());
+    }
 }

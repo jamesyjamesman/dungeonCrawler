@@ -11,6 +11,7 @@ import main.swing.SwingRenderer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 public class Game {
     public static void gameLoop() {
@@ -36,10 +37,10 @@ public class Game {
         player.die();
     }
 
-    public static void roomChangeHandler(int roomIndex) {
+    public static void roomChangeHandler(UUID uuid) {
         Player player = App.INSTANCE.getPlayer();
         ArrayList<Room> rooms = App.INSTANCE.getRooms();
-        Room currentRoom = player.getCurrentRoom().getExits().get(roomIndex);
+        Room currentRoom = getRoomByUUID(player.getCurrentRoom().getExits(), uuid);
         player.setCurrentRoom(currentRoom);
 
         currentRoom.completeRoomActions(player);
@@ -50,6 +51,15 @@ public class Game {
         App.INSTANCE.setState(App.State.ROOM_END);
         player.useRelics();
         player.statusHandler(false);
+    }
+
+    public static Room getRoomByUUID(ArrayList<Room> rooms, UUID uuid) {
+        for (Room room : rooms) {
+            if (room.getUuid().equals(uuid)) {
+                return room;
+            }
+        }
+        return null;
     }
 
     public static void createRoomExits(Player player, ArrayList<Room> activeRooms, Room room) {

@@ -9,9 +9,11 @@ public class GameRequests {
     public static void game() {
         Javalin server = App.INSTANCE.getServer();
         server.post("/gameStart", ctx -> {
-            Main.initializeApp();
+            Thread thread = new Thread(Main::initializeApp);
+            thread.start();
+            Thread.sleep(3000);
             ctx.status(200);
-            ctx.json(true);
+            ctx.json(App.INSTANCE.getPlayer().getCurrentRoom().getExits());
         });
     }
 }
