@@ -6,7 +6,6 @@ public class Identifiable {
     private final UUID uuid;
     public Identifiable() {
         this.uuid = UUID.randomUUID();
-        System.out.println("UUID: " + this.uuid);
     }
 
     public UUID getUuid() {

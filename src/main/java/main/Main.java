@@ -2,10 +2,10 @@ package main;
 
 import io.javalin.Javalin;
 import main.entity.Player;
-import main.initialization.PlayerInit;
 import main.initialization.RelicInit;
 import main.initialization.RoomInit;
 import main.requests.RequestHandler;
+import main.room.Room;
 
 public class Main {
     public static void main(String[] args) {
@@ -26,11 +26,16 @@ public class Main {
     public static void initializeApp() {
         App app = App.INSTANCE.getInstance();
 
-        Player player = PlayerInit.playerInit();
+        Player player = new Player();
         app.setPlayer(player);
 
-        app.setUnusedRelics(RelicInit.relicInit());
         app.setRooms(RoomInit.roomInit());
+        Room startRoom = App.INSTANCE.getRooms().getFirst();
+
+        player.setCurrentRoom(startRoom);
+
+        app.setUnusedRelics(RelicInit.relicInit());
+        Game.roomChangeHandler(startRoom.getUuid());
     }
 
     public static String pluralChecker(int numThings) {

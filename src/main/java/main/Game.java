@@ -16,7 +16,7 @@ public class Game {
     public static void roomChangeHandler(UUID uuid) {
         Player player = App.INSTANCE.getPlayer();
         ArrayList<Room> rooms = App.INSTANCE.getRooms();
-        Room currentRoom = getRoomByUUID(player.getCurrentRoom().getExits(), uuid);
+        Room currentRoom = getRoomByUUID(rooms, uuid);
         player.setCurrentRoom(currentRoom);
 
         currentRoom.completeRoomActions(player);
