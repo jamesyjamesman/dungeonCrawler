@@ -321,7 +321,7 @@ public class RoomInit {
                 .appearance("You get the sense your journey is finally over.")
                 .roomsRequired(125)
                 .selectionWeight(1)
-                .type(RoomType.SPECIAL)
+                .type(RoomType.END)
                 .buildEnding();
 
         roomList.add(endingRoom);
@@ -332,7 +332,7 @@ public class RoomInit {
                 .description("You walk into the room, and see a fountain with flowing water. The water is almost luminescent.")
                 .appearance("You can hear rushing water, but that's about it.")
                 .selectionWeight(3)
-                .type(RoomType.SPECIAL)
+                .type(RoomType.FOUNTAIN)
                 .buildPure();
 
         roomList.add(pureRoom);
@@ -341,7 +341,7 @@ public class RoomInit {
                 .appearance("You can hear a bell ringing. It's inviting?")
                 .description("You see a cold glow from a small opening in the wall, and approach it.")
                 .id(8394)
-                .type(RoomType.SPECIAL)
+                .type(RoomType.SHOP)
                 .roomsRequired(10)
                 .numExits(2)
                 .selectionWeight(1)

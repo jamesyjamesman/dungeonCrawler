@@ -7,5 +7,7 @@ public enum RoomType {
     RELIC,
     TRAP,
     BOSS,
-    SPECIAL
+    SHOP,
+    FOUNTAIN,
+    END
 }

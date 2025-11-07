@@ -3,10 +3,8 @@ package main.requests;
 import io.javalin.Javalin;
 import main.App;
 import main.Game;
-import main.item.relic.RelicID;
 import main.room.Room;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 public class Rooms {
@@ -16,7 +14,8 @@ public class Rooms {
         server.post("/rooms/change", ctx -> {
             record RoomIndex(UUID uuid) {}
             Game.roomChangeHandler(ctx.bodyAsClass(RoomIndex.class).uuid());
-            ctx.json(App.INSTANCE.getPlayer().getCurrentRoom().getExits());
+            Room returnRoom = App.INSTANCE.getPlayer().getCurrentRoom();
+            ctx.json(returnRoom);
         });
 
 //        server.get("/inventory/unequipRelic");

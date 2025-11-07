@@ -39,9 +39,39 @@ async function printRooms(rooms) {
 }
 
 async function goToRoom(uuid) {
+    let newRoom = await postHelper("rooms/change", { uuid: uuid });
+    $("#descriptionDiv").text(newRoom.description);
+    switch (newRoom.type) {
+        case "NORMAL":
+            await printRooms(newRoom.exits);
+            break;
+        case "TRAP": //todo
+            await trapHandler(newRoom);
+            break;
+        case "BOSS":
+        case "ENEMY": //todo
+            await enemyHandler(newRoom);
+            break;
+        case "RELIC":
+        case "ITEM": //todo
+            break;
+        case "FOUNTAIN": //todo
+            break;
+        case "SHOP": //todo
+            break;
+        case "END": //todo
+    }
+}
 
-    let rooms = await postHelper("rooms/change", { uuid: uuid });
-    await printRooms(rooms);
+async function trapHandler(room) {
+    const mainDiv = $("#mainDiv");
+    mainDiv.html("");
+    mainDiv.append(`<p>You took ${room.damageDealt} damage!</p>`);
+    mainDiv.append(`<button onClick="printRooms()">Continue</button>`)
+}
+
+async function enemyHandler(room) {
+
 }
 
 async function postHelper(path, json){

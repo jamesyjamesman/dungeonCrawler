@@ -11,7 +11,6 @@ public class PlayerRequests {
         server.post("/player/relicEquipped", ctx -> {
             record relicEnum(RelicID id) {}
             RelicID id = ctx.bodyAsClass(relicEnum.class).id;
-            System.out.println(App.INSTANCE.getPlayer().equippedRelicIndex(id) != -1);
             ctx.json(App.INSTANCE.getPlayer().equippedRelicIndex(id) != -1);
         });
     }

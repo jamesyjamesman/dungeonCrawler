@@ -56,7 +56,7 @@
     opacity: 80%;
 }
 
-#mainDiv {
+.mainContextDiv {
     height: 55%;
     color: white;
     background-color: black;
@@ -64,7 +64,7 @@
     margin-bottom: 5%;
 }
 
-.descriptionDiv {
+#descriptionDiv {
     position: absolute;
     top: 0;
     left: 0;
