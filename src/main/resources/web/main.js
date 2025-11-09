@@ -107,9 +107,11 @@ async function renderEnemies(room) {
     const mainDiv = $("#mainDiv");
 
     if (enemies.length === 0) {
-        const roomExits = await postHelper("/rooms/getExits", {id : room.id });
+        console.log("enemies dead!");
         mainDiv.append("<p>You win!</p>");
-        mainDiv.append(`<button onclick="printRooms(${roomExits})">Continue</button>`)
+        await appendContinue(room.id);
+        await postHelper("/rooms/resetEnemies", {id: room.id});
+        return;
     }
     for (let i = 0; i < enemies.length; i++) {
         mainDiv.append("<button>Attack</button>").click(() => battleSequence(room, enemies[i]));

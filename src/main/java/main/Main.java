@@ -6,7 +6,6 @@ import main.initialization.RelicInit;
 import main.initialization.RoomInit;
 import main.requests.RequestHandler;
 import main.room.Room;
-import main.App;
 
 public class Main {
     public static void main(String[] args) {

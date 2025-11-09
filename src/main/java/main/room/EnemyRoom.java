@@ -27,11 +27,13 @@ public class EnemyRoom extends Room {
     @Override
     public void completeRoomActions(Player player) {
         super.completeRoomActions(player);
-//        Battle.battleLoop(player, this);
-//        this.enemies = randomizeEnemies(this.maxEnemies);
-//        for (Enemy enemy : this.enemies) {
-//            enemy.reset();
-//        }
+    }
+
+    public void resetRoom() {
+        this.enemies = randomizeEnemies(this.maxEnemies);
+        for (Enemy enemy : this.enemies) {
+            enemy.reset();
+        }
     }
 
     public ArrayList<Enemy> randomizeEnemies(int maxEnemies) {
@@ -66,5 +68,10 @@ public class EnemyRoom extends Room {
     }
     public void addEnemy(Enemy enemy) {
         this.enemies.add(enemy);
+    }
+
+    //for serialization
+    public String getBattleInitiationMessage() {
+        return this.battleInitiationMessage;
     }
 }

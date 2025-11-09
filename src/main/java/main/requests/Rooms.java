@@ -25,6 +25,14 @@ public class Rooms {
             EnemyRoom room = (EnemyRoom) getRoom(id);
             ctx.json(room.getEnemies());
         });
+        //todo this shouldn't be a request probably, should be in die() somehow?
+        server.post("/rooms/resetEnemies", ctx -> {
+            record RoomId(int id) {}
+            int id = ctx.bodyAsClass(RoomId.class).id();
+            EnemyRoom room = (EnemyRoom) getRoom(id);
+            room.resetRoom();
+            ctx.status(200);
+        });
         server.post("/rooms/getExits", ctx -> {
             record RoomId(int id) {}
             int id = ctx.bodyAsClass(RoomId.class).id();
