@@ -2,6 +2,7 @@ package main;
 
 import io.javalin.Javalin;
 import main.entity.Player;
+import main.initialization.RoomInit;
 import main.item.relic.Relic;
 import main.room.Room;
 
@@ -54,10 +55,10 @@ public enum App {
         this.unusedRelics.add(relic);
     }
     public ArrayList<Room> getRooms() {
-        return rooms;
+        return this.rooms;
     }
     public void setRooms(ArrayList<Room> newRooms) {
-        rooms = newRooms;
+        this.rooms = newRooms;
     }
     public void setState(State state) {
         this.state = state;

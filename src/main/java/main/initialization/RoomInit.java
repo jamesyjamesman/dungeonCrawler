@@ -16,7 +16,7 @@ public class RoomInit {
         ArrayList<Room> roomList = new ArrayList<>();
 
         Room startRoom = new RoomBuilder<>()
-                .id(0)
+                .id(1000)
                 .description("""
         The room is empty except for a hole in the ceiling.
         Sunlight pours through, vines creeping down the cracked bricks.
@@ -27,19 +27,19 @@ public class RoomInit {
         roomList.add(startRoom);
 
         Room threeExits = new RoomBuilder<>()
-                .id(6)
+                .id(1001)
                 .numExits(3)
                 .build();
         roomList.add(threeExits);
 
         Room fourExits = new RoomBuilder<>()
-                .id(7)
+                .id(1002)
                 .numExits(4)
                 .build();
         roomList.add(fourExits);
 
         Room manyExits = new RoomBuilder<>()
-                .id(8)
+                .id(1003)
                 .numExits(10)
                 .description("""
                 Wow! this must be the heart of the system or something.
@@ -49,7 +49,7 @@ public class RoomInit {
         roomList.add(manyExits);
 
         TrapRoom stalactiteRoom = new TrapRoomBuilder<>()
-                .id(1)
+                .id(2000)
                 .numExits(3)
                 .description("""
                 You walk into the room, and a dank smell hits you like a ton of bricks.
@@ -65,7 +65,7 @@ public class RoomInit {
         roomList.add(stalactiteRoom);
 
         TrapRoom pitRoom = new TrapRoomBuilder<>()
-                .id(5)
+                .id(2001)
                 .description("""
                 You slowly walk into to a room. The ground creaks beneath your feet.
                 Suddenly, the flooring cracks and shatters, tumbling you down onto a pit of spikes.
@@ -86,7 +86,7 @@ public class RoomInit {
         goblinRoomEnemies.add(enemyList.getFirst());
 
         EnemyRoom goblinRoom = new EnemyRoomBuilder<>()
-                .id(2)
+                .id(3000)
                 .numExits(4)
                 .description("You enter the room... Waking up a goblin in a tattered cloak. It wearily blinks, before jumping up.")
                 .battleInitiationMessage("The goblin pulls out a small wooden wand, ready to cast spells at you!")
@@ -107,7 +107,7 @@ public class RoomInit {
         ambushRoomEnemies.add(new Enemy(Species.SLIME, 20, 3, 12, 3, new Loot(8, slimyDrops)));
 
         EnemyRoom ambushRoom = new EnemyRoomBuilder<>()
-                .id(11)
+                .id(3001)
                 .numExits(3)
                 .description("You enter the ro-")
                 .battleInitiationMessage("Oh no! a camp of enemies were waiting for you, catching you by surprise!")
@@ -125,7 +125,7 @@ public class RoomInit {
         infirmaryEnemies.add(enemyList.get(1));
 
         EnemyRoom infirmary = new EnemyRoomBuilder<>()
-                .id(10001)
+                .id(3002)
                 .numExits(4)
                 .description("You walk into a room, full of cheap beds and medical equipment. A small goblin sees you enter, and slowly climbs out of bed.")
                 .battleInitiationMessage("The goblin coughs, and pulls out a short sword, ready to attack!")
@@ -151,7 +151,7 @@ public class RoomInit {
         bigEnemyRoomEnemies.add(new Enemy(Species.SKELETON, 16, 9, 30, 5, new Loot(20, new RelicPouchBuffItem(0.25, 1, 2))));
 
         EnemyRoom lotsaEnemies = new EnemyRoomBuilder<>()
-                .id(235)
+                .id(3003)
                 .numExits(6)
                 .description("Woah! It's an enemy hub!")
                 .appearance("You hear some loud echoing chatter.")
@@ -168,7 +168,7 @@ public class RoomInit {
         BossRoom slimeBossRoom = new EnemyRoomBuilder<>()
                 .roomsRequired(20)
                 .numExits(5)
-                .id(13)
+                .id(4000)
                 .appearance("An unfamiliar room with blue goop coating the entrance. It smells strongly of fruit.")
                 .allowedEnemies(new SlimeBoss())
                 .maxEnemies(1)
@@ -184,7 +184,7 @@ public class RoomInit {
         BossRoom minotaurBossRoom = new EnemyRoomBuilder<>()
                 .roomsRequired(50)
                 .numExits(4)
-                .id(100)
+                .id(4001)
                 .allowedEnemies(new MinotaurBoss())
                 .maxEnemies(1)
                 .description("A massive minotaur stands silently in the center of the room.")
@@ -199,7 +199,7 @@ public class RoomInit {
         BossRoom dragonBossRoom = new EnemyRoomBuilder<>()
                 .roomsRequired(100)
                 .numExits(2)
-                .id(10012)
+                .id(4002)
                 .allowedEnemies(new DragonBoss())
                 .maxEnemies(1)
                 .description("You saunter into a room, gold coins flowing around your feet. You look up, and see a massive dragon towering over you, fire lazily exiting its mouth. You feel a little less confident.")
@@ -219,7 +219,7 @@ public class RoomInit {
         BossRoom nightmareRoom = new EnemyRoomBuilder<>()
                 .roomsRequired(150)
                 .numExits(5)
-                .id(937)
+                .id(4003)
                 .allowedEnemies(bosses)
                 .maxEnemies(3)
                 .description("The hair stands up on the back of your neck. It's like a nightmare...")
@@ -233,7 +233,7 @@ public class RoomInit {
         roomList.add(nightmareRoom);
 
         ItemRoom appleRoom = new ItemRoomBuilder<>()
-                .id(3)
+                .id(5000)
                 .numExits(3)
                 .description("You enter the room. It's empty, except for a small apple on a pedestal.")
                 .appearance("You can't see much, but you can smell a faintly sweet scent coming from the doorway.")
@@ -246,7 +246,7 @@ public class RoomInit {
 
         ItemRoom chocolateRoom = new ItemRoomBuilder<>()
                 .item(new ChocolateItem())
-                .id(4)
+                .id(5001)
                 .numExits(1)
                 .description("""
                 It couldn't be... Lost after all this time... But you found it, in a dank cave...
@@ -259,7 +259,7 @@ public class RoomInit {
         roomList.add(chocolateRoom);
 
         ItemRoom lavaRoom = new ItemRoomBuilder<>()
-                .id(1001)
+                .id(5002)
                 .description("""
                 You walk into the room. There's flowing lava coming from the ceiling and down the walls, pooling on the floor.
                 Near one of the pools lies a freshly and perfectly cooked steak. Alright, then.""")
@@ -274,7 +274,7 @@ public class RoomInit {
 
         RelicRoom relicRoom = new RelicRoomBuilder<>()
                 .hasCorpse(false)
-                .id(9)
+                .id(6000)
                 .description("""
                 You walk into a room, and are bewildered by the ornate furnishings in the room. Ornate walls, cushy furniture, the like!
                 In the center of the room stands an equally ornate pedestal with a shining relic sitting on the top.""")
@@ -288,7 +288,7 @@ public class RoomInit {
 
         RelicRoom corpseRoom = new RelicRoomBuilder<>()
                 .hasCorpse(true)
-                .id(10)
+                .id(6001)
                 .description("You walk into an empty room... except for the skeleton in the corner.")
                 .appearance("You think you catch a whiff of something... not good.")
                 .type(RoomType.RELIC)
@@ -299,7 +299,7 @@ public class RoomInit {
         roomList.add(corpseRoom);
 
         ItemRoom randomRoom = new ItemRoomBuilder<>()
-                .id(12)
+                .id(5003)
                 .description("You walk into a room. It's empty, except for something on the ground.")
                 .numExits(3)
                 .type(RoomType.ITEM)
@@ -310,7 +310,7 @@ public class RoomInit {
 
         //there is a chance that someone might not want to leave, and be forced if this is the only exit.
         EndingRoom endingRoom = new RoomBuilder<>()
-                .id(9001)
+                .id(9000)
                 .numExits(1)
                 .description("""
                     At last, your journey is over. A simple room, with just an old wooden staircase upwards.
@@ -327,7 +327,7 @@ public class RoomInit {
         roomList.add(endingRoom);
 
         PureWaterRoom pureRoom = new RoomBuilder<>()
-                .id(9002)
+                .id(9001)
                 .numExits(4)
                 .description("You walk into the room, and see a fountain with flowing water. The water is almost luminescent.")
                 .appearance("You can hear rushing water, but that's about it.")
@@ -340,7 +340,7 @@ public class RoomInit {
         ShopRoom shopRoom = new RoomBuilder<>()
                 .appearance("You can hear a bell ringing. It's inviting?")
                 .description("You see a cold glow from a small opening in the wall, and approach it.")
-                .id(8394)
+                .id(9002)
                 .type(RoomType.SHOP)
                 .roomsRequired(10)
                 .numExits(2)

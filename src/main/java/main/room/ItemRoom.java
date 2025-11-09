@@ -16,7 +16,8 @@ public class ItemRoom extends Room {
 
     @Override
     public void completeRoomActions(Player player) {
-        if (this.getId() == 12) {
+        //todo itemRoom flag boolean of "random" and an ArrayList<Item> of allowed items, similar logic to enemyroom
+        if (this.getId() == 5003) {
             initializeItem();
         }
         super.completeRoomActions(player);
@@ -31,5 +32,10 @@ public class ItemRoom extends Room {
 
     public void setItem(Item item) {
         this.item = item;
+    }
+
+    //for serialization
+    public Item getItem() {
+        return this.item;
     }
 }

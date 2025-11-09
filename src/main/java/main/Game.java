@@ -13,10 +13,10 @@ import java.util.UUID;
 
 public class Game {
 
-    public static void roomChangeHandler(UUID uuid) {
+    public static Room roomChangeHandler(int roomID) {
         Player player = App.INSTANCE.getPlayer();
         ArrayList<Room> rooms = App.INSTANCE.getRooms();
-        Room currentRoom = getRoomByUUID(rooms, uuid);
+        Room currentRoom = getRoomByID(rooms, roomID);
         player.setCurrentRoom(currentRoom);
 
         currentRoom.completeRoomActions(player);
@@ -27,11 +27,12 @@ public class Game {
         App.INSTANCE.setState(App.State.ROOM_END);
         player.useRelics();
         player.statusHandler(false);
+        return currentRoom;
     }
 
-    public static Room getRoomByUUID(ArrayList<Room> rooms, UUID uuid) {
+    public static Room getRoomByID(ArrayList<Room> rooms, int roomID) {
         for (Room room : rooms) {
-            if (room.getUuid().equals(uuid)) {
+            if (room.getId() == roomID) {
                 return room;
             }
         }

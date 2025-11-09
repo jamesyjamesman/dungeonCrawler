@@ -7,5 +7,6 @@ public class RequestHandler {
         GameRequests.game();
         Rooms.requestHandler();
         PlayerRequests.playerRequests();
+        EnemyHandler.enemyHandler();
     }
 }

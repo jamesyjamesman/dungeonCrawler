@@ -27,11 +27,11 @@ public class EnemyRoom extends Room {
     @Override
     public void completeRoomActions(Player player) {
         super.completeRoomActions(player);
-        Battle.battleLoop(player, this);
-        this.enemies = randomizeEnemies(this.maxEnemies);
-        for (Enemy enemy : this.enemies) {
-            enemy.reset();
-        }
+//        Battle.battleLoop(player, this);
+//        this.enemies = randomizeEnemies(this.maxEnemies);
+//        for (Enemy enemy : this.enemies) {
+//            enemy.reset();
+//        }
     }
 
     public ArrayList<Enemy> randomizeEnemies(int maxEnemies) {

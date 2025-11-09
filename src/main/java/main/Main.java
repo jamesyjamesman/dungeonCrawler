@@ -6,13 +6,14 @@ import main.initialization.RelicInit;
 import main.initialization.RoomInit;
 import main.requests.RequestHandler;
 import main.room.Room;
+import main.App;
 
 public class Main {
     public static void main(String[] args) {
         Javalin app = Javalin.create(config -> config.staticFiles.add("/web"))
                 .start(7070);
 
-        App.INSTANCE.setServer(app);
+        App.INSTANCE.getInstance().setServer(app);
         RequestHandler.handler();
 
         //stops caching, which allows for "hot reloads"
@@ -35,7 +36,7 @@ public class Main {
         player.setCurrentRoom(startRoom);
 
         app.setUnusedRelics(RelicInit.relicInit());
-        Game.roomChangeHandler(startRoom.getUuid());
+        Game.roomChangeHandler(startRoom.getId());
     }
 
     public static String pluralChecker(int numThings) {

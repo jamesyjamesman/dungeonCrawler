@@ -32,46 +32,102 @@ async function printRooms(rooms) {
     for (let i = 0; i < rooms.length; i++) {
         const exitsString = `(${rooms[i].numExits} exits)`;
         const textParagraph = $(`<p>${rooms[i].appearance} ${((foresightRelicEquipped) ? exitsString : "")}</p>`);
-        const goButton = $(`<button>Go</button>`).click(() => goToRoom(rooms[i].uuid));
+        const goButton = $(`<button>Go</button>`).click(() => goToRoom(rooms[i].id));
         mainDiv.append(goButton);
         mainDiv.append(textParagraph);
     }
 }
 
-async function goToRoom(uuid) {
-    let newRoom = await postHelper("rooms/change", { uuid: uuid });
+async function goToRoom(id) {
+    let newRoom = await postHelper("rooms/change", { id: id });
     $("#descriptionDiv").text(newRoom.description);
+    const roomExits = await postHelper("/rooms/getExits", {id : newRoom.id });
     switch (newRoom.type) {
         case "NORMAL":
-            await printRooms(newRoom.exits);
+            await printRooms(roomExits);
             break;
-        case "TRAP": //todo
+        case "TRAP":
             await trapHandler(newRoom);
             break;
         case "BOSS":
-        case "ENEMY": //todo
+        case "ENEMY":
             await enemyHandler(newRoom);
             break;
         case "RELIC":
-        case "ITEM": //todo
+            await relicHandler(newRoom);
+            break;
+        case "ITEM":
+            await itemHandler(newRoom);
             break;
         case "FOUNTAIN": //todo
-            break;
         case "SHOP": //todo
-            break;
         case "END": //todo
+            await printRooms(roomExits);
     }
 }
 
-async function trapHandler(room) {
+function getFreshMainDiv() {
     const mainDiv = $("#mainDiv");
     mainDiv.html("");
+    return mainDiv;
+}
+
+async function appendContinue(id) {
+    const mainDiv = $("#mainDiv");
+    const exits = await postHelper("/rooms/getExits", { id: id });
+    mainDiv.append("<button>Continue</button>").click(() => printRooms(exits))
+}
+
+async function itemHandler(room) {
+    const mainDiv = getFreshMainDiv();
+    mainDiv.append(`<p>You picked up a ${room.item.name}!</p>`);
+    await appendContinue(room.id);
+}
+
+async function relicHandler(room) {
+    const mainDiv = getFreshMainDiv();
+    mainDiv.append(`<p>You picked up a ${room.relic.name}!</p>`);
+    await appendContinue(room.id);
+}
+
+async function trapHandler(room) {
+    const mainDiv = getFreshMainDiv();
     mainDiv.append(`<p>You took ${room.damageDealt} damage!</p>`);
-    mainDiv.append(`<button onClick="printRooms()">Continue</button>`)
+    await appendContinue(room.id);
 }
 
 async function enemyHandler(room) {
+    const mainDiv = getFreshMainDiv();
+    mainDiv.append(`<p>${room.battleInitiationMessage}</p>`)
+    await renderEnemies(room);
+}
 
+async function renderEnemies(room) {
+    const enemies = await postHelper("/rooms/getEnemies", {id: room.id});
+    const mainDiv = $("#mainDiv");
+
+    if (enemies.length === 0) {
+        const roomExits = await postHelper("/rooms/getExits", {id : room.id });
+        mainDiv.append("<p>You win!</p>");
+        mainDiv.append(`<button onclick="printRooms(${roomExits})">Continue</button>`)
+    }
+    for (let i = 0; i < enemies.length; i++) {
+        mainDiv.append("<button>Attack</button>").click(() => battleSequence(room, enemies[i]));
+        mainDiv.append(`<p>${i}. ${enemies[i].species}</p>`);
+    }
+}
+
+async function battleSequence(room, enemy) {
+    const mainDiv = getFreshMainDiv();
+    enemy = await postHelper("/enemy/takeDamage", {
+        roomID: room.id,
+        uuid: enemy.uuid
+    });
+    if (enemy.currentHealth <= 0) {
+        mainDiv.append(`<p>The ${enemy.species.toString().toLowerCase()} dropped ${enemy.gold} and ${enemy.experience} exp!</p>`);
+    }
+    await renderEnemies(room);
+    //todo enemies attack
 }
 
 async function postHelper(path, json){

@@ -1,16 +1,19 @@
 package main.room;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import main.App;
 import main.Identifiable;
 import main.entity.Player;
 
 import java.util.ArrayList;
 
-public class Room extends Identifiable {
+public class Room {
     private final String appearance;
     private final String description;
     private final String backgroundFileName;
     private final int id;
+
+    @JsonSerialize(using = ExitSerializer.class)
     private final ArrayList<Room> exits;
     private final int numExits;
     //todo: remove active boolean
