@@ -41,7 +41,8 @@ public class Main {
                 throw new RuntimeException(method.getName() + " must be static to be a request handler.");
 
             PostRequestHandler annotation = method.getAnnotation(PostRequestHandler.class);
-            if (annotation.endpoint().isEmpty()) { throw new RuntimeException(method.getName() + " must have an endpoint"); }
+            if (annotation.endpoint().isEmpty())
+                throw new RuntimeException(method.getName() + " must have an endpoint");
 
             app.post(annotation.endpoint(), ctx -> method.invoke(null, ctx));
         }
