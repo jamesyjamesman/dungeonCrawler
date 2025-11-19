@@ -17,6 +17,7 @@ dependencies {
 //    implementation 'me.friwi:jcefmaven:135.0.20'
     implementation 'io.javalin:javalin:6.7.0'
     implementation("org.slf4j:slf4j-simple:2.0.16")
+    implementation 'org.reflections:reflections:0.10.2'
 }
 
 test {
