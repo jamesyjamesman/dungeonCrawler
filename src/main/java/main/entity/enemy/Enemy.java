@@ -39,10 +39,8 @@ public class Enemy extends Entity implements Cloneable {
         player.levelUp();
         player.checkStatus();
 
-        this.getLoot().dropLoot(player);
 
         enemyRoom.removeEnemy(this);
-        player.checkInventory();
     }
 
     public String attack(Player player) {

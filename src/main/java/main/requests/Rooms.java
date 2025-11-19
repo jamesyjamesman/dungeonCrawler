@@ -31,7 +31,7 @@ public class Rooms {
         int id = ctx.bodyAsClass(RoomId.class).id();
         EnemyRoom room = (EnemyRoom) getRoom(id);
         room.resetRoom();
-        ctx.status(200);
+        ctx.json(true);
     }
 
     @PostRequestHandler(endpoint = "/rooms/getExits")

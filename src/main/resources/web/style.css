@@ -75,7 +75,7 @@
     opacity: 80%;
 }
 
-#statusContainer {
+.statusContainer {
     display: flex;
     align-items: center;
     position: absolute;
@@ -95,7 +95,7 @@
     height: 100%;
 }
 
-.statusChecker {
+#statusChecker {
     position: relative;
     background-color: black;
     color: white;

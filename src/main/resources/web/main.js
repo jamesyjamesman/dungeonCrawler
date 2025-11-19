@@ -75,7 +75,8 @@ function getFreshMainDiv() {
 async function appendContinue(id) {
     const mainDiv = $("#mainDiv");
     const exits = await postHelper("/rooms/getExits", { id: id });
-    mainDiv.append("<button>Continue</button>").click(() => printRooms(exits))
+    const continueButton = $("<button>Continue</button>").click(() => printRooms(exits));
+    mainDiv.append(continueButton);
 }
 
 async function itemHandler(room) {
@@ -106,29 +107,37 @@ async function renderEnemies(room) {
     const enemies = await postHelper("/rooms/getEnemies", {id: room.id});
     const mainDiv = $("#mainDiv");
 
-    if (enemies.length === 0) {
-        console.log("enemies dead!");
-        mainDiv.append("<p>You win!</p>");
-        await appendContinue(room.id);
-        //todo figure out how to not have this call
-        await postHelper("/rooms/resetEnemies", {id: room.id});
-        return;
-    }
     for (let i = 0; i < enemies.length; i++) {
-        mainDiv.append("<button>Attack</button>").click(() => battleSequence(room, enemies[i]));
+        const attackButton = $("<button>Attack</button>").click(() => battleSequence(room, enemies[i]));
+        mainDiv.append(attackButton);
         mainDiv.append(`<p>${i}. ${enemies[i].species}</p>`);
     }
 }
 
 async function battleSequence(room, enemy) {
     const mainDiv = getFreshMainDiv();
-    enemy = await postHelper("/enemy/takeDamage", {
+    const enemyInfo = await postHelper("/enemy/takeDamage", {
         roomID: room.id,
         uuid: enemy.uuid
     });
+    enemy = enemyInfo.enemy;
+    const deathString = enemyInfo.deathString;
     if (enemy.currentHealth <= 0) {
-        mainDiv.append(`<p>The ${enemy.species.toString().toLowerCase()} dropped ${enemy.gold} and ${enemy.experience} exp!</p>`);
+        mainDiv.append(`<p>${deathString}</p>`);
+
+        //this... is bad. basically checks if that was the last one.
+        if (room.enemies.length === 1) {
+            console.log("enemies dead!");
+            mainDiv.append("<p>You win!</p>");
+            await appendContinue(room.id);
+            //todo figure out how to not have this call
+            await postHelper("/rooms/resetEnemies", {id: room.id});
+            return;
+        }
     }
+
+
+
     await enemiesAttackPlayer(room);
     await renderEnemies(room);
     //todo enemies attack

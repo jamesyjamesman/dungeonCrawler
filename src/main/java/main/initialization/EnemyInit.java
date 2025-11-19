@@ -16,7 +16,8 @@ public class EnemyInit {
     static ArrayList<Enemy> enemyList = new ArrayList<>();
     public static ArrayList<Enemy> enemyInit() {
             Enemy goblinMage = new Enemy(Species.GOBLIN, 7, 2, 3, 1);
-            goblinMage.setLoot(new Loot(2, new Wand(0.15)));
+            //todo 0.15
+            goblinMage.setLoot(new Loot(2, new Wand(1)));
             enemyList.add(goblinMage);
 
             Enemy goblin = new Enemy(Species.GOBLIN, 8, 1, 3, 1);

@@ -5,6 +5,7 @@ import main.Main;
 import main.Statuses;
 import main.entity.enemy.Enemy;
 import main.item.Item;
+import main.item.Loot;
 import main.item.relic.DamageRelic;
 import main.item.relic.Relic;
 import main.item.relic.RelicID;
@@ -49,9 +50,7 @@ public class Player extends Entity {
     }
     public void attack(Enemy enemy) {
         int totalDamage = weakenAttack(calculateTotalAttack());
-        int damageDealt = enemy.takeDamage(totalDamage);
-        if (damageDealt > 0) {
-        }
+        enemy.takeDamage(totalDamage);
     }
 
     public int calculateTotalAttack() {
@@ -296,8 +295,26 @@ public class Player extends Entity {
             this.level += 1;
             output = levelUpEffects(this.level, output);
         }
-        if (!output.isEmpty()) {
+    }
+
+    public ArrayList<Item> collectLoot(Loot loot) {
+        ArrayList<Item> droppedItems = new ArrayList<>();
+        addGold(this.getGold());
+        for (int i = 0; i < loot.getItems().size(); i++) {
+            Item item = loot.getItems().get(i);
+            if (item instanceof Relic relic && this.hasRelic(relic)) {
+                int halfBackGuarantee = relic.getValue() / 2;
+                addGold(halfBackGuarantee);
+                continue;
+            }
+            if (new Random().nextDouble(0, 1) > item.getDropChance()) {
+                continue;
+            }
+            Item itemClone = item.clone();
+            droppedItems.add(itemClone);
+            itemPickup(itemClone);
         }
+        return droppedItems;
     }
 
     public String levelUpEffects(int newLevel, String output) {
