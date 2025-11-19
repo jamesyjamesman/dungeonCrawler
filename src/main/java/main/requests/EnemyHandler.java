@@ -11,20 +11,37 @@ import java.util.UUID;
 public class EnemyHandler {
 
     @PostRequestHandler(endpoint = "/enemy/takeDamage")
-    public static void enemyHandler(Context ctx) {
+    public static void takeDamage(Context ctx) {
+        Enemy attackedEnemy = getEnemyFromContext(ctx);
+        Player player = App.INSTANCE.getPlayer();
+
+        attackedEnemy.takeDamage(player.weakenAttack(player.calculateTotalAttack()));
+        ctx.json(attackedEnemy);
+    }
+
+    @PostRequestHandler(endpoint = "/enemy/attack")
+    public static void attack(Context ctx) {
+        Enemy enemy = getEnemyFromContext(ctx);
+        Player player = App.INSTANCE.getPlayer();
+
+        ctx.json(enemy.attack(player));
+    }
+
+    public static EnemyRoom getRoomFromContext(Context ctx) {
         record RoomEnemy(int roomID, UUID uuid) {}
         RoomEnemy getInfo = ctx.bodyAsClass(RoomEnemy.class);
-        EnemyRoom room = (EnemyRoom) Rooms.getRoom(getInfo.roomID);
-        UUID enemyUuid = getInfo.uuid();
-        Player player = App.INSTANCE.getPlayer();
-        Enemy attackedEnemy = null;
+        return (EnemyRoom) Rooms.getRoom(getInfo.roomID());
+    }
 
-        for (Enemy enemy : room.getEnemies()) {
-            if (enemy.getUuid().equals(enemyUuid)) {
-                attackedEnemy = enemy;
-                enemy.takeDamage(player.weakenAttack(player.calculateTotalAttack()));
-            }
-        }
-        ctx.json(attackedEnemy);
+    public static Enemy getEnemyFromContext(Context ctx) {
+        record RoomEnemy(int roomID, UUID uuid) {}
+        RoomEnemy getInfo = ctx.bodyAsClass(RoomEnemy.class);
+        UUID enemyUuid = getInfo.uuid();
+
+        EnemyRoom room = getRoomFromContext(ctx);
+        return room.getEnemies()
+                .stream()
+                .filter(enemy -> enemy.getUuid().equals(enemyUuid))
+                .findFirst().orElse(null);
     }
 }

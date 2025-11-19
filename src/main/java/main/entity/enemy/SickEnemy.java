@@ -12,12 +12,13 @@ public class SickEnemy extends Enemy {
     }
 
     @Override
-    public void attack(Player player) {
+    public String attack(Player player) {
         switch (new Random().nextInt(5)) {
             case 0, 1 -> super.attack(player);
             case 2, 3 -> sneeze(player);
             case 4 -> grossAttack(player);
         }
+        return "TODO";
     }
 
     public void sneeze(Player player) {

@@ -39,7 +39,7 @@ public class MinotaurBoss extends Boss {
 
     //minotaur is not affected by relic of bounciness (on purpose)
     @Override
-    public void attack(Player player) {
+    public String attack(Player player) {
         int damage = 0;
         int randomChoice = new Random().nextInt(9);
 
@@ -54,6 +54,7 @@ public class MinotaurBoss extends Boss {
         if (damage > 0) {
         }
         player.takeDamage(damage);
+        return "TODO";
     }
 
 }

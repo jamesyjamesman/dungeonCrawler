@@ -45,7 +45,7 @@ public class SlimeBoss extends Boss {
 
     //not good
     @Override
-    public void attack(Player player) {
+    public String attack(Player player) {
         int damage;
         int randomChoice = new Random().nextInt(5);
 
@@ -59,6 +59,7 @@ public class SlimeBoss extends Boss {
         if (damage > 0) {
         }
         player.takeDamage(damage);
+        return "TODO";
     }
 
     @Override

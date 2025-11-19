@@ -26,14 +26,14 @@ public class DragonBoss extends Boss {
     }
 
     @Override
-    public void attack(Player player) {
+    public String attack(Player player) {
         if (this.defendCount > 0) {
             meditate();
-            return;
+            return "TODO";
         }
         if (this.breathCharged) {
             dragonBreath(player);
-            return;
+            return "TODO";
         }
         int randomNumber = new Random().nextInt(13);
         switch (randomNumber) {
@@ -50,6 +50,7 @@ public class DragonBoss extends Boss {
                 }
             }
         }
+        return "TODO";
     }
 
     public void dragonBreath(Player player) {

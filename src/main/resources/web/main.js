@@ -129,8 +129,20 @@ async function battleSequence(room, enemy) {
     if (enemy.currentHealth <= 0) {
         mainDiv.append(`<p>The ${enemy.species.toString().toLowerCase()} dropped ${enemy.gold} and ${enemy.experience} exp!</p>`);
     }
+    await enemiesAttackPlayer(room);
     await renderEnemies(room);
     //todo enemies attack
+}
+
+async function enemiesAttackPlayer(room) {
+    const healthDiv = $("#statusChecker");
+    for (let i = 0; i < room.enemies.length; i++) {
+        const statusInfo = await postHelper("/enemy/attack", {
+            roomID: room.id,
+            uuid: room.enemies[i].uuid
+        });
+        healthDiv.append(`<p>${statusInfo}</p>`);
+    }
 }
 
 async function postHelper(path, json){

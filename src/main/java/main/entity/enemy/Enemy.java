@@ -45,13 +45,13 @@ public class Enemy extends Entity implements Cloneable {
         player.checkInventory();
     }
 
-    public void attack(Player player) {
-        // todo this should probably be in player?
+    public String attack(Player player) {
         if (SlimeRelic.slimeBounce(player)) {
-            return;
+            return "The attack from the " + this.speciesToStringLower() + " bounced right off!";
         }
 
         player.takeDamage(getDamage());
+        return "You took " + getDamage() + " damage from the " + this.speciesToStringLower() + "!";
         //will get more complex with weapons, etc.
     }
 
