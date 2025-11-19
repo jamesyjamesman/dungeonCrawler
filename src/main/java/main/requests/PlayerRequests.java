@@ -1,6 +1,5 @@
 package main.requests;
 
-import io.javalin.Javalin;
 import io.javalin.http.Context;
 import main.App;
 import main.item.relic.RelicID;

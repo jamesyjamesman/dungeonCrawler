@@ -2,8 +2,6 @@ package main.requests;
 
 import io.javalin.http.Context;
 import main.App;
-import io.javalin.Javalin;
-import main.Game;
 import main.Main;
 
 

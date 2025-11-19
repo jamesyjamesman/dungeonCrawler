@@ -110,6 +110,7 @@ async function renderEnemies(room) {
         console.log("enemies dead!");
         mainDiv.append("<p>You win!</p>");
         await appendContinue(room.id);
+        //todo figure out how to not have this call
         await postHelper("/rooms/resetEnemies", {id: room.id});
         return;
     }

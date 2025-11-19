@@ -31,10 +31,14 @@ public class Main {
         Reflections reflections = new Reflections(new ConfigurationBuilder()
                 .forPackages("main.requests")
                 .addScanners(Scanners.MethodsAnnotated));
+
         for (Method method : reflections.getMethodsAnnotatedWith(PostRequestHandler.class)) {
-            if (method.getParameterCount() != 1) { throw new RuntimeException(method.getName() + " must have exactly one parameter to be a request handler."); }
-            if (method.getParameterTypes()[0] != Context.class) { throw new RuntimeException("Request handler parameter must be type of Context, not '" + method.getParameterTypes()[0].getName() + "'"); }
-            if (!Modifier.isStatic(method.getModifiers())) { throw new RuntimeException(method.getName() + " must be static to be a request handler."); }
+            if (method.getParameterCount() != 1)
+                throw new RuntimeException(method.getName() + " must have exactly one parameter to be a request handler.");
+            if (method.getParameterTypes()[0] != Context.class)
+                throw new RuntimeException("Request handler parameter must be type of Context, not '" + method.getParameterTypes()[0].getName() + "'");
+            if (!Modifier.isStatic(method.getModifiers()))
+                throw new RuntimeException(method.getName() + " must be static to be a request handler.");
 
             PostRequestHandler annotation = method.getAnnotation(PostRequestHandler.class);
             if (annotation.endpoint().isEmpty()) { throw new RuntimeException(method.getName() + " must have an endpoint"); }
