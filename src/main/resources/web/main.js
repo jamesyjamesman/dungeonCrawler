@@ -36,6 +36,8 @@ async function printRooms(rooms) {
         mainDiv.append(goButton);
         mainDiv.append(textParagraph);
     }
+
+    await renderInventory();
 }
 
 async function goToRoom(id) {
@@ -136,21 +138,40 @@ async function battleSequence(room, enemy) {
         }
     }
 
-
-
     await enemiesAttackPlayer(room);
     await renderEnemies(room);
-    //todo enemies attack
+}
+
+function appendStatusTicker(text) {
+    const tickerDiv = $("#statusTicker");
+    tickerDiv.append(text);
+    const childParagraphs = tickerDiv.find("*");
+    if (childParagraphs.length > 5) {
+        childParagraphs[0].remove();
+    }
 }
 
 async function enemiesAttackPlayer(room) {
-    const healthDiv = $("#statusChecker");
     for (let i = 0; i < room.enemies.length; i++) {
         const statusInfo = await postHelper("/enemy/attack", {
             roomID: room.id,
             uuid: room.enemies[i].uuid
         });
-        healthDiv.append(`<p>${statusInfo}</p>`);
+        appendStatusTicker(`<p>${statusInfo}</p>`);
+    }
+}
+
+async function renderInventory() {
+    const inventoryDiv = $("#inventory").html("");
+    const inventory = await postHelper("/player/getInventory", {});
+    for (let i = 0; i < inventory.length; i++) {
+        $(`<button>Use</button>`)
+            .click(() => {
+                postHelper("/player/useItem", { uuid: inventory[i][0].uuid })
+                renderInventory();
+            })
+            .appendTo(inventoryDiv);
+        inventoryDiv.append($(`<p>${inventory[i].length}x ${inventory[i][0].name}: ${inventory[i][0].description}</p>`));
     }
 }
 
