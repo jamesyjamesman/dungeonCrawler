@@ -21,7 +21,12 @@ public class PlayerRequests {
         ctx.json(App.INSTANCE.getPlayer().getInventory());
     }
 
-    @PostRequestHandler(endpoint = "/player/useItem")
+    @PostRequestHandler(endpoint = "/player/getRelics")
+    public static void getRelics(Context ctx) {
+        ctx.json(App.INSTANCE.getPlayer().getEquippedRelics());
+    }
+
+    @PostRequestHandler(endpoint = "/player/useInventoryItem")
     public static void useItem(Context ctx) {
         record itemID(UUID uuid) {}
         UUID uuid = ctx.bodyAsClass(itemID.class).uuid();
@@ -30,6 +35,17 @@ public class PlayerRequests {
                 .filter(itemGroup -> itemGroup.stream().anyMatch(item -> item.getUuid().equals(uuid)))
                 .forEach(itemGroup -> itemGroup.getFirst().useItem(App.INSTANCE.getPlayer()));
         //todo return item used string
+        ctx.json(true);
+    }
+
+    @PostRequestHandler(endpoint = "/player/unequipRelic")
+    public static void unequipRelic(Context ctx) {
+        record relicID(UUID uuid) {}
+        UUID uuid = ctx.bodyAsClass(relicID.class).uuid();
+        App.INSTANCE.getPlayer().getEquippedRelics()
+                .stream()
+                .filter(relic -> relic.getUuid().equals(uuid))
+                .findFirst().orElse(null).useItem(App.INSTANCE.getPlayer());
         ctx.json(true);
     }
 }

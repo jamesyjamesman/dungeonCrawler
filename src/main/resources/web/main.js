@@ -167,11 +167,27 @@ async function renderInventory() {
     for (let i = 0; i < inventory.length; i++) {
         $(`<button>Use</button>`)
             .click(() => {
-                postHelper("/player/useItem", { uuid: inventory[i][0].uuid })
+                postHelper("/player/useInventoryItem", { uuid: inventory[i][0].uuid })
                 renderInventory();
+                renderRelics();
             })
             .appendTo(inventoryDiv);
         inventoryDiv.append($(`<p>${inventory[i].length}x ${inventory[i][0].name}: ${inventory[i][0].description}</p>`));
+    }
+}
+
+async function renderRelics() {
+    const relicDiv = $("#relics").html("");
+    const relics = await postHelper("/player/getRelics", {});
+    for (let i = 0; i < relics.length; i++) {
+        $(`<button>Use</button>`)
+            .click(() => {
+                postHelper("/player/unequipRelic", { uuid: relics[i].uuid })
+                renderRelics();
+                renderInventory();
+            })
+            .appendTo(relicDiv);
+        relicDiv.append($(`<p>${relics[i].name}: ${relics[i].description}`))
     }
 }
 
