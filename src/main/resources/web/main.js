@@ -2,6 +2,7 @@ window.addEventListener("load", async () => {
     let rooms = await postHelper("/gameStart", {});
     createPopup("Welcome to the simulation!\nYou will be presented choices on where to proceed.\nPress the appropriate button or type your answer in the field in the bottom left.\nGood luck!\n");
     await printRooms(rooms);
+    await render();
 });
 
 function createPopup(popupText) {
@@ -37,7 +38,7 @@ async function printRooms(rooms) {
         mainDiv.append(textParagraph);
     }
 
-    await renderInventory();
+    await render();
 }
 
 async function goToRoom(id) {
@@ -84,18 +85,21 @@ async function appendContinue(id) {
 async function itemHandler(room) {
     const mainDiv = getFreshMainDiv();
     mainDiv.append(`<p>You picked up a ${room.item.name}!</p>`);
+    await render();
     await appendContinue(room.id);
 }
 
 async function relicHandler(room) {
     const mainDiv = getFreshMainDiv();
     mainDiv.append(`<p>You picked up a ${room.relic.name}!</p>`);
+    await render();
     await appendContinue(room.id);
 }
 
 async function trapHandler(room) {
     const mainDiv = getFreshMainDiv();
     mainDiv.append(`<p>You took ${room.damageDealt} damage!</p>`);
+    await renderStats();
     await appendContinue(room.id);
 }
 
@@ -139,6 +143,7 @@ async function battleSequence(room, enemy) {
     }
 
     await enemiesAttackPlayer(room);
+    await renderStats();
     await renderEnemies(room);
 }
 
@@ -161,6 +166,28 @@ async function enemiesAttackPlayer(room) {
     }
 }
 
+async function render() {
+    await renderInventory();
+    await renderRelics();
+    await renderStats();
+}
+
+async function renderStats() {
+    const player = await postHelper("/player/getPlayer", {});
+    const statDiv = $("#statusChecker").html("");
+    statDiv.append(`<p>HP: ${player.currentHealth} (+${player.absorption}) / ${player.maxHealth}</p>`);
+    statDiv.append(`<p>Attack damage: ${await postHelper("/player/getTotalDamage")}</p>`);
+    statDiv.append(`<p>Rooms traveled: ${player.roomsTraversed}</p>`);
+    statDiv.append(`<p>Inventory: ${await postHelper("/player/getInventorySize")}/${player.inventoryCap}</p>`);
+    statDiv.append(`<p>Relic pouch: ${player.equippedRelics.length}/${player.relicCap}</p>`)
+    statDiv.append(`<p>Status effects:</p>`);
+    statDiv.append(`<p>Cursed: Level ${player.currentStatuses.cursed}</p>`)
+    statDiv.append(`<p>Weakened: Level ${player.currentStatuses.weakened}</p>`)
+    statDiv.append(`<p>Poisoned: Level ${player.currentStatuses.poison}</p>`)
+    statDiv.append(`<p>Fire: Level ${player.currentStatuses.fire}</p>`)
+
+}
+
 async function renderInventory() {
     const inventoryDiv = $("#inventory").html("");
     const inventory = await postHelper("/player/getInventory", {});
@@ -168,8 +195,7 @@ async function renderInventory() {
         $(`<button>Use</button>`)
             .click(() => {
                 postHelper("/player/useInventoryItem", { uuid: inventory[i][0].uuid })
-                renderInventory();
-                renderRelics();
+                render();
             })
             .appendTo(inventoryDiv);
         inventoryDiv.append($(`<p>${inventory[i].length}x ${inventory[i][0].name}: ${inventory[i][0].description}</p>`));
@@ -183,8 +209,7 @@ async function renderRelics() {
         $(`<button>Use</button>`)
             .click(() => {
                 postHelper("/player/unequipRelic", { uuid: relics[i].uuid })
-                renderRelics();
-                renderInventory();
+                render();
             })
             .appendTo(relicDiv);
         relicDiv.append($(`<p>${relics[i].name}: ${relics[i].description}`))

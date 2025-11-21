@@ -49,7 +49,7 @@ public class Player extends Entity {
         this.gold = 0;
     }
     public void attack(Enemy enemy) {
-        int totalDamage = weakenAttack(calculateTotalAttack());
+        int totalDamage = calculateWeakenedAttack();
         enemy.takeDamage(totalDamage);
     }
 
@@ -58,6 +58,10 @@ public class Player extends Entity {
         int damageRelicIndex = equippedRelicIndex(RelicID.DAMAGE);
         int relicDamage = (damageRelicIndex != -1) ? ((DamageRelic) getEquippedRelics().get(damageRelicIndex)).getDamage() : 0;
         return getDamage() + weaponDamage + relicDamage;
+    }
+
+    public int calculateWeakenedAttack() {
+        return weakenAttack(calculateTotalAttack());
     }
 
     public void itemPickup(Item item) {
@@ -388,7 +392,8 @@ public class Player extends Entity {
 
     public int weakenAttack(int initialDamage) {
         int weaknessLevel = this.currentStatuses.getWeakened();
-        if (weaknessLevel == 0) {return initialDamage;}
+        if (weaknessLevel == 0)
+            return initialDamage;
         int finalDamage = initialDamage / (weaknessLevel + 1);
     // 1 - (1/(n+1)) chance to decrease weakness level by one
         if (new Random().nextInt(weaknessLevel + 1) != 0) {
