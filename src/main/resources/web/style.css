@@ -1,9 +1,14 @@
+div {
+    overflow-y: auto;
+}
+
 .inventoryContainer {
     position: absolute;
     right: 0;
     bottom: 0;
     width: 30%;
     height: 60%;
+    overflow-y: clip;
 }
 
 .inventoryElement {
@@ -38,6 +43,7 @@
     bottom: 0;
     width: 50%;
     height: 60%;
+    overflow-y: clip;
 }
 
 .input {
@@ -49,7 +55,7 @@
     border: 0 none;
 }
 
-.errorDiv {
+#errorDiv {
     height: 20%;
     color: white;
     background-color: black;

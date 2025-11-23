@@ -2,8 +2,10 @@ package main.requests;
 
 import io.javalin.http.Context;
 import main.App;
+import main.entity.Player;
 import main.item.relic.RelicID;
 
+import java.util.Collection;
 import java.util.UUID;
 
 public class PlayerRequests {
@@ -30,6 +32,19 @@ public class PlayerRequests {
         ctx.json(App.INSTANCE.getPlayer().calculateWeakenedAttack());
     }
 
+    @PostRequestHandler(endpoint = "/player/itemEquipped")
+    public static void itemEquipped(Context ctx) {
+        record itemID(UUID uuid) {}
+        UUID itemUUID = ctx.bodyAsClass(itemID.class).uuid();
+        Player player = App.INSTANCE.getPlayer();
+        boolean equipped =
+                player.getEquippedRelics()
+                        .stream()
+                        .anyMatch(relic -> relic.getUuid().equals(itemUUID)) ||
+                player.getEquippedWeapon().getUuid().equals(itemUUID);
+        ctx.json(equipped);
+    }
+
     //todo 100% absolutely should be a GET request
     @PostRequestHandler(endpoint = "/player/getInventory")
     public static void getInventory(Context ctx) {
@@ -47,8 +62,9 @@ public class PlayerRequests {
         UUID uuid = ctx.bodyAsClass(itemID.class).uuid();
         App.INSTANCE.getPlayer().getInventory()
                 .stream()
-                .filter(itemGroup -> itemGroup.stream().anyMatch(item -> item.getUuid().equals(uuid)))
-                .forEach(itemGroup -> itemGroup.getFirst().useItem(App.INSTANCE.getPlayer()));
+                .flatMap(Collection::stream)
+                .filter(item -> item.getUuid().equals(uuid))
+                .findFirst().orElse(null).useItem(App.INSTANCE.getPlayer());
         //todo return item used string
         ctx.json(true);
     }

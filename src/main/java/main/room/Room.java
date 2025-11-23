@@ -78,6 +78,9 @@ public class Room {
     public String getAppearance() {
         return this.appearance;
     }
+    public String getDescription() {
+        return this.description;
+    }
     public int getNumExits() {
         return this.numExits;
     }

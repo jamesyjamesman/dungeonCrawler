@@ -1,13 +1,47 @@
 window.addEventListener("load", async () => {
     let rooms = await postHelper("/gameStart", {});
     createPopup("Welcome to the simulation!\nYou will be presented choices on where to proceed.\nPress the appropriate button or type your answer in the field in the bottom left.\nGood luck!\n");
+    $("#textInput").on("keypress", function(event) {
+        if (event.key === "Enter") {
+            userSelectOption();
+        }
+    })
     await printRooms(rooms);
     await render();
 });
 
+let numberInputOptions = [];
+
+function userSelectOption() {
+    const input = $("#textInput");
+    const error = $("#errorDiv");
+    if (input.val() === "") {
+        if (numberInputOptions.length <= 1) {
+            numberInputOptions[0]();
+            return;
+        }
+        error.html("");
+        error.append(`<p>You can only execute a default with one button available!</p>`);
+        return;
+    }
+    const selectedOption = parseInt(input.val()) - 1;
+    if (selectedOption < 0 || selectedOption > numberInputOptions.length - 1) {
+        error.html("");
+        error.append(`<p>Out of range!</p>`);
+        return;
+    }
+    if (isNaN(selectedOption)) {
+        error.html("");
+        error.append(`<p>Enter a number!</p>`)
+        return;
+    }
+    numberInputOptions[selectedOption]();
+    input.val("");
+
+}
+
 function createPopup(popupText) {
     $("#popup").removeClass("invisible");
-    console.log(popupText);
     $("#popupText").text(popupText);
 }
 
@@ -30,9 +64,11 @@ async function printRooms(rooms) {
     const mainDiv = $("#mainDiv");
     mainDiv.html("");
 
+    numberInputOptions = [];
     for (let i = 0; i < rooms.length; i++) {
         const exitsString = `(${rooms[i].numExits} exits)`;
         const textParagraph = $(`<p>${rooms[i].appearance} ${((foresightRelicEquipped) ? exitsString : "")}</p>`);
+        numberInputOptions[i] = () => goToRoom(rooms[i].id);
         const goButton = $(`<button>Go</button>`).click(() => goToRoom(rooms[i].id));
         mainDiv.append(goButton);
         mainDiv.append(textParagraph);
@@ -43,7 +79,8 @@ async function printRooms(rooms) {
 
 async function goToRoom(id) {
     let newRoom = await postHelper("rooms/change", { id: id });
-    $("#descriptionDiv").text(newRoom.description);
+    const descriptionDiv = $("#descriptionDiv").html("");
+    descriptionDiv.append(`<p>${parseTextAsHTML(newRoom.description)}</p>`);
     const roomExits = await postHelper("/rooms/getExits", {id : newRoom.id });
     switch (newRoom.type) {
         case "NORMAL":
@@ -79,6 +116,7 @@ async function appendContinue(id) {
     const mainDiv = $("#mainDiv");
     const exits = await postHelper("/rooms/getExits", { id: id });
     const continueButton = $("<button>Continue</button>").click(() => printRooms(exits));
+    numberInputOptions = [() => printRooms(exits)];
     mainDiv.append(continueButton);
 }
 
@@ -113,8 +151,10 @@ async function renderEnemies(room) {
     const enemies = await postHelper("/rooms/getEnemies", {id: room.id});
     const mainDiv = $("#mainDiv");
 
+    numberInputOptions = [];
     for (let i = 0; i < enemies.length; i++) {
         const attackButton = $("<button>Attack</button>").click(() => battleSequence(room, enemies[i]));
+        numberInputOptions[i] = () => battleSequence(room, enemies[i]);
         mainDiv.append(attackButton);
         mainDiv.append(`<p>${i}. ${enemies[i].species}</p>`);
     }
@@ -133,7 +173,6 @@ async function battleSequence(room, enemy) {
 
         //this... is bad. basically checks if that was the last one.
         if (room.enemies.length === 1) {
-            console.log("enemies dead!");
             mainDiv.append("<p>You win!</p>");
             await appendContinue(room.id);
             //todo figure out how to not have this call
@@ -180,12 +219,16 @@ async function renderStats() {
     statDiv.append(`<p>Rooms traveled: ${player.roomsTraversed}</p>`);
     statDiv.append(`<p>Inventory: ${await postHelper("/player/getInventorySize")}/${player.inventoryCap}</p>`);
     statDiv.append(`<p>Relic pouch: ${player.equippedRelics.length}/${player.relicCap}</p>`)
-    statDiv.append(`<p>Status effects:</p>`);
-    statDiv.append(`<p>Cursed: Level ${player.currentStatuses.cursed}</p>`)
-    statDiv.append(`<p>Weakened: Level ${player.currentStatuses.weakened}</p>`)
-    statDiv.append(`<p>Poisoned: Level ${player.currentStatuses.poison}</p>`)
-    statDiv.append(`<p>Fire: Level ${player.currentStatuses.fire}</p>`)
+    appendIfNonzero(player.currentStatuses.cursed, `Cursed: Level ${player.currentStatuses.cursed}`);
+    appendIfNonzero(player.currentStatuses.weakened, `Weakened: Level ${player.currentStatuses.weakened}`);
+    appendIfNonzero(player.currentStatuses.poison, `Poisoned: Level ${player.currentStatuses.poison}`);
+    appendIfNonzero(player.currentStatuses.fire, `Fire: Level ${player.currentStatuses.fire}`);
+}
 
+function appendIfNonzero(value, string) {
+    const statDiv = $("#statusChecker");
+    if (value > 0)
+        statDiv.append(`<p>${string}</p>`);
 }
 
 async function renderInventory() {
@@ -224,4 +267,8 @@ async function postHelper(path, json){
         },
         body: JSON.stringify(json)
     })).json();
+}
+
+function parseTextAsHTML(text) {
+    return text.replaceAll("\n", "<br>");
 }

@@ -22,8 +22,7 @@ public abstract class Item extends Identifiable implements Cloneable {
         this.shopWeight = shopWeight;
     }
 
-    public void useItem(Player player) {
-    }
+    public void useItem(Player player) {}
 
     public void cleanseItem(Player player) {
         if (this instanceof Relic relic && relic.isCursed()) {
