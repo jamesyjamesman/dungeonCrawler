@@ -24,6 +24,10 @@ div {
     visibility: hidden;
 }
 
+.purple {
+    color: purple;
+}
+
 .inventoryButtonContainer {
     text-align: center;
     top: 0;

@@ -10,7 +10,7 @@ public abstract class Relic extends Item {
     private final RelicID relicID;
     public Relic(String name, String description, double dropChance, RelicID relicID) {
         super(name, description, 25, true, dropChance, 0);
-        this.cursed = new Random().nextInt(5) == 0;
+        this.setCursed(new Random().nextInt(5) == 0);
         this.relicID = relicID;
     }
 
@@ -20,6 +20,15 @@ public abstract class Relic extends Item {
     public void useItem(Player player) {
         if(this.isEquipped(player)) {player.unequipRelic(this);}
         else {player.equipRelic(this);}
+    }
+
+    @Override
+    public void cleanseItem(Player player) {
+        setCursed(false);
+        if (isEquipped(player)) {
+            player.getCurrentStatuses().addCursed(-1);
+        }
+        super.cleanseItem(player);
     }
 
     public boolean isCursed() {
@@ -34,6 +43,7 @@ public abstract class Relic extends Item {
 
     public void setCursed(boolean cursed) {
         this.cursed = cursed;
+        setCleansable(cursed);
     }
 
     public boolean isEquipped(Player player) {

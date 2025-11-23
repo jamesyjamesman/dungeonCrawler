@@ -13,6 +13,7 @@ window.addEventListener("load", async () => {
 let numberInputOptions = [];
 
 function userSelectOption() {
+    //todo post request that sends input to debug command checker. if successful, rerender stuff (if possible) and return
     const input = $("#textInput");
     const error = $("#errorDiv");
     if (input.val() === "") {
@@ -100,6 +101,8 @@ async function goToRoom(id) {
             await itemHandler(newRoom);
             break;
         case "FOUNTAIN": //todo
+            await fountainHandler(newRoom);
+            break;
         case "SHOP": //todo
         case "END": //todo
             await printRooms(roomExits);
@@ -232,16 +235,35 @@ function appendIfNonzero(value, string) {
 }
 
 async function renderInventory() {
+    const room = await postHelper("/player/getCurrentRoom");
     const inventoryDiv = $("#inventory").html("");
     const inventory = await postHelper("/player/getInventory", {});
     for (let i = 0; i < inventory.length; i++) {
-        $(`<button>Use</button>`)
-            .click(() => {
-                postHelper("/player/useInventoryItem", { uuid: inventory[i][0].uuid })
-                render();
-            })
-            .appendTo(inventoryDiv);
-        inventoryDiv.append($(`<p>${inventory[i].length}x ${inventory[i][0].name}: ${inventory[i][0].description}</p>`));
+
+        /*todo redo how cleansable works; right now it only shows if it is cursed (backend) so
+        cleansable should only be if an item has the POTENTIAL to be cleansed not if it is actually
+        able to be so. Also make sure cleanseItem() works right, and returns a boolean on if it worked or not
+        */
+        if (inventory[i][0].cleansable && room.type === "SPECIAL" && !room.fountainUsed) {
+            $(`<button>Cleanse</button>`)
+                .click(() => {
+                    postHelper("/player/cleanseItem", {uuid: inventory[i][0].uuid});
+                    render();
+                })
+                .appendTo(inventoryDiv);
+        } else {
+            $(`<button>Use</button>`)
+                .click(() => {
+                    postHelper("/player/useInventoryItem", { uuid: inventory[i][0].uuid })
+                    render();
+                })
+                .appendTo(inventoryDiv);
+        }
+        if (inventory[i][0].cursed && await postHelper("/player/relicEquipped", {id: "CURSE_DETECTION"})) {
+            inventoryDiv.append($(`<p class="purple">${inventory[i].length}x ${inventory[i][0].name}: ${inventory[i][0].description}</p>`));
+        } else {
+            inventoryDiv.append($(`<p>${inventory[i].length}x ${inventory[i][0].name}: ${inventory[i][0].description}</p>`));
+        }
     }
 }
 
@@ -256,6 +278,24 @@ async function renderRelics() {
             })
             .appendTo(relicDiv);
         relicDiv.append($(`<p>${relics[i].name}: ${relics[i].description}`))
+    }
+}
+
+async function fountainHandler(room) {
+    await renderFountainInventory();
+}
+
+async function renderFountainInventory(){
+    const inventoryDiv = $("#inventory").html("");
+    const inventory = await postHelper("/player/getInventory", {});
+    for (let i = 0; i < inventory.length; i++) {
+        $(`<button>Use</button>`)
+            .click(() => {
+                postHelper("/player/useInventoryItem", { uuid: inventory[i][0].uuid })
+                render();
+            })
+            .appendTo(inventoryDiv);
+        inventoryDiv.append($(`<p>${inventory[i].length}x ${inventory[i][0].name}: ${inventory[i][0].description}</p>`));
     }
 }
 

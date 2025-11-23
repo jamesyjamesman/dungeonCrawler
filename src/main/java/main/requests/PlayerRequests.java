@@ -3,6 +3,8 @@ package main.requests;
 import io.javalin.http.Context;
 import main.App;
 import main.entity.Player;
+import main.item.Item;
+import main.item.relic.Relic;
 import main.item.relic.RelicID;
 
 import java.util.Collection;
@@ -56,27 +58,46 @@ public class PlayerRequests {
         ctx.json(App.INSTANCE.getPlayer().getEquippedRelics());
     }
 
+    @PostRequestHandler(endpoint = "/player/getCurrentRoom")
+    public static void getCurrentRoom(Context ctx) {
+        ctx.json(App.INSTANCE.getPlayer().getCurrentRoom());
+    }
+
     @PostRequestHandler(endpoint = "/player/useInventoryItem")
     public static void useItem(Context ctx) {
-        record itemID(UUID uuid) {}
-        UUID uuid = ctx.bodyAsClass(itemID.class).uuid();
-        App.INSTANCE.getPlayer().getInventory()
-                .stream()
-                .flatMap(Collection::stream)
-                .filter(item -> item.getUuid().equals(uuid))
-                .findFirst().orElse(null).useItem(App.INSTANCE.getPlayer());
+       getInventoryItemFromUUID(ctx).useItem(App.INSTANCE.getPlayer());
         //todo return item used string
+        ctx.json(true);
+    }
+
+    @PostRequestHandler(endpoint = "/player/cleanseItem")
+    public static void cleanseItem(Context ctx) {
+        getInventoryItemFromUUID(ctx).cleanseItem(App.INSTANCE.getPlayer());
         ctx.json(true);
     }
 
     @PostRequestHandler(endpoint = "/player/unequipRelic")
     public static void unequipRelic(Context ctx) {
+        getRelicFromRelics(ctx).useItem(App.INSTANCE.getPlayer());
+        ctx.json(true);
+    }
+
+    public static Item getInventoryItemFromUUID(Context ctx) {
+        record ItemID(UUID uuid) {}
+        UUID uuid = ctx.bodyAsClass(ItemID.class).uuid();
+        return App.INSTANCE.getPlayer().getInventory()
+                .stream()
+                .flatMap(Collection::stream)
+                .filter(item -> item.getUuid().equals(uuid))
+                .findFirst().orElse(null);
+    }
+
+    public static Relic getRelicFromRelics(Context ctx) {
         record relicID(UUID uuid) {}
         UUID uuid = ctx.bodyAsClass(relicID.class).uuid();
-        App.INSTANCE.getPlayer().getEquippedRelics()
+        return App.INSTANCE.getPlayer().getEquippedRelics()
                 .stream()
                 .filter(relic -> relic.getUuid().equals(uuid))
-                .findFirst().orElse(null).useItem(App.INSTANCE.getPlayer());
-        ctx.json(true);
+                .findFirst().orElse(null);
     }
 }

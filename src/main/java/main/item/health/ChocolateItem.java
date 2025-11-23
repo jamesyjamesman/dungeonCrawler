@@ -12,6 +12,7 @@ public class ChocolateItem extends HealthItem {
                 6,
                 5,
                 15,
-                3);
+                3,
+                false);
     }
 }

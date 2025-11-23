@@ -13,29 +13,29 @@ public abstract class Item extends Identifiable implements Cloneable {
     private final boolean stackable;
     private final double dropChance;
     private final int shopWeight;
+    private boolean cleansable;
     public Item(String name, String description, int value, boolean stackable, double dropChance, int shopWeight) {
+        this(name, description, value, stackable, dropChance, shopWeight, false);
+    }
+
+    public Item(String name, String description, int value, boolean stackable, double dropChance, int shopWeight, boolean cleansable) {
         this.description = description;
         this.name = name;
         this.value = value;
         this.stackable = stackable;
         this.dropChance = dropChance;
         this.shopWeight = shopWeight;
+        this.cleansable = cleansable;
     }
 
     public void useItem(Player player) {}
 
     public void cleanseItem(Player player) {
-        if (this instanceof Relic relic && relic.isCursed()) {
-            relic.setCursed(false);
-            if (relic.isEquipped(player)) {
-                player.getCurrentStatuses().addCursed(-1);
-            }
-        } else if (this.getName().equals("Apple")) {
+        ((PureWaterRoom) player.getCurrentRoom()).setFountainUsed(true);
+        if (this.getName().equals("Apple")) {
             player.discardItem(this);
             player.addItemToInventory(new PureAppleItem());
-        } else {
         }
-        ((PureWaterRoom) player.getCurrentRoom()).setFountainUsed(true);
     }
 
 
@@ -50,6 +50,12 @@ public abstract class Item extends Identifiable implements Cloneable {
     }
     public boolean isStackable() {
         return this.stackable;
+    }
+    public boolean isCleansable() {
+        return this.cleansable;
+    }
+    public void setCleansable(boolean cleansable) {
+        this.cleansable = cleansable;
     }
     public double getDropChance() {
         return this.dropChance;

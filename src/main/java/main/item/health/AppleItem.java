@@ -12,7 +12,9 @@ public class AppleItem extends HealthItem {
                 dropChance,
                 12,
                 -1,
-                6);
+                6,
+                0,
+                true);
     }
 
 }

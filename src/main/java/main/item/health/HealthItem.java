@@ -10,8 +10,8 @@ public class HealthItem extends Item {
     private final int restorationUpperBound;
     private final int addedAbsorption;
 
-    public HealthItem(String name, String description, int value, double dropChance, int shopWeight, int restorationLowerBound, int restorationUpperBound, int addedAbsorption) {
-        super(name, description, value, true, dropChance, shopWeight);
+    public HealthItem(String name, String description, int value, double dropChance, int shopWeight, int restorationLowerBound, int restorationUpperBound, int addedAbsorption, boolean cleansable) {
+        super(name, description, value, true, dropChance, shopWeight, cleansable);
         this.restorationLowerBound = restorationLowerBound;
         this.restorationUpperBound = restorationUpperBound;
         this.addedAbsorption = addedAbsorption;
