@@ -2,6 +2,7 @@ package main.item.relic;
 
 import main.entity.Player;
 import main.item.Item;
+import main.item.ItemType;
 import main.room.PureWaterRoom;
 
 import java.util.Random;
@@ -10,7 +11,7 @@ public abstract class Relic extends Item {
     private boolean cursed;
     private final RelicID relicID;
     public Relic(String name, String description, double dropChance, RelicID relicID) {
-        super(name, description, 25, true, dropChance, 0);
+        super(name, description, 25, true, dropChance, 0, ItemType.RELIC, true);
         this.setCursed(new Random().nextInt(5) == 0);
         this.relicID = relicID;
     }
@@ -62,7 +63,7 @@ public abstract class Relic extends Item {
     public boolean isEquipped(Player player) {
         return player.equippedRelicIndex(this.relicID) != -1;
     }
-    public RelicID getType() {
+    public RelicID getRelicType() {
         return this.relicID;
     }
 }

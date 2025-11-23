@@ -2,6 +2,7 @@ package main.item.buff;
 
 import main.entity.Player;
 import main.item.Item;
+import main.item.ItemType;
 
 import java.util.Random;
 
@@ -15,7 +16,8 @@ public abstract class BuffItem extends Item {
                 10,
                 true,
                 dropChance,
-                4);
+                4,
+                ItemType.BUFF);
         this.statName = statName;
         this.lowBound = lowBound;
         this.highBound = highBound;

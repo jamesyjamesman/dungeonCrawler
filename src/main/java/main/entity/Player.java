@@ -1,7 +1,6 @@
 package main.entity;
 
 import main.App;
-import main.Main;
 import main.Statuses;
 import main.entity.enemy.Enemy;
 import main.item.Item;
@@ -182,7 +181,7 @@ public class Player extends Entity {
 
     public int equippedRelicIndex(RelicID relicName) {
         for (Relic equippedRelic : this.equippedRelics) {
-            if (equippedRelic.getType() == relicName) {
+            if (equippedRelic.getRelicType() == relicName) {
                 return this.equippedRelics.indexOf(equippedRelic);
             }
         }
@@ -190,7 +189,7 @@ public class Player extends Entity {
     }
 
     public boolean hasRelic(Relic relic) {
-        return equippedRelicIndex(relic.getType()) != -1 || findItemInInventoryByName(relic) != -1;
+        return equippedRelicIndex(relic.getRelicType()) != -1 || findItemInInventoryByName(relic) != -1;
     }
 
     //should be called any time anything printed can change, e.g. health change, absorption change, etc.

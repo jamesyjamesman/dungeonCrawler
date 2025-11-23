@@ -69,7 +69,7 @@ async function printRooms(rooms) {
     for (let i = 0; i < rooms.length; i++) {
         const exitsString = `(${rooms[i].numExits} exits)`;
         const textParagraph = $(`<p>${rooms[i].appearance} ${((foresightRelicEquipped) ? exitsString : "")}</p>`);
-        numberInputOptions[i] = () => goToRoom(rooms[i].id);
+        numberInputOptions[i] = async () => await goToRoom(rooms[i].id);
         const goButton = $(`<button>Go</button>`).click(() => goToRoom(rooms[i].id));
         mainDiv.append(goButton);
         mainDiv.append(textParagraph);
@@ -100,7 +100,7 @@ async function goToRoom(id) {
         case "ITEM":
             await itemHandler(newRoom);
             break;
-        case "FOUNTAIN": //todo
+        case "FOUNTAIN":
             await fountainHandler(newRoom);
             break;
         case "SHOP": //todo
@@ -118,8 +118,8 @@ function getFreshMainDiv() {
 async function appendContinue(id) {
     const mainDiv = $("#mainDiv");
     const exits = await postHelper("/rooms/getExits", { id: id });
-    const continueButton = $("<button>Continue</button>").click(() => printRooms(exits));
-    numberInputOptions = [() => printRooms(exits)];
+    const continueButton = $("<button>Continue</button>").click(async () => await printRooms(exits));
+    numberInputOptions = [async () => await printRooms(exits)];
     mainDiv.append(continueButton);
 }
 
@@ -156,8 +156,8 @@ async function renderEnemies(room) {
 
     numberInputOptions = [];
     for (let i = 0; i < enemies.length; i++) {
-        const attackButton = $("<button>Attack</button>").click(() => battleSequence(room, enemies[i]));
-        numberInputOptions[i] = () => battleSequence(room, enemies[i]);
+        const attackButton = $("<button>Attack</button>").click(async () => await battleSequence(room, enemies[i]));
+        numberInputOptions[i] = async () => await battleSequence(room, enemies[i]);
         mainDiv.append(attackButton);
         mainDiv.append(`<p>${i}. ${enemies[i].species}</p>`);
     }
@@ -239,33 +239,42 @@ async function renderInventory() {
     const inventoryDiv = $("#inventory").html("");
     const inventory = await getHelper("/player/getInventory");
     for (let i = 0; i < inventory.length; i++) {
+        const item = inventory[i][0];
 
-        if (inventory[i][0].cleansable && room.type === "SPECIAL" && !room.fountainUsed) {
+        if (item.cleansable && room.type === "FOUNTAIN" && !room.fountainUsed) {
             $(`<button>Cleanse</button>`)
                 .click(async () => {
                     const errorDiv = $("#errorDiv")
-                    const itemCleansed = await postHelper("/player/cleanseItem", {uuid: inventory[i][0].uuid});
+                    const itemCleansed = await postHelper("/player/cleanseItem", {uuid: item.uuid});
                     if (itemCleansed)
-                        errorDiv.append(`<p>The ${inventory[i][0].name} was cleansed!</p>`);
+                        errorDiv.append(`<p>The ${item.name} was cleansed!</p>`);
                     else
-                        errorDiv.append(`<p>The ${inventory[i][0].name} couldn't be cleansed!</p>`)
+                        errorDiv.append(`<p>The ${item.name} couldn't be cleansed!</p>`)
                     await render();
                 })
                 .appendTo(inventoryDiv);
         } else {
-            $(`<button>Use</button>`)
+            let buttonText = "Use";
+            if (item.type === "WEAPON") {
+                if (item.equipped) {
+                    buttonText = "Unequip";
+                } else {
+                    buttonText = "Equip";
+                }
+            }
+            $(`<button>${buttonText}</button>`)
                 .click(async () => {
-                    const itemUseText = await postHelper("/player/useInventoryItem", { uuid: inventory[i][0].uuid });
+                    const itemUseText = await postHelper("/player/useInventoryItem", { uuid: item.uuid });
                     const statusTicker = $("#statusTicker");
                     statusTicker.append(`<p>${itemUseText}</p>`);
                     await render();
                 })
                 .appendTo(inventoryDiv);
         }
-        if (inventory[i][0].cursed && await postHelper("/player/relicEquipped", {id: "CURSE_DETECTION"})) {
-            inventoryDiv.append($(`<p class="purple">${inventory[i].length}x ${inventory[i][0].name}: ${inventory[i][0].description}</p>`));
+        if (item.cursed && await postHelper("/player/relicEquipped", {id: "CURSE_DETECTION"})) {
+            inventoryDiv.append($(`<p class="purple">${inventory[i].length}x ${item.name}: ${item.description}</p>`));
         } else {
-            inventoryDiv.append($(`<p>${inventory[i].length}x ${inventory[i][0].name}: ${inventory[i][0].description}</p>`));
+            inventoryDiv.append($(`<p>${inventory[i].length}x ${item.name}: ${item.description}</p>`));
         }
     }
 }
@@ -275,9 +284,9 @@ async function renderRelics() {
     const relics = await getHelper("/player/getRelics");
     for (let i = 0; i < relics.length; i++) {
         $(`<button>Use</button>`)
-            .click(() => {
-                postHelper("/player/unequipRelic", { uuid: relics[i].uuid })
-                render();
+            .click(async () => {
+                await postHelper("/player/unequipRelic", { uuid: relics[i].uuid })
+                await render();
             })
             .appendTo(relicDiv);
         relicDiv.append($(`<p>${relics[i].name}: ${relics[i].description}`))
@@ -285,21 +294,10 @@ async function renderRelics() {
 }
 
 async function fountainHandler(room) {
-    await renderFountainInventory();
-}
-
-async function renderFountainInventory(){
-    const inventoryDiv = $("#inventory").html("");
-    const inventory = await getHelper("/player/getInventory");
-    for (let i = 0; i < inventory.length; i++) {
-        $(`<button>Use</button>`)
-            .click(() => {
-                postHelper("/player/useInventoryItem", { uuid: inventory[i][0].uuid })
-                render();
-            })
-            .appendTo(inventoryDiv);
-        inventoryDiv.append($(`<p>${inventory[i].length}x ${inventory[i][0].name}: ${inventory[i][0].description}</p>`));
-    }
+    await renderInventory();
+    const mainDiv = getFreshMainDiv();
+    mainDiv.append("<p>Place an item in the fountain, and/or continue!</p>");
+    await appendContinue(room.id);
 }
 
 async function postHelper(path, json){

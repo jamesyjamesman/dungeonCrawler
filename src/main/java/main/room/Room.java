@@ -58,7 +58,7 @@ public class Room {
     }
 
     public RoomType getType() {
-        return type;
+        return this.type;
     }
     public boolean getActive() {
         return this.active;

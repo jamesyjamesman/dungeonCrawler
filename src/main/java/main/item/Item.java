@@ -12,18 +12,20 @@ public abstract class Item extends Identifiable implements Cloneable {
     private final boolean stackable;
     private final double dropChance;
     private final int shopWeight;
-    private boolean cleansable;
-    public Item(String name, String description, int value, boolean stackable, double dropChance, int shopWeight) {
-        this(name, description, value, stackable, dropChance, shopWeight, false);
+    private final boolean cleansable;
+    private final ItemType type;
+    public Item(String name, String description, int value, boolean stackable, double dropChance, int shopWeight, ItemType type) {
+        this(name, description, value, stackable, dropChance, shopWeight, type, false);
     }
 
-    public Item(String name, String description, int value, boolean stackable, double dropChance, int shopWeight, boolean cleansable) {
+    public Item(String name, String description, int value, boolean stackable, double dropChance, int shopWeight, ItemType type, boolean cleansable) {
         this.description = description;
         this.name = name;
         this.value = value;
         this.stackable = stackable;
         this.dropChance = dropChance;
         this.shopWeight = shopWeight;
+        this.type = type;
         this.cleansable = cleansable;
     }
 
@@ -55,8 +57,8 @@ public abstract class Item extends Identifiable implements Cloneable {
     public boolean isCleansable() {
         return this.cleansable;
     }
-    public void setCleansable(boolean cleansable) {
-        this.cleansable = cleansable;
+    public ItemType getType() {
+        return this.type;
     }
     public double getDropChance() {
         return this.dropChance;
