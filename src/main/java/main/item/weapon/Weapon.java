@@ -16,7 +16,7 @@ public class Weapon extends Item {
 
     @Override
     public String useItem(Player player) {
-        if (this.isEquipped(player)) {
+        if (this.getEquipped()) {
             player.setEquippedWeapon(null);
             this.equipped = false;
             return "The " + this.getName() + " was unequipped!";
@@ -27,7 +27,7 @@ public class Weapon extends Item {
         }
     }
 
-    public boolean isEquipped(Player player) {
+    public boolean getEquipped() {
         return this.equipped;
     }
     public int getDamage() {

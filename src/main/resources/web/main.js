@@ -280,16 +280,36 @@ async function renderInventory() {
 }
 
 async function renderRelics() {
+    const room = await getHelper("/player/getCurrentRoom");
     const relicDiv = $("#relics").html("");
     const relics = await getHelper("/player/getRelics");
     for (let i = 0; i < relics.length; i++) {
-        $(`<button>Use</button>`)
-            .click(async () => {
-                await postHelper("/player/unequipRelic", { uuid: relics[i].uuid })
-                await render();
-            })
-            .appendTo(relicDiv);
-        relicDiv.append($(`<p>${relics[i].name}: ${relics[i].description}`))
+        const relic = relics[i];
+        if (relic.cleansable && room.type === "FOUNTAIN" && !room.fountainUsed) {
+            $(`<button>Cleanse</button>`)
+                .click(async () => {
+                    const errorDiv = $("#errorDiv")
+                    const relicCleansed = await postHelper("/player/cleanseRelic", {uuid: relic.uuid});
+                    if (relicCleansed)
+                        errorDiv.append(`<p>The ${relic.name} was cleansed!</p>`);
+                    else
+                        errorDiv.append(`<p>The ${relic.name} couldn't be cleansed!</p>`)
+                    await render();
+                })
+                .appendTo(relicDiv);
+        } else {
+            $(`<button>Use</button>`)
+                .click(async () => {
+                    await postHelper("/player/unequipRelic", {uuid: relics[i].uuid})
+                    await render();
+                })
+                .appendTo(relicDiv);
+        }
+        if (relic.cursed) {
+            relicDiv.append($(`<p class="purple">${relic.name}: ${relic.description}</p>`));
+        } else {
+            relicDiv.append($(`<p>${relic.name}: ${relic.description}</p>`));
+        }
     }
 }
 

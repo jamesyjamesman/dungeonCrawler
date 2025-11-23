@@ -74,6 +74,12 @@ public class PlayerRequests {
         ctx.json(cleansed);
     }
 
+    @PostRequestHandler(endpoint = "/player/cleanseRelic")
+    public static void cleanseRelic(Context ctx) {
+        boolean cleansed = getRelicFromRelics(ctx).cleanseItem(App.INSTANCE.getPlayer());
+        ctx.json(cleansed);
+    }
+
     @PostRequestHandler(endpoint = "/player/unequipRelic")
     public static void unequipRelic(Context ctx) {
         //todo return output
