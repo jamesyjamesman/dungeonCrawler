@@ -14,9 +14,10 @@ public class HealthBuffItem extends BuffItem {
     }
 
     @Override
-    public void useItem(Player player) {
-        super.useItem(player);
+    public String useItem(Player player) {
         int amountChanged = randomizeAmountChanged();
         player.increaseMaxHealth(amountChanged);
+        player.discardItem(this);
+        return createOutputString(amountChanged);
     }
 }

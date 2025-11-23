@@ -14,12 +14,10 @@ public class RelicPouchBuffItem extends BuffItem {
     }
 
     @Override
-    public void useItem(Player player) {
-        super.useItem(player);
+    public String useItem(Player player) {
         int amountChanged = randomizeAmountChanged();
-        if (amountChanged > 0) {
-            player.changeRelicCap(amountChanged);
-        } else {
-        }
+        player.changeRelicCap(amountChanged);
+        player.discardItem(this);
+        return createOutputString(amountChanged);
     }
 }

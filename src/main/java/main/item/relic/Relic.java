@@ -2,6 +2,7 @@ package main.item.relic;
 
 import main.entity.Player;
 import main.item.Item;
+import main.room.PureWaterRoom;
 
 import java.util.Random;
 
@@ -17,18 +18,31 @@ public abstract class Relic extends Item {
     public void useRelic(Player player) {}
 
     @Override
-    public void useItem(Player player) {
-        if(this.isEquipped(player)) {player.unequipRelic(this);}
-        else {player.equipRelic(this);}
+    public String useItem(Player player) {
+        if (this.isEquipped(player)) {
+            if (player.unequipRelic(this)) {
+                return "The " + this.getName() + " was unequipped!";
+            }
+            return "Your inventory is full!";
+        } else {
+            if (player.equipRelic(this)) {
+                return "The " + this.getName() + " was equipped!";
+            }
+            return "Your relic pouch is full!";
+        }
     }
 
     @Override
-    public void cleanseItem(Player player) {
-        setCursed(false);
-        if (isEquipped(player)) {
-            player.getCurrentStatuses().addCursed(-1);
+    public boolean cleanseItem(Player player) {
+        ((PureWaterRoom) player.getCurrentRoom()).setFountainUsed(true);
+        if (isCursed()) {
+            setCursed(false);
+            if (isEquipped(player)) {
+                player.getCurrentStatuses().addCursed(-1);
+            }
+            return true;
         }
-        super.cleanseItem(player);
+        return false;
     }
 
     public boolean isCursed() {
@@ -43,7 +57,6 @@ public abstract class Relic extends Item {
 
     public void setCursed(boolean cursed) {
         this.cursed = cursed;
-        setCleansable(cursed);
     }
 
     public boolean isEquipped(Player player) {

@@ -22,8 +22,13 @@ public abstract class BuffItem extends Item {
     }
 
     @Override
-    public void useItem(Player player) {
-        player.discardItem(this);
+    public abstract String useItem(Player player);
+
+    protected String createOutputString(int amountChanged) {
+        if (amountChanged > 0)
+            return "You force the contents of the can down your throat... Somehow, you gained " + amountChanged + " " + this.statName + "!";
+        else
+            return "Drinking that... wasn't worth it.";
     }
 
     //sets amount changed from the lower bound to the upper bound - 1

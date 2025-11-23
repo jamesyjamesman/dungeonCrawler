@@ -1,10 +1,6 @@
 package main.item;
 
-import main.entity.Player;
-import main.item.relic.Relic;
-
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Loot {
     int gold;

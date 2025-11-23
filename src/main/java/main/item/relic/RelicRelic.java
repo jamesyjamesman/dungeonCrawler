@@ -14,20 +14,23 @@ public class RelicRelic extends Relic {
     }
 
     @Override
-    public void useItem(Player player) {
+    public String useItem(Player player) {
         if (this.isEquipped(player)) {
             int relicsOverCapacity = player.getEquippedRelics().size() - (player.getRelicCap() - 3);
             if (relicsOverCapacity > 0) {
-                return;
+                return "You have too many relics equipped to unequip this!";
             }
             if (player.unequipRelic(this)) {
                 player.changeRelicCap(-3);
+                return "The " + this.getName() + " was unequipped!";
             }
-        }
-        else {
+            return "Your inventory is full!";
+        } else {
             if (player.equipRelic(this)) {
                 player.changeRelicCap(3);
+                return "The " + this.getName() + " was unequipped!";
             }
+            return "Your relic pouch is full!";
         }
     }
 }

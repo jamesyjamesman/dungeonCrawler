@@ -47,7 +47,6 @@ public class PlayerRequests {
         ctx.json(equipped);
     }
 
-    //todo 100% absolutely should be a GET request
     @GetRequestHandler(endpoint = "/player/getInventory")
     public static void getInventory(Context ctx) {
         ctx.json(App.INSTANCE.getPlayer().getInventory());
@@ -65,19 +64,19 @@ public class PlayerRequests {
 
     @PostRequestHandler(endpoint = "/player/useInventoryItem")
     public static void useItem(Context ctx) {
-       getInventoryItemFromUUID(ctx).useItem(App.INSTANCE.getPlayer());
-        //todo return item used string
-        ctx.json(true);
+        String output = getInventoryItemFromUUID(ctx).useItem(App.INSTANCE.getPlayer());
+        ctx.json("\"" + output + "\"");
     }
 
     @PostRequestHandler(endpoint = "/player/cleanseItem")
     public static void cleanseItem(Context ctx) {
-        getInventoryItemFromUUID(ctx).cleanseItem(App.INSTANCE.getPlayer());
-        ctx.json(true);
+        boolean cleansed = getInventoryItemFromUUID(ctx).cleanseItem(App.INSTANCE.getPlayer());
+        ctx.json(cleansed);
     }
 
     @PostRequestHandler(endpoint = "/player/unequipRelic")
     public static void unequipRelic(Context ctx) {
+        //todo return output
         getRelicFromRelics(ctx).useItem(App.INSTANCE.getPlayer());
         ctx.json(true);
     }

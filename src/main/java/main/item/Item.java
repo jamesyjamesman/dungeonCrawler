@@ -3,7 +3,6 @@ package main.item;
 import main.Identifiable;
 import main.entity.Player;
 import main.item.health.PureAppleItem;
-import main.item.relic.Relic;
 import main.room.PureWaterRoom;
 
 public abstract class Item extends Identifiable implements Cloneable {
@@ -28,14 +27,16 @@ public abstract class Item extends Identifiable implements Cloneable {
         this.cleansable = cleansable;
     }
 
-    public void useItem(Player player) {}
+    public abstract String useItem(Player player);
 
-    public void cleanseItem(Player player) {
+    public boolean cleanseItem(Player player) {
         ((PureWaterRoom) player.getCurrentRoom()).setFountainUsed(true);
         if (this.getName().equals("Apple")) {
             player.discardItem(this);
             player.addItemToInventory(new PureAppleItem());
+            return true;
         }
+        return false;
     }
 
 

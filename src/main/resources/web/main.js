@@ -240,22 +240,25 @@ async function renderInventory() {
     const inventory = await getHelper("/player/getInventory");
     for (let i = 0; i < inventory.length; i++) {
 
-        /*todo redo how cleansable works; right now it only shows if it is cursed (backend) so
-        cleansable should only be if an item has the POTENTIAL to be cleansed not if it is actually
-        able to be so. Also make sure cleanseItem() works right, and returns a boolean on if it worked or not
-        */
         if (inventory[i][0].cleansable && room.type === "SPECIAL" && !room.fountainUsed) {
             $(`<button>Cleanse</button>`)
-                .click(() => {
-                    postHelper("/player/cleanseItem", {uuid: inventory[i][0].uuid});
-                    render();
+                .click(async () => {
+                    const errorDiv = $("#errorDiv")
+                    const itemCleansed = await postHelper("/player/cleanseItem", {uuid: inventory[i][0].uuid});
+                    if (itemCleansed)
+                        errorDiv.append(`<p>The ${inventory[i][0].name} was cleansed!</p>`);
+                    else
+                        errorDiv.append(`<p>The ${inventory[i][0].name} couldn't be cleansed!</p>`)
+                    await render();
                 })
                 .appendTo(inventoryDiv);
         } else {
             $(`<button>Use</button>`)
-                .click(() => {
-                    postHelper("/player/useInventoryItem", { uuid: inventory[i][0].uuid })
-                    render();
+                .click(async () => {
+                    const itemUseText = await postHelper("/player/useInventoryItem", { uuid: inventory[i][0].uuid });
+                    const statusTicker = $("#statusTicker");
+                    statusTicker.append(`<p>${itemUseText}</p>`);
+                    await render();
                 })
                 .appendTo(inventoryDiv);
         }

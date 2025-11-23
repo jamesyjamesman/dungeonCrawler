@@ -25,20 +25,32 @@ public class HealthItem extends Item {
     }
 
     @Override
-    public void useItem(Player player) {
+    public String useItem(Player player) {
         int healthRestored = new Random().nextInt(this.restorationLowerBound, this.restorationUpperBound);
+        String output;
 
         if (healthRestored < 0) {
             player.takeDamage(healthRestored * -1);
+            output =  "Yuck! That " + this.getName() + " was gross...";
+
         } else {
-            if (this.addedAbsorption != 0) {
-                player.addAbsorption(this.addedAbsorption);
-            }
+
             int amountHealed = player.heal(healthRestored);
-            if (amountHealed != 0) {
-            } else {
+            if (amountHealed == 0) {
+                if (this.addedAbsorption == 0)
+                    output = "You used the " + this.getName() + ", but nothing happened.";
+                else
+                    output = "The " + this.getName() + " granted " + this.addedAbsorption + " absorption, but no health!";
+            }
+            else {
+                if (this.addedAbsorption != 0) {
+                    player.addAbsorption(this.addedAbsorption);
+                    output = "The " + this.getName() + " healed you for " + amountHealed + " health and gave " + this.addedAbsorption + " absorption!";
+                } else
+                    output = "The " + this.getName() + " healed you for " + amountHealed + " health!";
             }
         }
         player.discardItem(this);
+        return output;
     }
 }

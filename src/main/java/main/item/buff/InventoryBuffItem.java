@@ -14,9 +14,10 @@ public class InventoryBuffItem extends BuffItem {
     }
 
     @Override
-    public void useItem(Player player) {
-        super.useItem(player);
+    public String useItem(Player player) {
         int amountChanged = randomizeAmountChanged();
         player.changeInventoryCap(amountChanged);
+        player.discardItem(this);
+        return createOutputString(amountChanged);
     }
 }

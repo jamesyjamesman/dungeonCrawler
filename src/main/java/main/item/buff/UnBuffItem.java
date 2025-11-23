@@ -14,9 +14,14 @@ public class UnBuffItem extends BuffItem {
     }
 
     @Override
-    public void useItem(Player player) {
-        super.useItem(player);
+    public String useItem(Player player) {
         int poisonAmount = randomizeAmountChanged();
         player.getCurrentStatuses().addPoison(poisonAmount);
+        player.discardItem(this);
+        if (poisonAmount > 0)
+            return "Gross! That... was not worth it. You gained " + poisonAmount + " levels of poison!";
+        else
+            return "That was disgusting!";
+
     }
 }
