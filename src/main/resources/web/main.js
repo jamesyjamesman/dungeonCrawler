@@ -1,5 +1,5 @@
 window.addEventListener("load", async () => {
-    let rooms = await postHelper("/gameStart", {});
+    let rooms = await getHelper("/gameStart");
     createPopup("Welcome to the simulation!\nYou will be presented choices on where to proceed.\nPress the appropriate button or type your answer in the field in the bottom left.\nGood luck!\n");
     $("#textInput").on("keypress", function(event) {
         if (event.key === "Enter") {
@@ -215,12 +215,12 @@ async function render() {
 }
 
 async function renderStats() {
-    const player = await postHelper("/player/getPlayer", {});
+    const player = await getHelper("/player/getPlayer");
     const statDiv = $("#statusChecker").html("");
     statDiv.append(`<p>HP: ${player.currentHealth} ${(player.absorption > 0) ? `(+${player.absorption})` : ""} / ${player.maxHealth}</p>`);
-    statDiv.append(`<p>Attack damage: ${await postHelper("/player/getTotalDamage")}</p>`);
+    statDiv.append(`<p>Attack damage: ${await getHelper("/player/getTotalDamage")}</p>`);
     statDiv.append(`<p>Rooms traveled: ${player.roomsTraversed}</p>`);
-    statDiv.append(`<p>Inventory: ${await postHelper("/player/getInventorySize")}/${player.inventoryCap}</p>`);
+    statDiv.append(`<p>Inventory: ${await getHelper("/player/getInventorySize")}/${player.inventoryCap}</p>`);
     statDiv.append(`<p>Relic pouch: ${player.equippedRelics.length}/${player.relicCap}</p>`)
     appendIfNonzero(player.currentStatuses.cursed, `Cursed: Level ${player.currentStatuses.cursed}`);
     appendIfNonzero(player.currentStatuses.weakened, `Weakened: Level ${player.currentStatuses.weakened}`);
@@ -235,9 +235,9 @@ function appendIfNonzero(value, string) {
 }
 
 async function renderInventory() {
-    const room = await postHelper("/player/getCurrentRoom");
+    const room = await getHelper("/player/getCurrentRoom");
     const inventoryDiv = $("#inventory").html("");
-    const inventory = await postHelper("/player/getInventory", {});
+    const inventory = await getHelper("/player/getInventory");
     for (let i = 0; i < inventory.length; i++) {
 
         /*todo redo how cleansable works; right now it only shows if it is cursed (backend) so
@@ -269,7 +269,7 @@ async function renderInventory() {
 
 async function renderRelics() {
     const relicDiv = $("#relics").html("");
-    const relics = await postHelper("/player/getRelics", {});
+    const relics = await getHelper("/player/getRelics");
     for (let i = 0; i < relics.length; i++) {
         $(`<button>Use</button>`)
             .click(() => {
@@ -287,7 +287,7 @@ async function fountainHandler(room) {
 
 async function renderFountainInventory(){
     const inventoryDiv = $("#inventory").html("");
-    const inventory = await postHelper("/player/getInventory", {});
+    const inventory = await getHelper("/player/getInventory");
     for (let i = 0; i < inventory.length; i++) {
         $(`<button>Use</button>`)
             .click(() => {
@@ -306,6 +306,15 @@ async function postHelper(path, json){
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(json)
+    })).json();
+}
+
+async function getHelper(path) {
+    return await (await fetch(path, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
     })).json();
 }
 

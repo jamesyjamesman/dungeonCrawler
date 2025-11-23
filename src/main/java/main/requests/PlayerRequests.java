@@ -19,17 +19,17 @@ public class PlayerRequests {
         ctx.json(App.INSTANCE.getPlayer().equippedRelicIndex(id) != -1);
     }
 
-    @PostRequestHandler(endpoint = "/player/getPlayer")
+    @GetRequestHandler(endpoint = "/player/getPlayer")
     public static void getPlayer(Context ctx) {
         ctx.json(App.INSTANCE.getPlayer());
     }
 
-    @PostRequestHandler(endpoint = "/player/getInventorySize")
+    @GetRequestHandler(endpoint = "/player/getInventorySize")
     public static void getInventorySize(Context ctx) {
         ctx.json(App.INSTANCE.getPlayer().calculateInventorySize());
     }
 
-    @PostRequestHandler(endpoint = "/player/getTotalDamage")
+    @GetRequestHandler(endpoint = "/player/getTotalDamage")
     public static void getTotalDamage(Context ctx) {
         ctx.json(App.INSTANCE.getPlayer().calculateWeakenedAttack());
     }
@@ -48,17 +48,17 @@ public class PlayerRequests {
     }
 
     //todo 100% absolutely should be a GET request
-    @PostRequestHandler(endpoint = "/player/getInventory")
+    @GetRequestHandler(endpoint = "/player/getInventory")
     public static void getInventory(Context ctx) {
         ctx.json(App.INSTANCE.getPlayer().getInventory());
     }
 
-    @PostRequestHandler(endpoint = "/player/getRelics")
+    @GetRequestHandler(endpoint = "/player/getRelics")
     public static void getRelics(Context ctx) {
         ctx.json(App.INSTANCE.getPlayer().getEquippedRelics());
     }
 
-    @PostRequestHandler(endpoint = "/player/getCurrentRoom")
+    @GetRequestHandler(endpoint = "/player/getCurrentRoom")
     public static void getCurrentRoom(Context ctx) {
         ctx.json(App.INSTANCE.getPlayer().getCurrentRoom());
     }

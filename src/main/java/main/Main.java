@@ -5,6 +5,7 @@ import io.javalin.http.Context;
 import main.entity.Player;
 import main.initialization.RelicInit;
 import main.initialization.RoomInit;
+import main.requests.GetRequestHandler;
 import main.requests.PostRequestHandler;
 import main.room.Room;
 import org.reflections.Reflections;
@@ -45,6 +46,21 @@ public class Main {
                 throw new RuntimeException(method.getName() + " must have an endpoint");
 
             app.post(annotation.endpoint(), ctx -> method.invoke(null, ctx));
+        }
+
+        for (Method method : reflections.getMethodsAnnotatedWith(GetRequestHandler.class)) {
+            if (method.getParameterCount() != 1)
+                throw new RuntimeException(method.getName() + " must have exactly one parameter to be a request handler.");
+            if (method.getParameterTypes()[0] != Context.class)
+                throw new RuntimeException("Request handler parameter must be type of Context, not '" + method.getParameterTypes()[0].getName() + "'");
+            if (!Modifier.isStatic(method.getModifiers()))
+                throw new RuntimeException(method.getName() + " must be static to be a request handler.");
+
+            GetRequestHandler annotation = method.getAnnotation(GetRequestHandler.class);
+            if (annotation.endpoint().isEmpty())
+                throw new RuntimeException(method.getName() + " must have an endpoint");
+
+            app.get(annotation.endpoint(), ctx -> method.invoke(null, ctx));
         }
     }
 

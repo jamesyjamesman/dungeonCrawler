@@ -7,7 +7,7 @@ import main.Main;
 
 public class GameRequests {
 
-    @PostRequestHandler(endpoint = "/gameStart")
+    @GetRequestHandler(endpoint = "/gameStart")
     public static void game(Context ctx) {
         Main.initializeApp();
         ctx.status(200);
