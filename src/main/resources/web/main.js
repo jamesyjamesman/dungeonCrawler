@@ -214,7 +214,7 @@ async function render() {
 async function renderStats() {
     const player = await postHelper("/player/getPlayer", {});
     const statDiv = $("#statusChecker").html("");
-    statDiv.append(`<p>HP: ${player.currentHealth} (+${player.absorption}) / ${player.maxHealth}</p>`);
+    statDiv.append(`<p>HP: ${player.currentHealth} ${(player.absorption > 0) ? `(+${player.absorption})` : ""} / ${player.maxHealth}</p>`);
     statDiv.append(`<p>Attack damage: ${await postHelper("/player/getTotalDamage")}</p>`);
     statDiv.append(`<p>Rooms traveled: ${player.roomsTraversed}</p>`);
     statDiv.append(`<p>Inventory: ${await postHelper("/player/getInventorySize")}/${player.inventoryCap}</p>`);
