@@ -36,9 +36,36 @@ div {
 .inventoryButton {
     background-color: black;
     color: white;
-    border: white;
+    border-color: white;
     border-radius: 3px;
+    border-width: 2px;
     height: 100%;
+}
+
+span {
+    display: list-item;
+}
+
+.listParagraph {
+    display: inline;
+    margin: 5px 0;
+}
+
+.statusParagraph {
+    margin: 4px 0;
+}
+
+.clickableButton {
+    background-color: black;
+    color: white;
+    border-color: white;
+    border-radius: 3px;
+    border-width: 2px;
+}
+
+.inlineButton {
+    display: inline;
+    margin-right: 3px;
 }
 
 .mainContainer {

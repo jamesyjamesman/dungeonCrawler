@@ -1,6 +1,5 @@
 package main.room;
 
-import main.Main;
 import main.entity.Player;
 import main.initialization.ItemInit;
 import main.item.Item;
@@ -9,9 +8,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class ShopRoom extends Room {
-    ArrayList<Item> wares;
-    ArrayList<Item> itemList;
-    boolean open;
+    private ArrayList<Item> wares;
+    private final ArrayList<Item> itemList;
+    private boolean open;
     public ShopRoom(RoomBuilder<?> builder) {
         super(builder);
         this.wares = new ArrayList<>();
@@ -23,27 +22,19 @@ public class ShopRoom extends Room {
     public void completeRoomActions(Player player) {
         super.completeRoomActions(player);
         openShop();
-        renderShopUI(player);
-        //todo need to wait here
-        closeShop();
     }
 
-    public void renderShopUI(Player player) {
-        for (int i = 0; i < this.getWares().size(); i++) {
-        }
-    }
-
-    public void sellItem(Item item, Player player) {
+    public boolean sellItem(Item item, Player player) {
         if (player.getGold() < item.getValue()) {
-            return;
+            return false;
         }
         boolean inventoryFull = player.addItemToInventory(item);
         if (inventoryFull) {
-            return;
+            return false;
         }
         player.takeGold(item.getValue());
         this.wares.remove(item);
-        renderShopUI(player);
+        return true;
     }
 
     public void instantiateWares() {
@@ -89,7 +80,7 @@ public class ShopRoom extends Room {
         this.open = true;
         instantiateWares();
     }
-    public boolean isOpen() {
+    public boolean getOpen() {
         return this.open;
     }
 

@@ -74,6 +74,20 @@ public class PlayerRequests {
         ctx.json(cleansed);
     }
 
+    @PostRequestHandler(endpoint = "/player/dropItem")
+    public static void dropItem(Context ctx) {
+        Item item = getInventoryItemFromUUID(ctx);
+        App.INSTANCE.getPlayer().discardItem(item);
+        ctx.json(true);
+    }
+
+    @PostRequestHandler(endpoint = "/player/sellItem")
+    public static void sellItem(Context ctx) {
+        Item item = getInventoryItemFromUUID(ctx);
+        boolean success = App.INSTANCE.getPlayer().sellItem(item);
+        ctx.json(success);
+    }
+
     @PostRequestHandler(endpoint = "/player/cleanseRelic")
     public static void cleanseRelic(Context ctx) {
         boolean cleansed = getRelicFromRelics(ctx).cleanseItem(App.INSTANCE.getPlayer());

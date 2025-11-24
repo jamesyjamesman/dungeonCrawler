@@ -28,7 +28,7 @@ public class RelicRelic extends Relic {
         } else {
             if (player.equipRelic(this)) {
                 player.changeRelicCap(3);
-                return "The " + this.getName() + " was unequipped!";
+                return "The " + this.getName() + " was equipped!";
             }
             return "Your relic pouch is full!";
         }

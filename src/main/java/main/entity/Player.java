@@ -112,11 +112,13 @@ public class Player extends Entity {
         return totalSize;
     }
 
-    public void sellItem(Item item) {
+    public boolean sellItem(Item item) {
         if (item instanceof Relic relic && relic.isCursed()) {
+            return false;
         } else {
             discardItem(item);
             this.addGold(item.getValue());
+            return true;
         }
     }
 
@@ -144,7 +146,7 @@ public class Player extends Entity {
             String amount = (items.size() > 1) ? " (x" + items.size() + ")" : "";
 
             //cinema
-            String output = item.getName() + ((this.getCurrentRoom() instanceof ShopRoom shopRoom && shopRoom.isOpen()) ? " [" + item.getValue() + "G]" : "") + amount + ": " + item.getDescription();
+            String output = item.getName() + ((this.getCurrentRoom() instanceof ShopRoom shopRoom && shopRoom.getOpen()) ? " [" + item.getValue() + "G]" : "") + amount + ": " + item.getDescription();
             output = output.concat("\n");
             Color color;
             if (item instanceof Relic relic && relic.isCursed() && equippedRelicIndex(RelicID.CURSE_DETECTION) != -1) {
@@ -521,5 +523,11 @@ public class Player extends Entity {
     }
     public int getLevel() {
         return this.level;
+    }
+    public int getExperience() {
+        return this.experience;
+    }
+    public int getExpToNextLevel() {
+        return this.expToNextLevel;
     }
 }

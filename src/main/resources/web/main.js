@@ -38,7 +38,6 @@ function userSelectOption() {
     }
     numberInputOptions[selectedOption]();
     input.val("");
-
 }
 
 function createPopup(popupText) {
@@ -67,18 +66,21 @@ async function printRooms(rooms) {
 
     numberInputOptions = [];
     for (let i = 0; i < rooms.length; i++) {
+        const elementSpan = $("<span></span>")
         const exitsString = `(${rooms[i].numExits} exits)`;
-        const textParagraph = $(`<p>${rooms[i].appearance} ${((foresightRelicEquipped) ? exitsString : "")}</p>`);
+        const textParagraph = $(`<p class="listParagraph">${i+1}. ${rooms[i].appearance} ${((foresightRelicEquipped) ? exitsString : "")}</p>`);
         numberInputOptions[i] = async () => await goToRoom(rooms[i].id);
-        const goButton = $(`<button>Go</button>`).click(() => goToRoom(rooms[i].id));
-        mainDiv.append(goButton);
-        mainDiv.append(textParagraph);
+        const goButton = $(`<button class="clickableButton inlineButton">Go</button>`).click(() => goToRoom(rooms[i].id));
+        elementSpan.append(goButton);
+        elementSpan.append(textParagraph);
+        mainDiv.append(elementSpan);
     }
 
     await render();
 }
 
 async function goToRoom(id) {
+    //todo bg change
     let newRoom = await postHelper("rooms/change", { id: id });
     const descriptionDiv = $("#descriptionDiv").html("");
     descriptionDiv.append(`<p>${parseTextAsHTML(newRoom.description)}</p>`);
@@ -104,6 +106,8 @@ async function goToRoom(id) {
             await fountainHandler(newRoom);
             break;
         case "SHOP": //todo
+            await shopHandler(newRoom);
+            break;
         case "END": //todo
             await printRooms(roomExits);
     }
@@ -115,10 +119,16 @@ function getFreshMainDiv() {
     return mainDiv;
 }
 
+function getFreshErrorDiv() {
+    const errorDiv = $("#errorDiv");
+    errorDiv.html("");
+    return errorDiv;
+}
+
 async function appendContinue(id) {
     const mainDiv = $("#mainDiv");
     const exits = await postHelper("/rooms/getExits", { id: id });
-    const continueButton = $("<button>Continue</button>").click(async () => await printRooms(exits));
+    const continueButton = $("<button class='clickableButton'>Continue</button>").click(async () => await printRooms(exits));
     numberInputOptions = [async () => await printRooms(exits)];
     mainDiv.append(continueButton);
 }
@@ -154,12 +164,15 @@ async function renderEnemies(room) {
     const enemies = await postHelper("/rooms/getEnemies", {id: room.id});
     const mainDiv = $("#mainDiv");
 
+    //todo enemy information relic
     numberInputOptions = [];
     for (let i = 0; i < enemies.length; i++) {
-        const attackButton = $("<button>Attack</button>").click(async () => await battleSequence(room, enemies[i]));
+        const elementSpan = $("<span></span>")
+        const attackButton = $("<button class='clickableButton inlineButton'>Attack</button>").click(async () => await battleSequence(room, enemies[i]));
         numberInputOptions[i] = async () => await battleSequence(room, enemies[i]);
-        mainDiv.append(attackButton);
-        mainDiv.append(`<p>${i}. ${enemies[i].species}</p>`);
+        elementSpan.append(attackButton);
+        elementSpan.append(`<p class="listParagraph">${i}. ${enemies[i].species}</p>`);
+        mainDiv.append(elementSpan);
     }
 }
 
@@ -217,11 +230,13 @@ async function render() {
 async function renderStats() {
     const player = await getHelper("/player/getPlayer");
     const statDiv = $("#statusChecker").html("");
-    statDiv.append(`<p>HP: ${player.currentHealth} ${(player.absorption > 0) ? `(+${player.absorption})` : ""} / ${player.maxHealth}</p>`);
-    statDiv.append(`<p>Attack damage: ${await getHelper("/player/getTotalDamage")}</p>`);
-    statDiv.append(`<p>Rooms traveled: ${player.roomsTraversed}</p>`);
-    statDiv.append(`<p>Inventory: ${await getHelper("/player/getInventorySize")}/${player.inventoryCap}</p>`);
-    statDiv.append(`<p>Relic pouch: ${player.equippedRelics.length}/${player.relicCap}</p>`)
+    statDiv.append(`<p class="statusParagraph">Level: ${player.level} (${player.experience}/${player.expToNextLevel})</p>`)
+    statDiv.append(`<p class="statusParagraph">HP: ${player.currentHealth} ${(player.absorption > 0) ? `(+${player.absorption})` : ""} / ${player.maxHealth}</p>`);
+    statDiv.append(`<p class="statusParagraph">Gold: ${player.gold} G</p>`);
+    statDiv.append(`<p class="statusParagraph">Attack damage: ${await getHelper("/player/getTotalDamage")}</p>`);
+    statDiv.append(`<p class="statusParagraph">Rooms traveled: ${player.roomsTraversed}</p>`);
+    statDiv.append(`<p class="statusParagraph">Inventory: ${await getHelper("/player/getInventorySize")}/${player.inventoryCap}</p>`);
+    statDiv.append(`<p class="statusParagraph">Relic pouch: ${player.equippedRelics.length}/${player.relicCap}</p>`)
     appendIfNonzero(player.currentStatuses.cursed, `Cursed: Level ${player.currentStatuses.cursed}`);
     appendIfNonzero(player.currentStatuses.weakened, `Weakened: Level ${player.currentStatuses.weakened}`);
     appendIfNonzero(player.currentStatuses.poison, `Poisoned: Level ${player.currentStatuses.poison}`);
@@ -231,7 +246,7 @@ async function renderStats() {
 function appendIfNonzero(value, string) {
     const statDiv = $("#statusChecker");
     if (value > 0)
-        statDiv.append(`<p>${string}</p>`);
+        statDiv.append(`<p class="statusParagraph">${string}</p>`);
 }
 
 async function renderInventory() {
@@ -240,9 +255,11 @@ async function renderInventory() {
     const inventory = await getHelper("/player/getInventory");
     for (let i = 0; i < inventory.length; i++) {
         const item = inventory[i][0];
+        const elementSpan = $("<span></span>");
+        elementSpan.appendTo(inventoryDiv);
 
         if (item.cleansable && room.type === "FOUNTAIN" && !room.fountainUsed) {
-            $(`<button>Cleanse</button>`)
+            $(`<button class="clickableButton inlineButton">Cleanse</button>`)
                 .click(async () => {
                     const errorDiv = $("#errorDiv")
                     const itemCleansed = await postHelper("/player/cleanseItem", {uuid: item.uuid});
@@ -252,7 +269,7 @@ async function renderInventory() {
                         errorDiv.append(`<p>The ${item.name} couldn't be cleansed!</p>`)
                     await render();
                 })
-                .appendTo(inventoryDiv);
+                .appendTo(elementSpan);
         } else {
             let buttonText = "Use";
             if (item.type === "WEAPON") {
@@ -262,19 +279,42 @@ async function renderInventory() {
                     buttonText = "Equip";
                 }
             }
-            $(`<button>${buttonText}</button>`)
+            $(`<button class="clickableButton inlineButton">${buttonText}</button>`)
                 .click(async () => {
                     const itemUseText = await postHelper("/player/useInventoryItem", { uuid: item.uuid });
                     const statusTicker = $("#statusTicker");
                     statusTicker.append(`<p>${itemUseText}</p>`);
                     await render();
                 })
-                .appendTo(inventoryDiv);
+                .appendTo(elementSpan);
+        }
+
+        if (room.type === "SHOP" && room.open) {
+            $(`<button class="clickableButton inlineButton">Sell</button>`)
+                .click(async () => {
+                    const itemSold = await postHelper("/player/sellItem", {uuid: item.uuid});
+                    if (itemSold) {
+                        await render();
+                    } else {
+                        getFreshErrorDiv().append(`<p>The item couldn't be sold!</p>`)
+                    }
+                })
+                .appendTo(elementSpan);
+        } else {
+            $(`<button class="clickableButton inlineButton">Drop</button>`)
+                .click(async () => {
+                    const itemDropped = await postHelper("/player/dropItem", {uuid: item.uuid});
+                    if (itemDropped) {
+                        await render();
+                    } else {
+                        getFreshErrorDiv().append(`<p>The item couldn't be dropped!</p>`)
+                    }
+                })
         }
         if (item.cursed && await postHelper("/player/relicEquipped", {id: "CURSE_DETECTION"})) {
-            inventoryDiv.append($(`<p class="purple">${inventory[i].length}x ${item.name}: ${item.description}</p>`));
+            elementSpan.append($(`<p class="purple listParagraph">${inventory[i].length}x ${item.name}: ${item.description}</p>`));
         } else {
-            inventoryDiv.append($(`<p>${inventory[i].length}x ${item.name}: ${item.description}</p>`));
+            elementSpan.append($(`<p class="listParagraph">${inventory[i].length}x ${item.name}: ${item.description}</p>`));
         }
     }
 }
@@ -285,8 +325,10 @@ async function renderRelics() {
     const relics = await getHelper("/player/getRelics");
     for (let i = 0; i < relics.length; i++) {
         const relic = relics[i];
+        const elementSpan = $("<span></span>")
+        elementSpan.appendTo(relicDiv);
         if (relic.cleansable && room.type === "FOUNTAIN" && !room.fountainUsed) {
-            $(`<button>Cleanse</button>`)
+            $(`<button class="clickableButton inlineButton">Cleanse</button>`)
                 .click(async () => {
                     const errorDiv = $("#errorDiv")
                     const relicCleansed = await postHelper("/player/cleanseRelic", {uuid: relic.uuid});
@@ -296,20 +338,49 @@ async function renderRelics() {
                         errorDiv.append(`<p>The ${relic.name} couldn't be cleansed!</p>`)
                     await render();
                 })
-                .appendTo(relicDiv);
+                .appendTo(elementSpan);
         } else {
-            $(`<button>Use</button>`)
+            $(`<button class="clickableButton inlineButton">Use</button>`)
                 .click(async () => {
                     await postHelper("/player/unequipRelic", {uuid: relics[i].uuid})
                     await render();
                 })
-                .appendTo(relicDiv);
+                .appendTo(elementSpan);
         }
         if (relic.cursed) {
-            relicDiv.append($(`<p class="purple">${relic.name}: ${relic.description}</p>`));
+            elementSpan.append($(`<p class="purple listParagraph">${relic.name}: ${relic.description}</p>`));
         } else {
-            relicDiv.append($(`<p>${relic.name}: ${relic.description}</p>`));
+            elementSpan.append($(`<p class="listParagraph">${relic.name}: ${relic.description}</p>`));
         }
+    }
+}
+
+async function shopHandler(room) {
+    await shopRenderer(room);
+    await appendContinue(room.id);
+}
+
+async function shopRenderer(room) {
+    const wares = room.wares;
+    const mainDiv = getFreshMainDiv();
+    for (let i = 0; i < wares.length; i++) {
+        const item = wares[i];
+        $(`<button class="clickableButton inlineButton">Buy</button>`)
+            .click(async () => {
+                const success = await postHelper("/rooms/buyItem", {
+                    roomID: room.id,
+                    itemID: item.uuid
+                });
+                if (success) {
+                    await renderInventory();
+                    await shopRenderer(room);
+                } else {
+                    // more advanced error message? e.g. inv full, can't afford
+                    getFreshErrorDiv().append("<p>You can't buy that right now!</p>")
+                }
+            })
+            .appendTo(mainDiv);
+        mainDiv.append(`<p>${item.name} (${item.value} G): ${item.description}</p>`);
     }
 }
 
