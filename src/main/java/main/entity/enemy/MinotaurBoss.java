@@ -54,6 +54,7 @@ public class MinotaurBoss extends Boss {
         if (damage > 0) {
         }
         player.takeDamage(damage);
+        //todo
         return "TODO";
     }
 

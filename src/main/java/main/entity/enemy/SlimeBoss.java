@@ -48,18 +48,20 @@ public class SlimeBoss extends Boss {
     public String attack(Player player) {
         int damage;
         int randomChoice = new Random().nextInt(5);
+        String output;
 
         if (randomChoice < 2) { //40%
             damage = slimeLaunchAttack();
+            output = "The slime launches a slimeball at you, dealing " + damage + " damage!";
         } else if (randomChoice < 4) { //40%
             damage = slimeChargeAttack();
+            output = "The slime charges at you, dealing " + damage + " damage!";
         } else { //20%
             damage = slimeWait();
-        }
-        if (damage > 0) {
+            output = "The slime vibrates restlessly.";
         }
         player.takeDamage(damage);
-        return "TODO";
+        return output;
     }
 
     @Override

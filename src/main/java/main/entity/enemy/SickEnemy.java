@@ -18,6 +18,7 @@ public class SickEnemy extends Enemy {
             case 2, 3 -> sneeze(player);
             case 4 -> grossAttack(player);
         }
+        //todo
         return "TODO";
     }
 

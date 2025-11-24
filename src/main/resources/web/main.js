@@ -108,7 +108,7 @@ async function goToRoom(id) {
         case "SHOP":
             await shopHandler(newRoom);
             break;
-        case "END": //todo
+        case "END":
             await endingHandler(newRoom);
             break;
     }
@@ -155,6 +155,7 @@ async function trapHandler(room) {
     await appendContinue(room.id);
 }
 
+//todo big issue with dynamic enemies, like slime boss (killing one ends fight?)
 async function enemyHandler(room) {
     const mainDiv = getFreshMainDiv();
     mainDiv.append(`<p>${room.battleInitiationMessage}</p>`)
@@ -165,17 +166,37 @@ async function renderEnemies(room) {
     const enemies = await postHelper("/rooms/getEnemies", {id: room.id});
     const mainDiv = $("#mainDiv");
 
-    //todo enemy information relic
-    //todo fix species case (e.g. Goblin not GOBLIN)
     numberInputOptions = [];
     for (let i = 0; i < enemies.length; i++) {
+        const displayEnemyInformation = await postHelper("/player/relicEquipped", {id: "ENEMY_INFORMATION"});
+        const speciesPascal = enemies[i].species.toString().charAt(0).toUpperCase() + enemies[i].species.toString().substring(1, enemies[i].species.toString().length).toLowerCase();
         const elementSpan = $("<span></span>")
         const attackButton = $("<button class='clickableButton inlineButton'>Attack</button>").click(async () => await battleSequence(room, enemies[i]));
         numberInputOptions[i] = async () => await battleSequence(room, enemies[i]);
         elementSpan.append(attackButton);
-        elementSpan.append(`<p class="listParagraph">${i+1}. ${enemies[i].species}</p>`);
+        if (displayEnemyInformation) {
+            $(`<button class='clickableButton inlineButton'>Check</button>`)
+                .click(() => {
+                    checkEnemy(enemies[i]);
+                })
+                .appendTo(elementSpan);
+        }
+        elementSpan.append(`<p class="listParagraph">${i+1}. ${speciesPascal}${(displayEnemyInformation) ? ` (${enemies[i].currentHealth}/${enemies[i].maxHealth} HP)` : ""}</p>`);
         mainDiv.append(elementSpan);
     }
+}
+
+//needs work (might need to define this on the class itself for fancier output [like boss attacks and rates], but that DOES suck)
+function checkEnemy(enemy) {
+    const dDiv = $("#descriptionDiv").html("");
+    appendElementText(dDiv, enemy.species);
+    appendElementText(dDiv, `HP: ${enemy.currentHealth}/${enemy.maxHealth}`);
+    appendElementText(dDiv, `EXP: ${enemy.experienceDropped}`);
+    appendElementText(dDiv, `GOLD: ${enemy.loot.gold} G`);
+}
+
+function appendElementText(element, text) {
+    element.append(`<p class="statusParagraph">${text}</p>`)
 }
 
 async function battleSequence(room, enemy) {
@@ -365,6 +386,7 @@ async function shopHandler(room) {
     await appendContinue(room.id);
 }
 
+//todo can't buy items by text, only continue (maybe good thing?)
 async function shopRenderer(room) {
     const wares = room.wares;
     const mainDiv = getFreshMainDiv();
@@ -380,7 +402,7 @@ async function shopRenderer(room) {
                 });
                 if (success) {
                     await renderInventory();
-                    await shopRenderer(room);
+                    await shopRenderer(await getHelper("/player/getCurrentRoom"));
                 } else {
                     // todo more advanced error message? e.g. inv full, can't afford
                     getFreshErrorDiv().append("<p>You can't buy that right now!</p>")
