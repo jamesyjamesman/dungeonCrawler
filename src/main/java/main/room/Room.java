@@ -95,5 +95,8 @@ public class Room {
     public int getSelectionWeight() {
         return selectionWeight;
     }
+    public String getBackgroundFileName() {
+        return this.backgroundFileName;
+    }
 
 }

@@ -15,7 +15,7 @@ let numberInputOptions = [];
 function userSelectOption() {
     //todo post request that sends input to debug command checker. if successful, rerender stuff (if possible) and return
     const input = $("#textInput");
-    const error = $("#errorDiv");
+    const error = getFreshErrorDiv();
     if (input.val() === "") {
         if (numberInputOptions.length <= 1) {
             numberInputOptions[0]();
@@ -80,8 +80,8 @@ async function printRooms(rooms) {
 }
 
 async function goToRoom(id) {
-    //todo bg change
     let newRoom = await postHelper("rooms/change", { id: id });
+    $("body").css("backgroundImage", `url("${newRoom.backgroundFileName}")`);
     const descriptionDiv = $("#descriptionDiv").html("");
     descriptionDiv.append(`<p>${parseTextAsHTML(newRoom.description)}</p>`);
     const roomExits = await postHelper("/rooms/getExits", {id : newRoom.id });
@@ -105,11 +105,12 @@ async function goToRoom(id) {
         case "FOUNTAIN":
             await fountainHandler(newRoom);
             break;
-        case "SHOP": //todo
+        case "SHOP":
             await shopHandler(newRoom);
             break;
         case "END": //todo
-            await printRooms(roomExits);
+            await endingHandler(newRoom);
+            break;
     }
 }
 
@@ -171,7 +172,7 @@ async function renderEnemies(room) {
         const attackButton = $("<button class='clickableButton inlineButton'>Attack</button>").click(async () => await battleSequence(room, enemies[i]));
         numberInputOptions[i] = async () => await battleSequence(room, enemies[i]);
         elementSpan.append(attackButton);
-        elementSpan.append(`<p class="listParagraph">${i}. ${enemies[i].species}</p>`);
+        elementSpan.append(`<p class="listParagraph">${i+1}. ${enemies[i].species}</p>`);
         mainDiv.append(elementSpan);
     }
 }
@@ -261,7 +262,7 @@ async function renderInventory() {
         if (item.cleansable && room.type === "FOUNTAIN" && !room.fountainUsed) {
             $(`<button class="clickableButton inlineButton">Cleanse</button>`)
                 .click(async () => {
-                    const errorDiv = $("#errorDiv")
+                    const errorDiv = getFreshErrorDiv()
                     const itemCleansed = await postHelper("/player/cleanseItem", {uuid: item.uuid});
                     if (itemCleansed)
                         errorDiv.append(`<p>The ${item.name} was cleansed!</p>`);
@@ -278,6 +279,9 @@ async function renderInventory() {
                 } else {
                     buttonText = "Equip";
                 }
+            }
+            if (item.type === "RELIC") {
+                buttonText = "Equip";
             }
             $(`<button class="clickableButton inlineButton">${buttonText}</button>`)
                 .click(async () => {
@@ -330,7 +334,7 @@ async function renderRelics() {
         if (relic.cleansable && room.type === "FOUNTAIN" && !room.fountainUsed) {
             $(`<button class="clickableButton inlineButton">Cleanse</button>`)
                 .click(async () => {
-                    const errorDiv = $("#errorDiv")
+                    const errorDiv = getFreshErrorDiv()
                     const relicCleansed = await postHelper("/player/cleanseRelic", {uuid: relic.uuid});
                     if (relicCleansed)
                         errorDiv.append(`<p>The ${relic.name} was cleansed!</p>`);
@@ -388,6 +392,12 @@ async function fountainHandler(room) {
     await renderInventory();
     const mainDiv = getFreshMainDiv();
     mainDiv.append("<p>Place an item in the fountain, and/or continue!</p>");
+    await appendContinue(room.id);
+}
+
+async function endingHandler(room) {
+    const mainDiv = getFreshMainDiv();
+    mainDiv.append("<p>You win! Good job! <br> But, if you'd like to return and continue... You may.</p>");
     await appendContinue(room.id);
 }
 
