@@ -314,6 +314,7 @@ async function renderInventory() {
                         getFreshErrorDiv().append(`<p>The item couldn't be dropped!</p>`)
                     }
                 })
+                .appendTo(elementSpan);
         }
         if (item.cursed && await postHelper("/player/relicEquipped", {id: "CURSE_DETECTION"})) {
             elementSpan.append($(`<p class="purple listParagraph">${inventory[i].length}x ${item.name}: ${item.description}</p>`));
@@ -369,6 +370,8 @@ async function shopRenderer(room) {
     const mainDiv = getFreshMainDiv();
     for (let i = 0; i < wares.length; i++) {
         const item = wares[i];
+        const elementSpan = $("<span></span>");
+        mainDiv.append(elementSpan);
         $(`<button class="clickableButton inlineButton">Buy</button>`)
             .click(async () => {
                 const success = await postHelper("/rooms/buyItem", {
@@ -379,13 +382,14 @@ async function shopRenderer(room) {
                     await renderInventory();
                     await shopRenderer(room);
                 } else {
-                    // more advanced error message? e.g. inv full, can't afford
+                    // todo more advanced error message? e.g. inv full, can't afford
                     getFreshErrorDiv().append("<p>You can't buy that right now!</p>")
                 }
             })
-            .appendTo(mainDiv);
-        mainDiv.append(`<p>${item.name} (${item.value} G): ${item.description}</p>`);
+            .appendTo(elementSpan);
+        elementSpan.append(`<p class="listParagraph">${item.name} (${item.value} G): ${item.description}</p>`);
     }
+    await render();
 }
 
 async function fountainHandler(room) {
