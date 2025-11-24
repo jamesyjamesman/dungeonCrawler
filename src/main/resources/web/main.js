@@ -166,6 +166,7 @@ async function renderEnemies(room) {
     const mainDiv = $("#mainDiv");
 
     //todo enemy information relic
+    //todo fix species case (e.g. Goblin not GOBLIN)
     numberInputOptions = [];
     for (let i = 0; i < enemies.length; i++) {
         const elementSpan = $("<span></span>")
@@ -205,7 +206,7 @@ async function battleSequence(room, enemy) {
 
 function appendStatusTicker(text) {
     const tickerDiv = $("#statusTicker");
-    tickerDiv.append(text);
+    tickerDiv.append(`<p class="statusParagraph">${text}</p>`);
     const childParagraphs = tickerDiv.find("*");
     if (childParagraphs.length > 5) {
         childParagraphs[0].remove();
@@ -218,7 +219,7 @@ async function enemiesAttackPlayer(room) {
             roomID: room.id,
             uuid: room.enemies[i].uuid
         });
-        appendStatusTicker(`<p>${statusInfo}</p>`);
+        appendStatusTicker(statusInfo);
     }
 }
 
@@ -286,8 +287,7 @@ async function renderInventory() {
             $(`<button class="clickableButton inlineButton">${buttonText}</button>`)
                 .click(async () => {
                     const itemUseText = await postHelper("/player/useInventoryItem", { uuid: item.uuid });
-                    const statusTicker = $("#statusTicker");
-                    statusTicker.append(`<p>${itemUseText}</p>`);
+                    appendStatusTicker(itemUseText);
                     await render();
                 })
                 .appendTo(elementSpan);
