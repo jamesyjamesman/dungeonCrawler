@@ -42,9 +42,6 @@ public class Room {
 
     public void completeRoomActions(Player player) {
         player.incrementRoomsTraversed();
-        player.checkStatus();
-        player.checkInventory();
-        player.checkRelics();
     }
 
     public static Room getRoomByID(int id) {

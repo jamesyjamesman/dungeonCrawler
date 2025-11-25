@@ -89,7 +89,6 @@ public class Player extends Entity {
         } else {
             this.inventory.get(itemIndex).add(item);
         }
-        checkStatus();
         return false;
     }
 
@@ -137,41 +136,6 @@ public class Player extends Entity {
         }
     }
 
-    //can cause index out of bounds
-    public void checkInventory() {
-
-        for (ArrayList<Item> items : this.inventory) {
-            Item item = items.getFirst();
-            //Displays amount of items in parentheses (e.g. (x2)) if the amount is greater than 1
-            String amount = (items.size() > 1) ? " (x" + items.size() + ")" : "";
-
-            //cinema
-            String output = item.getName() + ((this.getCurrentRoom() instanceof ShopRoom shopRoom && shopRoom.getOpen()) ? " [" + item.getValue() + "G]" : "") + amount + ": " + item.getDescription();
-            output = output.concat("\n");
-            Color color;
-            if (item instanceof Relic relic && relic.isCursed() && equippedRelicIndex(RelicID.CURSE_DETECTION) != -1) {
-                color = new Color(130, 30, 190);
-            } else {
-                color = Color.white;
-            }
-        }
-    }
-
-    //this is very dry, but I wasn't sure how to use checkInventory due to the different types
-    public void checkRelics() {
-        Color color;
-
-        for (Relic relic : this.equippedRelics) {
-            String output = relic.getName() + ": " + relic.getDescription();
-            output += "\n";
-            if (relic.isCursed()) {
-                color = new Color(130, 30, 190);
-            } else {
-                color = Color.white;
-            }
-        }
-    }
-
     public int findItemInInventory(Item item) {
         for (int i = 0; i < this.inventory.size(); i++) {
             if (this.inventory.get(i).getFirst().equals(item)) {
@@ -194,46 +158,6 @@ public class Player extends Entity {
         return equippedRelicIndex(relic.getRelicType()) != -1 || findItemInInventoryByName(relic) != -1;
     }
 
-    //should be called any time anything printed can change, e.g. health change, absorption change, etc.
-    public void checkStatus() {
-        String output = "";
-    // Renders level and exp to next level, unless the player is at the max level (10), where it just shows the level.
-        output = output.concat("Level " + this.level + (this.level < 10 ? " (" + this.experience + "/" + this.expToNextLevel + " exp)" : ""));
-        output = output.concat("\n");
-        output = output.concat("Gold: " + this.gold + "\n");
-        output = output.concat("Health: " + getCurrentHealth() + ((this.absorption > 0) ? " (+" + this.absorption + ")" : "") + " / " + getMaxHealth() + "\n");
-        output = output.concat("Attack damage: " + calculateTotalAttack() + "\n");
-        output = output.concat("Rooms traveled: " + this.roomsTraversed + "\n");
-        output = output.concat("Inventory: " + calculateInventorySize() + "/" + this.inventoryCap + "\n");
-        output = output.concat("Relics: " + this.equippedRelics.size() + "/" + this.relicCap + "\n");
-        output = output.concat(statusEffectChecker());
-    }
-
-    public String statusEffectChecker() {
-        boolean anyEffects = false;
-        String output = "Status effects: \n";
-        if (this.currentStatuses.getCursed() > 0) {
-            output += "Cursed: Level " + this.currentStatuses.getCursed() + "\n";
-            anyEffects = true;
-        }
-        if (this.currentStatuses.getPoison() > 0) {
-            output += "Poison: Level " + this.currentStatuses.getPoison() + "\n";
-            anyEffects = true;
-        }
-        if (this.currentStatuses.getWeakened() > 0) {
-            output += "Weakened: Level " + this.currentStatuses.getWeakened() + "\n";
-            anyEffects = true;
-        }
-        if (this.currentStatuses.getFire() > 0) {
-            output += "Burning: Level " + this.currentStatuses.getFire() + "\n";
-            anyEffects = true;
-        }
-        if (anyEffects) {
-            return output;
-        }
-        return "";
-    }
-
     @Override
     public int takeDamage(int damage) {
         if (this.absorption > 0) {
@@ -242,12 +166,10 @@ public class Player extends Entity {
                 damage = -1 * this.absorption;
                 this.absorption = 0;
             } else {
-                checkStatus();
                 return damage;
             }
         }
         damage = super.takeDamage(damage);
-        checkStatus();
         return damage;
     }
 
@@ -267,7 +189,6 @@ public class Player extends Entity {
         if (relic.isCursed()) {
             this.currentStatuses.addCursed(1);
         }
-        checkStatus();
         return true;
     }
 
@@ -281,14 +202,7 @@ public class Player extends Entity {
 
     @Override
     public void die() {
-        checkStatus();
-        while (true) {
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        //todo
     }
 
     // returns 2 newlines at the end of the output string. should probably have 0-1 at the end
