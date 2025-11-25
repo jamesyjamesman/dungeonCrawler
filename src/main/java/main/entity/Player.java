@@ -291,7 +291,8 @@ public class Player extends Entity {
         }
     }
 
-    public void levelUp() {
+    // returns 2 newlines at the end of the output string. should probably have 0-1 at the end
+    public String levelUp() {
         String output = "";
         while (this.experience >= this.expToNextLevel && this.level < 10) {
             output += "You leveled up!\n";
@@ -300,6 +301,7 @@ public class Player extends Entity {
             this.level += 1;
             output = levelUpEffects(this.level, output);
         }
+        return output;
     }
 
     public ArrayList<Item> collectLoot(Loot loot) {
@@ -380,6 +382,7 @@ public class Player extends Entity {
         }
         return output + "\n";
     }
+
     public void statusHandler(boolean inBattle) {
         doPoisonDamage();
         doFireDamage();

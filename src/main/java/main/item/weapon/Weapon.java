@@ -4,8 +4,7 @@ import main.entity.Player;
 import main.item.Item;
 import main.item.ItemType;
 
-//should be abstract
-public class Weapon extends Item {
+public abstract class Weapon extends Item {
     int damage;
     boolean equipped;
     public Weapon(String name, String description, int value, double dropChance, int shopWeight, int damage) {

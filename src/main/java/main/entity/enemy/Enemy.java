@@ -36,8 +36,6 @@ public class Enemy extends Entity implements Cloneable {
         EnemyRoom enemyRoom = (EnemyRoom) player.getCurrentRoom();
 
         player.changeExperience(getExperienceDropped());
-        // todo call this somewhere else (check level up request)
-        player.levelUp();
         player.checkStatus();
 
         enemyRoom.removeEnemy(this);

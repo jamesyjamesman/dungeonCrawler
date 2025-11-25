@@ -1,13 +1,25 @@
 window.addEventListener("load", async () => {
     let rooms = await getHelper("/gameStart");
-    createPopup("Welcome to the simulation!\nYou will be presented choices on where to proceed.\nPress the appropriate button or type your answer in the field in the bottom left.\nGood luck!\n");
     $("#textInput").on("keypress", function(event) {
         if (event.key === "Enter") {
             userSelectOption();
         }
     })
+    //these don't work and I don't care
+    $("#popup").on("keypress", function(event) {
+        console.log(event.key);
+        if (event.key === "Enter") {
+            hidePopup();
+        }
+    })
+    $("#popupText").on("keypress", function(event) {
+        if (event.key === "Enter") {
+            hidePopup();
+        }
+    })
     await printRooms(rooms);
     await render();
+    createPopup("Welcome to the simulation!\nYou will be presented choices on where to proceed.\nPress the appropriate button or type your answer in the field in the bottom left.\nGood luck!\n");
 });
 
 let numberInputOptions = [];
@@ -41,8 +53,10 @@ function userSelectOption() {
 }
 
 function createPopup(popupText) {
-    $("#popup").removeClass("invisible");
+    const popup = $("#popup");
+    popup.removeClass("invisible");
     $("#popupText").text(popupText);
+    popup.focus();
 }
 
 function hidePopup() {
@@ -211,6 +225,11 @@ async function battleSequence(room, enemy) {
     //todo figure out if player leveled up
     if (enemy.currentHealth <= 0) {
         mainDiv.append(`<p>${deathString}</p>`);
+
+        const levelUpString = await postHelper("/player/levelUp", {});
+        if (levelUpString !== "") {
+            createPopup(levelUpString);
+        }
 
         //this... is bad. basically checks if that was the last one.
         if (room.enemies.length === 1) {

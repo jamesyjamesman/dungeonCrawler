@@ -88,6 +88,11 @@ public class PlayerRequests {
         ctx.json(success);
     }
 
+    @PostRequestHandler(endpoint = "/player/levelUp")
+    public static void levelUp(Context ctx) {
+        ctx.json("\"" + App.INSTANCE.getPlayer().levelUp().replaceAll("\n", "\\\\n") + "\"");
+    }
+
     @PostRequestHandler(endpoint = "/player/cleanseRelic")
     public static void cleanseRelic(Context ctx) {
         boolean cleansed = getRelicFromRelics(ctx).cleanseItem(App.INSTANCE.getPlayer());
