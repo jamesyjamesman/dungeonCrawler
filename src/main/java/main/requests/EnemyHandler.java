@@ -15,6 +15,7 @@ public class EnemyHandler {
 
     @PostRequestHandler(endpoint = "/enemy/takeDamage")
     public static void takeDamage(Context ctx) {
+        //todo nullpointer when minotaur dies
         Enemy attackedEnemy = getEnemyFromContext(ctx);
         Player player = App.INSTANCE.getPlayer();
         player.attack(attackedEnemy);

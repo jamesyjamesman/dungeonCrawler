@@ -163,7 +163,8 @@ async function enemyHandler(room) {
 }
 
 async function renderEnemies(room) {
-    const enemies = await postHelper("/rooms/getEnemies", {id: room.id});
+    // const enemies = await postHelper("/rooms/getEnemies", {id: room.id});
+    const enemies = room.enemies;
     const mainDiv = $("#mainDiv");
 
     numberInputOptions = [];
@@ -207,6 +208,7 @@ async function battleSequence(room, enemy) {
     });
     enemy = enemyInfo.enemy;
     const deathString = enemyInfo.deathString;
+    //todo figure out if player leveled up
     if (enemy.currentHealth <= 0) {
         mainDiv.append(`<p>${deathString}</p>`);
 
@@ -220,8 +222,11 @@ async function battleSequence(room, enemy) {
         }
     }
 
+    // Necessary so enemies aren't null
+    room = await getHelper("/player/getCurrentRoom")
+
     await enemiesAttackPlayer(room);
-    await renderStats();
+    await render();
     await renderEnemies(room);
 }
 
@@ -234,6 +239,8 @@ function appendStatusTicker(text) {
     }
 }
 
+//refactor to just give room id and in the backend loop and attack the player? maybe (would make status rendering harder)
+// could have /enemy/attack return an array of strings instead and loop through that and append?
 async function enemiesAttackPlayer(room) {
     for (let i = 0; i < room.enemies.length; i++) {
         const statusInfo = await postHelper("/enemy/attack", {
@@ -253,7 +260,7 @@ async function render() {
 async function renderStats() {
     const player = await getHelper("/player/getPlayer");
     const statDiv = $("#statusChecker").html("");
-    statDiv.append(`<p class="statusParagraph">Level: ${player.level} (${player.experience}/${player.expToNextLevel})</p>`)
+    statDiv.append(`<p class="statusParagraph">Level: ${player.level} ${(player.level < 10) ? `(${player.experience}/${player.expToNextLevel})` : ""}</p>`)
     statDiv.append(`<p class="statusParagraph">HP: ${player.currentHealth} ${(player.absorption > 0) ? `(+${player.absorption})` : ""} / ${player.maxHealth}</p>`);
     statDiv.append(`<p class="statusParagraph">Gold: ${player.gold} G</p>`);
     statDiv.append(`<p class="statusParagraph">Attack damage: ${await getHelper("/player/getTotalDamage")}</p>`);
@@ -278,6 +285,7 @@ async function renderInventory() {
     const inventory = await getHelper("/player/getInventory");
     for (let i = 0; i < inventory.length; i++) {
         const item = inventory[i][0];
+        let defaultText = `${inventory[i].length}x ${item.name}: ${item.description}`;
         const elementSpan = $("<span></span>");
         elementSpan.appendTo(inventoryDiv);
 
@@ -315,6 +323,7 @@ async function renderInventory() {
         }
 
         if (room.type === "SHOP" && room.open) {
+            defaultText = `(${item.value} G) ` + defaultText;
             $(`<button class="clickableButton inlineButton">Sell</button>`)
                 .click(async () => {
                     const itemSold = await postHelper("/player/sellItem", {uuid: item.uuid});
@@ -337,11 +346,11 @@ async function renderInventory() {
                 })
                 .appendTo(elementSpan);
         }
+        const outputParagraph = $(`<p class="listParagraph">${defaultText}</p>`);
         if (item.cursed && await postHelper("/player/relicEquipped", {id: "CURSE_DETECTION"})) {
-            elementSpan.append($(`<p class="purple listParagraph">${inventory[i].length}x ${item.name}: ${item.description}</p>`));
-        } else {
-            elementSpan.append($(`<p class="listParagraph">${inventory[i].length}x ${item.name}: ${item.description}</p>`));
+            outputParagraph.addClass("purple");
         }
+        elementSpan.append(outputParagraph);
     }
 }
 
@@ -366,7 +375,7 @@ async function renderRelics() {
                 })
                 .appendTo(elementSpan);
         } else {
-            $(`<button class="clickableButton inlineButton">Use</button>`)
+            $(`<button class="clickableButton inlineButton">Unequip</button>`)
                 .click(async () => {
                     await postHelper("/player/unequipRelic", {uuid: relics[i].uuid})
                     await render();
@@ -383,7 +392,6 @@ async function renderRelics() {
 
 async function shopHandler(room) {
     await shopRenderer(room);
-    await appendContinue(room.id);
 }
 
 //todo can't buy items by text, only continue (maybe good thing?)
@@ -411,6 +419,7 @@ async function shopRenderer(room) {
             .appendTo(elementSpan);
         elementSpan.append(`<p class="listParagraph">${item.name} (${item.value} G): ${item.description}</p>`);
     }
+    await appendContinue(room.id);
     await render();
 }
 

@@ -304,7 +304,7 @@ public class Player extends Entity {
 
     public ArrayList<Item> collectLoot(Loot loot) {
         ArrayList<Item> droppedItems = new ArrayList<>();
-        addGold(this.getGold());
+        addGold(loot.getGold());
         for (int i = 0; i < loot.getItems().size(); i++) {
             Item item = loot.getItems().get(i);
             if (item instanceof Relic relic && this.hasRelic(relic)) {
