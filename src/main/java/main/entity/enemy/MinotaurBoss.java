@@ -42,20 +42,34 @@ public class MinotaurBoss extends Boss {
     public String attack(Player player) {
         int damage = 0;
         int randomChoice = new Random().nextInt(9);
+        String output = "<ERROR>";
 
+        //make attacks return a string probably instead of the damage, do player.takeDamage in each attack? idk
         switch (randomChoice) {
-            case 0 -> damage = failedChargeAttack();
-            case 1, 2 -> damage = angerAttack();
-            case 3, 4, 5 -> damage = shriekAttack(player);
-            case 6, 7 -> damage = chargeAttack();
-            case 8 -> damage = healAttack();
+            case 0 -> {
+                damage = failedChargeAttack();
+                output = "The minotaur tried to charge you, but fell over and smacked itself in the face! It doesn't seem very happy...";
+            }
+            case 1, 2 -> {
+                damage = angerAttack();
+                output = "The minotaur is getting upset!";
+            }
+            case 3, 4, 5 -> {
+                damage = shriekAttack(player);
+                output = "The minotaur shrieks, dealing " + damage + " damage and giving you a level of weakness!";
+            }
+            case 6, 7 -> {
+                damage = chargeAttack();
+                output = "The minotaur charges at you, goring you with its horns! You took " + damage + " damage!";
+            }
+            case 8 -> {
+                damage = healAttack();
+                output = "The minotaur took out a chunk of meat, healing " + (int) (this.getDamage() * 1.5) + " health!";
+            }
         }
 
-        if (damage > 0) {
-        }
         player.takeDamage(damage);
-        //todo
-        return "TODO";
+        return output;
     }
 
 }

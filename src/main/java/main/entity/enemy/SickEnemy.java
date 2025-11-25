@@ -13,25 +13,25 @@ public class SickEnemy extends Enemy {
 
     @Override
     public String attack(Player player) {
-        switch (new Random().nextInt(5)) {
+        return switch (new Random().nextInt(5)) {
             case 0, 1 -> super.attack(player);
             case 2, 3 -> sneeze(player);
             case 4 -> grossAttack(player);
-        }
-        //todo
-        return "TODO";
+            //intellij is making me do this???
+            default -> throw new IllegalStateException("Unexpected value!");
+        };
     }
 
-    public void sneeze(Player player) {
+    public String sneeze(Player player) {
         int poisonAmount = new Random().nextInt(1,4);
         player.getCurrentStatuses().addPoison(poisonAmount);
+        return "Gross! The " + this.speciesToStringLower() + " sneezed on you, giving you " + poisonAmount + " levels of poison!";
     }
 
-    public void grossAttack(Player player) {
+    public String grossAttack(Player player) {
         int poisonAmount = new Random().nextInt(3,7);
-        super.attack(player);
+        String normal = super.attack(player);
         player.getCurrentStatuses().addPoison(poisonAmount);
+        return "...EW! The " + this.speciesToStringLower() + " sneezed on their weapon, then hit you with it! You got " + poisonAmount + " levels of poison! " + normal;
     }
-
-
 }

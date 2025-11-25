@@ -69,11 +69,13 @@ public class SlimeBoss extends Boss {
         if (new Random().nextInt(5) == 0) {
             return 0;
         }
-        if (new Random().nextInt(10) == 0) {
-            Enemy slimeEnemy = new Enemy(Species.SLIME, 7, 2, 5, 1);
-            slimeEnemy.setLoot(new Loot(4, new SlimeChunk(1)));
-            ((EnemyRoom) App.INSTANCE.getPlayer().getCurrentRoom()).addEnemy(slimeEnemy);
-        }
+        //todo this causes problems!!!!!! so functionality removed for now
+//        if (new Random().nextInt(10) == 0) {
+//            Enemy slimeEnemy = new Enemy(Species.SLIME, 7, 2, 5, 1);
+//            slimeEnemy.setLoot(new Loot(4, new SlimeChunk(1)));
+//            ((EnemyRoom) App.INSTANCE.getPlayer().getCurrentRoom()).addEnemy(slimeEnemy);
+//            //todo figure out how to communicate this to the player
+//        }
         return super.takeDamage(damage);
     }
 
