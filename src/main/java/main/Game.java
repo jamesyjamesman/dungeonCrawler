@@ -25,8 +25,6 @@ public class Game {
         ArrayList<Room> activeRooms = new ArrayList<>(getRandomActiveRooms(rooms));
         createRoomExits(player, activeRooms, currentRoom);
         App.INSTANCE.setState(App.State.ROOM_END);
-        player.useRelics();
-        player.statusHandler(false);
         return currentRoom;
     }
 

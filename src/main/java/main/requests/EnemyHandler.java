@@ -11,6 +11,8 @@ import main.room.EnemyRoom;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import static main.requests.GameRequests.setContextStatus;
+
 public class EnemyHandler {
 
     @PostRequestHandler(endpoint = "/enemy/takeDamage")
@@ -34,6 +36,7 @@ public class EnemyHandler {
         record EnemyDamageReturn(Enemy enemy, String deathString) {}
 
         ctx.json(new EnemyDamageReturn(attackedEnemy, deathString));
+        setContextStatus(ctx);
     }
 
     @PostRequestHandler(endpoint = "/enemy/attack")
@@ -41,7 +44,11 @@ public class EnemyHandler {
         Enemy enemy = getEnemyFromContext(ctx);
         Player player = App.INSTANCE.getPlayer();
 
-        ctx.json("\"" + enemy.attack(player) + "\"");
+        record AttackInfo(String attackString, boolean playerDead) {}
+        AttackInfo info = new AttackInfo(enemy.attack(player), player.isDead());
+
+        ctx.json(info);
+        setContextStatus(ctx);
     }
 
     public static EnemyRoom getRoomFromContext(Context ctx) {

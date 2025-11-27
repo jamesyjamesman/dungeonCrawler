@@ -14,6 +14,11 @@ public class RelicRelic extends Relic {
     }
 
     @Override
+    public String useRelic(Player player) {
+        return "";
+    }
+
+    @Override
     public String useItem(Player player) {
         if (this.isEquipped(player)) {
             int relicsOverCapacity = player.getEquippedRelics().size() - (player.getRelicCap() - 3);

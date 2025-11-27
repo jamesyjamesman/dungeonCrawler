@@ -23,4 +23,9 @@ public class SlimeRelic extends Relic {
     public static boolean slimeBounce(Player player, int randCeiling) {
         return player.equippedRelicIndex(RelicID.SLIME) != -1 && new Random().nextInt(randCeiling) == 0;
     }
+
+    @Override
+    public String useRelic(Player player) {
+        return "";
+    }
 }

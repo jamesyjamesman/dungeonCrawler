@@ -73,6 +73,14 @@ function relicsVisible() {
     $("#relics").removeClass("invisible");
 }
 
+function playerDeath() {
+    const mainDiv = getFreshMainDiv();
+    $("#inventory").html("");
+    $("#relics").html("");
+
+    mainDiv.append(`<p>You died!</p>`);
+}
+
 async function printRooms(rooms) {
     let foresightRelicEquipped = await postHelper("/player/relicEquipped", {id: "FORESIGHT"});
     const mainDiv = $("#mainDiv");
@@ -94,7 +102,22 @@ async function printRooms(rooms) {
 }
 
 async function goToRoom(id) {
-    let newRoom = await postHelper("rooms/change", { id: id });
+    const changeInfo = await postHelper("rooms/change", { id: id });
+    const newRoom = changeInfo.room;
+    const statusText = changeInfo.statusText;
+    for (let i = 0; i < statusText.length; i++) {
+        appendStatusTicker(statusText[i]);
+    }
+    const relicUseText = changeInfo.relicUseText;
+    for (let i = 0; i < relicUseText.length; i++) {
+        appendStatusTicker(relicUseText[i]);
+    }
+    const playerAlive = changeInfo.playerAlive;
+    if (!playerAlive) {
+        playerDeath();
+        return;
+    }
+    //todo items disappear if your inventory is full!
     $("body").css("backgroundImage", `url("${newRoom.backgroundFileName}")`);
     const descriptionDiv = $("#descriptionDiv").html("");
     descriptionDiv.append(`<p>${parseTextAsHTML(newRoom.description)}</p>`);
@@ -150,6 +173,7 @@ async function appendContinue(id) {
 
 async function itemHandler(room) {
     const mainDiv = getFreshMainDiv();
+    // todo item pickup request
     mainDiv.append(`<p>You picked up a ${room.item.name}!</p>`);
     await render();
     await appendContinue(room.id);
@@ -165,6 +189,12 @@ async function relicHandler(room) {
 async function trapHandler(room) {
     const mainDiv = getFreshMainDiv();
     mainDiv.append(`<p>You took ${room.damageDealt} damage!</p>`);
+    //kinda blegh implementation
+    const player = await postHelper("/player/getPlayer");
+    if (player.currentHealth <= 0) {
+        playerDeath();
+        return;
+    }
     await renderStats();
     await appendContinue(room.id);
 }
@@ -244,7 +274,11 @@ async function battleSequence(room, enemy) {
     // Necessary so enemies aren't null
     room = await getHelper("/player/getCurrentRoom")
 
-    await enemiesAttackPlayer(room);
+    const playerDied = await enemiesAttackPlayer(room);
+    if (playerDied) {
+        playerDeath();
+        return;
+    }
     await render();
     await renderEnemies(room);
 }
@@ -266,8 +300,12 @@ async function enemiesAttackPlayer(room) {
             roomID: room.id,
             uuid: room.enemies[i].uuid
         });
-        appendStatusTicker(statusInfo);
+        appendStatusTicker(statusInfo.attackString);
+        if (statusInfo.playerDead) {
+            return true;
+        }
     }
+    return false;
 }
 
 async function render() {
@@ -443,10 +481,10 @@ async function shopRenderer(room) {
 }
 
 async function fountainHandler(room) {
-    await renderInventory();
     const mainDiv = getFreshMainDiv();
     mainDiv.append("<p>Place an item in the fountain, and/or continue!</p>");
     await appendContinue(room.id);
+    await render();
 }
 
 async function endingHandler(room) {
@@ -456,22 +494,36 @@ async function endingHandler(room) {
 }
 
 async function postHelper(path, json){
-    return await (await fetch(path, {
+    const response = await fetch(path, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(json)
-    })).json();
+    });
+    if (response.status === 403) {
+        killPlayer();
+    }
+    if (response.ok) {
+        return await response.json();
+    }
 }
 
 async function getHelper(path) {
-    return await (await fetch(path, {
+
+    const response = await fetch(path, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
         }
-    })).json();
+    });
+    if (response.status === 403) {
+        killPlayer();
+    }
+    if (response.ok) {
+        return await response.json();
+    }
+    throw new Error();
 }
 
 function parseTextAsHTML(text) {

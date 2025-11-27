@@ -77,4 +77,8 @@ public abstract class Entity extends Identifiable {
         }
         return damage;
     }
+
+    public boolean isDead() {
+        return this.currentHealth <= 0;
+    }
 }

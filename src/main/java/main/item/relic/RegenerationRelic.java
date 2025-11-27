@@ -17,14 +17,15 @@ public class RegenerationRelic extends Relic {
     }
 
     @Override
-    public void useRelic(Player player) {
-        if (App.INSTANCE.getState() != App.State.ROOM_END) {
-            return;
-        }
-        if (new Random().nextInt(3) == 0) {
-        int amountHealed = player.heal(new Random().nextInt(1,5));
-        if (amountHealed != 0) {
+    public String useRelic(Player player) {
+        if (App.INSTANCE.getState() == App.State.ROOM_END) {
+            if (new Random().nextInt(3) == 0) {
+                int amountHealed = player.heal(new Random().nextInt(1, 5));
+                if (amountHealed != 0) {
+                    return "Your " + this.getName() + " healed " + amountHealed + " health!";
+                }
             }
         }
+        return "";
     }
 }

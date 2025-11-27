@@ -10,7 +10,15 @@ public class GameRequests {
     @GetRequestHandler(endpoint = "/gameStart")
     public static void game(Context ctx) {
         Main.initializeApp();
-        ctx.status(200);
+        setContextStatus(ctx);
         ctx.json(App.INSTANCE.getPlayer().getCurrentRoom().getExits());
+    }
+
+    public static void setContextStatus(Context ctx) {
+        if (App.INSTANCE.getPlayer().isDead()) {
+            ctx.status(403);
+        } else {
+            ctx.status(200);
+        }
     }
 }

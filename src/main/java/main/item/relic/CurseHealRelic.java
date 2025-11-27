@@ -1,5 +1,7 @@
 package main.item.relic;
 
+import main.entity.Player;
+
 public class CurseHealRelic extends Relic {
     public CurseHealRelic() {
         this(1);
@@ -10,5 +12,10 @@ public class CurseHealRelic extends Relic {
             dropChance,
             RelicID.CURSE_HEAL);
         setCursed(true);
+    }
+
+    @Override
+    public String useRelic(Player player) {
+        return "";
     }
 }

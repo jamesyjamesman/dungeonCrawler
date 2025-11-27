@@ -1,7 +1,6 @@
 package main.item.relic;
 
 import main.App;
-import main.Main;
 import main.entity.Player;
 
 import java.util.Random;
@@ -18,12 +17,14 @@ public class ShieldingRelic extends Relic {
     }
 
     @Override
-    public void useRelic(Player player) {
+    public String useRelic(Player player) {
         if (player.getAbsorption() < 5 && App.INSTANCE.getState() == App.State.PLAYER_TURN) {
             int absorptionAmount = new Random().nextInt(0, 3);
             if (absorptionAmount > 0) {
                 player.addAbsorption(absorptionAmount);
+                return "Your " + getName() + " gave you " + absorptionAmount + " levels of absorption!";
             }
         }
+        return "";
     }
 }

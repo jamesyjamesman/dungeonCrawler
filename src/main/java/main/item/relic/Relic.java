@@ -16,7 +16,7 @@ public abstract class Relic extends Item {
         this.relicID = relicID;
     }
 
-    public void useRelic(Player player) {}
+    public abstract String useRelic(Player player);
 
     @Override
     public String useItem(Player player) {

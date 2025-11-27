@@ -1,5 +1,7 @@
 package main.item.relic;
 
+import main.entity.Player;
+
 public class DamageRelic extends Relic {
     private final int damage;
     public DamageRelic(int damage) {
@@ -14,5 +16,10 @@ public class DamageRelic extends Relic {
     }
     public int getDamage() {
         return this.damage;
+    }
+
+    @Override
+    public String useRelic(Player player) {
+        return "";
     }
 }

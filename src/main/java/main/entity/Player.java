@@ -12,9 +12,11 @@ import main.item.weapon.Weapon;
 import main.room.Room;
 import main.room.ShopRoom;
 
+import javax.print.DocFlavor;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 //potentially make a "stats" object for player -- would cut this in about half
 public class Player extends Entity {
@@ -173,10 +175,12 @@ public class Player extends Entity {
         return damage;
     }
 
-    public void useRelics() {
-        for (Relic equippedRelic : this.equippedRelics) {
-            equippedRelic.useRelic(this);
-        }
+    public ArrayList<String> useRelics() {
+        return new ArrayList<>(this.equippedRelics
+                .stream()
+                .map(relic -> relic.useRelic(this))
+                .filter(string -> !string.isEmpty())
+                .toList());
     }
 
     public boolean equipRelic(Relic relic) {
@@ -297,13 +301,26 @@ public class Player extends Entity {
         return output + "\n";
     }
 
-    public void statusHandler(boolean inBattle) {
-        doPoisonDamage();
-        doFireDamage();
-        if (inBattle) {
-            return;
+    public ArrayList<String> statusHandler(boolean inBattle) {
+        ArrayList<String> statusOutputStrings = new ArrayList<>();
+        int poisonDamage = doPoisonDamage();
+        if (poisonDamage > 0)
+            statusOutputStrings.add("You took " + poisonDamage + " poison damage!");
+        int fireDamage = doFireDamage();
+        if (fireDamage > 0)
+            statusOutputStrings.add("You took " + fireDamage + " fire damage!");
+        if (!inBattle) {
+            if (equippedRelicIndex(RelicID.CURSE_HEAL) == -1) {
+                int curseHeal = doCurseHeal();
+                if (curseHeal > 0)
+                    statusOutputStrings.add("You healed " + curseHeal + " from your cursed relics!");
+            } else {
+                int curseDamage = doCurseDamage();
+                if (curseDamage > 0)
+                    statusOutputStrings.add("You took " + curseDamage + " damage from your cursed relics!");
+            }
         }
-        doCurseDamage();
+        return statusOutputStrings;
     }
 
     //todo: consider moving these to the statuses class
@@ -320,49 +337,40 @@ public class Player extends Entity {
         return finalDamage;
     }
 
-    public void doFireDamage() {
+    public int doFireDamage() {
         int fireLevel = this.currentStatuses.getFire();
-        if (fireLevel == 0) {
-            return;
+        if (fireLevel > 0) {
+            takeDamage(1);
+            this.currentStatuses.setFire(fireLevel - 1);
+            return 1;
         }
-        takeDamage(1);
-        this.currentStatuses.setFire(fireLevel - 1);
+        return 0;
     }
 
-    public void doPoisonDamage() {
+    public int doPoisonDamage() {
         int poisonLevel = this.currentStatuses.getPoison();
-        if (poisonLevel == 0) {
-            return;
+        if (poisonLevel > 0) {
+            takeDamage(poisonLevel);
+            this.currentStatuses.setPoison(poisonLevel - 1);
         }
-        takeDamage(poisonLevel);
-        this.currentStatuses.setPoison(poisonLevel - 1);
+        return poisonLevel;
     }
 
-    public void doCurseDamage() {
+    public int doCurseDamage() {
         int curseLevel = this.currentStatuses.getCursed();
-        if (curseLevel == 0) {
-            return;
-        }
-        if (equippedRelicIndex(RelicID.CURSE_HEAL) == -1) {
-            int totalDamage = 0;
-            for (int i = 0; i < curseLevel; i++) {
-                totalDamage += new Random().nextInt(4);
-            }
-            if (totalDamage > 0) {
-                takeDamage(totalDamage);
-            }
-        } else {
-            int totalHeal = 0;
-            for (int i = 0; i < curseLevel; i++) {
-                totalHeal += new Random().nextInt(2);
-            }
-            if (totalHeal > 0) {
-                int amountHealed = heal(totalHeal);
-                if (amountHealed > 0) {
-                }
-            }
-        }
+        int totalDamage = 0;
+        for (int i = 0; i < curseLevel; i++)
+            totalDamage += new Random().nextInt(4);
+        takeDamage(totalDamage);
+        return totalDamage;
+    }
 
+    public int doCurseHeal() {
+        int curseLevel = this.currentStatuses.getCursed();
+        int totalHeal = 0;
+        for (int i = 0; i < curseLevel; i++)
+            totalHeal += new Random().nextInt(2);
+        return heal(totalHeal);
     }
 
     public ArrayList<Relic> getEquippedRelics() {
