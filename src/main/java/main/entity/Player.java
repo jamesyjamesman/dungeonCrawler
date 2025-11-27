@@ -310,7 +310,7 @@ public class Player extends Entity {
         if (fireDamage > 0)
             statusOutputStrings.add("You took " + fireDamage + " fire damage!");
         if (!inBattle) {
-            if (equippedRelicIndex(RelicID.CURSE_HEAL) == -1) {
+            if (equippedRelicIndex(RelicID.CURSE_HEAL) != -1) {
                 int curseHeal = doCurseHeal();
                 if (curseHeal > 0)
                     statusOutputStrings.add("You healed " + curseHeal + " from your cursed relics!");

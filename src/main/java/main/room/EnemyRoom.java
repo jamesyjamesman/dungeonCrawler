@@ -1,7 +1,6 @@
 package main.room;
 
 import main.App;
-import main.Battle;
 import main.entity.Player;
 import main.entity.enemy.Enemy;
 

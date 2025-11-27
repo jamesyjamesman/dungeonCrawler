@@ -15,6 +15,8 @@ import org.reflections.util.ConfigurationBuilder;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
+import static main.requests.GameRequests.setContextStatus;
+
 public class Main {
     public static void main(String[] args) {
         Javalin app = Javalin.create(config -> config.staticFiles.add("/web"))
@@ -45,7 +47,10 @@ public class Main {
             if (annotation.endpoint().isEmpty())
                 throw new RuntimeException(method.getName() + " must have an endpoint");
 
-            app.post(annotation.endpoint(), ctx -> method.invoke(null, ctx));
+            app.post(annotation.endpoint(), ctx -> {
+                setContextStatus(ctx);
+                method.invoke(null, ctx);
+            });
         }
 
         for (Method method : reflections.getMethodsAnnotatedWith(GetRequestHandler.class)) {
@@ -60,7 +65,10 @@ public class Main {
             if (annotation.endpoint().isEmpty())
                 throw new RuntimeException(method.getName() + " must have an endpoint");
 
-            app.get(annotation.endpoint(), ctx -> method.invoke(null, ctx));
+            app.get(annotation.endpoint(), ctx -> {
+                setContextStatus(ctx);
+                method.invoke(null, ctx);
+            });
         }
     }
 

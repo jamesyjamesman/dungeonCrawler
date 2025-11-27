@@ -78,7 +78,7 @@ function playerDeath() {
     $("#inventory").html("");
     $("#relics").html("");
 
-    mainDiv.append(`<p>You died!</p>`);
+    mainDiv.append(`<p>You died! Unfortunately, I am not a good programmer, so you must reset the game manually.</p>`);
 }
 
 async function printRooms(rooms) {
@@ -190,7 +190,7 @@ async function trapHandler(room) {
     const mainDiv = getFreshMainDiv();
     mainDiv.append(`<p>You took ${room.damageDealt} damage!</p>`);
     //kinda blegh implementation
-    const player = await postHelper("/player/getPlayer");
+    const player = await getHelper("/player/getPlayer");
     if (player.currentHealth <= 0) {
         playerDeath();
         return;
@@ -501,25 +501,25 @@ async function postHelper(path, json){
         },
         body: JSON.stringify(json)
     });
-    if (response.status === 403) {
-        killPlayer();
-    }
+    // if (response.status === 403) {
+    //     playerDeath();
+    // }
     if (response.ok) {
         return await response.json();
     }
+    throw new Error();
 }
 
 async function getHelper(path) {
-
     const response = await fetch(path, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
         }
     });
-    if (response.status === 403) {
-        killPlayer();
-    }
+    // if (response.status === 403) {
+    //     playerDeath();
+    // }
     if (response.ok) {
         return await response.json();
     }

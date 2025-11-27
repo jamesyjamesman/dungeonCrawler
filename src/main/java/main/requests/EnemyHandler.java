@@ -36,7 +36,6 @@ public class EnemyHandler {
         record EnemyDamageReturn(Enemy enemy, String deathString) {}
 
         ctx.json(new EnemyDamageReturn(attackedEnemy, deathString));
-        setContextStatus(ctx);
     }
 
     @PostRequestHandler(endpoint = "/enemy/attack")
@@ -48,7 +47,6 @@ public class EnemyHandler {
         AttackInfo info = new AttackInfo(enemy.attack(player), player.isDead());
 
         ctx.json(info);
-        setContextStatus(ctx);
     }
 
     public static EnemyRoom getRoomFromContext(Context ctx) {
