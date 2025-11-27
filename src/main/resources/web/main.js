@@ -5,14 +5,8 @@ window.addEventListener("load", async () => {
             userSelectOption();
         }
     })
-    //these don't work and I don't care
     $("#popup").on("keypress", function(event) {
         console.log(event.key);
-        if (event.key === "Enter") {
-            hidePopup();
-        }
-    })
-    $("#popupText").on("keypress", function(event) {
         if (event.key === "Enter") {
             hidePopup();
         }
@@ -117,7 +111,6 @@ async function goToRoom(id) {
         playerDeath();
         return;
     }
-    //todo items disappear if your inventory is full!
     $("body").css("backgroundImage", `url("${newRoom.backgroundFileName}")`);
     const descriptionDiv = $("#descriptionDiv").html("");
     descriptionDiv.append(`<p>${parseTextAsHTML(newRoom.description)}</p>`);
@@ -172,16 +165,56 @@ async function appendContinue(id) {
 }
 
 async function itemHandler(room) {
+    const player = await getHelper("/player/getPlayer");
+    const inventorySize = await getHelper("/player/getInventorySize");
     const mainDiv = getFreshMainDiv();
-    // todo item pickup request
-    mainDiv.append(`<p>You picked up a ${room.item.name}!</p>`);
+    if (inventorySize >= player.inventoryCap) {
+        mainDiv.append(`<p>Your inventory is full! Drop an item to pick up the ${room.item.name}!</p>`);
+        $(`<button class="clickableButton">Try Again</button>`)
+            .click(async () => {
+                await itemPickup(room);
+            })
+            .appendTo(mainDiv);
+        await appendContinue(room.id);
+        return;
+    }
+    await itemPickup(room);
+}
+
+async function itemPickup(room) {
+    const pickupSuccess = await postHelper("/rooms/itemPickup", { id: room.id });
+    if (pickupSuccess) {
+        $(`#mainDiv`).append(`<p>You picked up a ${room.item.name}!</p>`);
+    } else {
+        $(`#mainDiv`).append(`<p>You left the ${room.item.name} behind...</p>`);
+    }
     await render();
     await appendContinue(room.id);
 }
 
 async function relicHandler(room) {
+    const player = await getHelper("/player/getPlayer");
     const mainDiv = getFreshMainDiv();
-    mainDiv.append(`<p>You picked up a ${room.relic.name}!</p>`);
+    if (player.equippedRelics >= player.relicCap) {
+        mainDiv.append(`<p>Your inventory is full! Drop an item to pick up the ${room.relic.name}!</p>`);
+        $(`<button class="clickableButton">Try Again</button>`)
+            .click(async () => {
+                await relicPickup(room);
+            })
+            .appendTo(mainDiv);
+        await appendContinue(room.id);
+        return;
+    }
+    await relicPickup(room);
+}
+
+async function relicPickup(room) {
+    const pickupSuccess = await postHelper("/rooms/relicPickup", { id: room.id });
+    if (pickupSuccess) {
+        $(`#mainDiv`).append(`<p>You picked up a ${room.relic.name}!</p>`);
+    } else {
+        $(`#mainDiv`).append(`<p>You left the ${room.relic.name} behind...</p>`);
+    }
     await render();
     await appendContinue(room.id);
 }
@@ -199,7 +232,6 @@ async function trapHandler(room) {
     await appendContinue(room.id);
 }
 
-//todo big issue with dynamic enemies, like slime boss (killing one ends fight?)
 async function enemyHandler(room) {
     const mainDiv = getFreshMainDiv();
     mainDiv.append(`<p>${room.battleInitiationMessage}</p>`)
@@ -252,7 +284,6 @@ async function battleSequence(room, enemy) {
     });
     enemy = enemyInfo.enemy;
     const deathString = enemyInfo.deathString;
-    //todo figure out if player leveled up
     if (enemy.currentHealth <= 0) {
         mainDiv.append(`<p>${deathString}</p>`);
 

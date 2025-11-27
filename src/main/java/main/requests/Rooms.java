@@ -5,9 +5,7 @@ import main.App;
 import main.Game;
 import main.entity.Player;
 import main.item.Item;
-import main.room.EnemyRoom;
-import main.room.Room;
-import main.room.ShopRoom;
+import main.room.*;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -32,28 +30,32 @@ public class Rooms {
 
     @PostRequestHandler(endpoint = "/rooms/getEnemies")
     public static void getEnemies(Context ctx) {
-        record RoomId(int id) {}
-        int id = ctx.bodyAsClass(RoomId.class).id();
-        EnemyRoom room = (EnemyRoom) getRoom(id);
+        EnemyRoom room = (EnemyRoom) getRoomFromContext(ctx);
         ctx.json(room.getEnemies());
-        
+    }
+
+    @PostRequestHandler(endpoint = "/rooms/itemPickup")
+    public static void itemPickup(Context ctx) {
+        ItemRoom room = (ItemRoom) getRoomFromContext(ctx);
+        ctx.json(App.INSTANCE.getPlayer().itemPickup(room.getItem()));
+    }
+
+    @PostRequestHandler(endpoint = "/rooms/relicPickup")
+    public static void relicPickup(Context ctx) {
+        RelicRoom room = (RelicRoom) getRoomFromContext(ctx);
+        ctx.json(App.INSTANCE.getPlayer().itemPickup(room.getRelic()));
     }
 
     @PostRequestHandler(endpoint = "/rooms/resetEnemies")
     public static void resetEnemies(Context ctx) {
-        record RoomId(int id) {}
-        int id = ctx.bodyAsClass(RoomId.class).id();
-        EnemyRoom room = (EnemyRoom) getRoom(id);
+        EnemyRoom room = (EnemyRoom) getRoomFromContext(ctx);
         room.resetRoom();
         ctx.json(true);
-        
     }
 
     @PostRequestHandler(endpoint = "/rooms/getExits")
     public static void getExits(Context ctx) {
-        record RoomId(int id) {}
-        int id = ctx.bodyAsClass(RoomId.class).id();
-        ArrayList<Room> roomExits = getRoom(id).getExits();
+        ArrayList<Room> roomExits = getRoomFromContext(ctx).getExits();
         ctx.json(roomExits);
         
     }
@@ -81,5 +83,11 @@ public class Rooms {
                 .stream()
                 .filter(room -> room.getId() == id)
                 .findFirst().orElse(null);
+    }
+
+    public static Room getRoomFromContext(Context ctx) {
+        record RoomId(int id) {}
+        int id = ctx.bodyAsClass(RoomId.class).id();
+        return getRoom(id);
     }
 }

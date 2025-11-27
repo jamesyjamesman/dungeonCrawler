@@ -21,7 +21,6 @@ public class ItemRoom extends Room {
             initializeItem();
         }
         super.completeRoomActions(player);
-        player.itemPickup(this.item);
     }
 
     public void initializeItem() {

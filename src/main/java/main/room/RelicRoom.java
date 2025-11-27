@@ -23,11 +23,6 @@ public class RelicRoom extends Room {
     public void completeRoomActions(Player player) {
         initializeRelic();
         super.completeRoomActions(player);
-
-        if (this.hasCorpse) {
-        }
-
-        player.itemPickup(this.relic);
     }
 
     public void initializeRelic() {
