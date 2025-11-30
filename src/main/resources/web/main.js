@@ -6,7 +6,6 @@ window.addEventListener("load", async () => {
         }
     })
     $("#popup").on("keypress", function(event) {
-        console.log(event.key);
         if (event.key === "Enter") {
             hidePopup();
         }
@@ -165,59 +164,53 @@ async function appendContinue(id) {
 }
 
 async function itemHandler(room) {
-    const player = await getHelper("/player/getPlayer");
-    const inventorySize = await getHelper("/player/getInventorySize");
-    const mainDiv = getFreshMainDiv();
-    if (inventorySize >= player.inventoryCap) {
-        mainDiv.append(`<p>Your inventory is full! Drop an item to pick up the ${room.item.name}!</p>`);
+    const mainDiv = $("#mainDiv");
+    let pickupSuccess = await itemPickup(room);
+    if (!pickupSuccess) {
         $(`<button class="clickableButton">Try Again</button>`)
             .click(async () => {
-                await itemPickup(room);
+                await itemHandler(room);
             })
             .appendTo(mainDiv);
-        await appendContinue(room.id);
-        return;
     }
-    await itemPickup(room);
 }
 
 async function itemPickup(room) {
     const pickupSuccess = await postHelper("/rooms/itemPickup", { id: room.id });
+    const mainDiv = getFreshMainDiv();
     if (pickupSuccess) {
-        $(`#mainDiv`).append(`<p>You picked up a ${room.item.name}!</p>`);
+        mainDiv.append(`<p>You picked up a ${room.item.name}!</p>`);
     } else {
-        $(`#mainDiv`).append(`<p>You left the ${room.item.name} behind...</p>`);
+        mainDiv.append(`<p>Your inventory is full! Drop an item to pick up the ${room.item.name}!</p>`);
     }
     await render();
     await appendContinue(room.id);
+    return pickupSuccess;
 }
 
-//todo rework pickups to handle logic AND USE IT
 async function relicHandler(room) {
-    const player = await getHelper("/player/getPlayer");
-    const mainDiv = getFreshMainDiv();
-    if (player.equippedRelics >= player.relicCap) {
-        mainDiv.append(`<p>Your inventory is full! Drop an item to pick up the ${room.relic.name}!</p>`);
+    const mainDiv = $("#mainDiv");
+    let pickupSuccess = await relicPickup(room);
+    if (!pickupSuccess) {
         $(`<button class="clickableButton">Try Again</button>`)
             .click(async () => {
-                await relicPickup(room);
+                await relicHandler(room);
             })
             .appendTo(mainDiv);
-        await appendContinue(room.id);
-        return;
     }
-    await relicPickup(room);
 }
 
 async function relicPickup(room) {
     const pickupSuccess = await postHelper("/rooms/relicPickup", { id: room.id });
+    const mainDiv = getFreshMainDiv();
     if (pickupSuccess) {
-        $(`#mainDiv`).append(`<p>You picked up a ${room.relic.name}!</p>`);
+        mainDiv.append(`<p>You picked up a ${room.relic.name}!</p>`);
     } else {
-        $(`#mainDiv`).append(`<p>You left the ${room.relic.name} behind...</p>`);
+        mainDiv.append(`<p>Your inventory is full! Drop an item to pick up the ${room.relic.name}!</p>`);
     }
     await render();
     await appendContinue(room.id);
+    return pickupSuccess;
 }
 
 async function trapHandler(room) {
