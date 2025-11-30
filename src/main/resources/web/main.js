@@ -98,6 +98,7 @@ async function printRooms(rooms) {
 async function goToRoom(id) {
     const changeInfo = await postHelper("rooms/change", { id: id });
     const newRoom = changeInfo.room;
+    const roomExits = await postHelper("/rooms/getExits", {id : newRoom.id });
     const statusText = changeInfo.statusText;
     for (let i = 0; i < statusText.length; i++) {
         appendStatusTicker(statusText[i]);
@@ -114,7 +115,6 @@ async function goToRoom(id) {
     $("body").css("backgroundImage", `url("${newRoom.backgroundFileName}")`);
     const descriptionDiv = $("#descriptionDiv").html("");
     descriptionDiv.append(`<p>${parseTextAsHTML(newRoom.description)}</p>`);
-    const roomExits = await postHelper("/rooms/getExits", {id : newRoom.id });
     switch (newRoom.type) {
         case "NORMAL":
             await printRooms(roomExits);
@@ -157,8 +157,8 @@ function getFreshErrorDiv() {
 }
 
 async function appendContinue(id) {
-    const mainDiv = $("#mainDiv");
     const exits = await postHelper("/rooms/getExits", { id: id });
+    const mainDiv = $("#mainDiv");
     const continueButton = $("<button class='clickableButton'>Continue</button>").click(async () => await printRooms(exits));
     numberInputOptions = [async () => await printRooms(exits)];
     mainDiv.append(continueButton);
@@ -192,6 +192,7 @@ async function itemPickup(room) {
     await appendContinue(room.id);
 }
 
+//todo rework pickups to handle logic AND USE IT
 async function relicHandler(room) {
     const player = await getHelper("/player/getPlayer");
     const mainDiv = getFreshMainDiv();
@@ -220,10 +221,10 @@ async function relicPickup(room) {
 }
 
 async function trapHandler(room) {
+    const player = await getHelper("/player/getPlayer");
     const mainDiv = getFreshMainDiv();
     mainDiv.append(`<p>You took ${room.damageDealt} damage!</p>`);
     //kinda blegh implementation
-    const player = await getHelper("/player/getPlayer");
     if (player.currentHealth <= 0) {
         playerDeath();
         return;
@@ -239,7 +240,6 @@ async function enemyHandler(room) {
 }
 
 async function renderEnemies(room) {
-    // const enemies = await postHelper("/rooms/getEnemies", {id: room.id});
     const enemies = room.enemies;
     const mainDiv = $("#mainDiv");
 
@@ -276,12 +276,13 @@ function appendElementText(element, text) {
     element.append(`<p class="statusParagraph">${text}</p>`)
 }
 
+//todo rework to do less logic (just use return value(s) of request)
 async function battleSequence(room, enemy) {
-    const mainDiv = getFreshMainDiv();
     const enemyInfo = await postHelper("/enemy/takeDamage", {
         roomID: room.id,
         uuid: enemy.uuid
     });
+    const mainDiv = getFreshMainDiv();
     enemy = enemyInfo.enemy;
     const deathString = enemyInfo.deathString;
     if (enemy.currentHealth <= 0) {
@@ -325,6 +326,7 @@ function appendStatusTicker(text) {
 
 //refactor to just give room id and in the backend loop and attack the player? maybe (would make status rendering harder)
 // could have /enemy/attack return an array of strings instead and loop through that and append?
+// would decrease render time, too
 async function enemiesAttackPlayer(room) {
     for (let i = 0; i < room.enemies.length; i++) {
         const statusInfo = await postHelper("/enemy/attack", {
@@ -347,13 +349,15 @@ async function render() {
 
 async function renderStats() {
     const player = await getHelper("/player/getPlayer");
+    const totalDamage = await getHelper("/player/getTotalDamage");
+    const inventorySize = await getHelper("/player/getInventorySize");
     const statDiv = $("#statusChecker").html("");
     statDiv.append(`<p class="statusParagraph">Level: ${player.level} ${(player.level < 10) ? `(${player.experience}/${player.expToNextLevel})` : ""}</p>`)
     statDiv.append(`<p class="statusParagraph">HP: ${player.currentHealth} ${(player.absorption > 0) ? `(+${player.absorption})` : ""} / ${player.maxHealth}</p>`);
     statDiv.append(`<p class="statusParagraph">Gold: ${player.gold} G</p>`);
-    statDiv.append(`<p class="statusParagraph">Attack damage: ${await getHelper("/player/getTotalDamage")}</p>`);
+    statDiv.append(`<p class="statusParagraph">Attack damage: ${totalDamage}</p>`);
     statDiv.append(`<p class="statusParagraph">Rooms traveled: ${player.roomsTraversed}</p>`);
-    statDiv.append(`<p class="statusParagraph">Inventory: ${await getHelper("/player/getInventorySize")}/${player.inventoryCap}</p>`);
+    statDiv.append(`<p class="statusParagraph">Inventory: ${inventorySize}/${player.inventoryCap}</p>`);
     statDiv.append(`<p class="statusParagraph">Relic pouch: ${player.equippedRelics.length}/${player.relicCap}</p>`)
     appendIfNonzero(player.currentStatuses.cursed, `Cursed: Level ${player.currentStatuses.cursed}`);
     appendIfNonzero(player.currentStatuses.weakened, `Weakened: Level ${player.currentStatuses.weakened}`);
@@ -369,8 +373,9 @@ function appendIfNonzero(value, string) {
 
 async function renderInventory() {
     const room = await getHelper("/player/getCurrentRoom");
-    const inventoryDiv = $("#inventory").html("");
     const inventory = await getHelper("/player/getInventory");
+    const curseDetectionEquipped = await postHelper("/player/relicEquipped", {id: "CURSE_DETECTION"})
+    const inventoryDiv = $("#inventory").html("");
     for (let i = 0; i < inventory.length; i++) {
         const item = inventory[i][0];
         let defaultText = `${inventory[i].length}x ${item.name}: ${item.description}`;
@@ -435,7 +440,7 @@ async function renderInventory() {
                 .appendTo(elementSpan);
         }
         const outputParagraph = $(`<p class="listParagraph">${defaultText}</p>`);
-        if (item.cursed && await postHelper("/player/relicEquipped", {id: "CURSE_DETECTION"})) {
+        if (item.cursed && curseDetectionEquipped) {
             outputParagraph.addClass("purple");
         }
         elementSpan.append(outputParagraph);
@@ -444,11 +449,11 @@ async function renderInventory() {
 
 async function renderRelics() {
     const room = await getHelper("/player/getCurrentRoom");
-    const relicDiv = $("#relics").html("");
     const relics = await getHelper("/player/getRelics");
+    const relicDiv = $("#relics").html("");
     for (let i = 0; i < relics.length; i++) {
         const relic = relics[i];
-        const elementSpan = $("<span></span>")
+        const elementSpan = $("<span></span>");
         elementSpan.appendTo(relicDiv);
         if (relic.cleansable && room.type === "FOUNTAIN" && !room.fountainUsed) {
             $(`<button class="clickableButton inlineButton">Cleanse</button>`)

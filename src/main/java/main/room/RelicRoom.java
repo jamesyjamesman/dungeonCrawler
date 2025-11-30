@@ -10,7 +10,6 @@ import java.util.Random;
 
 public class RelicRoom extends Room {
     private final boolean hasCorpse;
-    //todo make relic final if possible
     private Relic relic;
 
     public RelicRoom(RelicRoomBuilder<?> builder) {
