@@ -5,37 +5,37 @@ import main.App;
 import main.entity.Player;
 import main.entity.enemy.Enemy;
 import main.item.Item;
-import main.item.Loot;
 import main.room.EnemyRoom;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
-import static main.requests.GameRequests.setContextStatus;
-
 public class EnemyHandler {
 
     @PostRequestHandler(endpoint = "/enemy/takeDamage")
     public static void takeDamage(Context ctx) {
-        //todo nullpointer when minotaur dies
+        EnemyRoom room = getRoomFromContext(ctx);
         Enemy attackedEnemy = getEnemyFromContext(ctx);
         Player player = App.INSTANCE.getPlayer();
         player.attack(attackedEnemy);
 
-        //todo move to frontend, just send dropped items in the response
-        String deathString = "";
-        if (attackedEnemy.getCurrentHealth() == 0) {
-            Loot loot = attackedEnemy.getLoot();
-            deathString += "The " + attackedEnemy.speciesToStringLower() + " dropped " + attackedEnemy.getExperienceDropped() + " exp and " + loot.getGold() + " gold!<br>";
-            ArrayList<Item> droppedItems = player.collectLoot(loot);
-            for (Item droppedItem : droppedItems) {
-                deathString += "The " + attackedEnemy.speciesToStringLower() + " dropped a " + droppedItem.getName() + "!<br>";
-            }
+        record EnemyDamageReturn(Enemy enemy, boolean dead, int gold, ArrayList<Item> droppedLoot, boolean lastEnemy) {}
+
+        ArrayList<Item> droppedLoot = null;
+        if (attackedEnemy.isDead()) {
+            droppedLoot = player.collectLoot(attackedEnemy.getLoot());
         }
 
-        record EnemyDamageReturn(Enemy enemy, String deathString) {}
+        if (droppedLoot == null) {
+            droppedLoot = new ArrayList<>();
+        }
 
-        ctx.json(new EnemyDamageReturn(attackedEnemy, deathString));
+        ctx.json(new EnemyDamageReturn(
+                attackedEnemy,
+                attackedEnemy.isDead(),
+                attackedEnemy.getLoot().getGold(),
+                droppedLoot,
+                room.getEnemies().isEmpty()));
     }
 
     @PostRequestHandler(endpoint = "/enemy/attack")

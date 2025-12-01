@@ -50,15 +50,6 @@ public class Enemy extends Entity implements Cloneable {
         //will get more complex with weapons, etc.
     }
 
-    //very basic right now, could add a basic description, and attack descriptions for bosses.
-    public void checkInformation() {
-        String output = "";
-        output += speciesToString().charAt(0) + speciesToString().substring(1).toLowerCase() + "\n";
-        output += "HP: " + getCurrentHealth() + "/" + getMaxHealth() + "\n";
-        output += "EXP: " + this.experienceDropped + "\n";
-        output += "ATK DMG: " + getDamage() + "\n";
-    }
-
     public void reset() {
         heal(getMaxHealth());
     }
@@ -78,7 +69,7 @@ public class Enemy extends Entity implements Cloneable {
     public Enemy clone() {
         try {
             return (Enemy) super.clone();
-            //loot doesnt need to be cloned because it works like a blueprint
+            //loot doesn't need to be cloned because it works like a blueprint
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }

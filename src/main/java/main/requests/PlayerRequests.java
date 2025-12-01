@@ -102,10 +102,10 @@ public class PlayerRequests {
         
     }
 
+    //todo status if level up failed?
     @PostRequestHandler(endpoint = "/player/levelUp")
     public static void levelUp(Context ctx) {
         ctx.json("\"" + App.INSTANCE.getPlayer().levelUp().replaceAll("\n", "\\\\n") + "\"");
-        
     }
 
     @PostRequestHandler(endpoint = "/player/cleanseRelic")

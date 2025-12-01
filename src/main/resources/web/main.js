@@ -269,7 +269,6 @@ function appendElementText(element, text) {
     element.append(`<p class="statusParagraph">${text}</p>`)
 }
 
-//todo rework to do less logic (just use return value(s) of request)
 async function battleSequence(room, enemy) {
     const enemyInfo = await postHelper("/enemy/takeDamage", {
         roomID: room.id,
@@ -277,9 +276,14 @@ async function battleSequence(room, enemy) {
     });
     const mainDiv = getFreshMainDiv();
     enemy = enemyInfo.enemy;
-    const deathString = enemyInfo.deathString;
-    if (enemy.currentHealth <= 0) {
-        mainDiv.append(`<p>${deathString}</p>`);
+    if (enemyInfo.dead) {
+        const enemyName = enemy.species.toString().toLowerCase();
+
+        mainDiv.append($(`<p>The ${enemyName} gave you ${enemy.experienceDropped} experience!</p>`));
+        mainDiv.append($(`<p>The ${enemyName} dropped ${enemyInfo.gold} gold!</p>`));
+        for (let i = 0; i < enemyInfo.droppedLoot.length; i++) {
+            mainDiv.append($(`<p>The ${enemyName} dropped a ${enemyInfo.droppedLoot[i].name}!</p>`));
+        }
 
         const levelUpString = await postHelper("/player/levelUp", {});
         if (levelUpString !== "") {
@@ -287,7 +291,7 @@ async function battleSequence(room, enemy) {
         }
 
         //this... is bad. basically checks if that was the last one.
-        if (room.enemies.length === 1) {
+        if (enemyInfo.lastEnemy) {
             mainDiv.append("<p>You win!</p>");
             await appendContinue(room.id);
             //todo figure out how to not have this call

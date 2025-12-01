@@ -230,6 +230,7 @@ public class Player extends Entity {
             if (item instanceof Relic relic && this.hasRelic(relic)) {
                 int halfBackGuarantee = relic.getValue() / 2;
                 addGold(halfBackGuarantee);
+                //todo not communicated to player (side effect)
                 continue;
             }
             if (new Random().nextDouble(0, 1) > item.getDropChance()) {
