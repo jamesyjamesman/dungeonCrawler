@@ -11,13 +11,6 @@ public class TrapRoom extends Room {
         this.damageDealt = builder.damageDealt != 0 ? builder.damageDealt : 3;
     }
 
-    @Override
-    public void completeRoomActions(Player player) {
-        super.completeRoomActions(player);
-        player.takeDamage(this.damageDealt);
-    }
-
-    @JsonSerialize
     public int getDamageDealt() {
         return this.damageDealt;
     }

@@ -30,12 +30,19 @@ public class EnemyHandler {
             droppedLoot = new ArrayList<>();
         }
 
+        boolean enemyDead = attackedEnemy.isDead();
+        boolean enemiesDead = room.getEnemies().isEmpty();
+
+        if (enemyDead && enemiesDead) {
+            room.resetRoom();
+        }
+
         ctx.json(new EnemyDamageReturn(
                 attackedEnemy,
-                attackedEnemy.isDead(),
+                enemyDead,
                 attackedEnemy.getLoot().getGold(),
                 droppedLoot,
-                room.getEnemies().isEmpty()));
+                enemiesDead));
     }
 
     @PostRequestHandler(endpoint = "/enemy/attack")

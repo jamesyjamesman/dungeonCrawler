@@ -19,13 +19,21 @@ public class Rooms {
         Player player = App.INSTANCE.getPlayer();
         record RoomIndex(int id) {}
         Room returnRoom = Game.roomChangeHandler(ctx.bodyAsClass(RoomIndex.class).id());
-        //todo move itemroom completeroomactions itempickup to here? maybe? idkkkkk
 
         record RoomChangeEvents(ArrayList<String> relicUseText, ArrayList<String> statusText, Room room, boolean playerAlive) {}
         RoomChangeEvents events = new RoomChangeEvents(player.useRelics(), player.statusHandler(false), returnRoom, player.getCurrentHealth() > 0);
 
         ctx.json(events);
-        
+    }
+
+    @PostRequestHandler(endpoint = "/rooms/trapDamage")
+    public static void trapDamage(Context ctx) {
+        TrapRoom trapRoom = (TrapRoom) getRoomFromContext(ctx);
+        Player player = App.INSTANCE.getPlayer();
+        player.takeDamage(trapRoom.getDamageDealt());
+
+        record TrapInfo(int damageDealt, boolean playerDead) {}
+        ctx.json(new TrapInfo(trapRoom.getDamageDealt(), player.isDead()));
     }
 
     @PostRequestHandler(endpoint = "/rooms/getEnemies")
@@ -46,12 +54,12 @@ public class Rooms {
         ctx.json(App.INSTANCE.getPlayer().itemPickup(room.getRelic()));
     }
 
-    @PostRequestHandler(endpoint = "/rooms/resetEnemies")
-    public static void resetEnemies(Context ctx) {
-        EnemyRoom room = (EnemyRoom) getRoomFromContext(ctx);
-        room.resetRoom();
-        ctx.json(true);
-    }
+//    @PostRequestHandler(endpoint = "/rooms/resetEnemies")
+//    public static void resetEnemies(Context ctx) {
+//        EnemyRoom room = (EnemyRoom) getRoomFromContext(ctx);
+//        room.resetRoom();
+//        ctx.json(true);
+//    }
 
     @PostRequestHandler(endpoint = "/rooms/getExits")
     public static void getExits(Context ctx) {

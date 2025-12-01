@@ -214,11 +214,12 @@ async function relicPickup(room) {
 }
 
 async function trapHandler(room) {
-    const player = await getHelper("/player/getPlayer");
+    const trapRoomDamageInfo = await postHelper("/rooms/trapDamage", { id: room.id });
+    const playerDead = trapRoomDamageInfo.playerDead;
+    const damageDealt = trapRoomDamageInfo.damageDealt;
     const mainDiv = getFreshMainDiv();
-    mainDiv.append(`<p>You took ${room.damageDealt} damage!</p>`);
-    //kinda blegh implementation
-    if (player.currentHealth <= 0) {
+    mainDiv.append(`<p>You took ${damageDealt} damage!</p>`);
+    if (playerDead) {
         playerDeath();
         return;
     }
@@ -290,12 +291,9 @@ async function battleSequence(room, enemy) {
             createPopup(levelUpString);
         }
 
-        //this... is bad. basically checks if that was the last one.
         if (enemyInfo.lastEnemy) {
             mainDiv.append("<p>You win!</p>");
             await appendContinue(room.id);
-            //todo figure out how to not have this call
-            await postHelper("/rooms/resetEnemies", {id: room.id});
             return;
         }
     }
