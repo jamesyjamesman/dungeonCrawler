@@ -1,0 +1,167 @@
+div {
+    overflow-y: auto;
+}
+
+.inventoryContainer {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 30%;
+    height: 60%;
+    overflow-y: clip;
+}
+
+.inventoryElement {
+    position: absolute;
+    background-color: black;
+    color: white;
+    opacity: 80%;
+    height: 90%;
+    width: 100%
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+.purple {
+    color: purple;
+}
+
+.inventoryButtonContainer {
+    text-align: center;
+    top: 0;
+}
+
+.inventoryButton {
+    background-color: black;
+    color: white;
+    border-color: white;
+    border-radius: 3px;
+    border-width: 2px;
+    height: 100%;
+}
+
+span {
+    display: list-item;
+}
+
+.listParagraph {
+    display: inline;
+    margin: 5px 0;
+}
+
+.statusParagraph {
+    margin: 4px 0;
+}
+
+.clickableButton {
+    background-color: black;
+    color: white;
+    border-color: white;
+    border-radius: 3px;
+    border-width: 2px;
+}
+
+.inlineButton {
+    display: inline;
+    margin-right: 3px;
+}
+
+.mainContainer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50%;
+    height: 60%;
+    overflow-y: clip;
+}
+
+.input {
+    height: 20%;
+    color: white;
+    background-color: black;
+    opacity: 80%;
+    width: 100%;
+    border: 0 none;
+}
+
+#errorDiv {
+    height: 20%;
+    color: white;
+    background-color: black;
+    opacity: 80%;
+}
+
+.mainContextDiv {
+    height: 55%;
+    color: white;
+    background-color: black;
+    opacity: 80%;
+    margin-bottom: 5%;
+}
+
+#descriptionDiv {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 30%;
+    width: 50%;
+    background-color: black;
+    color: white;
+    opacity: 80%;
+}
+
+.statusContainer {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 30%;
+    width: 40%;
+    text-align: center;
+}
+
+#statusTicker {
+    position: relative;
+    background-color: black;
+    color: white;
+    opacity: 80%;
+    width: 50%;
+    height: 100%;
+}
+
+#statusChecker {
+    position: relative;
+    background-color: black;
+    color: white;
+    opacity: 80%;
+    width: 50%;
+    height: 100%;
+}
+
+body {
+    background-image: url("default_background.png");
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    background-color: black;
+}
+
+#popup {
+    position: absolute;
+    background-color: black;
+    opacity: 80%;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    text-align: center;
+}
+
+#popupText {
+    margin-top: 25%;
+    white-space: pre;
+    color: white;
+}

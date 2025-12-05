@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dungeon Crawler</title>
+    <script src="main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="popup" class="invisible" tabindex="-1">
+        <p id="popupText"></p>
+        <button id="closePopup" class="clickableButton" onclick="hidePopup()">Close</button>
+    </div>
+
+    <div class="mainContainer">
+        <div class="mainContextDiv" id="mainDiv"></div>
+        <div id="errorDiv"></div>
+        <input type="text" id="textInput" class="input"/>
+    </div>
+
+    <div id="descriptionDiv"><p>
+        The room is empty except for a hole in the ceiling.<br>
+        Sunlight pours through, vines creeping down the cracked bricks.<br>
+        They're out of reach.
+    </p></div>
+
+    <div class="statusContainer">
+        <div id="statusTicker"></div>
+        <div id="statusChecker"></div>
+    </div>
+
+    <div class="inventoryContainer">
+        <div class="inventoryButtonContainer">
+            <button class="inventoryButton" onclick="inventoryVisible()">Inventory</button>
+            <button class="inventoryButton" onclick="relicsVisible()">Relics</button>
+        </div>
+        <div id="inventory" class="inventoryElement"></div>
+        <div id="relics" class="inventoryElement invisible"></div>
+    </div>
+
+</body>
+</html>

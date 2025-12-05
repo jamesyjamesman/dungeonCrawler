@@ -1,0 +1,101 @@
+package main.requests;
+
+import io.javalin.http.Context;
+import main.App;
+import main.Game;
+import main.entity.Player;
+import main.item.Item;
+import main.room.*;
+
+import java.util.ArrayList;
+import java.util.UUID;
+
+import static main.requests.GameRequests.setContextStatus;
+
+public class Rooms {
+
+    @PostRequestHandler(endpoint = "/rooms/change")
+    public static void change(Context ctx) {
+        Player player = App.INSTANCE.getPlayer();
+        record RoomIndex(int id) {}
+        Room returnRoom = Game.roomChangeHandler(ctx.bodyAsClass(RoomIndex.class).id());
+
+        record RoomChangeEvents(ArrayList<String> relicUseText, ArrayList<String> statusText, Room room, boolean playerAlive) {}
+        RoomChangeEvents events = new RoomChangeEvents(player.useRelics(), player.statusHandler(false), returnRoom, player.getCurrentHealth() > 0);
+
+        ctx.json(events);
+    }
+
+    @PostRequestHandler(endpoint = "/rooms/trapDamage")
+    public static void trapDamage(Context ctx) {
+        TrapRoom trapRoom = (TrapRoom) getRoomFromContext(ctx);
+        Player player = App.INSTANCE.getPlayer();
+        player.takeDamage(trapRoom.getDamageDealt());
+
+        record TrapInfo(int damageDealt, boolean playerDead) {}
+        ctx.json(new TrapInfo(trapRoom.getDamageDealt(), player.isDead()));
+    }
+
+    @PostRequestHandler(endpoint = "/rooms/getEnemies")
+    public static void getEnemies(Context ctx) {
+        EnemyRoom room = (EnemyRoom) getRoomFromContext(ctx);
+        ctx.json(room.getEnemies());
+    }
+
+    @PostRequestHandler(endpoint = "/rooms/itemPickup")
+    public static void itemPickup(Context ctx) {
+        ItemRoom room = (ItemRoom) getRoomFromContext(ctx);
+        ctx.json(App.INSTANCE.getPlayer().itemPickup(room.getItem()));
+    }
+
+    @PostRequestHandler(endpoint = "/rooms/relicPickup")
+    public static void relicPickup(Context ctx) {
+        RelicRoom room = (RelicRoom) getRoomFromContext(ctx);
+        ctx.json(App.INSTANCE.getPlayer().itemPickup(room.getRelic()));
+    }
+
+//    @PostRequestHandler(endpoint = "/rooms/resetEnemies")
+//    public static void resetEnemies(Context ctx) {
+//        EnemyRoom room = (EnemyRoom) getRoomFromContext(ctx);
+//        room.resetRoom();
+//        ctx.json(true);
+//    }
+
+    @PostRequestHandler(endpoint = "/rooms/getExits")
+    public static void getExits(Context ctx) {
+        ArrayList<Room> roomExits = getRoomFromContext(ctx).getExits();
+        ctx.json(roomExits);
+        
+    }
+
+    @PostRequestHandler(endpoint = "/rooms/buyItem")
+    public static void buyItem(Context ctx) {
+        record RoomId(int roomID, UUID itemID) {}
+        RoomId stuff = ctx.bodyAsClass(RoomId.class);
+        int roomID = stuff.roomID();
+        UUID itemUUID = stuff.itemID();
+        ShopRoom room = (ShopRoom) getRoom(roomID);
+
+        Item soldItem = room.getWares()
+                .stream()
+                .filter(item -> item.getUuid().equals(itemUUID))
+                .findFirst().orElse(null);
+
+        boolean success = room.sellItem(soldItem, App.INSTANCE.getPlayer());
+        ctx.json(success);
+        
+    }
+
+    public static Room getRoom(int id) {
+        return App.INSTANCE.getRooms()
+                .stream()
+                .filter(room -> room.getId() == id)
+                .findFirst().orElse(null);
+    }
+
+    public static Room getRoomFromContext(Context ctx) {
+        record RoomId(int id) {}
+        int id = ctx.bodyAsClass(RoomId.class).id();
+        return getRoom(id);
+    }
+}
