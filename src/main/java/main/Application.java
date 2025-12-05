@@ -6,7 +6,6 @@ import org.cef.CefApp.CefAppState;
 import org.cef.CefClient;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefMessageRouter;
-import org.cef.handler.CefFocusHandlerAdapter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,13 +13,6 @@ import java.awt.event.*;
 import java.io.IOException;
 
 public class Application extends JFrame {
-    private static final long serialVersionUID = -5570653778104813836L;
-    private final CefApp cefApp_;
-    private final CefClient client_;
-    private final CefBrowser browser_;
-    private final Component browserUI_;
-    private boolean browserFocus_ = true;
-
     Application(String startURL, boolean useOSR, boolean isTransparent, String[] args) throws UnsupportedPlatformException, CefInitializationException, IOException, InterruptedException {
         CefAppBuilder builder = new CefAppBuilder();
         builder.getCefSettings().windowless_rendering_enabled = useOSR;
@@ -35,17 +27,17 @@ public class Application extends JFrame {
         if (args.length > 0)
             builder.addJcefArgs(args);
 
-        cefApp_ = builder.build();
+        CefApp cefApp = builder.build();
 
-        client_ = cefApp_.createClient();
+        CefClient client = cefApp.createClient();
 
         CefMessageRouter msgRouter = CefMessageRouter.create();
-        client_.addMessageRouter(msgRouter);
+        client.addMessageRouter(msgRouter);
 
-        browser_ = client_.createBrowser(startURL, useOSR, isTransparent);
-        browserUI_ = browser_.getUIComponent();
+        CefBrowser browser = client.createBrowser(startURL, useOSR, isTransparent);
+        Component browserUI = browser.getUIComponent();
 
-        getContentPane().add(browserUI_, BorderLayout.CENTER);
+        getContentPane().add(browserUI, BorderLayout.CENTER);
         pack();
         setSize(800, 600);
         setVisible(true);
