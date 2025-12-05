@@ -230,16 +230,16 @@ async function trapHandler(room) {
 async function enemyHandler(room) {
     const mainDiv = getFreshMainDiv();
     mainDiv.append(`<p>${room.battleInitiationMessage}</p>`)
-    await renderEnemies(room);
+    await renderEnemies(room, false);
 }
 
-async function renderEnemies(room) {
+async function renderEnemies(room, reset = true) {
     const enemies = room.enemies;
-    const mainDiv = $("#mainDiv");
+    const displayEnemyInformation = await postHelper("/player/relicEquipped", {id: "ENEMY_INFORMATION"});
+    const mainDiv = reset ? getFreshMainDiv() : $("#mainDiv");
 
     numberInputOptions = [];
     for (let i = 0; i < enemies.length; i++) {
-        const displayEnemyInformation = await postHelper("/player/relicEquipped", {id: "ENEMY_INFORMATION"});
         const speciesPascal = enemies[i].species.toString().charAt(0).toUpperCase() + enemies[i].species.toString().substring(1, enemies[i].species.toString().length).toLowerCase();
         const elementSpan = $("<span></span>")
         const attackButton = $("<button class='clickableButton inlineButton'>Attack</button>").click(async () => await battleSequence(room, enemies[i]));
@@ -275,9 +275,9 @@ async function battleSequence(room, enemy) {
         roomID: room.id,
         uuid: enemy.uuid
     });
-    const mainDiv = getFreshMainDiv();
     enemy = enemyInfo.enemy;
     if (enemyInfo.dead) {
+        const mainDiv = getFreshMainDiv();
         const enemyName = enemy.species.toString().toLowerCase();
 
         mainDiv.append($(`<p>The ${enemyName} gave you ${enemy.experienceDropped} experience!</p>`));
