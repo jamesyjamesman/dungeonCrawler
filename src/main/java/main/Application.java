@@ -45,21 +45,6 @@ public class Application extends JFrame {
         browser_ = client_.createBrowser(startURL, useOSR, isTransparent);
         browserUI_ = browser_.getUIComponent();
 
-        client_.addFocusHandler(new CefFocusHandlerAdapter() {
-            @Override
-            public void onGotFocus(CefBrowser browser) {
-                if (browserFocus_) return;
-                browserFocus_ = true;
-                KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
-                browser.setFocus(true);
-            }
-
-            @Override
-            public void onTakeFocus(CefBrowser browser, boolean next) {
-                browserFocus_ = false;
-            }
-        });
-
         getContentPane().add(browserUI_, BorderLayout.CENTER);
         pack();
         setSize(800, 600);
