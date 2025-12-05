@@ -42,6 +42,7 @@ public class Application extends JFrame {
         setSize(800, 600);
         setVisible(true);
         setTitle("Dungeon Crawler");
+        setIconImage(new ImageIcon(ClassLoader.getSystemResource("web/torch.png")).getImage());
 
         addWindowListener(new WindowAdapter() {
             @Override
