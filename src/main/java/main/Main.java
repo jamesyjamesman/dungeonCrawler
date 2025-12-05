@@ -8,17 +8,20 @@ import main.initialization.RoomInit;
 import main.requests.GetRequestHandler;
 import main.requests.PostRequestHandler;
 import main.room.Room;
+import me.friwi.jcefmaven.CefInitializationException;
+import me.friwi.jcefmaven.UnsupportedPlatformException;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
 import org.reflections.util.ConfigurationBuilder;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 import static main.requests.GameRequests.setContextStatus;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnsupportedPlatformException, CefInitializationException, IOException, InterruptedException {
         Javalin app = Javalin.create(config -> config.staticFiles.add("/web"))
                 .start(7070);
 
@@ -70,6 +73,7 @@ public class Main {
                 method.invoke(null, ctx);
             });
         }
+        new Application("localhost:07070/index.html", false, false, args);
     }
 
     public static void initializeApp() {
