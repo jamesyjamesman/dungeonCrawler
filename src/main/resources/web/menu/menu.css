@@ -1,14 +1,33 @@
 img {
-    width: 5%;
+    width: 4%;
     left: 0;
     bottom: 0;
     position: absolute;
+    margin-left: 5px;
+    margin-bottom: 5px;
 }
 
+.menuButton:link,
+.menuButton:visited,
+.menuButton:hover,
+.menuButton:active,
+.menuButton {
+    color: white;
+    text-decoration: none;
+    text-align: center;
+}
+
+p {
+    border-style: solid;
+    border-color: white;
+    border-width: 2px;
+    margin: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
 #mainElements {
     width: 50%;
     background-color: black;
-    color: white;
     cursor: pointer;
     position: absolute;
     left: 25%;
