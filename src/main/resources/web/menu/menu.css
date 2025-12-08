@@ -7,6 +7,20 @@ img {
     margin-bottom: 5px;
 }
 
+h1 {
+    color: black;
+    text-align: center;
+    font-size: 60px;
+    font-family: SansSerif, sans-serif;
+    -webkit-text-stroke: 1px white;
+}
+
+.centeredElements {
+    position: absolute;
+    left: 25%;
+    width: 50%;
+}
+
 .menuButton:link,
 .menuButton:visited,
 .menuButton:hover,
@@ -26,12 +40,8 @@ p {
     padding-bottom: 10px;
 }
 #mainElements {
-    width: 50%;
     background-color: black;
     cursor: pointer;
-    position: absolute;
-    left: 25%;
-    top: 50%;
 }
 
 body {
