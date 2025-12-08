@@ -36,10 +36,12 @@ public class Main {
         });
 
         app.error(HttpStatus.NOT_FOUND, ctx -> {
-            ctx.redirect("/lost.html");
+            if (ctx.path().equals("/")) {
+                ctx.redirect("/menu/index.html");
+            } else {
+                ctx.redirect("/lost.html");
+            }
         });
-
-//        app.post("/", ctx -> ctx.redirect("/menu/index.html"));
 
         Reflections reflections = new Reflections(new ConfigurationBuilder()
                 .forPackages("main.requests")
