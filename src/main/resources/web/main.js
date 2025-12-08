@@ -12,7 +12,6 @@ window.addEventListener("load", async () => {
     })
     await printRooms(rooms);
     await render();
-    createPopup("Welcome to the simulation!\nYou will be presented choices on where to proceed.\nPress the appropriate button or type your answer in the field in the bottom left.\nGood luck!\n");
 });
 
 let numberInputOptions = [];
