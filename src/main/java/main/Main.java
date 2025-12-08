@@ -2,6 +2,7 @@ package main;
 
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+import io.javalin.http.HttpStatus;
 import main.entity.Player;
 import main.initialization.RelicInit;
 import main.initialization.RoomInit;
@@ -33,6 +34,12 @@ public class Main {
             ctx.header("Pragma", "no-cache");
             ctx.header("Expires", "0"); // Or a date in the past
         });
+
+        app.error(HttpStatus.NOT_FOUND, ctx -> {
+            ctx.redirect("/lost.html");
+        });
+
+//        app.post("/", ctx -> ctx.redirect("/menu/index.html"));
 
         Reflections reflections = new Reflections(new ConfigurationBuilder()
                 .forPackages("main.requests")
