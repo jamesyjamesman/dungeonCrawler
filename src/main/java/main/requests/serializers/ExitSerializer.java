@@ -1,8 +1,9 @@
-package main.room;
+package main.requests.serializers;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import main.room.Room;
 
 import java.io.IOException;
 import java.util.ArrayList;

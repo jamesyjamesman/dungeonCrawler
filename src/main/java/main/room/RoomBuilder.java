@@ -10,6 +10,7 @@ package main.room;
         protected int roomsRequired;
         protected int selectionWeight;
         protected boolean disabled;
+        protected double appearanceChance;
 
         public T self() {
             return (T) this;
@@ -53,6 +54,11 @@ package main.room;
 
         public T selectionWeight(int selectionWeight) {
             this.selectionWeight = selectionWeight;
+            return self();
+        }
+
+        public T appearanceChance(double chance) {
+            this.appearanceChance = chance;
             return self();
         }
 

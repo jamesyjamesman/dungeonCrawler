@@ -9,7 +9,7 @@ public class ForesightRelic extends Relic {
     }
     public ForesightRelic(double dropChance) {
         super("Relic of Foresight",
-            "An interesting artifact that allows you to tell how many exits the next room has.",
+            "This artifact helps you discern the future.",
             dropChance,
             RelicID.FORESIGHT);
     }

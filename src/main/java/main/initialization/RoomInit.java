@@ -57,6 +57,7 @@ public class RoomInit {
                 You take a step forward, and your foot hits a tripwire.
                 You hear a loud *CRACK*, and a chunk of stalactite falls, hitting you in the shoulder.""")
                 .appearance("You think you can smell a faint mustiness, and water dripping. It's dark.")
+                .appearanceChance(0.6)
                 .damageDealt(3)
                 .type(RoomType.TRAP)
                 .selectionWeight(8)
@@ -66,6 +67,8 @@ public class RoomInit {
 
         TrapRoom pitRoom = new TrapRoomBuilder<>()
                 .id(2001)
+                .appearance("You hear some ominous creaking coming from this room.")
+                .appearanceChance(0.1)
                 .description("""
                 You slowly walk into to a room. The ground creaks beneath your feet.
                 Suddenly, the flooring cracks and shatters, tumbling you down onto a pit of spikes.
@@ -91,6 +94,7 @@ public class RoomInit {
                 .description("You enter the room... Waking up a goblin in a tattered cloak. It wearily blinks, before jumping up.")
                 .battleInitiationMessage("The goblin pulls out a small wooden wand, ready to cast spells at you!")
                 .appearance("You can't see much, but you can hear some echoing chatter.")
+                .appearanceChance(0.8)
                 .allowedEnemies(goblinRoomEnemies)
                 .maxEnemies(1)
                 .type(RoomType.ENEMY)
@@ -111,6 +115,8 @@ public class RoomInit {
                 .numExits(3)
                 .description("You enter the ro-")
                 .battleInitiationMessage("Oh no! a camp of enemies were waiting for you, catching you by surprise!")
+                .appearance("It smells like a locker room over there!")
+                .appearanceChance(0.2)
                 .allowedEnemies(ambushRoomEnemies)
                 .maxEnemies(3)
                 .type(RoomType.ENEMY)
@@ -129,6 +135,8 @@ public class RoomInit {
                 .numExits(4)
                 .description("You walk into a room, full of cheap beds and medical equipment. A small goblin sees you enter, and slowly climbs out of bed.")
                 .battleInitiationMessage("The goblin coughs, and pulls out a short sword, ready to attack!")
+                .appearance("It sounds like insulin. What?")
+                .appearanceChance(0.01)
                 .allowedEnemies(infirmaryEnemies)
                 .maxEnemies(3)
                 .type(RoomType.ENEMY)
@@ -155,6 +163,7 @@ public class RoomInit {
                 .numExits(6)
                 .description("Woah! It's an enemy hub!")
                 .appearance("You hear some loud echoing chatter.")
+                .appearanceChance(0.9)
                 .battleInitiationMessage("The enemies turn their heads, picking up their weapons and charging at you.")
                 .roomsRequired(25)
                 .allowedEnemies(bigEnemyRoomEnemies)
@@ -188,6 +197,8 @@ public class RoomInit {
                 .allowedEnemies(new MinotaurBoss())
                 .maxEnemies(1)
                 .description("A massive minotaur stands silently in the center of the room.")
+                .appearance("It smells like a barnyard. And you can hear very deep grumbling.")
+                .appearanceChance(0.1)
                 .battleInitiationMessage("Before you can do anything, it opens its blood red eyes, glaring at you.")
                 .type(RoomType.BOSS)
                 .selectionWeight(4)
@@ -237,6 +248,7 @@ public class RoomInit {
                 .numExits(3)
                 .description("You enter the room. It's empty, except for a small apple on a pedestal.")
                 .appearance("You can't see much, but you can smell a faintly sweet scent coming from the doorway.")
+                .appearanceChance(0.85)
                 .type(RoomType.ITEM)
                 .selectionWeight(7)
                 .item(new AppleItem())
@@ -252,6 +264,7 @@ public class RoomInit {
                 It couldn't be... Lost after all this time... But you found it, in a dank cave...
                 The legendary Torpedo Chocolate Bar™!!!!""")
                 .appearance("There's a positively delightful aroma emanating from this passageway.")
+                .appearanceChance(0.6)
                 .type(RoomType.ITEM)
                 .selectionWeight(3)
                 .build();
@@ -264,6 +277,7 @@ public class RoomInit {
                 You walk into the room. There's flowing lava coming from the ceiling and down the walls, pooling on the floor.
                 Near one of the pools lies a freshly and perfectly cooked steak. Alright, then.""")
                 .appearance("It smells like a barbeque. There's a soft orange glow emanating from the entrance.")
+                .appearanceChance(0.7)
                 .type(RoomType.ITEM)
                 .selectionWeight(5)
                 .item(new SteakItem())
@@ -279,6 +293,7 @@ public class RoomInit {
                 You walk into a room, and are bewildered by the ornate furnishings in the room. Ornate walls, cushy furniture, the like!
                 In the center of the room stands an equally ornate pedestal with a shining relic sitting on the top.""")
                 .appearance("This room emits fanciness like you've never known.")
+                .appearanceChance(0.5)
                 .type(RoomType.RELIC)
                 .selectionWeight(2)
                 .build();
@@ -291,6 +306,7 @@ public class RoomInit {
                 .id(6001)
                 .description("You walk into an empty room... except for the skeleton in the corner.")
                 .appearance("You think you catch a whiff of something... not good.")
+                .appearanceChance(0.75)
                 .type(RoomType.RELIC)
                 .selectionWeight(4)
                 .build();
@@ -301,6 +317,8 @@ public class RoomInit {
         ItemRoom randomRoom = new ItemRoomBuilder<>()
                 .id(5003)
                 .description("You walk into a room. It's empty, except for something on the ground.")
+                .appearance("You sense loot!!")
+                .appearanceChance(0.05)
                 .numExits(3)
                 .type(RoomType.ITEM)
                 .selectionWeight(6)
@@ -331,6 +349,7 @@ public class RoomInit {
                 .numExits(4)
                 .description("You walk into the room, and see a fountain with flowing water. The water is almost luminescent.")
                 .appearance("You can hear rushing water, but that's about it.")
+                .appearanceChance(0.7)
                 .selectionWeight(3)
                 .type(RoomType.FOUNTAIN)
                 .buildPure();
@@ -339,6 +358,7 @@ public class RoomInit {
 
         ShopRoom shopRoom = new RoomBuilder<>()
                 .appearance("You can hear a bell ringing. It's inviting?")
+                .appearanceChance(0.85)
                 .description("You see a cold glow from a small opening in the wall, and approach it.")
                 .id(9002)
                 .type(RoomType.SHOP)

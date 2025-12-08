@@ -147,6 +147,7 @@ public class Player extends Entity {
         return -1;
     }
 
+//todo method called hasRelicEquipped because i think all of these are just checking that
     public int equippedRelicIndex(RelicID relicName) {
         for (Relic equippedRelic : this.equippedRelics) {
             if (equippedRelic.getRelicType() == relicName) {

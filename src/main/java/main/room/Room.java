@@ -2,13 +2,17 @@ package main.room;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import main.App;
-import main.Identifiable;
 import main.entity.Player;
+import main.requests.serializers.AppearanceSerializer;
+import main.requests.serializers.ExitSerializer;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Room {
+    @JsonSerialize(using = AppearanceSerializer.class)
     private final String appearance;
+    private final double appearanceChance;
     private final String description;
     private final String backgroundFileName;
     private final int id;
@@ -22,9 +26,19 @@ public class Room {
     private final int roomsRequired;
     private final int selectionWeight;
 
+    public static String[] defaultAppearances = {
+            "It looks like a completely normal room from here.",
+            "An air of mystery surrounds this passageway.",
+            "You're pretty sure you see a doorway, but not much more than that.",
+            "Vines obscure the passage... You're not sure what lies beyond.",
+            "It's too dusty to see anything.",
+            "This room emits fancin- oh, never mind. It was nothing."
+    };
+
     public Room(RoomBuilder<?> builder) {
         this.appearance = builder.appearance != null ? builder.appearance :
-                "It looks like a completely normal room from here.";
+                getRandomAppearance();
+        this.appearanceChance = builder.appearanceChance != 0 ? builder.appearanceChance : 1.0;
         this.description = builder.description != null ? builder.description :
                 "It's completely empty.";
         this.backgroundFileName = builder.backgroundFileName != null ? builder.backgroundFileName :
@@ -42,6 +56,10 @@ public class Room {
 
     public void completeRoomActions(Player player) {
         player.incrementRoomsTraversed();
+    }
+
+    public static String getRandomAppearance() {
+        return defaultAppearances[new Random().nextInt(defaultAppearances.length)];
     }
 
     public static Room getRoomByID(int id) {
@@ -74,6 +92,9 @@ public class Room {
     }
     public String getAppearance() {
         return this.appearance;
+    }
+    public double getAppearanceChance() {
+        return this.appearanceChance;
     }
     public String getDescription() {
         return this.description;
