@@ -16,6 +16,7 @@ h1 {
 }
 
 .centeredElements {
+    margin-top: 20%;
     position: absolute;
     left: 25%;
     width: 50%;
