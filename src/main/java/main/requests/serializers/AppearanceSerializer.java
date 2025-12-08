@@ -17,7 +17,7 @@ public class AppearanceSerializer extends JsonSerializer<String> {
         Room room = (Room) jsonGenerator.getCurrentValue();
         double chance = room.getAppearanceChance();
         //alternatively, add a relic just called "Glasses" that does the same thing (but better prob)
-        if (App.INSTANCE.getPlayer().equippedRelicIndex(RelicID.FORESIGHT) != 1) {
+        if (App.INSTANCE.getPlayer().hasRelicEquipped(RelicID.FORESIGHT)) {
             chance *= 1.3;
         }
         double randValue = new Random().nextDouble();

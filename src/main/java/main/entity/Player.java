@@ -147,7 +147,6 @@ public class Player extends Entity {
         return -1;
     }
 
-//todo method called hasRelicEquipped because i think all of these are just checking that
     public int equippedRelicIndex(RelicID relicName) {
         for (Relic equippedRelic : this.equippedRelics) {
             if (equippedRelic.getRelicType() == relicName) {
@@ -155,6 +154,10 @@ public class Player extends Entity {
             }
         }
         return -1;
+    }
+
+    public boolean hasRelicEquipped(RelicID relicName) {
+        return equippedRelicIndex(relicName) != -1;
     }
 
     public boolean hasRelic(Relic relic) {
@@ -312,7 +315,7 @@ public class Player extends Entity {
         if (fireDamage > 0)
             statusOutputStrings.add("You took " + fireDamage + " fire damage!");
         if (!inBattle) {
-            if (equippedRelicIndex(RelicID.CURSE_HEAL) != -1) {
+            if (hasRelicEquipped(RelicID.CURSE_HEAL)) {
                 int curseHeal = doCurseHeal();
                 if (curseHeal > 0)
                     statusOutputStrings.add("You healed " + curseHeal + " from your cursed relics!");

@@ -23,7 +23,7 @@ public class Game {
 
         activateRooms(rooms, player);
         ArrayList<Room> activeRooms = new ArrayList<>(getRandomActiveRooms(rooms));
-        createRoomExits(player, activeRooms, currentRoom);
+        createRoomExits(activeRooms, currentRoom);
         App.INSTANCE.setState(App.State.ROOM_END);
         return currentRoom;
     }
@@ -37,23 +37,11 @@ public class Game {
         return null;
     }
 
-    public static void createRoomExits(Player player, ArrayList<Room> activeRooms, Room room) {
+    public static void createRoomExits(ArrayList<Room> activeRooms, Room room) {
         room.getExits().clear();
 
-        for (int i = 0; i < room.getNumExits(); i++) {
+        for (int i = 0; i < room.getNumExits(); i++)
             room.addExit(getWeightedRoom(activeRooms));
-
-            int foresightIndex = player.equippedRelicIndex(RelicID.FORESIGHT);
-
-            String output = (i + 1) + ". " + room.getExits().get(i).getAppearance();
-            if (foresightIndex != -1) {
-                ForesightRelic foresightRelic = (ForesightRelic) player.getEquippedRelics().get(foresightIndex);
-                int numExits = foresightRelic.findNumExits(room, i);
-                output = output.concat(" (" + numExits + " exit" + Main.pluralChecker(numExits) + ")\n");
-            } else {
-                output = output.concat("\n");
-            }
-        }
     }
 
     public static void deactivateRelicRooms() {

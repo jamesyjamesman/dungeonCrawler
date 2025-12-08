@@ -61,7 +61,7 @@ public abstract class Relic extends Item {
     }
 
     public boolean isEquipped(Player player) {
-        return player.equippedRelicIndex(this.relicID) != -1;
+        return player.hasRelicEquipped(this.relicID);
     }
     public RelicID getRelicType() {
         return this.relicID;

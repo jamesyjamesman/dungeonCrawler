@@ -18,7 +18,7 @@ public class PlayerRequests {
     public static void playerRequests(Context ctx) {
         record relicEnum(RelicID id) {}
         RelicID id = ctx.bodyAsClass(relicEnum.class).id;
-        ctx.json(App.INSTANCE.getPlayer().equippedRelicIndex(id) != -1);
+        ctx.json(App.INSTANCE.getPlayer().hasRelicEquipped(id));
         
     }
 
