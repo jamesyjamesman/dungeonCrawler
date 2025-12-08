@@ -24,8 +24,6 @@ h1 {
 
 .menuButton:link,
 .menuButton:visited,
-.menuButton:hover,
-.menuButton:active,
 .menuButton {
     color: white;
     text-decoration: none;
@@ -40,6 +38,18 @@ p {
     padding-top: 10px;
     padding-bottom: 10px;
 }
+.menuButton:hover {
+    background-color: white;
+    color: black;
+    border-color: black;
+}
+
+.menuButton:active {
+    color: white;
+    background-color: black;
+    border-color: black;
+}
+
 #mainElements {
     background-color: black;
     cursor: pointer;
