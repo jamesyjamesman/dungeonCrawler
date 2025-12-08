@@ -1,0 +1,23 @@
+img {
+    width: 5%;
+    left: 0;
+    bottom: 0;
+    position: absolute;
+}
+
+#mainElements {
+    width: 50%;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    position: absolute;
+    left: 25%;
+    top: 50%;
+}
+
+body {
+    background-image: url("../textures/default_background.png");
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    background-color: black;
+}

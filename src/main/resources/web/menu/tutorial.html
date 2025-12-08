@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!--TODO This is just a concept... If I want this to be permanent I need some way to not have the exact same html... twice-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dungeon Crawler</title>
+    <script src="menu.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<div id="popup" class="invisible" tabindex="-1">
+    <p id="popupText"></p>
+    <button id="closePopup" class="clickableButton" onclick="hidePopup()">Close</button>
+</div>
+
+<div class="mainContainer">
+    <div class="mainContextDiv" id="mainDiv">Most information about what you are doing will be here</div>
+    <div id="errorDiv">Errors will be put here</div>
+    <input type="text" id="textInput" class="input" value="You can input things here, like indices"/>
+</div>
+
+<div id="descriptionDiv"><p>
+    The current room description will be here
+</p></div>
+
+<div class="statusContainer">
+    <div id="statusTicker">Active stat changes go here (taking damage)</div>
+    <div id="statusChecker">Your overall stats will be here</div>
+</div>
+
+<div class="inventoryContainer">
+    <div class="inventoryButtonContainer">
+        <button class="inventoryButton" onclick="inventoryVisible()">Inventory</button>
+        <button class="inventoryButton" onclick="relicsVisible()">Relics</button>
+    </div>
+    <div id="inventory" class="inventoryElement">Your inventory items go here</div>
+    <div id="relics" class="inventoryElement invisible">Your equipped relics go here</div>
+</div>
+
+</body>
+</html>

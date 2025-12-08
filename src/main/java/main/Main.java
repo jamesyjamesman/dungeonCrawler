@@ -73,7 +73,7 @@ public class Main {
                 method.invoke(null, ctx);
             });
         }
-        new Application("localhost:07070/index.html", false, false, args);
+        new Application("localhost:07070/menu/index.html", false, false, args);
     }
 
     public static void initializeApp() {

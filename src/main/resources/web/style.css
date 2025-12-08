@@ -142,7 +142,7 @@ span {
 }
 
 body {
-    background-image: url("default_background.png");
+    background-image: url("textures/default_background.png");
     background-repeat: no-repeat;
     background-size: 100% auto;
     background-color: black;

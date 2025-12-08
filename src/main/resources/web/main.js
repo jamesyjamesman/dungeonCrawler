@@ -111,7 +111,7 @@ async function goToRoom(id) {
         playerDeath();
         return;
     }
-    $("body").css("backgroundImage", `url("${newRoom.backgroundFileName}")`);
+    $("body").css("backgroundImage", `url("textures/${newRoom.backgroundFileName}")`);
     const descriptionDiv = $("#descriptionDiv").html("");
     descriptionDiv.append(`<p>${parseTextAsHTML(newRoom.description)}</p>`);
     switch (newRoom.type) {
