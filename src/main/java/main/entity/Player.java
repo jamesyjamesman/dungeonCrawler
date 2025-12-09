@@ -5,6 +5,7 @@ import main.Statuses;
 import main.entity.enemy.Enemy;
 import main.item.Item;
 import main.item.Loot;
+import main.item.armor.Armor;
 import main.item.relic.DamageRelic;
 import main.item.relic.Relic;
 import main.item.relic.RelicID;
@@ -32,6 +33,7 @@ public class Player extends Entity {
     private Room currentRoom;
     private final Statuses currentStatuses;
     private Weapon equippedWeapon;
+    private Armor equippedArmor;
     private int gold;
     public Player() {
         super(Species.PLAYER, 20, 3);
@@ -164,8 +166,10 @@ public class Player extends Entity {
         return equippedRelicIndex(relic.getRelicType()) != -1 || findItemInInventoryByName(relic) != -1;
     }
 
+    //TODO damageType (status, physical (or more precise))
     @Override
     public int takeDamage(int damage) {
+        damage -= getEquippedArmor() == null || damage == 0 ? 0 : getEquippedArmor().getDamageReduction();
         if (this.absorption > 0) {
             this.absorption -= damage;
             if (this.absorption < 0) {
@@ -433,13 +437,23 @@ public class Player extends Entity {
         return this.currentStatuses;
     }
     public void setEquippedWeapon(Weapon weapon) {
+        // only equip a weapon if there isn't one equipped
         if (this.equippedWeapon != null && weapon != null) {
             return;
         }
         this.equippedWeapon = weapon;
     }
+    public void setEquippedArmor(Armor armor) {
+        if (this.equippedArmor != null && armor != null) {
+            return;
+        }
+        this.equippedArmor = armor;
+    }
     public Weapon getEquippedWeapon() {
         return this.equippedWeapon;
+    }
+    public Armor getEquippedArmor() {
+        return this.equippedArmor;
     }
     public int getGold() {
         return this.gold;

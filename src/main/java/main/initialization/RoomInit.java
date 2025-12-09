@@ -4,6 +4,7 @@ import main.entity.Species;
 import main.entity.enemy.*;
 import main.item.Item;
 import main.item.Loot;
+import main.item.armor.LeatherTunic;
 import main.item.buff.RelicPouchBuffItem;
 import main.item.health.*;
 import main.item.weapon.*;
@@ -86,7 +87,8 @@ public class RoomInit {
 
         //todo: fix this
         ArrayList<Enemy> goblinRoomEnemies = new ArrayList<>();
-        goblinRoomEnemies.add(enemyList.getFirst());
+//        goblinRoomEnemies.add(enemyList.getFirst());
+        goblinRoomEnemies.add(new Enemy(Species.GOBLIN, 9, 3, 5, 1, new Loot(5, new LeatherTunic())));
 
         EnemyRoom goblinRoom = new EnemyRoomBuilder<>()
                 .id(3000)
