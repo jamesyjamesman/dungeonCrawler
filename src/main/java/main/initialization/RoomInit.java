@@ -87,8 +87,8 @@ public class RoomInit {
 
         //todo: fix this
         ArrayList<Enemy> goblinRoomEnemies = new ArrayList<>();
-//        goblinRoomEnemies.add(enemyList.getFirst());
-        goblinRoomEnemies.add(new Enemy(Species.GOBLIN, 9, 3, 5, 1, new Loot(5, new LeatherTunic())));
+        goblinRoomEnemies.add(enemyList.getFirst());
+//        goblinRoomEnemies.add(new Enemy(Species.GOBLIN, 9, 3, 5, 1, new Loot(5, new LeatherTunic())));
 
         EnemyRoom goblinRoom = new EnemyRoomBuilder<>()
                 .id(3000)
