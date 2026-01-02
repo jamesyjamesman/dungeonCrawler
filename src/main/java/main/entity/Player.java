@@ -436,12 +436,19 @@ public class Player extends Entity {
     public Statuses getCurrentStatuses() {
         return this.currentStatuses;
     }
-    public void setEquippedWeapon(Weapon weapon) {
+    public boolean setEquippedWeapon(Weapon weapon) {
+        if (weapon == null) {
+            removeWeapon();
+        }
         // only equip a weapon if there isn't one equipped
-        if (this.equippedWeapon != null && weapon != null) {
-            return;
+        if (this.equippedWeapon != null) {
+            return false;
         }
         this.equippedWeapon = weapon;
+        return true;
+    }
+    public void removeWeapon() {
+        this.equippedWeapon = null;
     }
     public void setEquippedArmor(Armor armor) {
         if (this.equippedArmor != null && armor != null) {
