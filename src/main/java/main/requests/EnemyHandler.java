@@ -12,14 +12,16 @@ import java.util.UUID;
 
 public class EnemyHandler {
 
+    record EnemyDamageReturn(Enemy enemy, boolean dead, int gold, ArrayList<Item> droppedLoot, boolean lastEnemy) {}
+    record AttackInfo(String attackString, boolean playerDead) {}
+    record RoomEnemy(int roomID, UUID uuid) {}
+
     @PostRequestHandler(endpoint = "/enemy/takeDamage")
     public static void takeDamage(Context ctx) {
         EnemyRoom room = getRoomFromContext(ctx);
         Enemy attackedEnemy = getEnemyFromContext(ctx);
         Player player = App.INSTANCE.getPlayer();
         player.attack(attackedEnemy);
-
-        record EnemyDamageReturn(Enemy enemy, boolean dead, int gold, ArrayList<Item> droppedLoot, boolean lastEnemy) {}
 
         ArrayList<Item> droppedLoot = null;
         if (attackedEnemy.isDead()) {
@@ -50,20 +52,17 @@ public class EnemyHandler {
         Enemy enemy = getEnemyFromContext(ctx);
         Player player = App.INSTANCE.getPlayer();
 
-        record AttackInfo(String attackString, boolean playerDead) {}
         AttackInfo info = new AttackInfo(enemy.attack(player), player.isDead());
 
         ctx.json(info);
     }
 
     public static EnemyRoom getRoomFromContext(Context ctx) {
-        record RoomEnemy(int roomID, UUID uuid) {}
         RoomEnemy getInfo = ctx.bodyAsClass(RoomEnemy.class);
         return (EnemyRoom) Rooms.getRoom(getInfo.roomID());
     }
 
     public static Enemy getEnemyFromContext(Context ctx) {
-        record RoomEnemy(int roomID, UUID uuid) {}
         RoomEnemy getInfo = ctx.bodyAsClass(RoomEnemy.class);
         UUID enemyUuid = getInfo.uuid();
 

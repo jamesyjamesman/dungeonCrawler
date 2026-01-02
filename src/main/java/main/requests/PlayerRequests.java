@@ -10,40 +10,36 @@ import main.item.relic.RelicID;
 import java.util.Collection;
 import java.util.UUID;
 
-import static main.requests.GameRequests.setContextStatus;
-
 public class PlayerRequests {
+
+    record ItemID(UUID uuid) {}
+    record relicID(UUID uuid) {}
+    record relicEnum(RelicID id) {}
 
     @PostRequestHandler(endpoint = "/player/relicEquipped")
     public static void playerRequests(Context ctx) {
-        record relicEnum(RelicID id) {}
         RelicID id = ctx.bodyAsClass(relicEnum.class).id;
         ctx.json(App.INSTANCE.getPlayer().hasRelicEquipped(id));
-        
     }
 
     @GetRequestHandler(endpoint = "/player/getPlayer")
     public static void getPlayer(Context ctx) {
         ctx.json(App.INSTANCE.getPlayer());
-        
     }
 
     @GetRequestHandler(endpoint = "/player/getInventorySize")
     public static void getInventorySize(Context ctx) {
         ctx.json(App.INSTANCE.getPlayer().calculateInventorySize());
-        
     }
 
     @GetRequestHandler(endpoint = "/player/getTotalDamage")
     public static void getTotalDamage(Context ctx) {
         ctx.json(App.INSTANCE.getPlayer().calculateWeakenedAttack());
-        
     }
 
     @PostRequestHandler(endpoint = "/player/itemEquipped")
     public static void itemEquipped(Context ctx) {
-        record itemID(UUID uuid) {}
-        UUID itemUUID = ctx.bodyAsClass(itemID.class).uuid();
+        UUID itemUUID = ctx.bodyAsClass(ItemID.class).uuid();
         Player player = App.INSTANCE.getPlayer();
         boolean equipped =
                 player.getEquippedRelics()
@@ -51,39 +47,33 @@ public class PlayerRequests {
                         .anyMatch(relic -> relic.getUuid().equals(itemUUID)) ||
                 player.getEquippedWeapon().getUuid().equals(itemUUID);
         ctx.json(equipped);
-        
     }
 
     @GetRequestHandler(endpoint = "/player/getInventory")
     public static void getInventory(Context ctx) {
         ctx.json(App.INSTANCE.getPlayer().getInventory());
-        
     }
 
     @GetRequestHandler(endpoint = "/player/getRelics")
     public static void getRelics(Context ctx) {
         ctx.json(App.INSTANCE.getPlayer().getEquippedRelics());
-        
     }
 
     @GetRequestHandler(endpoint = "/player/getCurrentRoom")
     public static void getCurrentRoom(Context ctx) {
         ctx.json(App.INSTANCE.getPlayer().getCurrentRoom());
-        
     }
 
     @PostRequestHandler(endpoint = "/player/useInventoryItem")
     public static void useItem(Context ctx) {
         String output = getInventoryItemFromUUID(ctx).useItem(App.INSTANCE.getPlayer());
         ctx.json("\"" + output + "\"");
-        
     }
 
     @PostRequestHandler(endpoint = "/player/cleanseItem")
     public static void cleanseItem(Context ctx) {
         boolean cleansed = getInventoryItemFromUUID(ctx).cleanseItem(App.INSTANCE.getPlayer());
         ctx.json(cleansed);
-        
     }
 
     @PostRequestHandler(endpoint = "/player/dropItem")
@@ -91,7 +81,6 @@ public class PlayerRequests {
         Item item = getInventoryItemFromUUID(ctx);
         App.INSTANCE.getPlayer().discardItem(item);
         ctx.json(true);
-        
     }
 
     @PostRequestHandler(endpoint = "/player/sellItem")
@@ -99,7 +88,6 @@ public class PlayerRequests {
         Item item = getInventoryItemFromUUID(ctx);
         boolean success = App.INSTANCE.getPlayer().sellItem(item);
         ctx.json(success);
-        
     }
 
     //todo status if level up failed?
@@ -112,7 +100,6 @@ public class PlayerRequests {
     public static void cleanseRelic(Context ctx) {
         boolean cleansed = getRelicFromRelics(ctx).cleanseItem(App.INSTANCE.getPlayer());
         ctx.json(cleansed);
-        
     }
 
     @PostRequestHandler(endpoint = "/player/unequipRelic")
@@ -120,11 +107,9 @@ public class PlayerRequests {
         //todo return output
         getRelicFromRelics(ctx).useItem(App.INSTANCE.getPlayer());
         ctx.json(true);
-        
     }
 
     public static Item getInventoryItemFromUUID(Context ctx) {
-        record ItemID(UUID uuid) {}
         UUID uuid = ctx.bodyAsClass(ItemID.class).uuid();
         return App.INSTANCE.getPlayer().getInventory()
                 .stream()
@@ -134,7 +119,6 @@ public class PlayerRequests {
     }
 
     public static Relic getRelicFromRelics(Context ctx) {
-        record relicID(UUID uuid) {}
         UUID uuid = ctx.bodyAsClass(relicID.class).uuid();
         return App.INSTANCE.getPlayer().getEquippedRelics()
                 .stream()

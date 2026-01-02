@@ -14,13 +14,17 @@ import static main.requests.GameRequests.setContextStatus;
 
 public class Rooms {
 
+    record RoomId(int id) {}
+    record RoomChangeEvents(ArrayList<String> relicUseText, ArrayList<String> statusText, Room room, boolean playerAlive) {}
+    record TrapInfo(int damageDealt, boolean playerDead) {}
+    record RoomId_Shop(int roomID, UUID itemID) {}
+
     @PostRequestHandler(endpoint = "/rooms/change")
     public static void change(Context ctx) {
         Player player = App.INSTANCE.getPlayer();
-        record RoomIndex(int id) {}
-        Room returnRoom = Game.roomChangeHandler(ctx.bodyAsClass(RoomIndex.class).id());
 
-        record RoomChangeEvents(ArrayList<String> relicUseText, ArrayList<String> statusText, Room room, boolean playerAlive) {}
+        Room returnRoom = Game.roomChangeHandler(ctx.bodyAsClass(RoomId.class).id());
+
         RoomChangeEvents events = new RoomChangeEvents(player.useRelics(), player.statusHandler(false), returnRoom, player.getCurrentHealth() > 0);
 
         ctx.json(events);
@@ -32,7 +36,6 @@ public class Rooms {
         Player player = App.INSTANCE.getPlayer();
         player.takeDamage(trapRoom.getDamageDealt());
 
-        record TrapInfo(int damageDealt, boolean playerDead) {}
         ctx.json(new TrapInfo(trapRoom.getDamageDealt(), player.isDead()));
     }
 
@@ -54,13 +57,6 @@ public class Rooms {
         ctx.json(App.INSTANCE.getPlayer().itemPickup(room.getRelic()));
     }
 
-//    @PostRequestHandler(endpoint = "/rooms/resetEnemies")
-//    public static void resetEnemies(Context ctx) {
-//        EnemyRoom room = (EnemyRoom) getRoomFromContext(ctx);
-//        room.resetRoom();
-//        ctx.json(true);
-//    }
-
     @PostRequestHandler(endpoint = "/rooms/getExits")
     public static void getExits(Context ctx) {
         ArrayList<Room> roomExits = getRoomFromContext(ctx).getExits();
@@ -70,8 +66,7 @@ public class Rooms {
 
     @PostRequestHandler(endpoint = "/rooms/buyItem")
     public static void buyItem(Context ctx) {
-        record RoomId(int roomID, UUID itemID) {}
-        RoomId stuff = ctx.bodyAsClass(RoomId.class);
+        RoomId_Shop stuff = ctx.bodyAsClass(RoomId_Shop.class);
         int roomID = stuff.roomID();
         UUID itemUUID = stuff.itemID();
         ShopRoom room = (ShopRoom) getRoom(roomID);
@@ -94,7 +89,6 @@ public class Rooms {
     }
 
     public static Room getRoomFromContext(Context ctx) {
-        record RoomId(int id) {}
         int id = ctx.bodyAsClass(RoomId.class).id();
         return getRoom(id);
     }
