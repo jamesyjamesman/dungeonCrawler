@@ -77,7 +77,13 @@ public class PlayerRequests {
             case ItemUseCase.NO_HEALTH -> output = "You ate the " + item.getName() + ", but nothing happened.";
             case ItemUseCase.NEGATIVE_HEALTH -> output = "Yuck! That " + item.getName() + " was gross... You lost " + ((HealthItem) item).getHealthRestored() * -1 + " health!";
             case ItemUseCase.BUFF -> output = ((BuffItem) item).createOutputString();
-            case ItemUseCase.EQUIPPED -> output = "The " + item.getName() + " was equipped!";
+            case ItemUseCase.EQUIPPED -> {
+                if (item instanceof Relic relic && relic.isCursed()) {
+                    output = "The " + item.getName() + " was equipped, but it was cursed!";
+                } else {
+                    output = "The " + item.getName() + " was equipped!";
+                }
+            }
             case ItemUseCase.UNEQUIPPED -> output = "The " + item.getName() + " was unequipped!";
             case ItemUseCase.WEAPON_ALREADY_EQUIPPED -> {
                 output = "The " + item.getName() + " could not be equipped, because the " +
