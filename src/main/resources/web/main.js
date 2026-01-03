@@ -379,12 +379,13 @@ async function renderInventory() {
         if (item.cleansable && room.type === "FOUNTAIN" && !room.fountainUsed) {
             $(`<button class="clickableButton inlineButton">Cleanse</button>`)
                 .click(async () => {
-                    const errorDiv = getFreshErrorDiv()
+                    const mainDiv = $("#mainDiv");
                     const itemCleansed = await postHelper("/player/cleanseItem", {uuid: item.uuid});
                     if (itemCleansed)
-                        errorDiv.append(`<p>The ${item.name} was cleansed!</p>`);
+                        mainDiv.append(`<p>The ${item.name} was cleansed!</p>`);
                     else
-                        errorDiv.append(`<p>The ${item.name} couldn't be cleansed!</p>`)
+                        mainDiv.append(`<p>The ${item.name} couldn't be cleansed!</p>`)
+                    mainDiv.append(`<p>The fountain dried up!</p>`);
                     await render();
                 })
                 .appendTo(elementSpan);
