@@ -523,6 +523,11 @@ async function shopRenderer(room) {
 async function fountainHandler(room) {
     const mainDiv = getFreshMainDiv();
     mainDiv.append("<p>Place an item in the fountain, and/or continue!</p>");
+    const selfCleanseButton = $("<button class='clickableButton'>Jump in</button>").click(async () => {
+        const outputString = await postHelper("/rooms/cleansePlayer");
+        mainDiv.append(`<p>${outputString}</p>`);
+    });
+    mainDiv.append(selfCleanseButton);
     await appendContinue(room.id);
     await render();
 }

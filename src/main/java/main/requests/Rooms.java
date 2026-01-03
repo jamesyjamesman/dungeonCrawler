@@ -61,7 +61,6 @@ public class Rooms {
     public static void getExits(Context ctx) {
         ArrayList<Room> roomExits = getRoomFromContext(ctx).getExits();
         ctx.json(roomExits);
-        
     }
 
     @PostRequestHandler(endpoint = "/rooms/buyItem")
@@ -78,7 +77,19 @@ public class Rooms {
 
         boolean success = room.sellItem(soldItem, App.INSTANCE.getPlayer());
         ctx.json(success);
-        
+    }
+
+    @PostRequestHandler(endpoint = "/rooms/cleansePlayer")
+    public static void cleansePlayer(Context ctx) {
+        String output;
+        Player player = App.INSTANCE.getPlayer();
+        boolean fireRemoved = ((PureWaterRoom) player.getCurrentRoom()).selfFountainize();
+        if (fireRemoved) {
+            output = "You jumped in the fountain, and put out the fire on you!";
+        } else {
+            output = "...You're all wet now.";
+        }
+        ctx.json("\"" + output + "\"");
     }
 
     public static Room getRoom(int id) {
