@@ -10,6 +10,7 @@ import main.item.relic.DamageRelic;
 import main.item.relic.Relic;
 import main.item.relic.RelicID;
 import main.item.weapon.Weapon;
+import main.requests.ItemUseCase;
 import main.room.Room;
 import main.room.ShopRoom;
 
@@ -204,12 +205,15 @@ public class Player extends Entity {
         return true;
     }
 
-    public boolean unequipRelic(Relic relic){
-        if (relic.isCursed() || addItemToInventory(relic)) {
-            return false;
+    public ItemUseCase unequipRelic(Relic relic) {
+        if (relic.isCursed()) {
+            return ItemUseCase.RELIC_CURSED;
+        }
+        if (addItemToInventory(relic)) {
+            return ItemUseCase.INVENTORY_FULL;
         }
         getEquippedRelics().remove(relic);
-        return true;
+        return ItemUseCase.UNEQUIPPED;
     }
 
     @Override
@@ -438,7 +442,7 @@ public class Player extends Entity {
     }
     public boolean setEquippedWeapon(Weapon weapon) {
         if (weapon == null) {
-            removeWeapon();
+            throw new NullPointerException("Cannot set an equipped weapon to null!");
         }
         // only equip a weapon if there isn't one equipped
         if (this.equippedWeapon != null) {

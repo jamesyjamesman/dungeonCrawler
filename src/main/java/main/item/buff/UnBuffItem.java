@@ -1,6 +1,7 @@
 package main.item.buff;
 
 import main.entity.Player;
+import main.requests.ItemUseCase;
 
 public class UnBuffItem extends BuffItem {
     public UnBuffItem() {
@@ -14,14 +15,17 @@ public class UnBuffItem extends BuffItem {
     }
 
     @Override
-    public String useItem(Player player) {
-        int poisonAmount = randomizeAmountChanged();
-        player.getCurrentStatuses().addPoison(poisonAmount);
+    public ItemUseCase useItem(Player player) {
+        player.getCurrentStatuses().addPoison(this.amountChanged);
         player.discardItem(this);
-        if (poisonAmount > 0)
-            return "Gross! That... was not worth it. You gained " + poisonAmount + " levels of poison!";
+        return ItemUseCase.BUFF;
+    }
+
+    @Override
+    public String createOutputString() {
+        if (this.amountChanged > 0)
+            return "Gross! That... was not worth it. You gained " + this.amountChanged + " levels of poison!";
         else
             return "That was disgusting!";
-
     }
 }

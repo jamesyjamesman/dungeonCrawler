@@ -4,6 +4,7 @@ import main.App;
 import main.entity.Player;
 import main.item.Item;
 import main.item.ItemType;
+import main.requests.ItemUseCase;
 
 public abstract class Weapon extends Item {
     int damage;
@@ -13,15 +14,18 @@ public abstract class Weapon extends Item {
     }
 
     @Override
-    public String useItem(Player player) {
+    public ItemUseCase useItem(Player player) {
         if (this.getEquipped()) {
             player.removeWeapon();
-            return "The " + this.getName() + " was unequipped!";
+//            return "The " + this.getName() + " was unequipped!";
+            return ItemUseCase.UNEQUIPPED;
         } else {
             if (player.setEquippedWeapon(this))
-                return "The " + this.getName() + " was equipped!";
+//                return "The " + this.getName() + " was equipped!";
+                return ItemUseCase.EQUIPPED;
             else
-                return "You must unequip your " + player.getEquippedWeapon().getName() + " first to equip your " + getName() + "!";
+                return ItemUseCase.WEAPON_ALREADY_EQUIPPED;
+//                return "You must unequip your " + player.getEquippedWeapon().getName() + " first to equip your " + getName() + "!";
         }
     }
 

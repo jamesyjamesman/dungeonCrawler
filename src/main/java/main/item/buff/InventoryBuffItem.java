@@ -1,6 +1,7 @@
 package main.item.buff;
 
 import main.entity.Player;
+import main.requests.ItemUseCase;
 
 public class InventoryBuffItem extends BuffItem {
     public InventoryBuffItem() {
@@ -14,10 +15,9 @@ public class InventoryBuffItem extends BuffItem {
     }
 
     @Override
-    public String useItem(Player player) {
-        int amountChanged = randomizeAmountChanged();
+    public ItemUseCase useItem(Player player) {
         player.changeInventoryCap(amountChanged);
         player.discardItem(this);
-        return createOutputString(amountChanged);
+        return ItemUseCase.BUFF;
     }
 }

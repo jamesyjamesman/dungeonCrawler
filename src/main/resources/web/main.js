@@ -402,8 +402,12 @@ async function renderInventory() {
             }
             $(`<button class="clickableButton inlineButton">${buttonText}</button>`)
                 .click(async () => {
-                    const itemUseText = await postHelper("/player/useInventoryItem", { uuid: item.uuid });
-                    appendStatusTicker(itemUseText);
+                    const response = await postHelper("/player/useInventoryItem", { uuid: item.uuid });
+                    if (response.error) {
+                        getFreshErrorDiv().append(`<p>${response.output}</p>`);
+                    } else {
+                        appendStatusTicker(response.output);
+                    }
                     await render();
                 })
                 .appendTo(elementSpan);
@@ -464,7 +468,12 @@ async function renderRelics() {
         } else {
             $(`<button class="clickableButton inlineButton">Unequip</button>`)
                 .click(async () => {
-                    await postHelper("/player/unequipRelic", {uuid: relics[i].uuid})
+                    const response = await postHelper("/player/unequipRelic", {uuid: relics[i].uuid});
+                    if (response.error) {
+                        getFreshErrorDiv().append(`<p>${response.output}</p>`);
+                    } else {
+                        appendStatusTicker(response.output);
+                    }
                     await render();
                 })
                 .appendTo(elementSpan);
@@ -500,7 +509,7 @@ async function shopRenderer(room) {
                     await shopRenderer(await getHelper("/player/getCurrentRoom"));
                 } else {
                     // todo more advanced error message? e.g. inv full, can't afford
-                    getFreshErrorDiv().append("<p>You can't buy that right now!</p>")
+                    getFreshErrorDiv().append("<p>You can't buy that right now!</p>");
                 }
             })
             .appendTo(elementSpan);

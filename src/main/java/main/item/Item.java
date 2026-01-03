@@ -3,6 +3,7 @@ package main.item;
 import main.Identifiable;
 import main.entity.Player;
 import main.item.health.PureAppleItem;
+import main.requests.ItemUseCase;
 import main.room.PureWaterRoom;
 
 public abstract class Item extends Identifiable implements Cloneable {
@@ -29,7 +30,7 @@ public abstract class Item extends Identifiable implements Cloneable {
         this.cleansable = cleansable;
     }
 
-    public abstract String useItem(Player player);
+    public abstract ItemUseCase useItem(Player player);
 
     public boolean cleanseItem(Player player) {
         ((PureWaterRoom) player.getCurrentRoom()).setFountainUsed(true);

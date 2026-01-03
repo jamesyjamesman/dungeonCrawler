@@ -1,0 +1,16 @@
+package main.requests;
+
+public enum ItemUseCase {
+    HEALTH,
+    NO_HEALTH,
+    NEGATIVE_HEALTH,
+    BUFF,
+    EQUIPPED,
+    UNEQUIPPED,
+    RELIC_CURSED,
+    INVENTORY_FULL,
+    INVENTORY_OVERFLOW,
+    POUCH_FULL,
+    POUCH_OVERFLOW,
+    WEAPON_ALREADY_EQUIPPED
+}

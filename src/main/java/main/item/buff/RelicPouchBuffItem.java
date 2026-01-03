@@ -1,6 +1,7 @@
 package main.item.buff;
 
 import main.entity.Player;
+import main.requests.ItemUseCase;
 
 public class RelicPouchBuffItem extends BuffItem {
     public RelicPouchBuffItem() {
@@ -14,10 +15,9 @@ public class RelicPouchBuffItem extends BuffItem {
     }
 
     @Override
-    public String useItem(Player player) {
-        int amountChanged = randomizeAmountChanged();
-        player.changeRelicCap(amountChanged);
+    public ItemUseCase useItem(Player player) {
+        player.changeRelicCap(this.amountChanged);
         player.discardItem(this);
-        return createOutputString(amountChanged);
+        return ItemUseCase.BUFF;
     }
 }

@@ -4,6 +4,8 @@ import io.javalin.http.Context;
 import main.App;
 import main.entity.Player;
 import main.item.Item;
+import main.item.buff.BuffItem;
+import main.item.health.HealthItem;
 import main.item.relic.Relic;
 import main.item.relic.RelicID;
 
@@ -15,9 +17,10 @@ public class PlayerRequests {
     record ItemID(UUID uuid) {}
     record relicID(UUID uuid) {}
     record relicEnum(RelicID id) {}
+    record OutputWithErrorFlag(String output, boolean error) {}
 
     @PostRequestHandler(endpoint = "/player/relicEquipped")
-    public static void playerRequests(Context ctx) {
+    public static void relicEquipped(Context ctx) {
         RelicID id = ctx.bodyAsClass(relicEnum.class).id;
         ctx.json(App.INSTANCE.getPlayer().hasRelicEquipped(id));
     }
@@ -66,8 +69,33 @@ public class PlayerRequests {
 
     @PostRequestHandler(endpoint = "/player/useInventoryItem")
     public static void useItem(Context ctx) {
-        String output = getInventoryItemFromUUID(ctx).useItem(App.INSTANCE.getPlayer());
-        ctx.json("\"" + output + "\"");
+        String output;
+        boolean error = false;
+        Item item = getInventoryItemFromUUID(ctx);
+        switch (item.useItem(App.INSTANCE.getPlayer())) {
+            case ItemUseCase.HEALTH -> output = "The " + item.getName() + " healed you for " + ((HealthItem) item).getHealthRestored() + " health!";
+            case ItemUseCase.NO_HEALTH -> output = "You ate the " + item.getName() + ", but nothing happened.";
+            case ItemUseCase.NEGATIVE_HEALTH -> output = "Yuck! That " + item.getName() + " was gross... You lost " + ((HealthItem) item).getHealthRestored() * -1 + " health!";
+            case ItemUseCase.BUFF -> output = ((BuffItem) item).createOutputString();
+            case ItemUseCase.EQUIPPED -> output = "The " + item.getName() + " was equipped!";
+            case ItemUseCase.UNEQUIPPED -> output = "The " + item.getName() + " was unequipped!";
+            case ItemUseCase.WEAPON_ALREADY_EQUIPPED -> {
+                output = "The " + item.getName() + " could not be equipped, because the " +
+                    App.INSTANCE.getPlayer().getEquippedWeapon().getName() + " is already equipped!";
+                error = true;
+            }
+            case ItemUseCase.POUCH_FULL -> {
+                output = "Your relic pouch is full!";
+                error = true;
+            }
+            default -> throw new IllegalStateException();
+        }
+
+        //this is bad but oh well
+        if (item instanceof HealthItem healthItem && healthItem.getAddedAbsorption() != 0) {
+            output += " Also, the " + healthItem.getName() + " granted " + healthItem.getAddedAbsorption() + " points of absorption!";
+        }
+        ctx.json(new OutputWithErrorFlag(output, error));
     }
 
     @PostRequestHandler(endpoint = "/player/cleanseItem")
@@ -104,9 +132,30 @@ public class PlayerRequests {
 
     @PostRequestHandler(endpoint = "/player/unequipRelic")
     public static void unequipRelic(Context ctx) {
-        //todo return output
-        getRelicFromRelics(ctx).useItem(App.INSTANCE.getPlayer());
-        ctx.json(true);
+        String output;
+        boolean error = false;
+        Relic relic = getRelicFromRelics(ctx);
+        switch (relic.useItem(App.INSTANCE.getPlayer())) {
+            case ItemUseCase.UNEQUIPPED -> output = "The " + relic.getName() + " was unequipped!";
+            case ItemUseCase.INVENTORY_FULL -> {
+                output = "Your inventory is full!";
+                error = true;
+            }
+            case ItemUseCase.INVENTORY_OVERFLOW -> {
+                output = "You have too many items to unequip your " + relic.getName() + "!";
+                error = true;
+            }
+            case ItemUseCase.POUCH_OVERFLOW -> {
+                output = "You have too many relics equipped to unequip your " + relic.getName() + "!";
+                error = true;
+            }
+            case ItemUseCase.RELIC_CURSED -> {
+                output = "You cannot unequip a cursed relic!";
+                error = true;
+            }
+            default -> throw new IllegalStateException("Relics can only be unequipped from the relics menu!");
+        }
+        ctx.json(new OutputWithErrorFlag(output, error));
     }
 
     public static Item getInventoryItemFromUUID(Context ctx) {

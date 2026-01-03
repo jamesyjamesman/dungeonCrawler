@@ -1,12 +1,13 @@
 package main.item.armor;
 
+import main.App;
 import main.entity.Player;
 import main.item.Item;
 import main.item.ItemType;
+import main.requests.ItemUseCase;
 
 public abstract class Armor extends Item {
     private final int damageReduction;
-    private boolean equipped;
 
     public Armor(String name, String description, int value, boolean stackable, double dropChance, int shopWeight, int damageReduction) {
         super(name, description, value, stackable, dropChance, shopWeight, ItemType.ARMOR);
@@ -14,15 +15,13 @@ public abstract class Armor extends Item {
     }
 
     @Override
-    public String useItem(Player player) {
+    public ItemUseCase useItem(Player player) {
         if (this.getEquipped()) {
             player.setEquippedArmor(null);
-            this.equipped = false;
-            return "The " + this.getName() + " was unequipped!";
+            return ItemUseCase.UNEQUIPPED;
         } else {
             player.setEquippedArmor(this);
-            this.equipped = true;
-            return "The " + this.getName() + " was equipped!";
+            return ItemUseCase.EQUIPPED;
         }
     }
 
@@ -30,6 +29,6 @@ public abstract class Armor extends Item {
         return this.damageReduction;
     }
     public boolean getEquipped() {
-        return this.equipped;
+        return App.INSTANCE.getPlayer().getEquippedArmor() == this;
     }
 }

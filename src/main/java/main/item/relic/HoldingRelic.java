@@ -1,6 +1,7 @@
 package main.item.relic;
 
 import main.entity.Player;
+import main.requests.ItemUseCase;
 
 public class HoldingRelic extends Relic {
     public HoldingRelic() {
@@ -19,23 +20,23 @@ public class HoldingRelic extends Relic {
     }
 
     @Override
-    public String useItem(Player player) {
+    public ItemUseCase useItem(Player player) {
         if (this.isEquipped(player)) {
             int itemsOverCapacity = player.calculateInventorySize() - (player.getInventoryCap() - 10);
             if (itemsOverCapacity > 0) {
-                return "You have too many items to unequip this!";
+                return ItemUseCase.INVENTORY_OVERFLOW;
             }
-            if (player.unequipRelic(this)) {
+            ItemUseCase unequipStatus = player.unequipRelic(this);
+            if (unequipStatus == ItemUseCase.UNEQUIPPED) {
                 player.changeInventoryCap(-10);
-                return "You unequipped the " + this.getName() + "!";
             }
-            return "Your inventory is full!";
+            return unequipStatus;
         } else {
             if (player.equipRelic(this)) {
                 player.changeInventoryCap(10);
-                return "You equipped the " + this.getName() + "!";
+                return ItemUseCase.EQUIPPED;
             }
-            return "Your relic pouch is full!";
+            return ItemUseCase.POUCH_FULL;
         }
     }
 }

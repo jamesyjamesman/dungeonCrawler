@@ -1,6 +1,7 @@
 package main.item.buff;
 
 import main.entity.Player;
+import main.requests.ItemUseCase;
 
 public class HealthBuffItem extends BuffItem {
     public HealthBuffItem() {
@@ -14,10 +15,9 @@ public class HealthBuffItem extends BuffItem {
     }
 
     @Override
-    public String useItem(Player player) {
-        int amountChanged = randomizeAmountChanged();
-        player.increaseMaxHealth(amountChanged);
+    public ItemUseCase useItem(Player player) {
+        player.increaseMaxHealth(this.amountChanged);
         player.discardItem(this);
-        return createOutputString(amountChanged);
+        return ItemUseCase.BUFF;
     }
 }

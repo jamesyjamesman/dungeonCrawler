@@ -1,6 +1,7 @@
 package main.item.buff;
 
 import main.entity.Player;
+import main.requests.ItemUseCase;
 
 public class DamageBuffItem extends BuffItem {
     public DamageBuffItem() {
@@ -14,10 +15,9 @@ public class DamageBuffItem extends BuffItem {
     }
 
     @Override
-    public String useItem(Player player) {
-        int amountChanged = randomizeAmountChanged();
-        player.increaseDamage(amountChanged);
+    public ItemUseCase useItem(Player player) {
+        player.increaseDamage(this.amountChanged);
         player.discardItem(this);
-        return createOutputString(amountChanged);
+        return ItemUseCase.BUFF;
     }
 }
