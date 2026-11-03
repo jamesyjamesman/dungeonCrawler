@@ -1,3 +1,7 @@
+body {
+    font-family: sans-serif;
+}
+
 div {
     overflow-y: auto;
 }
@@ -130,6 +134,7 @@ span {
     opacity: 80%;
     width: 50%;
     height: 100%;
+    overflow: clip;
 }
 
 #statusChecker {

@@ -210,17 +210,6 @@ async function battleSequence(room, enemy) {
     }
 }
 
-function appendStatusTicker(text) {
-    const tickerDiv = document.getElementById("statusTicker");
-    const statusParagraph = createParagraph(text);
-    statusParagraph.classList.add("statusParagraph");
-    tickerDiv.append(statusParagraph);
-    const childParagraphs = tickerDiv.children;
-    if (childParagraphs.length > 5) {
-        childParagraphs[0].remove();
-    }
-}
-
 //todo refactor to just give room id and in the backend loop and attack the player? maybe (would make status rendering harder)
 // could have /enemy/attack return an array of strings instead and loop through that and append?
 // would decrease render time, too

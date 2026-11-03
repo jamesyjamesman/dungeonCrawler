@@ -260,6 +260,41 @@ async function renderEnemies(room, reset = true) {
     }
 }
 
+function appendStatusTicker(text) {
+    const tickerDiv = document.getElementById("statusTicker");
+    const statusParagraph = createParagraph(text);
+    statusParagraph.classList.add("statusParagraph");
+    tickerDiv.prepend(statusParagraph);
+    let childParagraphs = tickerDiv.children;
+
+    // Remove clipping tickers
+    for (let i = childParagraphs.length - 1; i >= 0; i--) {
+        const paragraph = childParagraphs[i];
+        const bounds = paragraph.getBoundingClientRect();
+        const tickerBounds = tickerDiv.getBoundingClientRect();
+        if (bounds.bottom > tickerBounds.bottom) {
+            paragraph.remove();
+        }
+    }
+
+    // Reset
+    childParagraphs = tickerDiv.children;
+
+    // Color tickers
+    // Starts dark and gets light, maybe could be updated to start light and get dark?
+    for (let i = 0; i < childParagraphs.length; i++) {
+        const paragraph = childParagraphs[i];
+        const ratio = (i+1)/childParagraphs.length;
+        if (ratio <= 0.2) {
+            paragraph.style.color = "white";
+        } else if (ratio <= 0.7) {
+            paragraph.style.color = "darkgrey"; // Lighter than grey, don't ask
+        } else {
+            paragraph.style.color = "dimgrey"
+        }
+    }
+}
+
 async function render() {
     await Promise.all([
         renderInventory(),
