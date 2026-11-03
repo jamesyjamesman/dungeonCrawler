@@ -6,6 +6,8 @@ const relics = document.getElementById("relics");
 const mainDiv = document.getElementById("mainDiv");
 const descriptionDiv = document.getElementById("descriptionDiv");
 const errorDiv = document.getElementById("errorDiv");
+const inventoryButton = document.getElementById("inventoryButton");
+const relicButton = document.getElementById("relicButton");
 
 initiate().then();
 
@@ -74,11 +76,15 @@ function hidePopup() {
 }
 
 function inventoryVisible() {
+    inventoryButton.classList.add("buttonSelected");
+    relicButton.classList.remove("buttonSelected");
     inventory.classList.remove("invisible");
     relics.classList.add("invisible");
 }
 
 function relicsVisible() {
+    relicButton.classList.add("buttonSelected");
+    inventoryButton.classList.remove("buttonSelected");
     inventory.classList.add("invisible");
     relics.classList.remove("invisible");
 }

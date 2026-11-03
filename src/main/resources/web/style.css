@@ -1,14 +1,22 @@
 body {
     font-family: sans-serif;
+    background-image: url("textures/default_background.png");
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    background-color: black;
 }
 
 div {
     overflow-y: auto;
 }
 
+.buttonSelected {
+    border-color: green !important;
+}
+
 .inventoryContainer {
     position: absolute;
-    right: 0;
+    right: 18px;
     bottom: 0;
     width: 30%;
     height: 60%;
@@ -17,11 +25,18 @@ div {
 
 .inventoryElement {
     position: absolute;
+    height: 90%;
+    width: 100%;
+}
+
+.uiElement {
     background-color: black;
     color: white;
     opacity: 80%;
-    height: 90%;
-    width: 100%
+    border: solid 3px white;
+    border-radius: 5px;
+    margin: 3px;
+    padding: 3px;
 }
 
 .invisible {
@@ -81,27 +96,22 @@ span {
     overflow-y: clip;
 }
 
+#mainDiv > span, #mainDiv > p, .inventoryElement > div {
+    margin: 0 0 0.2rem 0;
+}
+
 .input {
     height: 20%;
-    color: white;
-    background-color: black;
-    opacity: 80%;
     width: 100%;
     border: 0 none;
 }
 
 #errorDiv {
     height: 20%;
-    color: white;
-    background-color: black;
-    opacity: 80%;
 }
 
 .mainContextDiv {
     height: 55%;
-    color: white;
-    background-color: black;
-    opacity: 80%;
     margin-bottom: 5%;
 }
 
@@ -111,17 +121,19 @@ span {
     left: 0;
     height: 30%;
     width: 50%;
-    background-color: black;
-    color: white;
-    opacity: 80%;
 }
+
+#descriptionDiv > p {
+    margin: 0;
+}
+
 
 .statusContainer {
     display: flex;
     align-items: center;
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 3px;
+    right: 3px;
     height: 30%;
     width: 40%;
     text-align: center;
@@ -129,28 +141,15 @@ span {
 
 #statusTicker {
     position: relative;
-    background-color: black;
-    color: white;
-    opacity: 80%;
     width: 50%;
-    height: 100%;
+    height: calc(100% - 18px);
     overflow: clip;
 }
 
 #statusChecker {
     position: relative;
-    background-color: black;
-    color: white;
-    opacity: 80%;
     width: 50%;
-    height: 100%;
-}
-
-body {
-    background-image: url("textures/default_background.png");
-    background-repeat: no-repeat;
-    background-size: 100% auto;
-    background-color: black;
+    height: calc(100% - 18px);
 }
 
 #popup {

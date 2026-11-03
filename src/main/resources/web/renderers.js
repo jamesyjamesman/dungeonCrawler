@@ -281,7 +281,6 @@ function appendStatusTicker(text) {
     childParagraphs = tickerDiv.children;
 
     // Color tickers
-    // Starts dark and gets light, maybe could be updated to start light and get dark?
     for (let i = 0; i < childParagraphs.length; i++) {
         const paragraph = childParagraphs[i];
         const ratio = (childParagraphs.length-i)/childParagraphs.length;
