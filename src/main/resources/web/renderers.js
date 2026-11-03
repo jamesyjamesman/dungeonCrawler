@@ -284,10 +284,10 @@ function appendStatusTicker(text) {
     // Starts dark and gets light, maybe could be updated to start light and get dark?
     for (let i = 0; i < childParagraphs.length; i++) {
         const paragraph = childParagraphs[i];
-        const ratio = (i+1)/childParagraphs.length;
-        if (ratio <= 0.2) {
+        const ratio = (childParagraphs.length-i)/childParagraphs.length;
+        if (ratio > 0.8) {
             paragraph.style.color = "white";
-        } else if (ratio <= 0.7) {
+        } else if (ratio > 0.3) {
             paragraph.style.color = "darkgrey"; // Lighter than grey, don't ask
         } else {
             paragraph.style.color = "dimgrey"
