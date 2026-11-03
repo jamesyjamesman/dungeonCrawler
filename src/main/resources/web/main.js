@@ -1,10 +1,12 @@
 const textInput = document.getElementById("textInput");
 const popup = document.getElementById("popup");
 const popupText = document.getElementById("popupText");
-const inventory = document.getElementById("inventoryData");
-const relics = document.getElementById("relicData");
+const inventory = document.getElementById("inventory");
+const relics = document.getElementById("relics");
 
-window.addEventListener("load", async () => {
+initiate().then();
+
+async function initiate() {
     let rooms = await getHelper("/gameStart");
 
     textInput.addEventListener("keypress", (event) => {
@@ -19,7 +21,7 @@ window.addEventListener("load", async () => {
     })
     await printRooms(rooms);
     await render();
-});
+}
 
 let numberInputOptions = [];
 
@@ -58,7 +60,7 @@ function userSelectOption() {
 }
 
 function createPopup(textValue) {
-    popup.removeClass("invisible");
+    popup.classList.remove("invisible");
     popupText.textContent = textValue;
     popup.focus();
 }
@@ -140,7 +142,7 @@ async function goToRoom(id) {
     document.body.style.backgroundImage = `url("textures/${newRoom.backgroundFileName}")`;
     descriptionDiv.innerHTML = "";
     const descriptionParagraph = document.createElement("p");
-    descriptionParagraph.textContent = parseTextAsHTML(newRoom.description);
+    descriptionParagraph.innerHTML = parseTextAsHTML(newRoom.description);
     descriptionDiv.append(descriptionParagraph);
     switch (newRoom.type) {
         case "NORMAL":
