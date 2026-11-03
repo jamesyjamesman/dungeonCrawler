@@ -1,11 +1,18 @@
+const textInput = document.getElementById("textInput");
+const popup = document.getElementById("popup");
+const popupText = document.getElementById("popupText");
+const inventory = document.getElementById("inventoryData");
+const relics = document.getElementById("relicData");
+
 window.addEventListener("load", async () => {
     let rooms = await getHelper("/gameStart");
-    $("#textInput").on("keypress", function(event) {
+
+    textInput.addEventListener("keypress", (event) => {
         if (event.key === "Enter") {
             userSelectOption();
         }
     })
-    $("#popup").on("keypress", function(event) {
+    popup.addEventListener("keypress", (event) => {
         if (event.key === "Enter") {
             hidePopup();
         }
@@ -18,73 +25,93 @@ let numberInputOptions = [];
 
 function userSelectOption() {
     //todo post request that sends input to debug command checker. if successful, rerender stuff (if possible) and return
-    const input = $("#textInput");
+    const input = document.getElementById("textInput");
     const error = getFreshErrorDiv();
-    if (input.val() === "") {
+    if (input.value === "") {
         if (numberInputOptions.length <= 1) {
             numberInputOptions[0]();
             return;
         }
-        error.html("");
-        error.append(`<p>You can only execute a default with one button available!</p>`);
+        error.innerHTML = "";
+        const response = document.createElement("p");
+        response.textContent = "You can only execute a default with one button available!";
+        error.append(response);
         return;
     }
-    const selectedOption = parseInt(input.val()) - 1;
+    const selectedOption = parseInt(input.value) - 1;
     if (selectedOption < 0 || selectedOption > numberInputOptions.length - 1) {
-        error.html("");
-        error.append(`<p>Out of range!</p>`);
+        error.innerHTML = "";
+        const errorText = document.createElement("p");
+        errorText.textContent = "Out of range!";
+        error.append(errorText);
         return;
     }
     if (isNaN(selectedOption)) {
-        error.html("");
-        error.append(`<p>Enter a number!</p>`)
+        error.innerHTML = "";
+        const errorText = document.createElement("p");
+        errorText.textContent = "Enter a number!";
+        error.append(errorText);
         return;
     }
     numberInputOptions[selectedOption]();
-    input.val("");
+    input.value = "";
 }
 
-function createPopup(popupText) {
-    const popup = $("#popup");
+function createPopup(textValue) {
     popup.removeClass("invisible");
-    $("#popupText").text(popupText);
+    popupText.textContent = textValue;
     popup.focus();
 }
 
 function hidePopup() {
-    $("#popup").addClass("invisible");
-    $("#popupText").innerText = "";
+    popup.classList.add("invisible");
+    popupText.innerText = "";
 }
+
 function inventoryVisible() {
-    $("#inventory").removeClass("invisible");
-    $("#relics").addClass("invisible");
+    inventory.classList.remove("invisible");
+    relics.classList.add("invisible");
 }
 
 function relicsVisible() {
-    $("#inventory").addClass("invisible");
-    $("#relics").removeClass("invisible");
+    inventory.classList.add("invisible");
+    relics.classList.remove("invisible");
 }
 
 function playerDeath() {
     const mainDiv = getFreshMainDiv();
-    $("#inventory").html("");
-    $("#relics").html("");
+    inventory.innerHTML = "";
+    relics.innerHTML = "";
 
-    mainDiv.append(`<p>You died! Unfortunately, I am not a good programmer, so you must reset the game manually.</p>`);
+    const deathParagraph = document.createElement("p");
+    deathParagraph.textContent = "You died! Reset the game to try again.";
+    mainDiv.append(deathParagraph);
+    // Todo: actually implement resetting the game.
 }
+
+// todo: file split here ------ or maybe above playerDeath
+
+const mainDiv = document.getElementById("mainDiv");
+const descriptionDiv = document.getElementById("descriptionDiv");
+const errorDiv = document.getElementById("errorDiv");
 
 async function printRooms(rooms) {
     let foresightRelicEquipped = await postHelper("/player/relicEquipped", {id: "FORESIGHT"});
-    const mainDiv = $("#mainDiv");
-    mainDiv.html("");
+    mainDiv.innerHTML = "";
 
     numberInputOptions = [];
     for (let i = 0; i < rooms.length; i++) {
-        const elementSpan = $("<span></span>")
+        const elementSpan = document.createElement("span");
         const exitsString = `(${rooms[i].numExits} exits)`;
-        const textParagraph = $(`<p class="listParagraph">${i+1}. ${rooms[i].appearance} ${((foresightRelicEquipped) ? exitsString : "")}</p>`);
+        const textParagraph = document.createElement("p");
+        textParagraph.classList.add("listParagraph");
+        textParagraph.textContent = `${i+1}. ${rooms[i].appearance} ${((foresightRelicEquipped) ? exitsString : "")}`;
         numberInputOptions[i] = async () => await goToRoom(rooms[i].id);
-        const goButton = $(`<button class="clickableButton inlineButton">Go</button>`).click(() => goToRoom(rooms[i].id));
+
+        const goButton = document.createElement("button");
+        goButton.classList.add("clickableButton", "inlineButton");
+        goButton.textContent = "Go";
+        goButton.addEventListener("click", () => goToRoom(rooms[i].id));
         elementSpan.append(goButton);
         elementSpan.append(textParagraph);
         mainDiv.append(elementSpan);
@@ -94,7 +121,7 @@ async function printRooms(rooms) {
 }
 
 async function goToRoom(id) {
-    const changeInfo = await postHelper("rooms/change", { id: id });
+    const changeInfo = await postHelper("/rooms/change", { id: id });
     const newRoom = changeInfo.room;
     const roomExits = await postHelper("/rooms/getExits", {id : newRoom.id });
     const statusText = changeInfo.statusText;
@@ -110,9 +137,11 @@ async function goToRoom(id) {
         playerDeath();
         return;
     }
-    $("body").css("backgroundImage", `url("textures/${newRoom.backgroundFileName}")`);
-    const descriptionDiv = $("#descriptionDiv").html("");
-    descriptionDiv.append(`<p>${parseTextAsHTML(newRoom.description)}</p>`);
+    document.body.style.backgroundImage = `url("textures/${newRoom.backgroundFileName}")`;
+    descriptionDiv.innerHTML = "";
+    const descriptionParagraph = document.createElement("p");
+    descriptionParagraph.textContent = parseTextAsHTML(newRoom.description);
+    descriptionDiv.append(descriptionParagraph);
     switch (newRoom.type) {
         case "NORMAL":
             await printRooms(roomExits);
@@ -142,71 +171,86 @@ async function goToRoom(id) {
     }
 }
 
+function createParagraph(text = "") {
+    const paragraph = document.createElement("p");
+    paragraph.textContent = text;
+    return paragraph;
+}
+
+// Why does it... return it?
 function getFreshMainDiv() {
-    const mainDiv = $("#mainDiv");
-    mainDiv.html("");
+    mainDiv.innerHTML = "";
     return mainDiv;
 }
 
 function getFreshErrorDiv() {
-    const errorDiv = $("#errorDiv");
-    errorDiv.html("");
+    errorDiv.innerHTML = "";
     return errorDiv;
 }
 
 async function appendContinue(id) {
     const exits = await postHelper("/rooms/getExits", { id: id });
-    const mainDiv = $("#mainDiv");
-    const continueButton = $("<button class='clickableButton'>Continue</button>").click(async () => await printRooms(exits));
+    const continueButton = document.createElement("button");
+    continueButton.classList.add("clickableButton");
+    continueButton.textContent = "Continue";
+    continueButton.addEventListener("click", async () => {
+        await printRooms(exits);
+    })
     numberInputOptions = [async () => await printRooms(exits)];
     mainDiv.append(continueButton);
 }
 
 async function itemHandler(room) {
-    const mainDiv = $("#mainDiv");
     let pickupSuccess = await itemPickup(room);
     if (!pickupSuccess) {
-        $(`<button class="clickableButton">Try Again</button>`)
-            .click(async () => {
-                await itemHandler(room);
-            })
-            .appendTo(mainDiv);
+        const tryButton = document.createElement("button");
+        tryButton.classList.add("clickableButton");
+        tryButton.textContent = "Try Again";
+        tryButton.addEventListener("click", async () => {
+            await itemHandler(room);
+        });
+        mainDiv.append(tryButton);
     }
 }
 
 async function itemPickup(room) {
     const pickupSuccess = await postHelper("/rooms/itemPickup", { id: room.id });
     const mainDiv = getFreshMainDiv();
+    const pickupParagraph = document.createElement('p');
     if (pickupSuccess) {
-        mainDiv.append(`<p>You picked up a ${room.item.name}!</p>`);
+        pickupParagraph.textContent = `You picked up a ${room.item.name}!`;
     } else {
-        mainDiv.append(`<p>Your inventory is full! Drop an item to pick up the ${room.item.name}!</p>`);
+        pickupParagraph.textContent = `Your inventory is full! Drop an item to pick up the ${room.item.name}!`;
     }
+    mainDiv.append(pickupParagraph);
     await render();
     await appendContinue(room.id);
     return pickupSuccess;
 }
 
 async function relicHandler(room) {
-    const mainDiv = $("#mainDiv");
     let pickupSuccess = await relicPickup(room);
     if (!pickupSuccess) {
-        $(`<button class="clickableButton">Try Again</button>`)
-            .click(async () => {
-                await relicHandler(room);
-            })
-            .appendTo(mainDiv);
+        const tryButton = document.createElement("button");
+        tryButton.classList.add("clickableButton");
+        tryButton.textContent = "Try Again";
+        tryButton.addEventListener("click", async () => {
+            await relicHandler(room);
+        });
+        mainDiv.append(tryButton);
     }
 }
 
 async function relicPickup(room) {
     const pickupSuccess = await postHelper("/rooms/relicPickup", { id: room.id });
     const mainDiv = getFreshMainDiv();
+    const pickupParagraph = document.createElement('p');
     if (pickupSuccess) {
-        mainDiv.append(`<p>You picked up a ${room.relic.name}!</p>`);
+        pickupParagraph.textContent = `You picked up a ${room.relic.name}!`;
     } else {
-        mainDiv.append(`<p>Your inventory is full! Drop an item to pick up the ${room.relic.name}!</p>`);
+        pickupParagraph.textContent = `Your inventory is full! Drop an item to pick up the ${room.relic.name}!`;
     }
+    mainDiv.append(pickupParagraph);
     await render();
     await appendContinue(room.id);
     return pickupSuccess;
@@ -217,7 +261,9 @@ async function trapHandler(room) {
     const playerDead = trapRoomDamageInfo.playerDead;
     const damageDealt = trapRoomDamageInfo.damageDealt;
     const mainDiv = getFreshMainDiv();
-    mainDiv.append(`<p>You took ${damageDealt} damage!</p>`);
+    const damageParagraph = document.createElement("p");
+    damageParagraph.textContent = `You took ${damageDealt} damage!`;
+    mainDiv.append(damageParagraph);
     if (playerDead) {
         playerDeath();
         return;
@@ -228,45 +274,60 @@ async function trapHandler(room) {
 
 async function enemyHandler(room) {
     const mainDiv = getFreshMainDiv();
-    mainDiv.append(`<p>${room.battleInitiationMessage}</p>`)
+    const battleMessageParagraph = document.createElement("p");
+    battleMessageParagraph.textContent = room.battleInitiationMessage;
+    mainDiv.append(battleMessageParagraph);
     await renderEnemies(room, false);
 }
 
 async function renderEnemies(room, reset = true) {
     const enemies = room.enemies;
     const displayEnemyInformation = await postHelper("/player/relicEquipped", {id: "ENEMY_INFORMATION"});
-    const mainDiv = reset ? getFreshMainDiv() : $("#mainDiv");
+    if (reset) getFreshMainDiv();
 
     numberInputOptions = [];
     for (let i = 0; i < enemies.length; i++) {
         const speciesPascal = enemies[i].species.toString().charAt(0).toUpperCase() + enemies[i].species.toString().substring(1, enemies[i].species.toString().length).toLowerCase();
-        const elementSpan = $("<span></span>")
-        const attackButton = $("<button class='clickableButton inlineButton'>Attack</button>").click(async () => await battleSequence(room, enemies[i]));
+        const elementSpan = document.createElement("span");
+        const attackButton = document.createElement("button");
+        attackButton.classList.add("clickableButton", "inlineButton");
+        attackButton.textContent = "Attack";
+        attackButton.addEventListener("click", async () =>
+            await battleSequence(room, enemies[i]));
         numberInputOptions[i] = async () => await battleSequence(room, enemies[i]);
         elementSpan.append(attackButton);
         if (displayEnemyInformation) {
-            $(`<button class='clickableButton inlineButton'>Check</button>`)
-                .click(() => {
-                    checkEnemy(enemies[i]);
-                })
-                .appendTo(elementSpan);
+            const checkButton = document.createElement("button");
+            checkButton.classList.add("clickableButton", "inlineButton");
+            checkButton.textContent = "Check";
+            checkButton.addEventListener("click", () => {
+                checkEnemy(enemies[i]);
+            });
+            elementSpan.append(checkButton);
         }
-        elementSpan.append(`<p class="listParagraph">${i+1}. ${speciesPascal}${(displayEnemyInformation) ? ` (${enemies[i].currentHealth}/${enemies[i].maxHealth} HP)` : ""}</p>`);
+        const enemyParagraph = document.createElement("p");
+        enemyParagraph.classList.add("listParagraph");
+        // Holy moly
+        enemyParagraph.textContent = `${i+1}. ${speciesPascal}${(displayEnemyInformation) ? ` (${enemies[i].currentHealth}/${enemies[i].maxHealth} HP)` : ""}`;
+        elementSpan.append(enemyParagraph);
         mainDiv.append(elementSpan);
     }
 }
 
 //needs work (might need to define this on the class itself for fancier output [like boss attacks and rates], but that DOES suck)
 function checkEnemy(enemy) {
-    const dDiv = $("#descriptionDiv").html("");
-    appendElementText(dDiv, enemy.species);
-    appendElementText(dDiv, `HP: ${enemy.currentHealth}/${enemy.maxHealth}`);
-    appendElementText(dDiv, `EXP: ${enemy.experienceDropped}`);
-    appendElementText(dDiv, `GOLD: ${enemy.loot.gold} G`);
+    descriptionDiv.innerHTML = "";
+    appendElementText(descriptionDiv, enemy.species);
+    appendElementText(descriptionDiv, `HP: ${enemy.currentHealth}/${enemy.maxHealth}`);
+    appendElementText(descriptionDiv, `EXP: ${enemy.experienceDropped}`);
+    appendElementText(descriptionDiv, `GOLD: ${enemy.loot.gold} G`);
 }
 
 function appendElementText(element, text) {
-    element.append(`<p class="statusParagraph">${text}</p>`)
+    const statusParagraph = document.createElement("p");
+    statusParagraph.classList.add("statusParagraph");
+    statusParagraph.textContent = text;
+    element.append(statusParagraph);
 }
 
 async function battleSequence(room, enemy) {
@@ -279,10 +340,10 @@ async function battleSequence(room, enemy) {
         const mainDiv = getFreshMainDiv();
         const enemyName = enemy.species.toString().toLowerCase();
 
-        mainDiv.append($(`<p>The ${enemyName} gave you ${enemy.experienceDropped} experience!</p>`));
-        mainDiv.append($(`<p>The ${enemyName} dropped ${enemyInfo.gold} gold!</p>`));
+        mainDiv.append(createParagraph(`The ${enemyName} gave you ${enemy.experienceDropped} experience!`));
+        mainDiv.append(createParagraph(`The ${enemyName} dropped ${enemyInfo.gold} gold!`));
         for (let i = 0; i < enemyInfo.droppedLoot.length; i++) {
-            mainDiv.append($(`<p>The ${enemyName} dropped a ${enemyInfo.droppedLoot[i].name}!</p>`));
+            mainDiv.append(createParagraph(`The ${enemyName} dropped a ${enemyInfo.droppedLoot[i].name}!`));
         }
 
         const levelUpString = await postHelper("/player/levelUp", {});
@@ -291,7 +352,7 @@ async function battleSequence(room, enemy) {
         }
 
         if (enemyInfo.lastEnemy) {
-            mainDiv.append("<p>You win!</p>");
+            mainDiv.append(createParagraph("You win!"));
             await appendContinue(room.id);
             return;
         }
@@ -310,15 +371,17 @@ async function battleSequence(room, enemy) {
 }
 
 function appendStatusTicker(text) {
-    const tickerDiv = $("#statusTicker");
-    tickerDiv.append(`<p class="statusParagraph">${text}</p>`);
-    const childParagraphs = tickerDiv.find("*");
+    const tickerDiv = document.getElementById("statusTicker");
+    const statusParagraph = createParagraph(text);
+    statusParagraph.classList.add("statusParagraph");
+    tickerDiv.append(statusParagraph);
+    const childParagraphs = tickerDiv.children;
     if (childParagraphs.length > 5) {
         childParagraphs[0].remove();
     }
 }
 
-//refactor to just give room id and in the backend loop and attack the player? maybe (would make status rendering harder)
+//todo refactor to just give room id and in the backend loop and attack the player? maybe (would make status rendering harder)
 // could have /enemy/attack return an array of strings instead and loop through that and append?
 // would decrease render time, too
 async function enemiesAttackPlayer(room) {
@@ -345,50 +408,59 @@ async function renderStats() {
     const player = await getHelper("/player/getPlayer");
     const totalDamage = await getHelper("/player/getTotalDamage");
     const inventorySize = await getHelper("/player/getInventorySize");
-    const statDiv = $("#statusChecker").html("");
-    statDiv.append(`<p class="statusParagraph">Level: ${player.level} ${(player.level < 10) ? `(${player.experience}/${player.expToNextLevel})` : ""}</p>`)
-    statDiv.append(`<p class="statusParagraph">HP: ${player.currentHealth} ${(player.absorption > 0) ? `(+${player.absorption})` : ""} / ${player.maxHealth}</p>`);
-    statDiv.append(`<p class="statusParagraph">Gold: ${player.gold} G</p>`);
-    statDiv.append(`<p class="statusParagraph">Attack damage: ${totalDamage}</p>`);
-    statDiv.append(`<p class="statusParagraph">Rooms traveled: ${player.roomsTraversed}</p>`);
-    statDiv.append(`<p class="statusParagraph">Inventory: ${inventorySize}/${player.inventoryCap}</p>`);
-    statDiv.append(`<p class="statusParagraph">Relic pouch: ${player.equippedRelics.length}/${player.relicCap}</p>`)
+    const statDiv = document.getElementById("statusChecker");
+    statDiv.innerHTML = "";
+    statDiv.append(createStatusParagraph(`Level: ${player.level} ${(player.level < 10) ? `(${player.experience}/${player.expToNextLevel})` : ""}`))
+    statDiv.append(createStatusParagraph(`HP: ${player.currentHealth} ${(player.absorption > 0) ? `(+${player.absorption})` : ""} / ${player.maxHealth}`));
+    statDiv.append(createStatusParagraph(`Gold: ${player.gold} G`));
+    statDiv.append(createStatusParagraph(`Attack damage: ${totalDamage}`));
+    statDiv.append(createStatusParagraph(`Rooms traveled: ${player.roomsTraversed}`));
+    statDiv.append(createStatusParagraph(`Inventory: ${inventorySize}/${player.inventoryCap}`));
+    statDiv.append(createStatusParagraph(`Relic pouch: ${player.equippedRelics.length}/${player.relicCap}`));
     appendIfNonzero(player.currentStatuses.cursed, `Cursed: Level ${player.currentStatuses.cursed}`);
     appendIfNonzero(player.currentStatuses.weakened, `Weakened: Level ${player.currentStatuses.weakened}`);
     appendIfNonzero(player.currentStatuses.poison, `Poisoned: Level ${player.currentStatuses.poison}`);
     appendIfNonzero(player.currentStatuses.fire, `Fire: Level ${player.currentStatuses.fire}`);
-}
 
-function appendIfNonzero(value, string) {
-    const statDiv = $("#statusChecker");
-    if (value > 0)
-        statDiv.append(`<p class="statusParagraph">${string}</p>`);
+    function createStatusParagraph(text) {
+        const statusParagraph = createParagraph(text);
+        statusParagraph.classList.add("statusParagraph");
+        return statusParagraph;
+    }
+
+    function appendIfNonzero(value, string) {
+        if (value > 0)
+            statDiv.append(createStatusParagraph(string));
+    }
 }
 
 async function renderInventory() {
     const room = await getHelper("/player/getCurrentRoom");
-    const inventory = await getHelper("/player/getInventory");
+    inventory.innerHTML = "";
+    const inventoryData = await getHelper("/player/getInventory");
     const curseDetectionEquipped = await postHelper("/player/relicEquipped", {id: "CURSE_DETECTION"})
-    const inventoryDiv = $("#inventory").html("");
-    for (let i = 0; i < inventory.length; i++) {
-        const item = inventory[i][0];
-        let defaultText = `${inventory[i].length}x ${item.name}: ${item.description}`;
-        const elementSpan = $("<span></span>");
-        elementSpan.appendTo(inventoryDiv);
+
+    for (let i = 0; i < inventoryData.length; i++) {
+        const item = inventoryData[i][0];
+        let defaultText = `${inventoryData[i].length}x ${item.name}: ${item.description}`;
+        const elementSpan = document.createElement("div");
+        inventory.append(elementSpan);
 
         if (item.cleansable && room.type === "FOUNTAIN" && !room.fountainUsed) {
-            $(`<button class="clickableButton inlineButton">Cleanse</button>`)
-                .click(async () => {
-                    const mainDiv = $("#mainDiv");
-                    const itemCleansed = await postHelper("/player/cleanseItem", {uuid: item.uuid});
-                    if (itemCleansed)
-                        mainDiv.append(`<p>The ${item.name} was cleansed!</p>`);
-                    else
-                        mainDiv.append(`<p>The ${item.name} couldn't be cleansed!</p>`)
-                    mainDiv.append(`<p>The fountain dried up!</p>`);
-                    await render();
-                })
-                .appendTo(elementSpan);
+            // make me a function?
+            const cleanseButton = document.createElement("button");
+            cleanseButton.classList.add("clickableButton", "inlineButton");
+            cleanseButton.textContent = "Cleanse";
+            cleanseButton.addEventListener("click", async () => {
+                const itemCleansed = await postHelper("/player/cleanseItem", {uuid: item.uuid});
+                if (itemCleansed)
+                    mainDiv.append(createParagraph(`The ${item.name} was cleansed!`));
+                else
+                    mainDiv.append(createParagraph(`The ${item.name} couldn't be cleansed!`));
+                mainDiv.append(createParagraph(`The fountain dried up!`));
+                await render();
+            });
+            elementSpan.append(cleanseButton);
         } else {
             let buttonText = "Use";
             if (item.type === "WEAPON") {
@@ -401,44 +473,51 @@ async function renderInventory() {
             if (item.type === "RELIC") {
                 buttonText = "Equip";
             }
-            $(`<button class="clickableButton inlineButton">${buttonText}</button>`)
-                .click(async () => {
-                    const response = await postHelper("/player/useInventoryItem", { uuid: item.uuid });
-                    if (response.error) {
-                        getFreshErrorDiv().append(`<p>${response.output}</p>`);
-                    } else {
-                        appendStatusTicker(response.output);
-                    }
-                    await render();
-                })
-                .appendTo(elementSpan);
+            const useButton = document.createElement("button");
+            useButton.classList.add("clickableButton", "inlineButton");
+            useButton.textContent = buttonText;
+            useButton.addEventListener("click", async () => {
+                const response = await postHelper("/player/useInventoryItem", { uuid: item.uuid });
+                if (response.error) {
+                    getFreshErrorDiv().append(createParagraph(`response.output`));
+                } else {
+                    appendStatusTicker(response.output);
+                }
+                await render();
+            });
+            elementSpan.append(useButton);
         }
 
         if (room.type === "SHOP" && room.open) {
             defaultText = `(${item.value} G) ` + defaultText;
-            $(`<button class="clickableButton inlineButton">Sell</button>`)
-                .click(async () => {
-                    const itemSold = await postHelper("/player/sellItem", {uuid: item.uuid});
-                    if (itemSold) {
-                        await render();
-                    } else {
-                        getFreshErrorDiv().append(`<p>The item couldn't be sold!</p>`)
-                    }
-                })
-                .appendTo(elementSpan);
+            const sellButton = document.createElement("button");
+            sellButton.classList.add("clickableButton", "inlineButton");
+            sellButton.textContent = "Sell";
+            sellButton.addEventListener("click", async () => {
+                const itemSold = await postHelper("/player/sellItem", {uuid: item.uuid});
+                if (itemSold) {
+                    await render();
+                } else {
+                    getFreshErrorDiv().append(createParagraph(`The item couldn't be sold!`));
+                }
+            });
+            elementSpan.append(sellButton);
         } else {
-            $(`<button class="clickableButton inlineButton">Drop</button>`)
-                .click(async () => {
-                    const itemDropped = await postHelper("/player/dropItem", {uuid: item.uuid});
-                    if (itemDropped) {
-                        await render();
-                    } else {
-                        getFreshErrorDiv().append(`<p>The item couldn't be dropped!</p>`)
-                    }
-                })
-                .appendTo(elementSpan);
+            const dropButton = document.createElement("Button");
+            dropButton.classList.add("clickableButton", "inlineButton");
+            dropButton.textContent = "Drop";
+            dropButton.addEventListener("click", async () => {
+                const itemDropped = await postHelper("/player/dropItem", {uuid: item.uuid});
+                if (itemDropped) {
+                    await render();
+                } else {
+                    getFreshErrorDiv().append(createParagraph(`The item couldn't be dropped!`));
+                }
+            });
+            elementSpan.append(dropButton);
         }
-        const outputParagraph = $(`<p class="listParagraph">${defaultText}</p>`);
+        const outputParagraph = createParagraph(defaultText);
+        outputParagraph.classList.add("listParagraph");
         if (item.cursed && curseDetectionEquipped) {
             outputParagraph.addClass("purple");
         }
@@ -448,41 +527,45 @@ async function renderInventory() {
 
 async function renderRelics() {
     const room = await getHelper("/player/getCurrentRoom");
-    const relics = await getHelper("/player/getRelics");
-    const relicDiv = $("#relics").html("");
-    for (let i = 0; i < relics.length; i++) {
-        const relic = relics[i];
-        const elementSpan = $("<span></span>");
-        elementSpan.appendTo(relicDiv);
+    const relicData = await getHelper("/player/getRelics");
+    for (let i = 0; i < relicData.length; i++) {
+        const relic = relicData[i];
+        const elementSpan = document.createElement("span");
+        relics.append(elementSpan);
         if (relic.cleansable && room.type === "FOUNTAIN" && !room.fountainUsed) {
-            $(`<button class="clickableButton inlineButton">Cleanse</button>`)
-                .click(async () => {
-                    const errorDiv = getFreshErrorDiv()
-                    const relicCleansed = await postHelper("/player/cleanseRelic", {uuid: relic.uuid});
-                    if (relicCleansed)
-                        errorDiv.append(`<p>The ${relic.name} was cleansed!</p>`);
-                    else
-                        errorDiv.append(`<p>The ${relic.name} couldn't be cleansed!</p>`)
-                    await render();
-                })
-                .appendTo(elementSpan);
+            const cleanseButton = document.createElement("button");
+            cleanseButton.classList.add("clickableButton", "inlineButton");
+            cleanseButton.textContent = "Cleanse";
+            cleanseButton.addEventListener("click", async () => {
+                const errorDiv = getFreshErrorDiv()
+                const relicCleansed = await postHelper("/player/cleanseRelic", {uuid: relic.uuid});
+                if (relicCleansed)
+                    errorDiv.append(createParagraph(`The ${relic.name} was cleansed!`));
+                else
+                    errorDiv.append(createParagraph(`The ${relic.name} couldn't be cleansed!`));
+                await render();
+            });
+            elementSpan.append(cleanseButton);
         } else {
-            $(`<button class="clickableButton inlineButton">Unequip</button>`)
-                .click(async () => {
-                    const response = await postHelper("/player/unequipRelic", {uuid: relics[i].uuid});
-                    if (response.error) {
-                        getFreshErrorDiv().append(`<p>${response.output}</p>`);
-                    } else {
-                        appendStatusTicker(response.output);
-                    }
-                    await render();
-                })
-                .appendTo(elementSpan);
+            const unequipButton = document.createElement("button");
+            unequipButton.classList.add("clickableButton", "inlineButton");
+            unequipButton.textContent = "Unequip";
+            unequipButton.addEventListener("click", async () => {
+                const response = await postHelper("/player/unequipRelic", {uuid: relicData[i].uuid});
+                if (response.error) {
+                    getFreshErrorDiv().append(createParagraph(response.output));
+                } else {
+                    appendStatusTicker(response.output);
+                }
+                await render();
+            });
+            elementSpan.append(unequipButton);
         }
+        const relicParagraph = createParagraph(`${relic.name}: ${relic.description}`);
+        relicParagraph.classList.add("lightParagraph");
+        elementSpan.append(relicParagraph);
         if (relic.cursed) {
-            elementSpan.append($(`<p class="purple listParagraph">${relic.name}: ${relic.description}</p>`));
-        } else {
-            elementSpan.append($(`<p class="listParagraph">${relic.name}: ${relic.description}</p>`));
+            relicParagraph.classList.add("purple");
         }
     }
 }
@@ -497,24 +580,28 @@ async function shopRenderer(room) {
     const mainDiv = getFreshMainDiv();
     for (let i = 0; i < wares.length; i++) {
         const item = wares[i];
-        const elementSpan = $("<span></span>");
+        const elementSpan = document.createElement("span");
         mainDiv.append(elementSpan);
-        $(`<button class="clickableButton inlineButton">Buy</button>`)
-            .click(async () => {
-                const success = await postHelper("/rooms/buyItem", {
-                    roomID: room.id,
-                    itemID: item.uuid
-                });
-                if (success) {
-                    await renderInventory();
-                    await shopRenderer(await getHelper("/player/getCurrentRoom"));
-                } else {
-                    // todo more advanced error message? e.g. inv full, can't afford
-                    getFreshErrorDiv().append("<p>You can't buy that right now!</p>");
-                }
-            })
-            .appendTo(elementSpan);
-        elementSpan.append(`<p class="listParagraph">${item.name} (${item.value} G): ${item.description}</p>`);
+        const buyButton = document.createElement("button");
+        buyButton.classList.add("clickableButton", "inlineButton");
+        buyButton.textContent = "Buy";
+        buyButton.addEventListener("click", async () => {
+            const success = await postHelper("/rooms/buyItem", {
+                roomID: room.id,
+                itemID: item.uuid
+            });
+            if (success) {
+                await renderInventory();
+                await shopRenderer(await getHelper("/player/getCurrentRoom"));
+            } else {
+                // todo more advanced error message? e.g. inv full, can't afford
+                getFreshErrorDiv().append(createParagraph("You can't buy that right now!"));
+            }
+        });
+        elementSpan.append(buyButton);
+        const itemParagraph = createParagraph(`${item.name} (${item.value} G): ${item.description}`);
+        itemParagraph.classList.add("listParagraph");
+        elementSpan.append(itemParagraph);
     }
     await appendContinue(room.id);
     await render();
@@ -522,10 +609,13 @@ async function shopRenderer(room) {
 
 async function fountainHandler(room) {
     const mainDiv = getFreshMainDiv();
-    mainDiv.append("<p>Place an item in the fountain, and/or continue!</p>");
-    const selfCleanseButton = $("<button class='clickableButton'>Jump in</button>").click(async () => {
+    mainDiv.append(createParagraph("Place an item in the fountain, and/or continue!"));
+    const selfCleanseButton = document.createElement("button");
+    selfCleanseButton.classList.add("clickableButton");
+    selfCleanseButton.textContent = "Jump in";
+    selfCleanseButton.addEventListener("click", async () => {
         const outputString = await postHelper("/rooms/cleansePlayer");
-        mainDiv.append(`<p>${outputString}</p>`);
+        mainDiv.append(createParagraph(outputString));
     });
     mainDiv.append(selfCleanseButton);
     await appendContinue(room.id);
@@ -534,7 +624,7 @@ async function fountainHandler(room) {
 
 async function endingHandler(room) {
     const mainDiv = getFreshMainDiv();
-    mainDiv.append("<p>You win! Good job! <br> But, if you'd like to return and continue... You may.</p>");
+    mainDiv.append(createParagraph("You win! Good job! <br> But, if you'd like to return and continue... You may."));
     await appendContinue(room.id);
 }
 
