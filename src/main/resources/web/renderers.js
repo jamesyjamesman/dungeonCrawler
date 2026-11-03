@@ -222,7 +222,7 @@ async function shopRenderer(room) {
         itemParagraph.classList.add("listParagraph");
         elementSpan.append(itemParagraph);
     }
-    await appendContinue(room.id);
+    await appendRoomContinue(room.id);
     await render();
 }
 

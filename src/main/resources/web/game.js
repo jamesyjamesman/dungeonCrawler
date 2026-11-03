@@ -55,15 +55,17 @@ function createParagraph(text = "") {
     return paragraph;
 }
 
-async function appendContinue(id) {
+async function appendRoomContinue(id) {
     const exits = await postHelper("/rooms/getExits", { id: id });
+    appendContinue(async () => await printRooms(exits));
+}
+
+function appendContinue(func) {
     const continueButton = document.createElement("button");
     continueButton.classList.add("clickableButton");
     continueButton.textContent = "Continue";
-    continueButton.addEventListener("click", async () => {
-        await printRooms(exits);
-    })
-    numberInputOptions = [async () => await printRooms(exits)];
+    continueButton.addEventListener("click", func)
+    numberInputOptions = [func];
     mainDiv.append(continueButton);
 }
 
@@ -91,7 +93,7 @@ async function itemPickup(room) {
     }
     mainDiv.append(pickupParagraph);
     await render();
-    await appendContinue(room.id);
+    await appendRoomContinue(room.id);
     return pickupSuccess;
 }
 
@@ -119,7 +121,7 @@ async function relicPickup(room) {
     }
     mainDiv.append(pickupParagraph);
     await render();
-    await appendContinue(room.id);
+    await appendRoomContinue(room.id);
     return pickupSuccess;
 }
 
@@ -136,7 +138,7 @@ async function trapHandler(room) {
         return;
     }
     await renderStats();
-    await appendContinue(room.id);
+    await appendRoomContinue(room.id);
 }
 
 async function enemyHandler(room) {
@@ -186,21 +188,26 @@ async function battleSequence(room, enemy) {
 
         if (enemyInfo.lastEnemy) {
             mainDiv.append(createParagraph("You win!"));
-            await appendContinue(room.id);
+            await appendRoomContinue(room.id);
+        } else {
+            appendContinue(continueBattle);
+        }
+    } else {
+        await continueBattle();
+    }
+
+    async function continueBattle() {
+        // Necessary so enemies aren't null
+        room = await getHelper("/player/getCurrentRoom")
+
+        const playerDied = await enemiesAttackPlayer(room);
+        if (playerDied) {
+            playerDeath();
             return;
         }
+        await render();
+        await renderEnemies(room);
     }
-
-    // Necessary so enemies aren't null
-    room = await getHelper("/player/getCurrentRoom")
-
-    const playerDied = await enemiesAttackPlayer(room);
-    if (playerDied) {
-        playerDeath();
-        return;
-    }
-    await render();
-    await renderEnemies(room);
 }
 
 function appendStatusTicker(text) {
@@ -242,7 +249,7 @@ async function fountainHandler(room) {
         mainDiv.append(createParagraph(outputString));
     });
     mainDiv.append(selfCleanseButton);
-    await appendContinue(room.id);
+    await appendRoomContinue(room.id);
     await render();
 }
 
@@ -260,5 +267,5 @@ function playerDeath() {
 async function endingHandler(room) {
     const mainDiv = getFreshMainDiv();
     mainDiv.append(createParagraph("You win! Good job! <br> But, if you'd like to return and continue... You may."));
-    await appendContinue(room.id);
+    await appendRoomContinue(room.id);
 }
