@@ -61,7 +61,7 @@ div {
     height: 100%;
 }
 
-span {
+.listSpan {
     display: list-item;
 }
 
@@ -101,7 +101,7 @@ span {
 }
 
 .input {
-    height: 20%;
+    height: 10%;
     width: 100%;
     border: 0 none;
 }

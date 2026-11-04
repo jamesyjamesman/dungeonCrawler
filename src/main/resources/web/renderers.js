@@ -35,6 +35,7 @@ async function printRooms(rooms) {
     numberInputOptions = [];
     for (let i = 0; i < rooms.length; i++) {
         const elementSpan = document.createElement("span");
+        elementSpan.classList.add("listSpan");
         const exitsString = `(${rooms[i].numExits} exits)`;
         const textParagraph = document.createElement("p");
         textParagraph.classList.add("listParagraph");
@@ -53,6 +54,7 @@ async function printRooms(rooms) {
     await render();
 }
 
+// TODO: I definitely feel like we can create some combined code for the relics and inventory.
 async function renderInventory() {
     const room = await getHelper("/player/getCurrentRoom");
     inventory.innerHTML = "";
@@ -60,9 +62,19 @@ async function renderInventory() {
     const curseDetectionEquipped = await postHelper("/player/relicEquipped", {id: "CURSE_DETECTION"})
 
     for (let i = 0; i < inventoryData.length; i++) {
+        const outputParagraph = createParagraph();
         const item = inventoryData[i][0];
-        let defaultText = `${inventoryData[i].length}x ${item.name}: ${item.description}`;
-        const elementSpan = document.createElement("div");
+        const nameStrong = document.createElement("strong");
+        nameStrong.textContent = item.name;
+        const amountSpan = document.createElement("span");
+        amountSpan.textContent = `${inventoryData[i].length}x `;
+        const descriptionSpan = document.createElement("span");
+        descriptionSpan.textContent = `: ${item.description}`;
+        outputParagraph.append(amountSpan);
+        outputParagraph.append(nameStrong);
+        outputParagraph.append(descriptionSpan);
+        const elementSpan = document.createElement("span");
+        elementSpan.classList.add("listSpan");
         inventory.append(elementSpan);
 
         if (item.cleansable && room.type === "FOUNTAIN" && !room.fountainUsed) {
@@ -108,7 +120,9 @@ async function renderInventory() {
         }
 
         if (room.type === "SHOP" && room.open) {
-            defaultText = `(${item.value} G) ` + defaultText;
+            const valueSpan = document.createElement("span");
+            valueSpan.textContent = `(${item.value} G)`;
+            outputParagraph.prepend(valueSpan);
             const sellButton = document.createElement("button");
             sellButton.classList.add("clickableButton", "inlineButton");
             sellButton.textContent = "Sell";
@@ -135,10 +149,9 @@ async function renderInventory() {
             });
             elementSpan.append(dropButton);
         }
-        const outputParagraph = createParagraph(defaultText);
         outputParagraph.classList.add("listParagraph");
         if (item.cursed && curseDetectionEquipped) {
-            outputParagraph.addClass("purple");
+            outputParagraph.classList.add("purple");
         }
         elementSpan.append(outputParagraph);
     }
@@ -147,9 +160,11 @@ async function renderInventory() {
 async function renderRelics() {
     const room = await getHelper("/player/getCurrentRoom");
     const relicData = await getHelper("/player/getRelics");
+    relics.innerHTML = "";
     for (let i = 0; i < relicData.length; i++) {
         const relic = relicData[i];
         const elementSpan = document.createElement("span");
+        elementSpan.classList.add("listSpan");
         relics.append(elementSpan);
         if (relic.cleansable && room.type === "FOUNTAIN" && !room.fountainUsed) {
             const cleanseButton = document.createElement("button");
@@ -181,7 +196,7 @@ async function renderRelics() {
             elementSpan.append(unequipButton);
         }
         const relicParagraph = createParagraph(`${relic.name}: ${relic.description}`);
-        relicParagraph.classList.add("lightParagraph");
+        relicParagraph.classList.add("listParagraph");
         elementSpan.append(relicParagraph);
         if (relic.cursed) {
             relicParagraph.classList.add("purple");
@@ -231,10 +246,14 @@ async function renderEnemies(room, reset = true) {
     const displayEnemyInformation = await postHelper("/player/relicEquipped", {id: "ENEMY_INFORMATION"});
     if (reset) getFreshMainDiv();
 
+    // todo at some point the continue button stopped working (after killing 1 enemy) and did nothing and the remaining enemy just attacked each time??
+
+
     numberInputOptions = [];
     for (let i = 0; i < enemies.length; i++) {
         const speciesPascal = enemies[i].species.toString().charAt(0).toUpperCase() + enemies[i].species.toString().substring(1, enemies[i].species.toString().length).toLowerCase();
         const elementSpan = document.createElement("span");
+        elementSpan.classList.add("listSpan");
         const attackButton = document.createElement("button");
         attackButton.classList.add("clickableButton", "inlineButton");
         attackButton.textContent = "Attack";

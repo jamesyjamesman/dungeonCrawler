@@ -82,10 +82,17 @@ async function itemHandler(room) {
     }
 }
 
+// could combine itempickup and relicpickup by just passing a string of "item" or "relic" and
+// Use that for the post request (should also just be one...) and the object indexing
 async function itemPickup(room) {
     const pickupSuccess = await postHelper("/rooms/itemPickup", { id: room.id });
     const mainDiv = getFreshMainDiv();
     const pickupParagraph = document.createElement('p');
+    // todo: sometimes this fails
+    // item name shows when picking up, but continue button does not get added
+    // has no name or description in the inventory
+    // can progress by entering 1
+    // Does not fix on rerender, so might be an issue on the server side
     if (pickupSuccess) {
         pickupParagraph.textContent = `You picked up a ${room.item.name}!`;
     } else {
