@@ -54,7 +54,6 @@ async function printRooms(rooms) {
     await render();
 }
 
-// TODO: I definitely feel like we can create some combined code for the relics and inventory.
 async function renderInventory() {
     const room = await getHelper("/player/getCurrentRoom");
     inventory.innerHTML = "";
@@ -78,11 +77,7 @@ async function renderInventory() {
         inventory.append(elementSpan);
 
         if (item.cleansable && room.type === "FOUNTAIN" && !room.fountainUsed) {
-            // make me a function?
-            const cleanseButton = document.createElement("button");
-            cleanseButton.classList.add("clickableButton", "inlineButton");
-            cleanseButton.textContent = "Cleanse";
-            cleanseButton.addEventListener("click", async () => {
+            appendInlineButton("Cleanse", elementSpan, async () => {
                 const itemCleansed = await postHelper("/player/cleanseItem", {uuid: item.uuid});
                 if (itemCleansed)
                     mainDiv.append(createParagraph(`The ${item.name} was cleansed!`));
@@ -91,7 +86,6 @@ async function renderInventory() {
                 mainDiv.append(createParagraph(`The fountain dried up!`));
                 await render();
             });
-            elementSpan.append(cleanseButton);
         } else {
             let buttonText = "Use";
             if (item.type === "WEAPON") {
@@ -104,10 +98,7 @@ async function renderInventory() {
             if (item.type === "RELIC") {
                 buttonText = "Equip";
             }
-            const useButton = document.createElement("button");
-            useButton.classList.add("clickableButton", "inlineButton");
-            useButton.textContent = buttonText;
-            useButton.addEventListener("click", async () => {
+            appendInlineButton(buttonText, elementSpan,async () => {
                 const response = await postHelper("/player/useInventoryItem", { uuid: item.uuid });
                 if (response.error) {
                     getFreshErrorDiv().append(createParagraph(`response.output`));
@@ -116,17 +107,14 @@ async function renderInventory() {
                 }
                 await render();
             });
-            elementSpan.append(useButton);
         }
 
         if (room.type === "SHOP" && room.open) {
             const valueSpan = document.createElement("span");
             valueSpan.textContent = `(${item.value} G)`;
             outputParagraph.prepend(valueSpan);
-            const sellButton = document.createElement("button");
-            sellButton.classList.add("clickableButton", "inlineButton");
-            sellButton.textContent = "Sell";
-            sellButton.addEventListener("click", async () => {
+
+            appendInlineButton("Sell", elementSpan,async () => {
                 const itemSold = await postHelper("/player/sellItem", {uuid: item.uuid});
                 if (itemSold) {
                     await render();
@@ -134,12 +122,8 @@ async function renderInventory() {
                     getFreshErrorDiv().append(createParagraph(`The item couldn't be sold!`));
                 }
             });
-            elementSpan.append(sellButton);
         } else {
-            const dropButton = document.createElement("Button");
-            dropButton.classList.add("clickableButton", "inlineButton");
-            dropButton.textContent = "Drop";
-            dropButton.addEventListener("click", async () => {
+            appendInlineButton("Drop", elementSpan, async () => {
                 const itemDropped = await postHelper("/player/dropItem", {uuid: item.uuid});
                 if (itemDropped) {
                     await render();
@@ -147,7 +131,6 @@ async function renderInventory() {
                     getFreshErrorDiv().append(createParagraph(`The item couldn't be dropped!`));
                 }
             });
-            elementSpan.append(dropButton);
         }
         outputParagraph.classList.add("listParagraph");
         if (item.cursed && curseDetectionEquipped) {
@@ -155,6 +138,14 @@ async function renderInventory() {
         }
         elementSpan.append(outputParagraph);
     }
+}
+
+function appendInlineButton(text, appendTo, func) {
+    const button = document.createElement("button");
+    button.classList.add("clickableButton", "inlineButton");
+    button.textContent = text;
+    button.addEventListener("click", func);
+    appendTo.append(button);
 }
 
 async function renderRelics() {
@@ -167,10 +158,7 @@ async function renderRelics() {
         elementSpan.classList.add("listSpan");
         relics.append(elementSpan);
         if (relic.cleansable && room.type === "FOUNTAIN" && !room.fountainUsed) {
-            const cleanseButton = document.createElement("button");
-            cleanseButton.classList.add("clickableButton", "inlineButton");
-            cleanseButton.textContent = "Cleanse";
-            cleanseButton.addEventListener("click", async () => {
+            appendInlineButton("Cleanse", elementSpan, async () => {
                 const errorDiv = getFreshErrorDiv()
                 const relicCleansed = await postHelper("/player/cleanseRelic", {uuid: relic.uuid});
                 if (relicCleansed)
@@ -179,12 +167,8 @@ async function renderRelics() {
                     errorDiv.append(createParagraph(`The ${relic.name} couldn't be cleansed!`));
                 await render();
             });
-            elementSpan.append(cleanseButton);
         } else {
-            const unequipButton = document.createElement("button");
-            unequipButton.classList.add("clickableButton", "inlineButton");
-            unequipButton.textContent = "Unequip";
-            unequipButton.addEventListener("click", async () => {
+            appendInlineButton("Unequip", elementSpan, async () => {
                 const response = await postHelper("/player/unequipRelic", {uuid: relicData[i].uuid});
                 if (response.error) {
                     getFreshErrorDiv().append(createParagraph(response.output));
@@ -193,7 +177,6 @@ async function renderRelics() {
                 }
                 await render();
             });
-            elementSpan.append(unequipButton);
         }
         const relicParagraph = createParagraph(`${relic.name}: ${relic.description}`);
         relicParagraph.classList.add("listParagraph");
@@ -216,10 +199,7 @@ async function shopRenderer(room) {
         const item = wares[i];
         const elementSpan = document.createElement("span");
         mainDiv.append(elementSpan);
-        const buyButton = document.createElement("button");
-        buyButton.classList.add("clickableButton", "inlineButton");
-        buyButton.textContent = "Buy";
-        buyButton.addEventListener("click", async () => {
+        appendInlineButton("Buy", elementSpan, async () => {
             const success = await postHelper("/rooms/buyItem", {
                 roomID: room.id,
                 itemID: item.uuid
@@ -232,7 +212,6 @@ async function shopRenderer(room) {
                 getFreshErrorDiv().append(createParagraph("You can't buy that right now!"));
             }
         });
-        elementSpan.append(buyButton);
         const itemParagraph = createParagraph(`${item.name} (${item.value} G): ${item.description}`);
         itemParagraph.classList.add("listParagraph");
         elementSpan.append(itemParagraph);
@@ -262,13 +241,7 @@ async function renderEnemies(room, reset = true) {
         numberInputOptions[i] = async () => await battleSequence(room, enemies[i]);
         elementSpan.append(attackButton);
         if (displayEnemyInformation) {
-            const checkButton = document.createElement("button");
-            checkButton.classList.add("clickableButton", "inlineButton");
-            checkButton.textContent = "Check";
-            checkButton.addEventListener("click", () => {
-                checkEnemy(enemies[i]);
-            });
-            elementSpan.append(checkButton);
+            appendInlineButton("Check", elementSpan, () => checkEnemy(enemies[i]));
         }
         const enemyParagraph = document.createElement("p");
         enemyParagraph.classList.add("listParagraph");
