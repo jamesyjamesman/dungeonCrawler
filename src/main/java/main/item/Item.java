@@ -34,11 +34,6 @@ public abstract class Item extends Identifiable implements Cloneable {
 
     public boolean cleanseItem(Player player) {
         ((PureWaterRoom) player.getCurrentRoom()).setFountainUsed(true);
-        if (this.getName().equals("Apple")) {
-            player.discardItem(this);
-            player.addItemToInventory(new PureAppleItem());
-            return true;
-        }
         return false;
     }
 

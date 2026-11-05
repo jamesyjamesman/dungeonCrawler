@@ -67,7 +67,7 @@ async function renderInventory() {
         elementSpan.classList.add("listSpan");
         inventory.append(elementSpan);
 
-        if (item.cleansable && room.type === "FOUNTAIN" && !room.fountainUsed) {
+        if (room.type === "FOUNTAIN" && !room.fountainUsed) {
             appendInlineButton("Cleanse", elementSpan, async () => {
                 const itemCleansed = await postHelper("/player/cleanseItem", {uuid: item.uuid});
                 if (itemCleansed)

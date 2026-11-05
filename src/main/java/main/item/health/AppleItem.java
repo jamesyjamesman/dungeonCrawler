@@ -1,5 +1,7 @@
 package main.item.health;
 
+import main.entity.Player;
+
 public class AppleItem extends HealthItem {
     public AppleItem() {
         this(1);
@@ -15,6 +17,14 @@ public class AppleItem extends HealthItem {
                 6,
                 0,
                 true);
+    }
+
+    @Override
+    public boolean cleanseItem(Player player) {
+        super.cleanseItem(player);
+        player.discardItem(this);
+        player.addItemToInventory(new PureAppleItem());
+        return true;
     }
 
 }
