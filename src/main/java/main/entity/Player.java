@@ -70,13 +70,11 @@ public class Player extends Entity {
 
     public boolean itemPickup(Item item) {
         if (calculateInventorySize() >= this.inventoryCap) {
-            if (calculateInventorySize() >= this.inventoryCap) {
-                // relic is removed from unused relics as soon as it is generated, so it has to be put back
-                if (item instanceof Relic relic && relic.isFindable()) {
-                    App.INSTANCE.addUnusedRelic(relic);
-                }
-                return false;
+            // relic is removed from unused relics as soon as it is generated, so it has to be put back
+            if (item instanceof Relic relic && relic.isFindable()) {
+                App.INSTANCE.addUnusedRelic(relic);
             }
+            return false;
         }
         addItemToInventory(item);
         return true;
