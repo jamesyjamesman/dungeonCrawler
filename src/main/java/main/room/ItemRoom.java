@@ -33,7 +33,6 @@ public class ItemRoom extends Room {
         this.item = item;
     }
 
-    //for serialization
     public Item getItem() {
         return this.item;
     }

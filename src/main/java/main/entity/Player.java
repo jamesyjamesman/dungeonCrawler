@@ -76,6 +76,7 @@ public class Player extends Entity {
             }
             return false;
         }
+        // return add (and flip the boolean?)
         addItemToInventory(item);
         return true;
     }

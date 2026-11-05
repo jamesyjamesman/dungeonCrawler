@@ -16,8 +16,8 @@ public class UnBuffItem extends BuffItem {
 
     @Override
     public ItemUseCase useItem(Player player) {
+        super.useItem(player);
         player.getCurrentStatuses().addPoison(this.amountChanged);
-        player.discardItem(this);
         return ItemUseCase.BUFF;
     }
 

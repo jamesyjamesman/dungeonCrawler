@@ -16,8 +16,8 @@ public class RelicPouchBuffItem extends BuffItem {
 
     @Override
     public ItemUseCase useItem(Player player) {
+        super.useItem(player);
         player.changeRelicCap(this.amountChanged);
-        player.discardItem(this);
         return ItemUseCase.BUFF;
     }
 }

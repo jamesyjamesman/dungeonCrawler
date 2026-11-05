@@ -9,7 +9,9 @@ import java.util.Random;
 
 public abstract class BuffItem extends Item {
     protected final String statName;
-    protected final int amountChanged;
+    protected int amountChanged = 0;
+    protected final int highBound;
+    protected final int lowBound;
     public BuffItem(double dropChance, int lowBound, int highBound, String statName) {
         super("Suspicious Can",
                 "A can of... something. It's chunky.",
@@ -19,11 +21,16 @@ public abstract class BuffItem extends Item {
                 4,
                 ItemType.BUFF);
         this.statName = statName;
-        this.amountChanged = new Random().nextInt(lowBound, highBound);
+        this.highBound = highBound;
+        this.lowBound = lowBound;
     }
 
     @Override
-    public abstract ItemUseCase useItem(Player player);
+    public ItemUseCase useItem(Player player) {
+        this.amountChanged = new Random().nextInt(lowBound, highBound);
+        player.discardItem(this);
+        return ItemUseCase.BUFF;
+    }
 
     public String createOutputString() {
         if (this.amountChanged > 0)

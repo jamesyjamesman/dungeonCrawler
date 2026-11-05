@@ -8,24 +8,31 @@ import main.requests.ItemUseCase;
 import java.util.Random;
 
 public class HealthItem extends Item {
-    private final int healthRestored;
     private final int addedAbsorption;
+    private final int lower;
+    private final int higher;
+    // Store on the object because useItem doesn't return it
+    private int healthRestored = 0;
 
     public HealthItem(String name, String description, int value, double dropChance, int shopWeight, int restorationLowerBound, int restorationUpperBound, int addedAbsorption, boolean cleansable) {
         super(name, description, value, true, dropChance, shopWeight, ItemType.HEALTH, cleansable);
-        this.healthRestored = new Random().nextInt(restorationLowerBound, restorationUpperBound);
+        this.lower = restorationLowerBound;
+        this.higher = restorationUpperBound;
         this.addedAbsorption = addedAbsorption;
     }
 
     public HealthItem(String name, String description, int value, double dropChance, int shopWeight, int restorationLowerBound, int restorationUpperBound) {
         super(name, description, value, true, dropChance, shopWeight, ItemType.HEALTH);
-        this.healthRestored = new Random().nextInt(restorationLowerBound, restorationUpperBound);
+        this.lower = restorationLowerBound;
+        this.higher = restorationUpperBound;
         this.addedAbsorption = 0;
     }
 
     @Override
     public ItemUseCase useItem(Player player) {
         player.discardItem(this);
+
+        this.healthRestored = new Random().nextInt(lower, higher);
 
         if (this.addedAbsorption != 0)
             player.addAbsorption(this.addedAbsorption);
