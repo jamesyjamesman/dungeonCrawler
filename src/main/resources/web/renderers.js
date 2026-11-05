@@ -77,27 +77,19 @@ async function renderInventory() {
                 mainDiv.append(createParagraph(`The fountain dried up!`));
                 await render();
             });
+        } else if (["WEAPON", "RELIC", "ARMOR"].includes(item.type)) {
+            if (item.equipped) {
+                appendInlineButton("Unequip", elementSpan, async () => {
+                    await inventoryButtonHelper(item, unequipHelper);
+                });
+            } else {
+                appendInlineButton("Equip", elementSpan, async () => {
+                    await inventoryButtonHelper(item, equipHelper);
+                });
+            }
         } else {
-            let buttonText = "Use";
-            if (item.type === "WEAPON") {
-                if (item.equipped) {
-                    buttonText = "Unequip";
-                } else {
-                    buttonText = "Equip";
-                }
-            }
-            if (item.type === "RELIC") {
-                buttonText = "Equip";
-            }
-            appendInlineButton(buttonText, elementSpan,async () => {
-                const response = await useItemHelper(item);
-                if (response.error) {
-                    getFreshErrorDiv().append(createParagraph(response.output));
-                } else {
-                    appendStatusTicker(response.output);
-                }
-                await render();
-                if (item.type === "RELIC") relicButton.click();
+            appendInlineButton("Use", elementSpan,async () => {
+                await inventoryButtonHelper(item, useItemHelper);
             });
         }
 
@@ -128,6 +120,16 @@ async function renderInventory() {
             outputParagraph.classList.add("purple");
         }
         elementSpan.append(outputParagraph);
+
+        async function inventoryButtonHelper(item, func) {
+            const response = await func(item);
+            if (response.error) {
+                getFreshErrorDiv().append(createParagraph(response.output));
+            } else {
+                appendStatusTicker(response.output);
+            }
+            await render();
+        }
     }
 }
 
@@ -183,7 +185,6 @@ async function renderRelics() {
                     appendStatusTicker(response.output);
                 }
                 await render();
-                inventoryButton.click();
             });
         }
         const relicParagraph = createItemText(relic);

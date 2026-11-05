@@ -81,24 +81,6 @@ async function useItemHelper(item) {
                     result.output = "Drinking that... Wasn't worth it.";
             }
             break;
-        } case "EQUIPPED": {
-            if (item.cursed)
-                result.output = `The ${item.name} was equipped, but it was cursed!`;
-            else
-                result.output = `The ${item.name} was equipped!`;
-            break;
-        } case "UNEQUIPPED": {
-            result.output = `The ${item.name} was unequipped!`;
-            break;
-        } case "WEAPON_ALREADY_EQUIPPED": {
-            // Could do a get request to get the name of the item that is equipped I guess
-            result.output = `The ${item.name} could not be equipped, because there is already a weapon equipped!`;
-            result.error = true;
-            break;
-        } case "POUCH_FULL": {
-            result.output = "Your relic pouch is full!";
-            result.error = true;
-            break;
         } default: {
             result.output = `An error occurred while using the ${item.name} with a use case of ${response.useCase}!`;
             result.error = true;
@@ -109,5 +91,71 @@ async function useItemHelper(item) {
     if (item.addedAbsorption > 0)
         result.output += ` It also gave you ${item.addedAbsorption} absorption!`;
 
+    return result;
+}
+
+async function equipHelper(item) {
+    const response = await postHelper("/player/equip", {uuid: item.uuid});
+    item = response.item;
+    const result = {
+        error: false,
+        output: ""
+    };
+
+    switch (response.useCase) {
+        case "ALREADY_EQUIPPED": {
+            result.output = `The ${item.name} could not be equipped, because there is already a ${item.type.toLowerCase()} equipped!`;
+            result.error = true;
+            break;
+        } case "POUCH_FULL": {
+            result.output = "Your relic pouch is full!";
+            result.error = true;
+            break;
+        } case "EQUIPPED": {
+            if (item.cursed)
+                result.output = `The ${item.name} was equipped, but it was cursed!`;
+            else
+                result.output = `The ${item.name} was equipped!`;
+            break;
+        } default:
+            result.output = `An error occurred while using the ${item.name} with a use case of ${response.useCase}!`;
+            result.error = true;
+    }
+    return result;
+}
+
+async function unequipHelper(item) {
+    const response = await postHelper("/player/unequip", {uuid: item.uuid});
+    item = response.item;
+    const result = {
+        error: false,
+        output: ""
+    };
+
+    switch (item.useCase) {
+        case "UNEQUIPPED": {
+            result.output = `The ${item.name} was unequipped!`;
+            break;
+        } case "INVENTORY_FULL": {
+            result.output = "Your inventory is full!";
+            result.error = true;
+            break;
+        } case "INVENTORY_OVERFLOW": {
+            result.output = `You have too many items to unequip your ${item.name}!`;
+            result.error = true;
+            break;
+        } case "POUCH_OVERFLOW": {
+            result.output = `You have too many relics equipped to unequip your ${item.name}!`;
+            result.error = true;
+            break;
+        } case "RELIC_CURSED": {
+            result.output = "You cannot unequip a cursed relic!";
+            result.error = true;
+            break;
+        } default: {
+            result.output = `An error occurred while using the ${item.name} with a use case of ${response.useCase}!`;
+            result.error = true;
+        }
+    }
     return result;
 }
