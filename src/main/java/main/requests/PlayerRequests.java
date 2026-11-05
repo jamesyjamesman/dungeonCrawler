@@ -3,6 +3,7 @@ package main.requests;
 import io.javalin.http.Context;
 import main.App;
 import main.entity.Player;
+import main.item.Equippable;
 import main.item.Item;
 import main.item.buff.BuffItem;
 import main.item.health.HealthItem;
@@ -106,6 +107,22 @@ public class PlayerRequests {
     public static void cleanseRelic(Context ctx) {
         boolean cleansed = getRelicFromRelics(ctx).cleanseItem(App.INSTANCE.getPlayer());
         ctx.json(cleansed);
+    }
+
+    @PostRequestHandler(endpoint = "/player/unequip")
+    public static void unequip(Context ctx) {
+        Item item = getInventoryItemFromUUID(ctx);
+        Equippable equip = (Equippable) item;
+        ItemUseCase useCase = equip.unequip(App.INSTANCE.getPlayer());
+        ctx.json(new ItemWithUseCase(item, useCase));
+    }
+
+    @PostRequestHandler(endpoint = "/player/equip")
+    public static void equip(Context ctx) {
+        Item item = getInventoryItemFromUUID(ctx);
+        Equippable equip = (Equippable) item;
+        ItemUseCase useCase = equip.equip(App.INSTANCE.getPlayer());
+        ctx.json(new ItemWithUseCase(item, useCase));
     }
 
     @PostRequestHandler(endpoint = "/player/unequipRelic")

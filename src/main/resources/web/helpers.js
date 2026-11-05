@@ -100,7 +100,7 @@ async function useItemHelper(item) {
             result.error = true;
             break;
         } default: {
-            result.output = `An error occurred while using the ${item.name}!`;
+            result.output = `An error occurred while using the ${item.name} with a use case of ${response.useCase}!`;
             result.error = true;
         }
     }
