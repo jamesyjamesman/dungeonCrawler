@@ -20,23 +20,24 @@ public class HoldingRelic extends Relic {
     }
 
     @Override
-    public ItemUseCase useItem(Player player) {
-        if (this.isEquipped(player)) {
-            int itemsOverCapacity = player.calculateInventorySize() - (player.getInventoryCap() - 10);
-            if (itemsOverCapacity > 0) {
-                return ItemUseCase.INVENTORY_OVERFLOW;
-            }
-            ItemUseCase unequipStatus = player.unequipRelic(this);
-            if (unequipStatus == ItemUseCase.UNEQUIPPED) {
-                player.changeInventoryCap(-10);
-            }
-            return unequipStatus;
-        } else {
-            if (player.equipRelic(this)) {
-                player.changeInventoryCap(10);
-                return ItemUseCase.EQUIPPED;
-            }
-            return ItemUseCase.POUCH_FULL;
+    public ItemUseCase equip(Player player) {
+        if (player.equipRelic(this)) {
+            player.changeInventoryCap(10);
+            return ItemUseCase.EQUIPPED;
         }
+        return ItemUseCase.POUCH_FULL;
+    }
+
+    @Override
+    public ItemUseCase unequip(Player player) {
+        int itemsOverCapacity = player.calculateInventorySize() - (player.getInventoryCap() - 10);
+        if (itemsOverCapacity > 0) {
+            return ItemUseCase.INVENTORY_OVERFLOW;
+        }
+        ItemUseCase unequipStatus = player.unequipRelic(this);
+        if (unequipStatus == ItemUseCase.UNEQUIPPED) {
+            player.changeInventoryCap(-10);
+        }
+        return unequipStatus;
     }
 }

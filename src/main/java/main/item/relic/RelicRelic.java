@@ -1,6 +1,7 @@
 package main.item.relic;
 
 import main.entity.Player;
+import main.item.Item;
 import main.requests.ItemUseCase;
 
 public class RelicRelic extends Relic {
@@ -20,23 +21,24 @@ public class RelicRelic extends Relic {
     }
 
     @Override
-    public ItemUseCase useItem(Player player) {
-        if (this.isEquipped(player)) {
-            int relicsOverCapacity = player.getEquippedRelics().size() - (player.getRelicCap() - 3);
-            if (relicsOverCapacity > 0) {
-                return ItemUseCase.POUCH_OVERFLOW;
-            }
-            ItemUseCase unequipStatus = player.unequipRelic(this);
-            if (unequipStatus == ItemUseCase.UNEQUIPPED) {
-                player.changeRelicCap(-3);
-            }
-            return unequipStatus;
-        } else {
-            if (player.equipRelic(this)) {
-                player.changeRelicCap(3);
-                return ItemUseCase.EQUIPPED;
-            }
-            return ItemUseCase.POUCH_FULL;
+    public ItemUseCase equip(Player player) {
+        if (player.equipRelic(this)) {
+            player.changeRelicCap(3);
+            return ItemUseCase.EQUIPPED;
         }
+        return ItemUseCase.POUCH_FULL;
+    }
+
+    @Override
+    public ItemUseCase unequip(Player player) {
+        int relicsOverCapacity = player.getEquippedRelics().size() - (player.getRelicCap() - 3);
+        if (relicsOverCapacity > 0) {
+            return ItemUseCase.POUCH_OVERFLOW;
+        }
+        ItemUseCase unequipStatus = player.unequipRelic(this);
+        if (unequipStatus == ItemUseCase.UNEQUIPPED) {
+            player.changeRelicCap(-3);
+        }
+        return unequipStatus;
     }
 }
