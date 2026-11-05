@@ -32,14 +32,11 @@ public abstract class BuffItem extends Item {
         return ItemUseCase.BUFF;
     }
 
-    public String createOutputString() {
-        if (this.amountChanged > 0)
-            return "You force the contents of the can down your throat... Somehow, you gained " + this.amountChanged + " " + this.statName + "!";
-        else
-            return "Drinking that... wasn't worth it.";
-    }
-
     public String getStatName() {
         return this.statName;
+    }
+
+    public int getAmountChanged() {
+        return this.amountChanged;
     }
 }

@@ -20,12 +20,4 @@ public class UnBuffItem extends BuffItem {
         player.getCurrentStatuses().addPoison(this.amountChanged);
         return ItemUseCase.BUFF;
     }
-
-    @Override
-    public String createOutputString() {
-        if (this.amountChanged > 0)
-            return "Gross! That... was not worth it. You gained " + this.amountChanged + " levels of poison!";
-        else
-            return "That was disgusting!";
-    }
 }

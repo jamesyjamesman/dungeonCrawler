@@ -32,18 +32,18 @@ public class HealthItem extends Item {
     public ItemUseCase useItem(Player player) {
         player.discardItem(this);
 
-        this.healthRestored = new Random().nextInt(lower, higher);
+        int healAmount = new Random().nextInt(lower, higher);
 
         if (this.addedAbsorption != 0)
             player.addAbsorption(this.addedAbsorption);
 
-        if (this.healthRestored < 0) {
-            player.takeDamage(this.healthRestored * -1);
+        if (healAmount < 0) {
+            this.healthRestored = player.takeDamage(healAmount * -1);
             return ItemUseCase.NEGATIVE_HEALTH;
         }
 
-        int amountHealed = player.heal(this.healthRestored);
-        if (amountHealed == 0)
+        this.healthRestored = player.heal(healAmount);
+        if (this.healthRestored == 0)
             return ItemUseCase.NO_HEALTH;
         else
             return ItemUseCase.HEALTH;

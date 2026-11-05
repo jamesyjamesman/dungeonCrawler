@@ -90,9 +90,9 @@ async function renderInventory() {
                 buttonText = "Equip";
             }
             appendInlineButton(buttonText, elementSpan,async () => {
-                const response = await postHelper("/player/useInventoryItem", { uuid: item.uuid });
+                const response = await useItemHelper(item);
                 if (response.error) {
-                    getFreshErrorDiv().append(createParagraph(`response.output`));
+                    getFreshErrorDiv().append(createParagraph(response.output));
                 } else {
                     appendStatusTicker(response.output);
                 }

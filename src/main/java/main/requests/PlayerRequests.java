@@ -18,6 +18,7 @@ public class PlayerRequests {
     record relicID(UUID uuid) {}
     record relicEnum(RelicID id) {}
     record OutputWithErrorFlag(String output, boolean error) {}
+    record ItemWithUseCase(Item item, ItemUseCase useCase) {}
 
     @PostRequestHandler(endpoint = "/player/relicEquipped")
     public static void relicEquipped(Context ctx) {
@@ -69,40 +70,10 @@ public class PlayerRequests {
 
     @PostRequestHandler(endpoint = "/player/useInventoryItem")
     public static void useItem(Context ctx) {
-        String output;
-        boolean error = false;
         Item item = getInventoryItemFromUUID(ctx);
-        // this should ALL be on the front end???
-        switch (item.useItem(App.INSTANCE.getPlayer())) {
-            case ItemUseCase.HEALTH -> output = "The " + item.getName() + " healed you for " + ((HealthItem) item).getHealthRestored() + " health!";
-            case ItemUseCase.NO_HEALTH -> output = "You ate the " + item.getName() + ", but nothing happened.";
-            case ItemUseCase.NEGATIVE_HEALTH -> output = "Yuck! That " + item.getName() + " was gross... You lost " + ((HealthItem) item).getHealthRestored() * -1 + " health!";
-            case ItemUseCase.BUFF -> output = ((BuffItem) item).createOutputString();
-            case ItemUseCase.EQUIPPED -> {
-                if (item instanceof Relic relic && relic.isCursed()) {
-                    output = "The " + item.getName() + " was equipped, but it was cursed!";
-                } else {
-                    output = "The " + item.getName() + " was equipped!";
-                }
-            }
-            case ItemUseCase.UNEQUIPPED -> output = "The " + item.getName() + " was unequipped!";
-            case ItemUseCase.WEAPON_ALREADY_EQUIPPED -> {
-                output = "The " + item.getName() + " could not be equipped, because the " +
-                    App.INSTANCE.getPlayer().getEquippedWeapon().getName() + " is already equipped!";
-                error = true;
-            }
-            case ItemUseCase.POUCH_FULL -> {
-                output = "Your relic pouch is full!";
-                error = true;
-            }
-            default -> throw new IllegalStateException();
-        }
-
-        //this is bad but oh well
-        if (item instanceof HealthItem healthItem && healthItem.getAddedAbsorption() != 0) {
-            output += " Also, the " + healthItem.getName() + " granted " + healthItem.getAddedAbsorption() + " points of absorption!";
-        }
-        ctx.json(new OutputWithErrorFlag(output, error));
+        ItemUseCase useCase = item.useItem(App.INSTANCE.getPlayer());
+        // Refresh item, some useItem() methods mutate the item
+        ctx.json(new ItemWithUseCase(item, useCase));
     }
 
     @PostRequestHandler(endpoint = "/player/cleanseItem")
