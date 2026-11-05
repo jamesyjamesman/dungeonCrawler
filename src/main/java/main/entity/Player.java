@@ -439,16 +439,11 @@ public class Player extends Entity {
     public Statuses getCurrentStatuses() {
         return this.currentStatuses;
     }
-    public boolean setEquippedWeapon(Weapon weapon) {
+    public void setEquippedWeapon(Weapon weapon) {
         if (weapon == null) {
             throw new NullPointerException("Cannot set an equipped weapon to null!");
         }
-        // only equip a weapon if there isn't one equipped
-        if (this.equippedWeapon != null) {
-            return false;
-        }
         this.equippedWeapon = weapon;
-        return true;
     }
     public void removeWeapon() {
         this.equippedWeapon = null;
@@ -461,6 +456,9 @@ public class Player extends Entity {
     }
     public Weapon getEquippedWeapon() {
         return this.equippedWeapon;
+    }
+    public boolean hasWeaponEquipped() {
+        return this.equippedWeapon != null;
     }
     public Armor getEquippedArmor() {
         return this.equippedArmor;

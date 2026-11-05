@@ -1,12 +1,12 @@
 package main.item.armor;
 
-import main.App;
 import main.entity.Player;
+import main.item.Equippable;
 import main.item.Item;
 import main.item.ItemType;
 import main.requests.ItemUseCase;
 
-public abstract class Armor extends Item {
+public abstract class Armor extends Item implements Equippable {
     private final int damageReduction;
 
     public Armor(String name, String description, int value, boolean stackable, double dropChance, int shopWeight, int damageReduction) {
@@ -15,20 +15,31 @@ public abstract class Armor extends Item {
     }
 
     @Override
-    public ItemUseCase useItem(Player player) {
-        if (this.getEquipped()) {
+    public ItemUseCase equip(Player player) {
+        player.setEquippedArmor(this);
+        return ItemUseCase.EQUIPPED;
+    }
+
+    @Override
+    public ItemUseCase unequip(Player player) {
+        if (this.isEquipped(player)) {
             player.setEquippedArmor(null);
             return ItemUseCase.UNEQUIPPED;
-        } else {
-            player.setEquippedArmor(this);
-            return ItemUseCase.EQUIPPED;
-        }
+        } else
+            throw new IllegalStateException("Armor is not equipped!");
+    }
+
+    @Override
+    public boolean isEquipped(Player player) {
+        return player.getEquippedArmor() == this;
+    }
+
+    @Override
+    public ItemUseCase useItem(Player player) {
+        return ItemUseCase.NO_GENERIC_USE;
     }
 
     public int getDamageReduction() {
         return this.damageReduction;
-    }
-    public boolean getEquipped() {
-        return App.INSTANCE.getPlayer().getEquippedArmor() == this;
     }
 }
