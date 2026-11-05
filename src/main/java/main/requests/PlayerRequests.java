@@ -73,6 +73,8 @@ public class PlayerRequests {
     public static void useItem(Context ctx) {
         Item item = getInventoryItemFromUUID(ctx);
         ItemUseCase useCase = item.useItem(App.INSTANCE.getPlayer());
+        if (useCase == ItemUseCase.NO_GENERIC_USE)
+            throw new IllegalStateException("Item has no generic use!");
         // Refresh item, some useItem() methods mutate the item
         ctx.json(new ItemWithUseCase(item, useCase));
     }
@@ -123,34 +125,6 @@ public class PlayerRequests {
         Equippable equip = (Equippable) item;
         ItemUseCase useCase = equip.equip(App.INSTANCE.getPlayer());
         ctx.json(new ItemWithUseCase(item, useCase));
-    }
-
-    @PostRequestHandler(endpoint = "/player/unequipRelic")
-    public static void unequipRelic(Context ctx) {
-        String output;
-        boolean error = false;
-        Relic relic = getRelicFromRelics(ctx);
-        switch (relic.useItem(App.INSTANCE.getPlayer())) {
-            case ItemUseCase.UNEQUIPPED -> output = "The " + relic.getName() + " was unequipped!";
-            case ItemUseCase.INVENTORY_FULL -> {
-                output = "Your inventory is full!";
-                error = true;
-            }
-            case ItemUseCase.INVENTORY_OVERFLOW -> {
-                output = "You have too many items to unequip your " + relic.getName() + "!";
-                error = true;
-            }
-            case ItemUseCase.POUCH_OVERFLOW -> {
-                output = "You have too many relics equipped to unequip your " + relic.getName() + "!";
-                error = true;
-            }
-            case ItemUseCase.RELIC_CURSED -> {
-                output = "You cannot unequip a cursed relic!";
-                error = true;
-            }
-            default -> throw new IllegalStateException("Relics can only be unequipped from the relics menu!");
-        }
-        ctx.json(new OutputWithErrorFlag(output, error));
     }
 
     public static Item getInventoryItemFromUUID(Context ctx) {
