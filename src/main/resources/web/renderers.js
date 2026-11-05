@@ -61,17 +61,8 @@ async function renderInventory() {
     const curseDetectionEquipped = await postHelper("/player/relicEquipped", {id: "CURSE_DETECTION"})
 
     for (let i = 0; i < inventoryData.length; i++) {
-        const outputParagraph = createParagraph();
         const item = inventoryData[i][0];
-        const nameStrong = document.createElement("strong");
-        nameStrong.textContent = item.name;
-        const amountSpan = document.createElement("span");
-        amountSpan.textContent = `${inventoryData[i].length}x `;
-        const descriptionSpan = document.createElement("span");
-        descriptionSpan.textContent = `: ${item.description}`;
-        outputParagraph.append(amountSpan);
-        outputParagraph.append(nameStrong);
-        outputParagraph.append(descriptionSpan);
+        const outputParagraph = createItemText(item, inventoryData[i].length);
         const elementSpan = document.createElement("span");
         elementSpan.classList.add("listSpan");
         inventory.append(elementSpan);
@@ -106,6 +97,7 @@ async function renderInventory() {
                     appendStatusTicker(response.output);
                 }
                 await render();
+                if (item.type === "RELIC") relicButton.click();
             });
         }
 
@@ -132,12 +124,28 @@ async function renderInventory() {
                 }
             });
         }
-        outputParagraph.classList.add("listParagraph");
         if (item.cursed && curseDetectionEquipped) {
             outputParagraph.classList.add("purple");
         }
         elementSpan.append(outputParagraph);
     }
+}
+
+function createItemText(item, amount=1) {
+    const outputParagraph = createParagraph();
+    outputParagraph.classList.add("listParagraph");
+    const nameStrong = document.createElement("strong");
+    nameStrong.textContent = item.name;
+    if (amount > 1) {
+        const amountSpan = document.createElement("span");
+        amountSpan.textContent = `${amount}x `;
+        outputParagraph.append(amountSpan);
+    }
+    const descriptionSpan = document.createElement("span");
+    descriptionSpan.textContent = `: ${item.description}`;
+    outputParagraph.append(nameStrong);
+    outputParagraph.append(descriptionSpan);
+    return outputParagraph;
 }
 
 function appendInlineButton(text, appendTo, func) {
@@ -152,8 +160,7 @@ async function renderRelics() {
     const room = await getHelper("/player/getCurrentRoom");
     const relicData = await getHelper("/player/getRelics");
     relics.innerHTML = "";
-    for (let i = 0; i < relicData.length; i++) {
-        const relic = relicData[i];
+    for (const relic of relicData) {
         const elementSpan = document.createElement("span");
         elementSpan.classList.add("listSpan");
         relics.append(elementSpan);
@@ -169,21 +176,21 @@ async function renderRelics() {
             });
         } else {
             appendInlineButton("Unequip", elementSpan, async () => {
-                const response = await postHelper("/player/unequipRelic", {uuid: relicData[i].uuid});
+                const response = await postHelper("/player/unequipRelic", {uuid: relic.uuid});
                 if (response.error) {
                     getFreshErrorDiv().append(createParagraph(response.output));
                 } else {
                     appendStatusTicker(response.output);
                 }
                 await render();
+                inventoryButton.click();
             });
         }
-        const relicParagraph = createParagraph(`${relic.name}: ${relic.description}`);
-        relicParagraph.classList.add("listParagraph");
-        elementSpan.append(relicParagraph);
+        const relicParagraph = createItemText(relic);
         if (relic.cursed) {
             relicParagraph.classList.add("purple");
         }
+        elementSpan.append(relicParagraph);
     }
 }
 
@@ -231,7 +238,7 @@ async function renderEnemies(room, reset = true) {
 
     numberInputOptions = [];
     for (let i = 0; i < enemies.length; i++) {
-        const speciesPascal = enemies[i].species.toString().charAt(0).toUpperCase() + enemies[i].species.toString().substring(1, enemies[i].species.toString().length).toLowerCase();
+        const speciesCapitalized = capitalize(enemies[i].species.toString());
         const elementSpan = document.createElement("span");
         elementSpan.classList.add("listSpan");
         const attackButton = document.createElement("button");
@@ -247,7 +254,7 @@ async function renderEnemies(room, reset = true) {
         const enemyParagraph = document.createElement("p");
         enemyParagraph.classList.add("listParagraph");
         // Holy moly
-        enemyParagraph.textContent = `${i+1}. ${speciesPascal}${(displayEnemyInformation) ? ` (${enemies[i].currentHealth}/${enemies[i].maxHealth} HP)` : ""}`;
+        enemyParagraph.textContent = `${i+1}. ${speciesCapitalized}${(displayEnemyInformation) ? ` (${enemies[i].currentHealth}/${enemies[i].maxHealth} HP)` : ""}`;
         elementSpan.append(enemyParagraph);
         mainDiv.append(elementSpan);
     }
