@@ -8,14 +8,12 @@ import main.item.relic.Relic;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class RelicRoom extends Room {
+public class RelicRoom extends ItemRoom {
     private final boolean hasCorpse;
-    private Relic relic;
 
     public RelicRoom(RelicRoomBuilder<?> builder) {
         super(builder);
         this.hasCorpse = builder.hasCorpse;
-        this.relic = null;
     }
 
     @Override
@@ -35,13 +33,6 @@ public class RelicRoom extends Room {
         if (this.hasCorpse) {
             newRelic.setCursed(new Random().nextInt(5) != 0);
         }
-        this.setRelic(newRelic);
-    }
-
-    public Relic getRelic() {
-        return this.relic;
-    }
-    public void setRelic(Relic relic) {
-        this.relic = relic;
+        this.setItem(newRelic);
     }
 }

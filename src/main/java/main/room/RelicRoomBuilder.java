@@ -1,6 +1,6 @@
 package main.room;
 
-public class RelicRoomBuilder<T extends RelicRoomBuilder<T>> extends RoomBuilder<T> {
+public class RelicRoomBuilder<T extends RelicRoomBuilder<T>> extends ItemRoomBuilder<T> {
 
     protected boolean hasCorpse;
 

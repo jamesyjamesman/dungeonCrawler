@@ -12,6 +12,7 @@ import java.util.Random;
 
 public class AppearanceSerializer extends JsonSerializer<String> {
 
+    // What??? Why is this in the serializer??
     @Override
     public void serialize(String appearance, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
         Room room = (Room) jsonGenerator.getCurrentValue();

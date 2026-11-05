@@ -51,12 +51,6 @@ public class Rooms {
         ctx.json(App.INSTANCE.getPlayer().itemPickup(room.getItem()));
     }
 
-    @PostRequestHandler(endpoint = "/rooms/relicPickup")
-    public static void relicPickup(Context ctx) {
-        RelicRoom room = (RelicRoom) getRoomFromContext(ctx);
-        ctx.json(App.INSTANCE.getPlayer().itemPickup(room.getRelic()));
-    }
-
     @PostRequestHandler(endpoint = "/rooms/getExits")
     public static void getExits(Context ctx) {
         ArrayList<Room> roomExits = getRoomFromContext(ctx).getExits();

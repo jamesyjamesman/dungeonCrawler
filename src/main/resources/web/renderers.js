@@ -198,6 +198,7 @@ async function shopRenderer(room) {
     for (let i = 0; i < wares.length; i++) {
         const item = wares[i];
         const elementSpan = document.createElement("span");
+        elementSpan.classList.add("listSpan")
         mainDiv.append(elementSpan);
         appendInlineButton("Buy", elementSpan, async () => {
             const success = await postHelper("/rooms/buyItem", {

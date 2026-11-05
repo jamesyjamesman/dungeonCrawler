@@ -72,6 +72,7 @@ public class PlayerRequests {
         String output;
         boolean error = false;
         Item item = getInventoryItemFromUUID(ctx);
+        // this should ALL be on the front end???
         switch (item.useItem(App.INSTANCE.getPlayer())) {
             case ItemUseCase.HEALTH -> output = "The " + item.getName() + " healed you for " + ((HealthItem) item).getHealthRestored() + " health!";
             case ItemUseCase.NO_HEALTH -> output = "You ate the " + item.getName() + ", but nothing happened.";

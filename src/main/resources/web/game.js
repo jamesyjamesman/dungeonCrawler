@@ -95,9 +95,8 @@ async function relicHandler(room) {
     }
 }
 
-async function itemPickup(room, type="item") {
-    // Why are there even two requests
-    const pickupSuccess = await postHelper("/rooms/" + type + "Pickup", {id: room.id});
+async function itemPickup(room) {
+    const pickupSuccess = await postHelper("/rooms/itemPickup", {id: room.id});
     const mainDiv = getFreshMainDiv();
     const pickupParagraph = document.createElement('p');
     // todo: sometimes this fails
@@ -106,11 +105,10 @@ async function itemPickup(room, type="item") {
     // can progress by entering 1
     // Does not fix on rerender, so might be an issue on the server side
 
-    // Why even is it serialized differently?
     if (pickupSuccess) {
-        pickupParagraph.textContent = `You picked up a ${room[type].name}!`;
+        pickupParagraph.textContent = `You picked up a ${room.item.name}!`;
     } else {
-        pickupParagraph.textContent = `Your inventory is full! Drop an item to pick up the ${room[type].name}!`;
+        pickupParagraph.textContent = `Your inventory is full! Drop an item to pick up the ${room.item.name}!`;
     }
     mainDiv.append(pickupParagraph);
     await render();
