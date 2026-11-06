@@ -25,6 +25,8 @@ public class Rooms {
 
         Room returnRoom = Game.roomChangeHandler(ctx.bodyAsClass(RoomId.class).id());
 
+        // todo rework to send information, not just event strings
+        // also get rid of useRelic and use useItem instead
         RoomChangeEvents events = new RoomChangeEvents(player.useRelics(), player.statusHandler(false), returnRoom, player.getCurrentHealth() > 0);
 
         ctx.json(events);
@@ -34,9 +36,9 @@ public class Rooms {
     public static void trapDamage(Context ctx) {
         TrapRoom trapRoom = (TrapRoom) getRoomFromContext(ctx);
         Player player = App.INSTANCE.getPlayer();
-        player.takeDamage(trapRoom.getDamageDealt());
+        int damageDealt = trapRoom.damage(player);
 
-        ctx.json(new TrapInfo(trapRoom.getDamageDealt(), player.isDead()));
+        ctx.json(new TrapInfo(damageDealt, player.isDead()));
     }
 
     @PostRequestHandler(endpoint = "/rooms/getEnemies")
@@ -75,16 +77,9 @@ public class Rooms {
 
     @PostRequestHandler(endpoint = "/rooms/cleansePlayer")
     public static void cleansePlayer(Context ctx) {
-        String output;
         Player player = App.INSTANCE.getPlayer();
-        // todo return the boolean
         boolean fireRemoved = ((PureWaterRoom) player.getCurrentRoom()).selfFountainize();
-        if (fireRemoved) {
-            output = "You jumped in the fountain, and put out the fire on you!";
-        } else {
-            output = "...You're all wet now.";
-        }
-        ctx.json("\"" + output + "\"");
+        ctx.json(fireRemoved);
     }
 
     public static Room getRoom(int id) {

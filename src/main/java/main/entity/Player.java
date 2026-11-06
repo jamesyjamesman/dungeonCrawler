@@ -323,6 +323,7 @@ public class Player extends Entity {
         return output + "\n";
     }
 
+    // todo return statuses and the damage taken
     public ArrayList<String> statusHandler(boolean inBattle) {
         ArrayList<String> statusOutputStrings = new ArrayList<>();
         int poisonDamage = doPoisonDamage();

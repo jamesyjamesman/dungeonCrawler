@@ -52,6 +52,7 @@ public class EnemyHandler {
         Enemy enemy = getEnemyFromContext(ctx);
         Player player = App.INSTANCE.getPlayer();
 
+        // todo don't return a string
         AttackInfo info = new AttackInfo(enemy.attack(player), player.isDead());
 
         ctx.json(info);

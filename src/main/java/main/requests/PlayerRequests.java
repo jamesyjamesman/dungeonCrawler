@@ -98,7 +98,7 @@ public class PlayerRequests {
         ctx.json(success);
     }
 
-    //todo status if level up failed?
+    //todo status if level up failed? also, figure out how to do this on the front end...?
     @PostRequestHandler(endpoint = "/player/levelUp")
     public static void levelUp(Context ctx) {
         ctx.json("\"" + App.INSTANCE.getPlayer().levelUp().replaceAll("\n", "\\\\n") + "\"");

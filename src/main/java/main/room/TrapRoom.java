@@ -1,6 +1,5 @@
 package main.room;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import main.entity.Player;
 
 public class TrapRoom extends Room {
@@ -13,5 +12,9 @@ public class TrapRoom extends Room {
 
     public int getDamageDealt() {
         return this.damageDealt;
+    }
+
+    public int damage(Player player) {
+        return player.takeDamage(this.damageDealt);
     }
 }

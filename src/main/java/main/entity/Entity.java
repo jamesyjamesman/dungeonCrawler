@@ -66,7 +66,6 @@ public abstract class Entity extends Identifiable {
         return health;
     }
 
-    //returns the damage taken. this is mostly unnecessary, and could potentially be made void.
     public int takeDamage(int damage) {
         int oldHealth = this.currentHealth;
         this.currentHealth -= damage;

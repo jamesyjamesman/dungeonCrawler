@@ -211,7 +211,10 @@ async function fountainHandler(room) {
     selfCleanseButton.classList.add("clickableButton");
     selfCleanseButton.textContent = "Jump in";
     selfCleanseButton.addEventListener("click", async () => {
-        const outputString = await postHelper("/rooms/cleansePlayer");
+        const extinguished = await postHelper("/rooms/cleansePlayer");
+        const outputString = (extinguished) ?
+            "You jumped in the fountain, and put out the fire on you!" :
+            "...You're all wet now."
         mainDiv.append(createParagraph(outputString));
     });
     const mainDiv = getFreshMainDiv();
