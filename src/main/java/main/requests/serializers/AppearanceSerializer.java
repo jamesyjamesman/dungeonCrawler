@@ -15,7 +15,7 @@ public class AppearanceSerializer extends JsonSerializer<String> {
     // What??? Why is this in the serializer??
     @Override
     public void serialize(String appearance, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-        Room room = (Room) jsonGenerator.getCurrentValue();
+        Room room = (Room) jsonGenerator.currentValue();
         double chance = room.getAppearanceChance();
         //alternatively, add a relic just called "Glasses" that does the same thing (but better prob)
         if (App.INSTANCE.getPlayer().hasRelicEquipped(RelicID.FORESIGHT)) {

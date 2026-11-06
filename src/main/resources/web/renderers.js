@@ -89,7 +89,6 @@ async function renderInventoryPane(pane, data) {
                 await render();
             });
         } else if (["WEAPON", "RELIC", "ARMOR"].includes(item.type)) {
-            // todo always runs the latter
             if (item.equipped) {
                 appendInlineButton("Unequip", elementSpan, async () => {
                     await inventoryButtonHelper(item, unequipHelper);

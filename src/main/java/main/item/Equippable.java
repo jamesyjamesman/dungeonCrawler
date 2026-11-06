@@ -5,7 +5,7 @@ import main.requests.ItemUseCase;
 
 public interface Equippable {
     // Returns if it was successful or not
-    public ItemUseCase equip(Player player);
-    public ItemUseCase unequip(Player player);
-    public boolean isEquipped(Player player);
+    ItemUseCase equip(Player player);
+    ItemUseCase unequip(Player player);
+    boolean isEquipped(Player player);
 }

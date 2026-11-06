@@ -1,9 +1,12 @@
 package main.item;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import main.Identifiable;
 import main.entity.Player;
 import main.item.health.PureAppleItem;
 import main.requests.ItemUseCase;
+import main.requests.serializers.EquippedSerializer;
+import main.requests.serializers.ExitSerializer;
 import main.room.PureWaterRoom;
 
 public abstract class Item extends Identifiable implements Cloneable {
@@ -15,6 +18,9 @@ public abstract class Item extends Identifiable implements Cloneable {
     private final int shopWeight;
     private final boolean cleansable;
     private final ItemType type;
+    // I hate serializing
+    @JsonSerialize(using = EquippedSerializer.class)
+    private boolean equipped;
     public Item(String name, String description, int value, boolean stackable, double dropChance, int shopWeight, ItemType type) {
         this(name, description, value, stackable, dropChance, shopWeight, type, false);
     }
