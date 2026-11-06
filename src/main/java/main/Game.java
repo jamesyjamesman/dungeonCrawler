@@ -16,9 +16,8 @@ public class Game {
         Room currentRoom = getRoomByID(rooms, roomID);
         player.setCurrentRoom(currentRoom);
 
-        currentRoom.completeRoomActions(player);
-
         activateRooms(rooms, player);
+        currentRoom.completeRoomActions(player);
         ArrayList<Room> activeRooms = new ArrayList<>(getRandomActiveRooms(rooms));
         createRoomExits(activeRooms, currentRoom);
         App.INSTANCE.setState(App.State.ROOM_END);

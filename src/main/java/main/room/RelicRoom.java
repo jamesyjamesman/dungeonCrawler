@@ -3,6 +3,7 @@ package main.room;
 import main.App;
 import main.Game;
 import main.entity.Player;
+import main.item.DummyItem;
 import main.item.relic.Relic;
 
 import java.util.ArrayList;
@@ -24,6 +25,11 @@ public class RelicRoom extends ItemRoom {
 
     public void initializeRelic() {
         ArrayList<Relic> relicList = App.INSTANCE.getObtainableFindableRelics();
+        if (relicList.isEmpty()) {
+            Game.deactivateRelicRooms();
+            this.setItem(new DummyItem());
+            return;
+        }
         Relic newRelic = relicList.get(new Random().nextInt(relicList.size()));
         // If not actually picked up, will be reactivated again shortly
         relicList.remove(newRelic);
