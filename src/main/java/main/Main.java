@@ -96,7 +96,7 @@ public class Main {
 
         player.setCurrentRoom(startRoom);
 
-        app.setUnusedRelics(RelicInit.relicInit());
+        app.setFindableRelics(RelicInit.relicInit());
         Game.roomChangeHandler(startRoom.getId());
     }
 

@@ -2,7 +2,6 @@ package main;
 
 import io.javalin.Javalin;
 import main.entity.Player;
-import main.initialization.RoomInit;
 import main.item.relic.Relic;
 import main.room.Room;
 
@@ -24,7 +23,7 @@ public enum App {
 
     private Player player;
 
-    private ArrayList<Relic> unusedRelics;
+    private ArrayList<Relic> findableRelics;
 
     private ArrayList<Room> rooms;
 
@@ -45,14 +44,16 @@ public enum App {
     public void setPlayer(Player newPlayer) {
         player = newPlayer;
     }
-    public ArrayList<Relic> getUnusedRelics() {
-        return unusedRelics;
+    public ArrayList<Relic> getFindableRelics() {
+        return findableRelics;
     }
-    public void setUnusedRelics(ArrayList<Relic> newUnusedRelics) {
-        unusedRelics = newUnusedRelics;
+    public void setFindableRelics(ArrayList<Relic> newUnusedRelics) {
+        findableRelics = newUnusedRelics;
     }
-    public void addUnusedRelic(Relic relic) {
-        this.unusedRelics.add(relic);
+    public ArrayList<Relic> getObtainableFindableRelics() {
+        return new ArrayList<>(findableRelics.stream()
+                .filter(relic -> !this.getPlayer().getAllRelics().contains(relic))
+                .toList());
     }
     public ArrayList<Room> getRooms() {
         return this.rooms;

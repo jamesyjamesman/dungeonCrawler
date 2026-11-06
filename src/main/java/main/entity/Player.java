@@ -18,6 +18,8 @@ import main.room.ShopRoom;
 import javax.print.DocFlavor;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -71,10 +73,6 @@ public class Player extends Entity {
 
     public boolean itemPickup(Item item) {
         if (calculateInventorySize() >= this.inventoryCap) {
-            // relic is removed from unused relics as soon as it is generated, so it has to be put back
-            if (item instanceof Relic relic && relic.isFindable()) {
-                App.INSTANCE.addUnusedRelic(relic);
-            }
             return false;
         }
         // return add (and flip the boolean?)
@@ -117,30 +115,29 @@ public class Player extends Entity {
     }
 
     public boolean sellItem(Item item) {
-        if (item instanceof Equippable equip && equip.isEquipped(this))
-            return false;
         if (item instanceof Relic relic && relic.isCursed()) {
             return false;
-        } else {
-            discardItem(item);
+        } else if (discardItem(item)) {
             this.addGold(item.getValue());
             return true;
         }
+        return false;
     }
 
-    public void discardItem(Item item) {
+    public boolean discardItem(Item item) {
+        if (item instanceof Equippable equip && equip.isEquipped(this))
+            return false;
         int itemIndex = findItemInInventory(item);
         if (itemIndex == -1) {
             System.out.println("Error! This code should not be reachable (Item.java)");
-        }
-        if (item instanceof Relic relic && relic.isFindable()) {
-            App.INSTANCE.addUnusedRelic(relic);
+            return false;
         }
         if (this.inventory.get(itemIndex).size() == 1) {
             this.inventory.remove(itemIndex);
         } else {
             this.inventory.get(itemIndex).remove(item);
         }
+        return true;
     }
 
     public int findItemInInventory(Item item) {
@@ -167,6 +164,16 @@ public class Player extends Entity {
 
     public boolean hasRelic(Relic relic) {
         return equippedRelicIndex(relic.getRelicType()) != -1 || findItemInInventoryByName(relic) != -1;
+    }
+
+    public ArrayList<Relic> getAllRelics() {
+        ArrayList<Relic> inventoryRelics = new ArrayList<>(this.inventory.stream()
+                .flatMap(Collection::stream)
+                .filter(item -> item instanceof Relic)
+                .map(Relic.class::cast)
+                .toList());
+        inventoryRelics.addAll(this.equippedRelics);
+        return inventoryRelics;
     }
 
     //TODO damageType (status, physical (or more precise))

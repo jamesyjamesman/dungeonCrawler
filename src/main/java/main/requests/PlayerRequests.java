@@ -87,8 +87,8 @@ public class PlayerRequests {
     @PostRequestHandler(endpoint = "/player/dropItem")
     public static void dropItem(Context ctx) {
         Item item = getInventoryItemFromUUID(ctx);
-        App.INSTANCE.getPlayer().discardItem(item);
-        ctx.json(true);
+        boolean success = App.INSTANCE.getPlayer().discardItem(item);
+        ctx.json(success);
     }
 
     @PostRequestHandler(endpoint = "/player/sellItem")

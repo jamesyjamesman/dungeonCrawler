@@ -23,16 +23,14 @@ public class RelicRoom extends ItemRoom {
     }
 
     public void initializeRelic() {
-        ArrayList<Relic> relicList = App.INSTANCE.getUnusedRelics();
+        ArrayList<Relic> relicList = App.INSTANCE.getObtainableFindableRelics();
         Relic newRelic = relicList.get(new Random().nextInt(relicList.size()));
-//        added back when sold or if not picked up in Player.itemPickup().
+        // If not actually picked up, will be reactivated again shortly
         relicList.remove(newRelic);
-        if (relicList.isEmpty()) {
-                Game.deactivateRelicRooms();
-        }
-        if (this.hasCorpse) {
+        if (relicList.isEmpty())
+            Game.deactivateRelicRooms();
+        if (this.hasCorpse)
             newRelic.setCursed(new Random().nextInt(5) != 0);
-        }
         this.setItem(newRelic);
     }
 }

@@ -1,15 +1,12 @@
 package main;
 
 import main.entity.Player;
-import main.item.relic.ForesightRelic;
-import main.item.relic.RelicID;
 import main.room.Room;
 import main.room.RoomType;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 public class Game {
 
@@ -49,9 +46,9 @@ public class Game {
         for (Room checkRoom : rooms) {
             if (checkRoom.getType() == RoomType.RELIC) {
                 checkRoom.setActive(false);
-                }
             }
         }
+    }
 
     public static List<Room> getRandomActiveRooms(ArrayList<Room> rooms) {
         return rooms.stream()
@@ -80,7 +77,7 @@ public class Game {
     public static void activateRooms(ArrayList<Room> rooms, Player player) {
         rooms.stream()
                 .filter(room -> !room.getActive())
-                .filter(room -> room.getType() != RoomType.RELIC || !App.INSTANCE.getUnusedRelics().isEmpty())
+                .filter(room -> room.getType() != RoomType.RELIC || !App.INSTANCE.getObtainableFindableRelics().isEmpty())
                 .forEach(room -> room.roomActivator(player));
     }
 }
