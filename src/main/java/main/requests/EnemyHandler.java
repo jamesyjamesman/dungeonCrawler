@@ -52,7 +52,8 @@ public class EnemyHandler {
         Enemy enemy = getEnemyFromContext(ctx);
         Player player = App.INSTANCE.getPlayer();
 
-        // todo don't return a string
+        // Returning a string isn't great, but the bosses kind of make it necessary?
+        // I'm not sure how I would reasonably change this.
         AttackInfo info = new AttackInfo(enemy.attack(player), player.isDead());
 
         ctx.json(info);
