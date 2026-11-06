@@ -77,6 +77,7 @@ public class Rooms {
     public static void cleansePlayer(Context ctx) {
         String output;
         Player player = App.INSTANCE.getPlayer();
+        // todo return the boolean
         boolean fireRemoved = ((PureWaterRoom) player.getCurrentRoom()).selfFountainize();
         if (fireRemoved) {
             output = "You jumped in the fountain, and put out the fire on you!";

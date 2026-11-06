@@ -66,9 +66,16 @@ public class SlimeBoss extends Boss {
 
     @Override
     public int takeDamage(int damage) {
-        if (new Random().nextInt(5) == 0) {
-            return 0;
-        }
+        // I'm disabling special functionality for now, though it is sad
+        // Ideas for re-enabling them in the future:
+        // 1. Create a TakeDamageRecord of sorts that contains an int and a String (or enum), to
+        // communicate special behavior
+        // 2. Create direct communication to the frontend (with like a websocket?)
+        // for side effects; probably not the best method
+
+//        if (new Random().nextInt(5) == 0) {
+//            return 0;
+//        }
         //todo this causes problems!!!!!! so functionality removed for now
 //        if (new Random().nextInt(10) == 0) {
 //            Enemy slimeEnemy = new Enemy(Species.SLIME, 7, 2, 5, 1);
@@ -78,5 +85,4 @@ public class SlimeBoss extends Boss {
 //        }
         return super.takeDamage(damage);
     }
-
 }
