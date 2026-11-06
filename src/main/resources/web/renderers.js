@@ -91,16 +91,16 @@ async function renderInventoryPane(pane, data) {
         } else if (["WEAPON", "RELIC", "ARMOR"].includes(item.type)) {
             if (item.equipped) {
                 appendInlineButton("Unequip", elementSpan, async () => {
-                    await inventoryButtonHelper(item, unequipHelper);
+                    await inventoryButtonHelper(item, unequipParser);
                 });
             } else {
                 appendInlineButton("Equip", elementSpan, async () => {
-                    await inventoryButtonHelper(item, equipHelper);
+                    await inventoryButtonHelper(item, equipParser);
                 });
             }
         } else {
             appendInlineButton("Use", elementSpan,async () => {
-                await inventoryButtonHelper(item, useItemHelper);
+                await inventoryButtonHelper(item, useItemParser);
             });
         }
 

@@ -1,20 +1,13 @@
 async function goToRoom(id) {
     const changeInfo = await postHelper("/rooms/change", { id: id });
-    const newRoom = changeInfo.room;
-    const roomExits = await postHelper("/rooms/getExits", {id : newRoom.id });
-    const statusText = changeInfo.statusText;
-    for (let i = 0; i < statusText.length; i++) {
-        appendStatusTicker(statusText[i]);
-    }
-    const relicUseText = changeInfo.relicUseText;
-    for (let i = 0; i < relicUseText.length; i++) {
-        appendStatusTicker(relicUseText[i]);
-    }
-    const playerAlive = changeInfo.playerAlive;
-    if (!playerAlive) {
+    if (!changeInfo.playerAlive) {
         playerDeath();
         return;
     }
+    const newRoom = changeInfo.room;
+    const roomExits = await postHelper("/rooms/getExits", {id : newRoom.id });
+    relicInfoParser(changeInfo.relicsUsed);
+    statusInfoParser(changeInfo.statusInfo);
     document.body.style.backgroundImage = `url("textures/${newRoom.backgroundFileName}")`;
     const descriptionParagraph = document.createElement("p");
     descriptionParagraph.innerHTML = parseTextAsHTML(newRoom.description);

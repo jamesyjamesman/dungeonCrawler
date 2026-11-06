@@ -13,9 +13,4 @@ public class CurseHealRelic extends Relic {
             RelicID.CURSE_HEAL);
         setCursed(true);
     }
-
-    @Override
-    public String useRelic(Player player) {
-        return "";
-    }
 }

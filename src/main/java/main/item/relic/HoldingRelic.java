@@ -15,11 +15,6 @@ public class HoldingRelic extends Relic {
     }
 
     @Override
-    public String useRelic(Player player) {
-        return "";
-    }
-
-    @Override
     public ItemUseCase equip(Player player) {
         if (player.equipRelic(this)) {
             player.changeInventoryCap(10);

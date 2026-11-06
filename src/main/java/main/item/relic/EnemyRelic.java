@@ -12,9 +12,4 @@ public class EnemyRelic extends Relic {
                 dropChance,
                 RelicID.ENEMY_INFORMATION);
     }
-
-    @Override
-    public String useRelic(Player player) {
-        return "";
-    }
 }

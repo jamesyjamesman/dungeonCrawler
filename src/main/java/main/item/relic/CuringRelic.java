@@ -3,6 +3,7 @@ package main.item.relic;
 import main.App;
 import main.Statuses;
 import main.entity.Player;
+import main.requests.ItemUseCase;
 
 import java.util.Random;
 
@@ -19,7 +20,7 @@ public class CuringRelic extends Relic {
     }
 
     @Override
-    public String useRelic(Player player) {
+    public ItemUseCase useItem(Player player) {
         if (App.INSTANCE.getState() == App.State.ROOM_END || App.INSTANCE.getState() == App.State.PLAYER_TURN) {
             Statuses playerStatuses = player.getCurrentStatuses();
             int totalStatusCount = playerStatuses.getPoison() + playerStatuses.getWeakened() + playerStatuses.getFire();
@@ -27,21 +28,17 @@ public class CuringRelic extends Relic {
                 int removalIndex = new Random().nextInt(totalStatusCount);
 
                 removalIndex -= playerStatuses.getPoison();
-                if (removalIndex <= 0) {
+                if (removalIndex <= 0)
                     playerStatuses.addPoison(-1);
-                    return "The " + getName() + " cured 1 level of poison!";
-                }
 
                 removalIndex -= playerStatuses.getWeakened();
-                if (removalIndex <= 0) {
+                if (removalIndex <= 0)
                     playerStatuses.addWeakened(-1);
-                    return "The " + getName() + " cured 1 level of weakness!";
-                }
 
                 playerStatuses.addFire(-1);
-                return "The " + getName() + " cured 1 level of fire! ...somehow?";
+                return ItemUseCase.RELIC_USED;
             }
         }
-        return "";
+        return ItemUseCase.NO_GENERIC_USE;
     }
 }

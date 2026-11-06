@@ -17,9 +17,4 @@ public class DamageRelic extends Relic {
     public int getDamage() {
         return this.damage;
     }
-
-    @Override
-    public String useRelic(Player player) {
-        return "";
-    }
 }

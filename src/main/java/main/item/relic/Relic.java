@@ -18,9 +18,6 @@ public abstract class Relic extends Item implements Equippable {
         this.relicID = relicID;
     }
 
-    public abstract String useRelic(Player player);
-
-
     @Override
     public ItemUseCase equip(Player player) {
         if (player.equipRelic(this))
@@ -40,7 +37,6 @@ public abstract class Relic extends Item implements Equippable {
 
     @Override
     public ItemUseCase useItem(Player player) {
-        // Make useRelic into useItem?
         return ItemUseCase.NO_GENERIC_USE;
     }
 

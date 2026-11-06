@@ -12,9 +12,4 @@ public class CurseDetectionRelic extends Relic {
                 dropChance,
                 RelicID.CURSE_DETECTION);
     }
-
-    @Override
-    public String useRelic(Player player) {
-        return "";
-    }
 }

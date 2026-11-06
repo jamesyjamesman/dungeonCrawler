@@ -14,5 +14,6 @@ public enum ItemUseCase {
     POUCH_OVERFLOW,
     ALREADY_EQUIPPED,
     NO_GENERIC_USE,
+    RELIC_USED,
     ILLEGAL_STATE
 }

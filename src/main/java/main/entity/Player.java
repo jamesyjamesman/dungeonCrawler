@@ -1,6 +1,5 @@
 package main.entity;
 
-import main.App;
 import main.Statuses;
 import main.entity.enemy.Enemy;
 import main.item.Equippable;
@@ -12,16 +11,12 @@ import main.item.relic.Relic;
 import main.item.relic.RelicID;
 import main.item.weapon.Weapon;
 import main.requests.ItemUseCase;
+import main.requests.StatusHandlerRecord;
 import main.room.Room;
-import main.room.ShopRoom;
 
-import javax.print.DocFlavor;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 //potentially make a "stats" object for player -- would cut this in about half
 public class Player extends Entity {
@@ -193,11 +188,10 @@ public class Player extends Entity {
         return damage;
     }
 
-    public ArrayList<String> useRelics() {
+    public ArrayList<Relic> useRelics() {
         return new ArrayList<>(this.equippedRelics
                 .stream()
-                .map(relic -> relic.useRelic(this))
-                .filter(string -> !string.isEmpty())
+                .filter(relic -> relic.useItem(this) == ItemUseCase.RELIC_USED)
                 .toList());
     }
 
@@ -324,26 +318,26 @@ public class Player extends Entity {
     }
 
     // todo return statuses and the damage taken
-    public ArrayList<String> statusHandler(boolean inBattle) {
-        ArrayList<String> statusOutputStrings = new ArrayList<>();
+    public ArrayList<StatusHandlerRecord> statusHandler(boolean inBattle) {
+        ArrayList<StatusHandlerRecord> statusRecords = new ArrayList<>();
         int poisonDamage = doPoisonDamage();
         if (poisonDamage > 0)
-            statusOutputStrings.add("You took " + poisonDamage + " poison damage!");
+            statusRecords.add(new StatusHandlerRecord("POISON", poisonDamage));
         int fireDamage = doFireDamage();
         if (fireDamage > 0)
-            statusOutputStrings.add("You took " + fireDamage + " fire damage!");
+            statusRecords.add(new StatusHandlerRecord("FIRE", fireDamage));
         if (!inBattle) {
             if (hasRelicEquipped(RelicID.CURSE_HEAL)) {
                 int curseHeal = doCurseHeal();
                 if (curseHeal > 0)
-                    statusOutputStrings.add("You healed " + curseHeal + " from your cursed relics!");
+                    statusRecords.add(new StatusHandlerRecord("CURSE_HEAL", curseHeal));
             } else {
                 int curseDamage = doCurseDamage();
                 if (curseDamage > 0)
-                    statusOutputStrings.add("You took " + curseDamage + " damage from your cursed relics!");
+                    statusRecords.add(new StatusHandlerRecord("CURSE", curseDamage));
             }
         }
-        return statusOutputStrings;
+        return statusRecords;
     }
 
     //todo: consider moving these to the statuses class

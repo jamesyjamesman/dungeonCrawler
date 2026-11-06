@@ -5,17 +5,16 @@ import main.App;
 import main.Game;
 import main.entity.Player;
 import main.item.Item;
+import main.item.relic.Relic;
 import main.room.*;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
-import static main.requests.GameRequests.setContextStatus;
-
 public class Rooms {
 
     record RoomId(int id) {}
-    record RoomChangeEvents(ArrayList<String> relicUseText, ArrayList<String> statusText, Room room, boolean playerAlive) {}
+    record RoomChangeEvents(ArrayList<Relic> relicsUsed, ArrayList<StatusHandlerRecord> statusInfo, Room room, boolean playerAlive) {}
     record TrapInfo(int damageDealt, boolean playerDead) {}
     record RoomId_Shop(int roomID, UUID itemID) {}
 
@@ -25,8 +24,6 @@ public class Rooms {
 
         Room returnRoom = Game.roomChangeHandler(ctx.bodyAsClass(RoomId.class).id());
 
-        // todo rework to send information, not just event strings
-        // also get rid of useRelic and use useItem instead
         RoomChangeEvents events = new RoomChangeEvents(player.useRelics(), player.statusHandler(false), returnRoom, player.getCurrentHealth() > 0);
 
         ctx.json(events);
