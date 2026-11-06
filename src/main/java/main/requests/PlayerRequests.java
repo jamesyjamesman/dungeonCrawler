@@ -81,7 +81,10 @@ public class PlayerRequests {
 
     @PostRequestHandler(endpoint = "/player/cleanseItem")
     public static void cleanseItem(Context ctx) {
-        boolean cleansed = getInventoryItemFromUUID(ctx).cleanseItem(App.INSTANCE.getPlayer());
+        boolean cleansed = (getRelicFromRelics(ctx) == null) ?
+                getInventoryItemFromUUID(ctx).cleanseItem(App.INSTANCE.getPlayer()) :
+                getRelicFromRelics(ctx).cleanseItem(App.INSTANCE.getPlayer());
+
         ctx.json(cleansed);
     }
 
@@ -103,12 +106,6 @@ public class PlayerRequests {
     @PostRequestHandler(endpoint = "/player/levelUp")
     public static void levelUp(Context ctx) {
         ctx.json("\"" + App.INSTANCE.getPlayer().levelUp().replaceAll("\n", "\\\\n") + "\"");
-    }
-
-    @PostRequestHandler(endpoint = "/player/cleanseRelic")
-    public static void cleanseRelic(Context ctx) {
-        boolean cleansed = getRelicFromRelics(ctx).cleanseItem(App.INSTANCE.getPlayer());
-        ctx.json(cleansed);
     }
 
     @PostRequestHandler(endpoint = "/player/unequip")

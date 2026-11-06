@@ -16,36 +16,24 @@ async function goToRoom(id) {
         return;
     }
     document.body.style.backgroundImage = `url("textures/${newRoom.backgroundFileName}")`;
-    descriptionDiv.innerHTML = "";
     const descriptionParagraph = document.createElement("p");
     descriptionParagraph.innerHTML = parseTextAsHTML(newRoom.description);
+    await roomSwitch(roomExits, newRoom);
+    descriptionDiv.innerHTML = "";
     descriptionDiv.append(descriptionParagraph);
+}
+
+async function roomSwitch(roomExits, newRoom) {
     switch (newRoom.type) {
-        case "NORMAL":
-            await printRooms(roomExits);
-            break;
-        case "TRAP":
-            await trapHandler(newRoom);
-            break;
+        case "NORMAL": return await printRooms(roomExits);
+        case "TRAP": return await trapHandler(newRoom);
         case "BOSS":
-        case "ENEMY":
-            await enemyHandler(newRoom);
-            break;
-        case "RELIC":
-            await relicHandler(newRoom);
-            break;
-        case "ITEM":
-            await itemHandler(newRoom);
-            break;
-        case "FOUNTAIN":
-            await fountainHandler(newRoom);
-            break;
-        case "SHOP":
-            await shopHandler(newRoom);
-            break;
-        case "END":
-            await endingHandler(newRoom);
-            break;
+        case "ENEMY": return await enemyHandler(newRoom);
+        case "RELIC": return await relicHandler(newRoom);
+        case "ITEM": return await itemHandler(newRoom);
+        case "FOUNTAIN": return await fountainHandler(newRoom);
+        case "SHOP": return await shopHandler(newRoom);
+        case "END": return await endingHandler(newRoom);
     }
 }
 
@@ -97,7 +85,6 @@ async function relicHandler(room) {
 
 async function itemPickup(room) {
     const pickupSuccess = await postHelper("/rooms/itemPickup", {id: room.id});
-    const mainDiv = getFreshMainDiv();
     const pickupParagraph = document.createElement('p');
     // todo: sometimes this fails
     // item name shows when picking up, but continue button does not get added
@@ -110,9 +97,10 @@ async function itemPickup(room) {
     } else {
         pickupParagraph.textContent = `Your inventory is full! Drop an item to pick up the ${room.item.name}!`;
     }
+    const mainDiv = getFreshMainDiv();
     mainDiv.append(pickupParagraph);
-    await render();
     await appendRoomContinue(room.id);
+    await render();
     return pickupSuccess;
 }
 
@@ -120,9 +108,9 @@ async function trapHandler(room) {
     const trapRoomDamageInfo = await postHelper("/rooms/trapDamage", { id: room.id });
     const playerDead = trapRoomDamageInfo.playerDead;
     const damageDealt = trapRoomDamageInfo.damageDealt;
-    const mainDiv = getFreshMainDiv();
     const damageParagraph = document.createElement("p");
     damageParagraph.textContent = `You took ${damageDealt} damage!`;
+    const mainDiv = getFreshMainDiv();
     mainDiv.append(damageParagraph);
     if (playerDead) {
         playerDeath();
@@ -219,8 +207,6 @@ async function enemiesAttackPlayer(room) {
 }
 
 async function fountainHandler(room) {
-    const mainDiv = getFreshMainDiv();
-    mainDiv.append(createParagraph("Place an item in the fountain, and/or continue!"));
     const selfCleanseButton = document.createElement("button");
     selfCleanseButton.classList.add("clickableButton");
     selfCleanseButton.textContent = "Jump in";
@@ -228,6 +214,8 @@ async function fountainHandler(room) {
         const outputString = await postHelper("/rooms/cleansePlayer");
         mainDiv.append(createParagraph(outputString));
     });
+    const mainDiv = getFreshMainDiv();
+    mainDiv.append(createParagraph("Place an item in the fountain, and/or continue!"));
     mainDiv.append(selfCleanseButton);
     await appendRoomContinue(room.id);
     await render();
@@ -246,6 +234,6 @@ function playerDeath() {
 
 async function endingHandler(room) {
     const mainDiv = getFreshMainDiv();
-    mainDiv.append(createParagraph("You win! Good job! <br> But, if you'd like to return and continue... You may."));
+    mainDiv.append(createParagraph("You win! Good job! But, if you'd like to return and continue... You may."));
     await appendRoomContinue(room.id);
 }

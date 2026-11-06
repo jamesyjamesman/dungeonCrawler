@@ -30,7 +30,7 @@ async function renderStats() {
 
 async function printRooms(rooms) {
     let foresightRelicEquipped = await postHelper("/player/relicEquipped", {id: "FORESIGHT"});
-    mainDiv.innerHTML = "";
+    const elementsToAppend = [];
 
     numberInputOptions = [];
     for (let i = 0; i < rooms.length; i++) {
@@ -48,36 +48,48 @@ async function printRooms(rooms) {
         goButton.addEventListener("click", () => goToRoom(rooms[i].id));
         elementSpan.append(goButton);
         elementSpan.append(textParagraph);
-        mainDiv.append(elementSpan);
+        elementsToAppend.push(elementSpan);
     }
+    mainDiv.innerHTML = "";
+    mainDiv.append(...elementsToAppend);
 
     await render();
 }
 
 async function renderInventory() {
+    await renderInventoryPane(inventory, await getHelper("/player/getInventory"));
+}
+
+async function renderRelics() {
+    await renderInventoryPane(relics, await getHelper("/player/getRelics"));
+}
+
+async function renderInventoryPane(pane, data) {
+    const isRelics = pane === relics; // Only used for different data structures and cursed rendering
     const room = await getHelper("/player/getCurrentRoom");
-    inventory.innerHTML = "";
-    const inventoryData = await getHelper("/player/getInventory");
+    const dummyPane = document.createElement("div");
     const curseDetectionEquipped = await postHelper("/player/relicEquipped", {id: "CURSE_DETECTION"})
 
-    for (let i = 0; i < inventoryData.length; i++) {
-        const item = inventoryData[i][0];
-        const outputParagraph = createItemText(item, inventoryData[i].length);
+    for (let i = 0; i < data.length; i++) {
+        const item = (isRelics) ? data[i] : data[i][0];
+        const outputParagraph = createItemText(item, (isRelics) ? 0 : data[i].length);
         const elementSpan = document.createElement("span");
         elementSpan.classList.add("listSpan");
-        inventory.append(elementSpan);
+        dummyPane.append(elementSpan);
 
+        // Use/Equip/Unequip/Cleanse button
         if (room.type === "FOUNTAIN" && !room.fountainUsed) {
             appendInlineButton("Cleanse", elementSpan, async () => {
                 const itemCleansed = await postHelper("/player/cleanseItem", {uuid: item.uuid});
                 if (itemCleansed)
-                    mainDiv.append(createParagraph(`The ${item.name} was cleansed!`));
+                    mainDiv.append(createParagraph(`You cleansed the ${item.name}!`));
                 else
-                    mainDiv.append(createParagraph(`The ${item.name} couldn't be cleansed!`));
+                    mainDiv.append(createParagraph(`The tried to cleanse the ${item.name}, but nothing happened.`));
                 mainDiv.append(createParagraph(`The fountain dried up!`));
                 await render();
             });
         } else if (["WEAPON", "RELIC", "ARMOR"].includes(item.type)) {
+            // todo always runs the latter
             if (item.equipped) {
                 appendInlineButton("Unequip", elementSpan, async () => {
                     await inventoryButtonHelper(item, unequipHelper);
@@ -93,44 +105,49 @@ async function renderInventory() {
             });
         }
 
-        if (room.type === "SHOP" && room.open) {
-            const valueSpan = document.createElement("span");
-            valueSpan.textContent = `(${item.value} G)`;
-            outputParagraph.prepend(valueSpan);
+        // Drop/Sell button
+        if (!isRelics) {
+            if (room.type === "SHOP" && room.open) {
+                const valueSpan = document.createElement("span");
+                valueSpan.textContent = `(${item.value} G)`;
+                outputParagraph.prepend(valueSpan);
 
-            appendInlineButton("Sell", elementSpan,async () => {
-                const itemSold = await postHelper("/player/sellItem", {uuid: item.uuid});
-                if (itemSold) {
-                    await render();
-                } else {
-                    getFreshErrorDiv().append(createParagraph(`The item couldn't be sold!`));
-                }
-            });
-        } else {
-            appendInlineButton("Drop", elementSpan, async () => {
-                const itemDropped = await postHelper("/player/dropItem", {uuid: item.uuid});
-                if (itemDropped) {
-                    await render();
-                } else {
-                    getFreshErrorDiv().append(createParagraph(`The item couldn't be dropped!`));
-                }
-            });
+                appendInlineButton("Sell", elementSpan, async () => {
+                    const itemSold = await postHelper("/player/sellItem", {uuid: item.uuid});
+                    if (itemSold) {
+                        await render();
+                    } else {
+                        getFreshErrorDiv().append(createParagraph(`The item couldn't be sold!`));
+                    }
+                });
+            } else {
+                appendInlineButton("Drop", elementSpan, async () => {
+                    const itemDropped = await postHelper("/player/dropItem", {uuid: item.uuid});
+                    if (itemDropped) {
+                        await render();
+                    } else {
+                        getFreshErrorDiv().append(createParagraph(`The item couldn't be dropped!`));
+                    }
+                });
+            }
         }
-        if (item.cursed && curseDetectionEquipped) {
+        if (item.cursed && (isRelics || curseDetectionEquipped)) {
             outputParagraph.classList.add("purple");
         }
         elementSpan.append(outputParagraph);
-
-        async function inventoryButtonHelper(item, func) {
-            const response = await func(item);
-            if (response.error) {
-                getFreshErrorDiv().append(createParagraph(response.output));
-            } else {
-                appendStatusTicker(response.output);
-            }
-            await render();
-        }
     }
+    pane.innerHTML = "";
+    pane.append(...dummyPane.children);
+}
+
+async function inventoryButtonHelper(item, func) {
+    const response = await func(item);
+    if (response.error) {
+        getFreshErrorDiv().append(createParagraph(response.output));
+    } else {
+        appendStatusTicker(response.output);
+    }
+    await render();
 }
 
 function createItemText(item, amount=1) {
@@ -158,43 +175,6 @@ function appendInlineButton(text, appendTo, func) {
     appendTo.append(button);
 }
 
-async function renderRelics() {
-    const room = await getHelper("/player/getCurrentRoom");
-    const relicData = await getHelper("/player/getRelics");
-    relics.innerHTML = "";
-    for (const relic of relicData) {
-        const elementSpan = document.createElement("span");
-        elementSpan.classList.add("listSpan");
-        relics.append(elementSpan);
-        if (relic.cleansable && room.type === "FOUNTAIN" && !room.fountainUsed) {
-            appendInlineButton("Cleanse", elementSpan, async () => {
-                const errorDiv = getFreshErrorDiv()
-                const relicCleansed = await postHelper("/player/cleanseRelic", {uuid: relic.uuid});
-                if (relicCleansed)
-                    errorDiv.append(createParagraph(`The ${relic.name} was cleansed!`));
-                else
-                    errorDiv.append(createParagraph(`The ${relic.name} couldn't be cleansed!`));
-                await render();
-            });
-        } else {
-            appendInlineButton("Unequip", elementSpan, async () => {
-                const response = await postHelper("/player/unequipRelic", {uuid: relic.uuid});
-                if (response.error) {
-                    getFreshErrorDiv().append(createParagraph(response.output));
-                } else {
-                    appendStatusTicker(response.output);
-                }
-                await render();
-            });
-        }
-        const relicParagraph = createItemText(relic);
-        if (relic.cursed) {
-            relicParagraph.classList.add("purple");
-        }
-        elementSpan.append(relicParagraph);
-    }
-}
-
 async function shopHandler(room) {
     await shopRenderer(room);
 }
@@ -202,12 +182,12 @@ async function shopHandler(room) {
 //todo can't buy items by text, only continue (maybe good thing?)
 async function shopRenderer(room) {
     const wares = room.wares;
-    const mainDiv = getFreshMainDiv();
+    const elements = [];
     for (let i = 0; i < wares.length; i++) {
         const item = wares[i];
         const elementSpan = document.createElement("span");
         elementSpan.classList.add("listSpan")
-        mainDiv.append(elementSpan);
+        elements.push(elementSpan);
         appendInlineButton("Buy", elementSpan, async () => {
             const success = await postHelper("/rooms/buyItem", {
                 roomID: room.id,
@@ -225,6 +205,8 @@ async function shopRenderer(room) {
         itemParagraph.classList.add("listParagraph");
         elementSpan.append(itemParagraph);
     }
+    const mainDiv = getFreshMainDiv();
+    mainDiv.append(...elements);
     await appendRoomContinue(room.id);
     await render();
 }
@@ -232,12 +214,13 @@ async function shopRenderer(room) {
 async function renderEnemies(room, reset = true) {
     const enemies = room.enemies;
     const displayEnemyInformation = await postHelper("/player/relicEquipped", {id: "ENEMY_INFORMATION"});
-    if (reset) getFreshMainDiv();
 
     // todo at some point the continue button stopped working (after killing 1 enemy) and did nothing and the remaining enemy just attacked each time??
 
 
     numberInputOptions = [];
+    const elementArray = [];
+
     for (let i = 0; i < enemies.length; i++) {
         const speciesCapitalized = capitalize(enemies[i].species.toString());
         const elementSpan = document.createElement("span");
@@ -257,8 +240,10 @@ async function renderEnemies(room, reset = true) {
         // Holy moly
         enemyParagraph.textContent = `${i+1}. ${speciesCapitalized}${(displayEnemyInformation) ? ` (${enemies[i].currentHealth}/${enemies[i].maxHealth} HP)` : ""}`;
         elementSpan.append(enemyParagraph);
-        mainDiv.append(elementSpan);
+        elementArray.push(elementSpan);
     }
+    if (reset) getFreshMainDiv();
+    mainDiv.append(...elementArray);
 }
 
 function appendStatusTicker(text) {
