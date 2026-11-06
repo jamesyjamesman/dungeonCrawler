@@ -3,6 +3,7 @@ package main.entity;
 import main.App;
 import main.Statuses;
 import main.entity.enemy.Enemy;
+import main.item.Equippable;
 import main.item.Item;
 import main.item.Loot;
 import main.item.armor.Armor;
@@ -116,6 +117,8 @@ public class Player extends Entity {
     }
 
     public boolean sellItem(Item item) {
+        if (item instanceof Equippable equip && equip.isEquipped(this))
+            return false;
         if (item instanceof Relic relic && relic.isCursed()) {
             return false;
         } else {

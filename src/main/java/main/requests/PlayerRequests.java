@@ -81,11 +81,7 @@ public class PlayerRequests {
 
     @PostRequestHandler(endpoint = "/player/cleanseItem")
     public static void cleanseItem(Context ctx) {
-        boolean cleansed = (getRelicFromRelics(ctx) == null) ?
-                getInventoryItemFromUUID(ctx).cleanseItem(App.INSTANCE.getPlayer()) :
-                getRelicFromRelics(ctx).cleanseItem(App.INSTANCE.getPlayer());
-
-        ctx.json(cleansed);
+        ctx.json(getItemOrRelic(ctx).cleanseItem(App.INSTANCE.getPlayer()));
     }
 
     @PostRequestHandler(endpoint = "/player/dropItem")
@@ -110,7 +106,7 @@ public class PlayerRequests {
 
     @PostRequestHandler(endpoint = "/player/unequip")
     public static void unequip(Context ctx) {
-        Item item = getInventoryItemFromUUID(ctx);
+        Item item = getItemOrRelic(ctx);
         Equippable equip = (Equippable) item;
         ItemUseCase useCase = equip.unequip(App.INSTANCE.getPlayer());
         ctx.json(new ItemWithUseCase(item, useCase));
@@ -122,6 +118,13 @@ public class PlayerRequests {
         Equippable equip = (Equippable) item;
         ItemUseCase useCase = equip.equip(App.INSTANCE.getPlayer());
         ctx.json(new ItemWithUseCase(item, useCase));
+    }
+
+    public static Item getItemOrRelic(Context ctx) {
+        Item item = getInventoryItemFromUUID(ctx);
+        Relic relic = getRelicFromRelics(ctx);
+        if (item != null) return item;
+        return relic;
     }
 
     public static Item getInventoryItemFromUUID(Context ctx) {

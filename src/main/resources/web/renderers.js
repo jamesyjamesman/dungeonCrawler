@@ -84,7 +84,7 @@ async function renderInventoryPane(pane, data) {
                 if (itemCleansed)
                     mainDiv.append(createParagraph(`You cleansed the ${item.name}!`));
                 else
-                    mainDiv.append(createParagraph(`The tried to cleanse the ${item.name}, but nothing happened.`));
+                    mainDiv.append(createParagraph(`You tried to cleanse the ${item.name}, but nothing happened.`));
                 mainDiv.append(createParagraph(`The fountain dried up!`));
                 await render();
             });
@@ -108,7 +108,7 @@ async function renderInventoryPane(pane, data) {
         if (!isRelics) {
             if (room.type === "SHOP" && room.open) {
                 const valueSpan = document.createElement("span");
-                valueSpan.textContent = `(${item.value} G)`;
+                valueSpan.textContent = `(${item.value} G) `;
                 outputParagraph.prepend(valueSpan);
 
                 appendInlineButton("Sell", elementSpan, async () => {

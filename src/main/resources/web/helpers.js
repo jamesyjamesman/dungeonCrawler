@@ -132,7 +132,7 @@ async function unequipHelper(item) {
         output: ""
     };
 
-    switch (item.useCase) {
+    switch (response.useCase) {
         case "UNEQUIPPED": {
             result.output = `The ${item.name} was unequipped!`;
             break;
