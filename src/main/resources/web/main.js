@@ -7,11 +7,14 @@ const inventory = document.getElementById("genericItems");
 const relics = document.getElementById("relicItems");
 const mainDiv = document.getElementById("navigation");
 const descriptionDiv = document.getElementById("description");
-const errorDiv = document.getElementById("error");
 const inventoryButton = document.getElementById("genericButton");
+inventoryButton.addEventListener("click", showInventory);
 const relicButton = document.getElementById("relicButton");
+relicButton.addEventListener("click", showRelics);
 const armorButton = document.getElementById("armorButton");
+armorButton.addEventListener("click", showArmor);
 const weaponButton = document.getElementById("weaponButton");
+weaponButton.addEventListener("click", showWeapons);
 
 initiate().then();
 
@@ -69,16 +72,37 @@ function hidePopup() {
     document.getElementById("textInput").focus();
 }
 
-function inventoryVisible() {
-    inventoryButton.classList.add("buttonSelected");
-    relicButton.classList.remove("buttonSelected");
-    inventory.classList.remove("invisible");
-    relics.classList.add("invisible");
+function showInventory() {
+    inventoryTabToggle(inventoryButton, inventory);
 }
 
-function relicsVisible() {
-    relicButton.classList.add("buttonSelected");
-    inventoryButton.classList.remove("buttonSelected");
-    inventory.classList.add("invisible");
-    relics.classList.remove("invisible");
+function showRelics() {
+    inventoryTabToggle(relicButton, relics);
+}
+
+function showWeapons() {
+    inventoryTabToggle(weaponButton, weapons);
+}
+
+function showArmor() {
+    inventoryTabToggle(armorButton, armor);
+}
+
+function inventoryTabToggle(button, element) {
+    const buttons = [inventoryButton, relicButton, weaponButton, armorButton];
+    const divs = [inventory, relics, weapons, armor];
+    buttons.splice(buttons.indexOf(button), 1);
+    divs.splice(divs.indexOf(element), 1);
+    disable(buttons, divs);
+    button.classList.add("buttonSelected");
+    element.parentElement.classList.remove("disabled");
+}
+
+function disable(buttons, elements) {
+    for (const button of buttons) {
+        button.classList.remove("buttonSelected");
+    }
+    for (const element of elements) {
+        element.parentElement.classList.add("disabled");
+    }
 }

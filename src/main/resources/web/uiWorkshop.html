@@ -53,25 +53,36 @@
             <div id="inventoryContainer" class="bordered">
                 <div id="inventoryButtons">
                     <section>
-                        <img id="genericButton" src="textures/torch.png">
+                        <img id="genericButton" src="textures/torch.png" draggable="false">
                     </section>
                     <section>
-                        <img id="relicButton" src="textures/torch.png">
+                        <img id="relicButton" src="textures/torch.png" draggable="false">
                     </section>
                     <section>
-                        <img id="weaponButton" src="textures/torch.png">
+                        <img id="weaponButton" src="textures/torch.png" draggable="false">
                     </section>
                     <section>
-                        <img id="armorButton" src="textures/torch.png">
+                        <img id="armorButton" src="textures/torch.png" draggable="false">
                     </section>
                     <section id="capacity">
                         10/10
                     </section>
                 </div>
-                <div id="genericItems"></div>
-                <div id="relicItems"></div>
-                <div id="weaponItems"></div>
-                <div id="armorItems"></div>
+                <div class="inventorySubContainer">
+                    <div id="genericItems" class="inventory"></div>
+                </div>
+                <div class="inventorySubContainer disabled">
+                    <div id="relicItems" class="inventory"></div>
+                    <span class="capacity">Equipped: 0/3</span>
+                </div>
+                <div class="inventorySubContainer disabled">
+                    <div id="weaponItems" class="inventory"></div>
+                    <span class="capacity">Equipped: 0/1</span>
+                </div>
+                <div class="inventorySubContainer disabled">
+                    <div id="armorItems" class="inventory"></div>
+                    <span class="capacity">Equipped: 0/1</span>
+                </div>
             </div>
         </div>
     </div>
