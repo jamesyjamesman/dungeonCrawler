@@ -17,6 +17,7 @@ public class PureWaterRoom extends Room {
         super.completeRoomActions(player);
     }
 
+    // todo if fountain used uhh you hit your head and take like 1-3 damage (cuz water gone)
     public boolean selfFountainize() {
         Player player = App.INSTANCE.getPlayer();
         if (player.getCurrentStatuses().getFire() > 0) {
