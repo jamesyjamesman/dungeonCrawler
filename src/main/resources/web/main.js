@@ -6,6 +6,7 @@ const weapons = document.getElementById("weaponItems");
 const inventory = document.getElementById("genericItems");
 const relics = document.getElementById("relicItems");
 const mainDiv = document.getElementById("navigation");
+const infoDiv = document.getElementById("info");
 const descriptionDiv = document.getElementById("description");
 const inventoryButton = document.getElementById("genericButton");
 inventoryButton.parentElement.addEventListener("click", showInventory);

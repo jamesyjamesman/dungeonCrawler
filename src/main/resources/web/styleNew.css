@@ -129,6 +129,7 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 0.1rem;
 }
 
 #effects img {
@@ -294,6 +295,7 @@ button {
 .listSpan {
     display: list-item;
     list-style-type: none;
+    margin-bottom: 0.2rem;
 }
 
 .listParagraph {

@@ -86,11 +86,6 @@ async function relicHandler(room) {
 async function itemPickup(room) {
     const pickupSuccess = await postHelper("/rooms/itemPickup", {id: room.id});
     const pickupParagraph = document.createElement('p');
-    // todo: sometimes this fails
-    // item name shows when picking up, but continue button does not get added
-    // has no name or description in the inventory
-    // can progress by entering 1
-    // Does not fix on rerender, so might be an issue on the server side
 
     if (pickupSuccess) {
         pickupParagraph.textContent = `You picked up a ${room.item.name}!`;
@@ -130,11 +125,11 @@ async function enemyHandler(room) {
 
 //needs work (might need to define this on the class itself for fancier output [like boss attacks and rates], but that DOES suck)
 function checkEnemy(enemy) {
-    descriptionDiv.innerHTML = "";
-    appendElementText(descriptionDiv, enemy.species);
-    appendElementText(descriptionDiv, `HP: ${enemy.currentHealth}/${enemy.maxHealth}`);
-    appendElementText(descriptionDiv, `EXP: ${enemy.experienceDropped}`);
-    appendElementText(descriptionDiv, `GOLD: ${enemy.loot.gold} G`);
+    infoDiv.innerHTML = "";
+    appendElementText(infoDiv, enemy.species);
+    appendElementText(infoDiv, `HP: ${enemy.currentHealth}/${enemy.maxHealth}`);
+    appendElementText(infoDiv, `EXP: ${enemy.experienceDropped}`);
+    appendElementText(infoDiv, `GOLD: ${enemy.loot.gold} G`);
 }
 
 function appendElementText(element, text) {
@@ -225,14 +220,14 @@ async function fountainHandler(room) {
 }
 
 function playerDeath() {
-    const mainDiv = getFreshMainDiv();
-    inventory.innerHTML = "";
-    relics.innerHTML = "";
+    render().then(() => {
+        const mainDiv = getFreshMainDiv();
 
-    const deathParagraph = document.createElement("p");
-    deathParagraph.textContent = "You died! Reset the game to try again.";
-    mainDiv.append(deathParagraph);
-    // Todo: actually implement resetting the game.
+        const deathParagraph = document.createElement("p");
+        deathParagraph.textContent = "You died! Reset the game to try again. Or try to cheat and heal yourself.";
+        mainDiv.append(deathParagraph);
+        // Todo: actually implement resetting the game.
+    });
 }
 
 async function endingHandler(room) {

@@ -17,11 +17,13 @@
     </div>
     <div id="all">
         <div id="left">
-            <div id="info" class="bordered">
-                Additional information goes here
-            </div>
+            <div id="info" class="bordered"></div>
             <div id="descriptionNavigation" class="bordered">
-                <div id="description"></div>
+                <div id="description">
+                    The room is empty except for a hole in the ceiling.<br>
+                    Sunlight pours through, vines creeping down the cracked bricks.<br>
+                    They're out of reach. Maybe there's another way out?
+                </div>
                 <div id="navigation">
                     <button id="continue" class="disabled">Continue</button>
                 </div>
@@ -29,8 +31,8 @@
             <div id="statusInformation">
                 <div id="statsEffects">
                     <div id="stats">
-                        <span id="attack">ATK 1</span>
-                        <span id="defense">DEF 1</span>
+                        <span id="attack">ATK: 3</span>
+                        <span id="defense">DEF: 0</span>
                     </div>
                     <div id="effects">
                         <span id="curse" class="disabled">
@@ -57,7 +59,7 @@
                         <span id="goldAmount">0</span>
                     </div>
                     <div id="health">
-                        <div id="absorptionBar" class="bar" style="width:0"></div>
+                        <div id="absorptionBar" class="bar invisible"></div>
                         <div id="healthBar" class="bar"></div>
                         <div id="emptyHealthBar" class="bar"></div>
                     </div>
@@ -67,7 +69,7 @@
                         <input id="prompt">
                     </div>
                     <div id="experience">
-                        <div id="experienceBar" class="bar" style="width: 0"></div>
+                        <div id="experienceBar" class="bar invisible"></div>
                         <div id="emptyExperienceBar" class="bar"></div>
                     </div>
                     <span id="experienceNumber">L1 (0/10)</span>
@@ -91,7 +93,7 @@
                         <img id="armorButton" src="textures/armor.png" draggable="false">
                     </section>
                     <section id="capacity">
-                        10/10
+                        0/10
                     </section>
                 </div>
                 <div class="inventorySubContainer">

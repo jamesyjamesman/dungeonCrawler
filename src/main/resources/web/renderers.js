@@ -48,7 +48,19 @@ function updateBars(player) {
     const experienceString = ` (${player.experience}/${player.expToNextLevel})`;
     const levelString = `L${player.level}`;
 
-    healthBar.style.width = (player.currentHealth / player.maxHealth * 100) + "%";
+    const oldHealth = parseInt(healthBar.style.width);
+    const oldAbsorption = parseInt(absorptionBar.style.width);
+    const oldExperience = parseInt(experienceBar.style.width);
+
+    // If went to no absorption from something, animate health after absorption
+    if (oldAbsorption > 0 && player.absorption <= 0)
+        absorptionBar.addEventListener("transitionend", () =>
+            healthBar.style.width = (player.currentHealth / player.maxHealth * 100) + "%",
+            {once: true});
+    // Else, just do health immediately
+    else
+        healthBar.style.width = (player.currentHealth / player.maxHealth * 100) + "%";
+
     absorptionBar.style.width = (player.absorption / player.maxHealth * 100) + "%";
 
     if (player.level < 10) { // Max level
@@ -59,20 +71,23 @@ function updateBars(player) {
         experienceText.textContent = levelString;
     }
 
-    hideIfEmpty(healthBar);
-    hideIfEmpty(absorptionBar);
-    hideIfEmpty(experienceBar);
-
     healthText.textContent = healthString + (player.absorption > 0 ? absorptionString : "");
 
-    // todo hide after transition end (so absorption doesn't just pop out)
-    // bonus points if health only animates after absorption goes away
-    function hideIfEmpty(bar) {
-        if (parseInt(bar.style.width) < 1) {
+    hideBarHandler(healthBar, player.currentHealth, oldHealth);
+    hideBarHandler(absorptionBar, player.absorption, oldAbsorption);
+    hideBarHandler(experienceBar, player.experience, oldExperience);
+
+    function hideBarHandler(bar, newValue, oldValue) {
+        // If it went to zero from something, hide after it finishes animating
+        if (newValue < 1 && oldValue >= 1)
+            bar.addEventListener("transitionend", () =>
+                bar.classList.add("invisible"), {once: true});
+        // Hide if its empty
+        else if (newValue < 1)
             bar.classList.add("invisible");
-        } else {
+        // Show if it's not empty
+        else
             bar.classList.remove("invisible");
-        }
     }
 }
 
@@ -255,7 +270,6 @@ async function shopHandler(room) {
     await shopRenderer(room);
 }
 
-//todo can't buy items by text, only continue (maybe good thing?)
 async function shopRenderer(room) {
     const wares = room.wares;
     const elements = [];
@@ -290,9 +304,6 @@ async function shopRenderer(room) {
 async function renderEnemies(room, reset = true) {
     const enemies = room.enemies;
     const displayEnemyInformation = await postHelper("/player/relicEquipped", {id: "ENEMY_INFORMATION"});
-
-    // todo at some point the continue button stopped working (after killing 1 enemy) and did nothing and the remaining enemy just attacked each time??
-
 
     numberInputOptions = [];
     const elementArray = [];
