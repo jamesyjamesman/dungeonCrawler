@@ -5,20 +5,19 @@ async function goToRoom(id) {
         return;
     }
     const newRoom = changeInfo.room;
-    const roomExits = await postHelper("/rooms/getExits", {id : newRoom.id });
     relicInfoParser(changeInfo.relicsUsed);
     statusInfoParser(changeInfo.statusInfo);
     document.body.style.backgroundImage = `url("textures/${newRoom.backgroundFileName}")`;
     const descriptionParagraph = document.createElement("p");
     descriptionParagraph.innerHTML = parseTextAsHTML(newRoom.description);
-    await roomSwitch(roomExits, newRoom);
+    await roomSwitch(newRoom);
     descriptionDiv.innerHTML = "";
     descriptionDiv.append(descriptionParagraph);
 }
 
-async function roomSwitch(roomExits, newRoom) {
+async function roomSwitch(newRoom) {
     switch (newRoom.type) {
-        case "NORMAL": return await printRooms(roomExits);
+        case "NORMAL": return await printNewRooms(newRoom.id);
         case "TRAP": return await trapHandler(newRoom);
         case "BOSS":
         case "ENEMY": return await enemyHandler(newRoom);
@@ -37,8 +36,7 @@ function createParagraph(text = "") {
 }
 
 async function setRoomContinue(id) {
-    const exits = await postHelper("/rooms/getExits", { id: id });
-    setContinue(async () => await printRooms(exits));
+    setContinue(async () => await printNewRooms(id));
 }
 
 function setContinue(func) {
@@ -92,8 +90,8 @@ async function itemPickup(room) {
     } else {
         pickupParagraph.textContent = `Your inventory is full! Drop an item to pick up the ${room.item.name}!`;
     }
-    const mainDiv = getFreshMainDiv();
-    mainDiv.append(pickupParagraph);
+    getFreshMainDiv();
+    descriptionDiv.append(pickupParagraph);
     await setRoomContinue(room.id);
     await render();
     return pickupSuccess;
@@ -105,21 +103,21 @@ async function trapHandler(room) {
     const damageDealt = trapRoomDamageInfo.damageDealt;
     const damageParagraph = document.createElement("p");
     damageParagraph.textContent = `You took ${damageDealt} damage!`;
-    const mainDiv = getFreshMainDiv();
-    mainDiv.append(damageParagraph);
+    infoDiv.innerHTML = "";
+    infoDiv.append(damageParagraph);
     if (playerDead) {
         playerDeath();
         return;
     }
     await renderStats();
-    await setRoomContinue(room.id);
+    await printNewRooms(room.id);
 }
 
 async function enemyHandler(room) {
-    const mainDiv = getFreshMainDiv();
+    getFreshMainDiv();
     const battleMessageParagraph = document.createElement("p");
     battleMessageParagraph.textContent = room.battleInitiationMessage;
-    mainDiv.append(battleMessageParagraph);
+    descriptionDiv.append(battleMessageParagraph);
     await renderEnemies(room, false);
 }
 
@@ -146,13 +144,14 @@ async function battleSequence(room, enemy) {
     });
     enemy = enemyInfo.enemy;
     if (enemyInfo.dead) {
-        const mainDiv = getFreshMainDiv();
+        infoDiv.innerHTML = "";
         const enemyName = enemy.species.toString().toLowerCase();
 
-        mainDiv.append(createParagraph(`The ${enemyName} gave you ${enemy.experienceDropped} experience!`));
-        mainDiv.append(createParagraph(`The ${enemyName} dropped ${enemyInfo.gold} gold!`));
+        infoDiv.append(createParagraph(`A ${enemyName} died!`))
+        infoDiv.append(createParagraph(`The ${enemyName} gave you ${enemy.experienceDropped} experience!`));
+        infoDiv.append(createParagraph(`The ${enemyName} dropped ${enemyInfo.gold} gold!`));
         for (let i = 0; i < enemyInfo.droppedLoot.length; i++) {
-            mainDiv.append(createParagraph(`The ${enemyName} dropped a ${enemyInfo.droppedLoot[i].name}!`));
+            infoDiv.append(createParagraph(`The ${enemyName} dropped a ${enemyInfo.droppedLoot[i].name}!`));
         }
 
         const levelUpString = await postHelper("/player/levelUp", {});
@@ -161,14 +160,13 @@ async function battleSequence(room, enemy) {
         }
 
         if (enemyInfo.lastEnemy) {
-            mainDiv.append(createParagraph("You win!"));
+            getFreshMainDiv().append(createParagraph("You win!"));
             await setRoomContinue(room.id);
-        } else {
-            setContinue(continueBattle);
+            return;
         }
-    } else {
-        await continueBattle();
     }
+    await continueBattle();
+
 
     async function continueBattle() {
         // Necessary so enemies aren't null

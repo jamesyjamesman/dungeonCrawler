@@ -66,6 +66,7 @@ button {
 
 #info {
     flex-basis: 20%;
+    overflow-y: auto;
 }
 
 #descriptionNavigation {
@@ -80,16 +81,17 @@ button {
     overflow-y: auto;
 }
 
-#navigation {
+#navigationContainer {
     flex-basis: 70%;
-    position: relative;
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 }
 
-#continue {
-    position: absolute;
-    left: 0;
-    bottom: 0;
+#navigation {
+    flex-basis: 100%;
+    position: relative;
+    overflow-y: auto;
+    padding: 0.2rem;
 }
 
 #statusTicker {
@@ -101,7 +103,6 @@ button {
     flex-basis: 70%;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
 }
 
 #statusInformation {
@@ -145,7 +146,7 @@ button {
 
 #grid {
     display: grid;
-    grid-template-columns: 8% 72% 20%;
+    grid-template-columns: 2.5rem auto 4.5rem;
     gap: 0.5rem;
     align-items: center;
 }
@@ -314,6 +315,7 @@ button.disabled {
     width: 100%;
     position: relative;
     flex-basis: 100%;
+    overflow-y: auto;
 }
 
 #effects span.disabled {

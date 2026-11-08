@@ -104,6 +104,10 @@ async function updateItemCounts(player) {
     armorCapacity.textContent = `Equipped: ${+(player.equippedArmor !== null)}/1`;
 }
 
+async function printNewRooms(roomId) {
+    await printRooms(await postHelper("/rooms/getExits", { id: roomId }));
+}
+
 async function printRooms(rooms) {
     let foresightRelicEquipped = await postHelper("/player/relicEquipped", {id: "FORESIGHT"});
     const elementsToAppend = [];
@@ -174,10 +178,10 @@ async function renderInventoryPane(pane, data) {
             appendInlineButton("Cleanse", elementSpan, async () => {
                 const itemCleansed = await postHelper("/player/cleanseItem", {uuid: item.uuid});
                 if (itemCleansed)
-                    mainDiv.append(createParagraph(`You cleansed the ${item.name}!`));
+                    descriptionDiv.append(createParagraph(`You cleansed the ${item.name}!`));
                 else
-                    mainDiv.append(createParagraph(`You tried to cleanse the ${item.name}, but nothing happened.`));
-                mainDiv.append(createParagraph(`The fountain dried up!`));
+                    descriptionDiv.append(createParagraph(`You tried to cleanse the ${item.name}, but nothing happened.`));
+                descriptionDiv.append(createParagraph(`The fountain dried up!`));
                 await render();
             });
         } else if (["WEAPON", "RELIC", "ARMOR"].includes(item.type)) {

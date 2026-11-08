@@ -37,9 +37,7 @@ function parseTextAsHTML(text) {
 
 // Why does it... return it?
 function getFreshMainDiv() {
-    const continueButton = document.getElementById("continue");
     mainDiv.innerHTML = "";
-    mainDiv.append(continueButton);
     return mainDiv;
 }
 
