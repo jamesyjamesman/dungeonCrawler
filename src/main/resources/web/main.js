@@ -1,13 +1,17 @@
-const textInput = document.getElementById("textInput");
+const textInput = document.getElementById("prompt");
 const popup = document.getElementById("popup");
 const popupText = document.getElementById("popupText");
-const inventory = document.getElementById("inventory");
-const relics = document.getElementById("relics");
-const mainDiv = document.getElementById("mainDiv");
-const descriptionDiv = document.getElementById("descriptionDiv");
-const errorDiv = document.getElementById("errorDiv");
-const inventoryButton = document.getElementById("inventoryButton");
+const armor = document.getElementById("armorItems");
+const weapons = document.getElementById("weaponItems");
+const inventory = document.getElementById("genericItems");
+const relics = document.getElementById("relicItems");
+const mainDiv = document.getElementById("navigation");
+const descriptionDiv = document.getElementById("description");
+const errorDiv = document.getElementById("error");
+const inventoryButton = document.getElementById("genericButton");
 const relicButton = document.getElementById("relicButton");
+const armorButton = document.getElementById("armorButton");
+const weaponButton = document.getElementById("weaponButton");
 
 initiate().then();
 

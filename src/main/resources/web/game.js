@@ -36,18 +36,25 @@ function createParagraph(text = "") {
     return paragraph;
 }
 
-async function appendRoomContinue(id) {
+async function setRoomContinue(id) {
     const exits = await postHelper("/rooms/getExits", { id: id });
-    appendContinue(async () => await printRooms(exits));
+    setContinue(async () => await printRooms(exits));
 }
 
-function appendContinue(func) {
-    const continueButton = document.createElement("button");
-    continueButton.classList.add("clickableButton");
-    continueButton.textContent = "Continue";
-    continueButton.addEventListener("click", func)
-    numberInputOptions = [func];
-    mainDiv.append(continueButton);
+function setContinue(func) {
+    const continueButton = document.getElementById("continue");
+    continueButton.classList.remove("disabled");
+    if (continueButton.listener) {
+        continueButton.removeEventListener("click", continueButton.listener);
+    }
+    const buttonFunction = async () => {
+        continueButton.classList.add("disabled");
+        func();
+    }
+    continueButton.listener = buttonFunction;
+
+    continueButton.addEventListener("click", buttonFunction)
+    numberInputOptions = [buttonFunction];
 }
 
 async function itemHandler(room) {
@@ -92,7 +99,7 @@ async function itemPickup(room) {
     }
     const mainDiv = getFreshMainDiv();
     mainDiv.append(pickupParagraph);
-    await appendRoomContinue(room.id);
+    await setRoomContinue(room.id);
     await render();
     return pickupSuccess;
 }
@@ -110,7 +117,7 @@ async function trapHandler(room) {
         return;
     }
     await renderStats();
-    await appendRoomContinue(room.id);
+    await setRoomContinue(room.id);
 }
 
 async function enemyHandler(room) {
@@ -160,9 +167,9 @@ async function battleSequence(room, enemy) {
 
         if (enemyInfo.lastEnemy) {
             mainDiv.append(createParagraph("You win!"));
-            await appendRoomContinue(room.id);
+            await setRoomContinue(room.id);
         } else {
-            appendContinue(continueBattle);
+            setContinue(continueBattle);
         }
     } else {
         await continueBattle();
@@ -213,7 +220,7 @@ async function fountainHandler(room) {
     const mainDiv = getFreshMainDiv();
     mainDiv.append(createParagraph("Place an item in the fountain, and/or continue!"));
     mainDiv.append(selfCleanseButton);
-    await appendRoomContinue(room.id);
+    await setRoomContinue(room.id);
     await render();
 }
 
@@ -231,5 +238,5 @@ function playerDeath() {
 async function endingHandler(room) {
     const mainDiv = getFreshMainDiv();
     mainDiv.append(createParagraph("You win! Good job! But, if you'd like to return and continue... You may."));
-    await appendRoomContinue(room.id);
+    await setRoomContinue(room.id);
 }

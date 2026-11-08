@@ -76,6 +76,7 @@ button {
 #navigation {
     flex-grow: 7;
     position: relative;
+    overflow-y: auto;
 }
 
 #continue {
@@ -118,6 +119,7 @@ button {
     height: 100%;
     width: 100%;
     border: 3px solid white;
+    transition: ease-in-out width 1s;
 }
 
 #health, #experience {
@@ -141,7 +143,6 @@ button {
 
 #healthBar {
     background-color: crimson;
-    width: 80%;
 }
 
 #emptyHealthBar {
@@ -151,7 +152,6 @@ button {
 
 #experienceBar {
     background-color: deepskyblue;
-    width: 50%;
 }
 
 #emptyExperienceBar {
@@ -159,7 +159,6 @@ button {
 }
 
 #absorptionBar {
-    width: 50%;
     background-color: gold;
     z-index: 2;
 }
@@ -203,4 +202,46 @@ button {
 
 #inventoryButtons * {
     height: 2rem;
+}
+
+#popup {
+    position: absolute;
+    background-color: black;
+    opacity: 80%;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    text-align: center;
+}
+
+#popupText {
+    margin-top: 25%;
+    white-space: pre;
+    color: white;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+.inlineButton {
+    display: inline;
+    margin-right: 3px;
+}
+
+.listSpan {
+    display: list-item;
+}
+
+.listParagraph {
+    display: inline;
+    margin: 5px 0;
+}
+
+button.disabled {
+    background-color: gray;
+    outline: none;
+    border: none;
 }

@@ -1,20 +1,17 @@
 async function renderStats() {
     const player = await getHelper("/player/getPlayer");
-    const totalDamage = await getHelper("/player/getTotalDamage");
-    const inventorySize = await getHelper("/player/getInventorySize");
-    const statDiv = document.getElementById("statusChecker");
-    statDiv.innerHTML = "";
-    statDiv.append(createStatusParagraph(`Level: ${player.level} ${(player.level < 10) ? `(${player.experience}/${player.expToNextLevel})` : ""}`))
-    statDiv.append(createStatusParagraph(`HP: ${player.currentHealth} ${(player.absorption > 0) ? `(+${player.absorption})` : ""} / ${player.maxHealth}`));
-    statDiv.append(createStatusParagraph(`Gold: ${player.gold} G`));
-    statDiv.append(createStatusParagraph(`Attack damage: ${totalDamage}`));
-    statDiv.append(createStatusParagraph(`Rooms traveled: ${player.roomsTraversed}`));
-    statDiv.append(createStatusParagraph(`Inventory: ${inventorySize}/${player.inventoryCap}`));
-    statDiv.append(createStatusParagraph(`Relic pouch: ${player.equippedRelics.length}/${player.relicCap}`));
-    appendIfNonzero(player.currentStatuses.cursed, `Cursed: Level ${player.currentStatuses.cursed}`);
-    appendIfNonzero(player.currentStatuses.weakened, `Weakened: Level ${player.currentStatuses.weakened}`);
-    appendIfNonzero(player.currentStatuses.poison, `Poisoned: Level ${player.currentStatuses.poison}`);
-    appendIfNonzero(player.currentStatuses.fire, `Fire: Level ${player.currentStatuses.fire}`);
+    updateBars(player);
+    document.getElementById("goldAmount").textContent = player.gold;
+
+    // todo
+    // const totalDamage = await getHelper("/player/getTotalDamage");
+    // const inventorySize = await getHelper("/player/getInventorySize");
+    // statDiv.append(createStatusParagraph(`Attack damage: ${totalDamage}`));
+    // statDiv.append(createStatusParagraph(`Rooms traveled: ${player.roomsTraversed}`));
+    // appendIfNonzero(player.currentStatuses.cursed, `Cursed: Level ${player.currentStatuses.cursed}`);
+    // appendIfNonzero(player.currentStatuses.weakened, `Weakened: Level ${player.currentStatuses.weakened}`);
+    // appendIfNonzero(player.currentStatuses.poison, `Poisoned: Level ${player.currentStatuses.poison}`);
+    // appendIfNonzero(player.currentStatuses.fire, `Fire: Level ${player.currentStatuses.fire}`);
 
     function createStatusParagraph(text) {
         const statusParagraph = createParagraph(text);
@@ -25,6 +22,44 @@ async function renderStats() {
     function appendIfNonzero(value, string) {
         if (value > 0)
             statDiv.append(createStatusParagraph(string));
+    }
+}
+
+function updateBars(player) {
+    const healthBar = document.getElementById("healthBar");
+    const absorptionBar = document.getElementById("absorptionBar");
+    const experienceBar = document.getElementById("experienceBar");
+    const healthText = document.getElementById("healthNumber");
+    const experienceText = document.getElementById("experienceNumber");
+
+    const healthString = `${player.currentHealth}/${player.maxHealth}`;
+    const absorptionString = ` (+${player.absorption})`;
+    const experienceString = ` (${player.experience}/${player.expToNextLevel})`;
+    const levelString = `L${player.level}`;
+
+    healthBar.style.width = (player.currentHealth / player.maxHealth * 100) + "%";
+    absorptionBar.style.width = (player.absorption / player.maxHealth * 100) + "%";
+
+    if (player.level < 10) { // Max level
+        experienceBar.style.width = (player.experience / player.expToNextLevel * 100) + "%";
+        experienceText.textContent = levelString + experienceString;
+    } else {
+        experienceBar.style.width = "100%";
+        experienceText.textContent = levelString;
+    }
+
+    hideIfEmpty(healthBar);
+    hideIfEmpty(absorptionBar);
+    hideIfEmpty(experienceBar);
+
+    healthText.textContent = healthString + (player.absorption > 0 ? absorptionString : "");
+
+    function hideIfEmpty(bar) {
+        if (parseInt(bar.style.width) < 1) {
+            bar.classList.add("invisible");
+        } else {
+            bar.classList.remove("invisible");
+        }
     }
 }
 
@@ -50,7 +85,7 @@ async function printRooms(rooms) {
         elementSpan.append(textParagraph);
         elementsToAppend.push(elementSpan);
     }
-    mainDiv.innerHTML = "";
+    getFreshMainDiv();
     mainDiv.append(...elementsToAppend);
 
     await render();
@@ -206,7 +241,7 @@ async function shopRenderer(room) {
     }
     const mainDiv = getFreshMainDiv();
     mainDiv.append(...elements);
-    await appendRoomContinue(room.id);
+    await setRoomContinue(room.id);
     await render();
 }
 

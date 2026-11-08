@@ -2,10 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Dungeon Crawler</title>
     <link rel="stylesheet" href="styleNew.css">
+    <script src="dataParsers.js" defer></script>
+    <script src="game.js" defer></script>
+    <script src="helpers.js" defer></script>
+    <script src="renderers.js" defer></script>
+    <script src="main.js" defer></script>
 </head>
 <body>
+    <div id="popup" class="invisible" tabindex="-1">
+        <p id="popupText"></p>
+        <button id="closePopup" class="clickableButton" onclick="hidePopup()">Close</button>
+    </div>
     <div id="all">
         <div id="left">
             <div id="info" class="bordered">
@@ -14,7 +23,7 @@
             <div id="descriptionNavigation" class="bordered">
                 <div id="description"></div>
                 <div id="navigation">
-                    <button id="continue">Continue</button>
+                    <button id="continue" class="disabled">Continue</button>
                 </div>
             </div>
             <div id="statusInformation">
