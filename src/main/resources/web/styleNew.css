@@ -105,6 +105,14 @@ button {
     text-overflow: ellipsis;
 }
 
+#gold {
+    display: flex;
+}
+
+#goldImage {
+    height: 1.2rem;
+}
+
 .bar {
     position: absolute;
     height: 100%;
@@ -160,9 +168,9 @@ button {
     display: flex;
 }
 
-#promptContainer, #promptContainer > * {
+#promptContainer > * {
     background-color: #000b;
-    white-space: pre;
+    white-space: preserve-spaces;
 }
 
 #prompt {
@@ -173,4 +181,26 @@ button {
 
 #prompt:focus {
     outline: none;
+}
+
+#inventoryButtons {
+    border-bottom: 3px solid white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#inventoryButtons > *:not(*:last-child) {
+    border-right: 3px solid white;
+}
+
+#inventoryButtons section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
+
+#inventoryButtons * {
+    height: 2rem;
 }

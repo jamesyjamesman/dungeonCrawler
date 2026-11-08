@@ -19,7 +19,8 @@
             </div>
             <div id="statusInformation">
                 <div id="gold">
-                    30G
+                    <img id="goldImage" src="textures/torch.png">
+                    <span id="goldAmount">30</span>
                 </div>
                 <div id="health">
                     <div id="absorptionBar" class="bar"></div>
@@ -41,12 +42,22 @@
         <div id="right">
             <div id="statusTicker" class="bordered"></div>
             <div id="inventoryContainer" class="bordered">
-                <span id="capacity">Capacity: 8/10</span>
                 <div id="inventoryButtons">
-                    <button id="genericButton">Item</button>
-                    <button id="relicButton">Relic</button>
-                    <button id="weaponButton">Weapon</button>
-                    <button id="armorButton">Armor</button>
+                    <section>
+                        <img id="genericButton" src="textures/torch.png">
+                    </section>
+                    <section>
+                        <img id="relicButton" src="textures/torch.png">
+                    </section>
+                    <section>
+                        <img id="weaponButton" src="textures/torch.png">
+                    </section>
+                    <section>
+                        <img id="armorButton" src="textures/torch.png">
+                    </section>
+                    <section id="capacity">
+                        8/10
+                    </section>
                 </div>
                 <div id="genericItems"></div>
                 <div id="relicItems"></div>
