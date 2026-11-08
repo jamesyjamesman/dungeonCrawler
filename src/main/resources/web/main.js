@@ -94,13 +94,13 @@ function inventoryTabToggle(button, element) {
     buttons.splice(buttons.indexOf(button), 1);
     divs.splice(divs.indexOf(element), 1);
     disable(buttons, divs);
-    button.classList.add("buttonSelected");
+    button.parentElement.classList.add("buttonSelected");
     element.parentElement.classList.remove("disabled");
 }
 
 function disable(buttons, elements) {
     for (const button of buttons) {
-        button.classList.remove("buttonSelected");
+        button.parentElement.classList.remove("buttonSelected");
     }
     for (const element of elements) {
         element.parentElement.classList.add("disabled");

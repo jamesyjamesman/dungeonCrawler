@@ -288,3 +288,7 @@ button.disabled {
 .purple {
     color: purple;
 }
+
+.buttonSelected {
+    background-color: dimgrey;
+}
