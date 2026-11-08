@@ -3,44 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <title>Dungeon Crawler</title>
+    <link rel="stylesheet" href="style.css">
     <script src="dataParsers.js" defer></script>
     <script src="game.js" defer></script>
     <script src="helpers.js" defer></script>
     <script src="renderers.js" defer></script>
     <script src="main.js" defer></script>
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="popup" class="invisible" tabindex="-1">
         <p id="popupText"></p>
         <button id="closePopup" class="clickableButton" onclick="hidePopup()">Close</button>
     </div>
-
-    <div class="mainContainer">
-        <div class="mainContextDiv uiElement" id="mainDiv"></div>
-        <div class="uiElement" id="errorDiv"></div>
-        <input class="uiElement input" type="text" id="textInput"/>
-    </div>
-
-    <div class="uiElement" id="descriptionDiv"><p>
-        The room is empty except for a hole in the ceiling.<br>
-        Sunlight pours through, vines creeping down the cracked bricks.<br>
-        They're out of reach.
-    </p></div>
-
-    <div class="statusContainer">
-        <div class="uiElement" id="statusTicker"></div>
-        <div class="uiElement" id="statusChecker"></div>
-    </div>
-
-    <div class="inventoryContainer">
-        <div class="inventoryButtonContainer">
-            <button id="inventoryButton" class="inventoryButton buttonSelected" onclick="inventoryVisible()">Inventory</button>
-            <button id="relicButton" class="inventoryButton" onclick="relicsVisible()">Relics</button>
+    <div id="all">
+        <div id="left">
+            <div id="info" class="bordered"></div>
+            <div id="descriptionNavigation" class="bordered">
+                <div id="description">
+                    The room is empty except for a hole in the ceiling.<br>
+                    Sunlight pours through, vines creeping down the cracked bricks.<br>
+                    They're out of reach. Maybe there's another way out?
+                </div>
+                <div id="navigationContainer">
+                    <div id="navigation"></div>
+                    <div>
+                        <button id="continue" class="disabled">Continue</button>
+                    </div>
+                </div>
+            </div>
+            <div id="statusInformation">
+                <div id="statsEffects">
+                    <div id="stats">
+                        <span id="attack">ATK: 3</span>
+                        <span id="defense">DEF: 0</span>
+                    </div>
+                    <div id="effects">
+                        <span id="curse" class="disabled" title="Curse Level">
+                            <img src="textures/curse.png">
+                            <span></span>
+                        </span>
+                        <span id="poison" class="disabled" title="Poison Level">
+                            <img src="textures/poison.png">
+                            <span></span>
+                        </span>
+                        <span id="weakness" class="disabled" title="Weakness Level">
+                            <img src="textures/weakness.png">
+                            <span></span>
+                        </span>
+                        <span id="fire" class="disabled" title="Fire Level">
+                            <img src="textures/fire.png">
+                            <span></span>
+                        </span>
+                    </div>
+                </div>
+                <div id="grid">
+                    <div id="gold" title="Gold">
+                        <img id="goldImage" src="textures/gold.png">
+                        <span id="goldAmount">0</span>
+                    </div>
+                    <div id="health">
+                        <div id="absorptionBar" class="bar invisible"></div>
+                        <div id="healthBar" class="bar"></div>
+                        <div id="emptyHealthBar" class="bar"></div>
+                    </div>
+                    <span id="healthNumber">20/20</span>
+                    <div id="promptContainer">
+                        <label for="prompt">&gt; </label>
+                        <input id="prompt">
+                    </div>
+                    <div id="experience">
+                        <div id="experienceBar" class="bar invisible"></div>
+                        <div id="emptyExperienceBar" class="bar"></div>
+                    </div>
+                    <span id="experienceNumber">L1 (0/10)</span>
+                </div>
+            </div>
         </div>
-        <div id="inventory" class="inventoryElement uiElement"></div>
-        <div id="relics" class="inventoryElement invisible uiElement"></div>
+        <div id="right">
+            <div id="statusTicker" class="bordered"></div>
+            <div id="inventoryContainer" class="bordered">
+                <div id="inventoryButtons">
+                    <section class="buttonSelected" title="Generic Items">
+                        <img id="genericButton" src="textures/items.png" draggable="false">
+                    </section>
+                    <section title="Relics">
+                        <img id="relicButton" src="textures/relics.png" draggable="false">
+                    </section>
+                    <section title="Weapons">
+                        <img id="weaponButton" src="textures/weapons.png" draggable="false">
+                    </section>
+                    <section title="Armor">
+                        <img id="armorButton" src="textures/armor.png" draggable="false">
+                    </section>
+                    <section id="capacity" title="Inventory Capacity">
+                        0/10
+                    </section>
+                </div>
+                <div class="inventorySubContainer">
+                    <div id="genericItems" class="inventory"></div>
+                </div>
+                <div class="inventorySubContainer disabled">
+                    <div id="relicItems" class="inventory"></div>
+                    <span class="capacity">Equipped: 0/3</span>
+                </div>
+                <div class="inventorySubContainer disabled">
+                    <div id="weaponItems" class="inventory"></div>
+                    <span class="capacity">Equipped: 0/1</span>
+                </div>
+                <div class="inventorySubContainer disabled">
+                    <div id="armorItems" class="inventory"></div>
+                    <span class="capacity">Equipped: 0/1</span>
+                </div>
+            </div>
+        </div>
     </div>
-
 </body>
 </html>

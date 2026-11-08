@@ -4,152 +4,266 @@ body {
     background-repeat: no-repeat;
     background-size: 100% auto;
     background-color: black;
-}
-
-div {
-    overflow-y: auto;
-}
-
-.buttonSelected {
-    border-color: green !important;
-}
-
-.inventoryContainer {
-    position: absolute;
-    right: 18px;
-    bottom: 0;
-    width: 30%;
-    height: 60%;
-    overflow-y: clip;
-}
-
-.inventoryElement {
-    position: absolute;
-    height: 90%;
-    width: 100%;
-}
-
-.uiElement {
-    background-color: black;
     color: white;
-    opacity: 80%;
-    border: solid 3px white;
-    border-radius: 5px;
-    margin: 3px;
-    padding: 3px;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
 }
 
-.invisible {
-    visibility: hidden;
-}
-
-.purple {
-    color: purple;
-}
-
-.inventoryButtonContainer {
-    text-align: center;
-    top: 0;
-}
-
-.inventoryButton {
-    background-color: black;
-    color: white;
-    border-color: white;
-    border-radius: 3px;
-    border-width: 2px;
-    height: 100%;
-}
-
-.listSpan {
-    display: list-item;
-}
-
-.listParagraph {
-    display: inline;
-    margin: 5px 0;
-}
-
-.statusParagraph {
-    margin: 4px 0;
-}
-
-.clickableButton {
-    background-color: black;
-    color: white;
-    border-color: white;
-    border-radius: 3px;
-    border-width: 2px;
-}
-
-.inlineButton {
-    display: inline;
-    margin-right: 3px;
-}
-
-.mainContainer {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 50%;
-    height: 60%;
-    overflow-y: clip;
-}
-
-#mainDiv > span, #mainDiv > p, .inventoryElement > div {
-    margin: 0 0 0.2rem 0;
-}
-
-.input {
-    height: 10%;
-    width: 100%;
-    border: 0 none;
-}
-
-#errorDiv {
-    height: 20%;
-}
-
-.mainContextDiv {
-    height: 55%;
-    margin-bottom: 5%;
-}
-
-#descriptionDiv {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 30%;
-    width: 50%;
-}
-
-#descriptionDiv > p {
+p {
     margin: 0;
 }
 
+button {
+    background-color: black;
+    color: inherit;
+    border-color: white;
+}
 
-.statusContainer {
+#all {
+    width: 100%;
+    height: 100%;
+    justify-content: space-around;
+}
+
+#all, #left, #right {
     display: flex;
-    align-items: center;
-    position: absolute;
-    top: 3px;
-    right: 3px;
-    height: 30%;
-    width: 40%;
-    text-align: center;
+}
+
+#left, #right {
+    margin: 2rem;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 1rem;
+}
+
+#left {
+    flex-basis: 70%;
+}
+
+#right {
+    flex-basis: 30%;
+}
+
+.bordered {
+    border: 3px solid white;
+    border-radius: 0.2rem;
+    background-color: #000b;
+    padding: 0.2rem;
+}
+
+.darkened {
+    background-color: #000b;
+}
+
+.error {
+    position: fixed;
+    left: -200px;
+    transition: left 0.5s ease-out;
+    background-color: black;
+    color: red;
+}
+
+#info {
+    flex-basis: 20%;
+    overflow-y: auto;
+}
+
+#descriptionNavigation {
+    flex-basis: 80%;
+    display: flex;
+    flex-direction: column;
+}
+
+#description {
+    flex-basis: 30%;
+    border-bottom: 2px dashed white;
+    overflow-y: auto;
+}
+
+#navigationContainer {
+    flex-basis: 70%;
+    display: flex;
+    flex-direction: column;
+}
+
+#navigation {
+    flex-basis: 100%;
+    position: relative;
+    overflow-y: auto;
+    padding: 0.2rem;
 }
 
 #statusTicker {
-    position: relative;
-    width: 50%;
-    height: calc(100% - 18px);
-    overflow: clip;
+    flex-basis: 40%;
+    overflow-y: hidden;
 }
 
-#statusChecker {
+#inventoryContainer {
+    flex-basis: 70%;
+    display: flex;
+    flex-direction: column;
+}
+
+#statusInformation {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    background-color: #0008;
+    padding: 0.5rem;
+}
+
+#statsEffects {
+    display: flex;
+    height: 1.5rem;
+    gap: 1rem;
+}
+
+#stats, #effects {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+}
+
+#effects span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.1rem;
+}
+
+#effects img {
+    height: 1.5rem;
+}
+
+#effects {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+}
+
+#grid {
+    display: grid;
+    grid-template-columns: 2.5rem auto 4.5rem;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+#grid span {
+    text-wrap: nowrap;
+    overflow: clip;
+    text-overflow: ellipsis;
+}
+
+#gold {
+    display: flex;
+    gap: 0.2rem;
+}
+
+#goldImage {
+    height: 1.2rem;
+}
+
+.bar {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border: 3px solid white;
+    transition: ease-out width 1s;
+}
+
+#health, #experience {
+    display: flex;
+    gap: 0.4rem;
     position: relative;
-    width: 50%;
-    height: calc(100% - 18px);
+    height: 100%;
+}
+
+#experience {
+    height: 50%;
+}
+
+#experience > * {
+    border-radius: 0.7rem;
+}
+
+#healthBar, #experienceBar {
+    z-index: 1;
+}
+
+#healthBar {
+    background-color: crimson;
+}
+
+#emptyHealthBar {
+    background-color: #300;
+    width: 100%;
+}
+
+#experienceBar {
+    background-color: deepskyblue;
+}
+
+#emptyExperienceBar {
+    background-color: #248
+}
+
+#absorptionBar {
+    background-color: gold;
+    z-index: 2;
+}
+
+#promptContainer {
+    display: flex;
+}
+
+#promptContainer > * {
+    background-color: #000b;
+    white-space: preserve-spaces;
+}
+
+#prompt {
+    width: 1rem;
+    border: none;
+    color: white;
+}
+
+#prompt:focus {
+    outline: none;
+}
+
+#inventoryButtons {
+    border-bottom: 3px solid white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#inventoryButtons > *:not(*:last-child) {
+    border-right: 3px solid white;
+}
+
+#inventoryButtons section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    user-select: none;
+}
+
+#inventoryButtons section:has(img):hover {
+    cursor: pointer;
+    background-color: grey;
+}
+
+#inventoryButtons img:active {
+    transform: scale(80%);
+}
+
+#inventoryButtons * {
+    height: 2rem;
 }
 
 #popup {
@@ -160,7 +274,7 @@ div {
     top: 0;
     height: 100%;
     width: 100%;
-    z-index: 1;
+    z-index: 10;
     text-align: center;
 }
 
@@ -168,4 +282,60 @@ div {
     margin-top: 25%;
     white-space: pre;
     color: white;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+.inlineButton {
+    display: inline;
+    margin-right: 3px;
+}
+
+.listSpan {
+    display: list-item;
+    list-style-type: none;
+    margin-bottom: 0.2rem;
+}
+
+.listParagraph {
+    display: inline;
+    margin: 5px 0;
+}
+
+button.disabled {
+    background-color: gray;
+    outline: none;
+    border: none;
+}
+
+.inventory {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    flex-basis: 100%;
+    overflow-y: auto;
+}
+
+#effects span.disabled {
+    display: none;
+}
+
+.inventorySubContainer.disabled {
+    display: none;
+}
+
+.inventorySubContainer {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+}
+
+.purple {
+    color: purple;
+}
+
+.buttonSelected {
+    background-color: dimgrey;
 }
