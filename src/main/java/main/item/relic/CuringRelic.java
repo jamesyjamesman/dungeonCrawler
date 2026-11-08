@@ -24,19 +24,21 @@ public class CuringRelic extends Relic {
         if (App.INSTANCE.getState() == App.State.ROOM_END || App.INSTANCE.getState() == App.State.PLAYER_TURN) {
             Statuses playerStatuses = player.getCurrentStatuses();
             int totalStatusCount = playerStatuses.getPoison() + playerStatuses.getWeakened() + playerStatuses.getFire();
-            if (totalStatusCount != 0) {
+            if (totalStatusCount > 0) {
                 int removalIndex = new Random().nextInt(totalStatusCount);
 
                 removalIndex -= playerStatuses.getPoison();
-                if (removalIndex <= 0)
+                if (removalIndex <= 0 && playerStatuses.getPoison() > 0)
                     playerStatuses.addPoison(-1);
 
                 removalIndex -= playerStatuses.getWeakened();
-                if (removalIndex <= 0)
+                if (removalIndex <= 0 && playerStatuses.getPoison() > 0)
                     playerStatuses.addWeakened(-1);
 
-                playerStatuses.addFire(-1);
-                return ItemUseCase.RELIC_USED;
+                if (playerStatuses.getFire() > 0) {
+                    playerStatuses.addFire(-1);
+                    return ItemUseCase.RELIC_USED;
+                } else return ItemUseCase.ILLEGAL_STATE;
             }
         }
         return ItemUseCase.NO_GENERIC_USE;

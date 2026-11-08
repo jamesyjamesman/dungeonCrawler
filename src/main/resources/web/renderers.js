@@ -2,26 +2,37 @@ async function renderStats() {
     const player = await getHelper("/player/getPlayer");
     updateBars(player);
     await updateItemCounts(player);
+    await updateStatusEffects(player);
     document.getElementById("goldAmount").textContent = player.gold;
+}
 
-    // todo
-    // const totalDamage = await getHelper("/player/getTotalDamage");
-    // statDiv.append(createStatusParagraph(`Attack damage: ${totalDamage}`));
-    // statDiv.append(createStatusParagraph(`Rooms traveled: ${player.roomsTraversed}`));
-    // appendIfNonzero(player.currentStatuses.cursed, `Cursed: Level ${player.currentStatuses.cursed}`);
-    // appendIfNonzero(player.currentStatuses.weakened, `Weakened: Level ${player.currentStatuses.weakened}`);
-    // appendIfNonzero(player.currentStatuses.poison, `Poisoned: Level ${player.currentStatuses.poison}`);
-    // appendIfNonzero(player.currentStatuses.fire, `Fire: Level ${player.currentStatuses.fire}`);
+async function updateStatusEffects(player) {
+    const totalDamage = await getHelper("/player/getTotalDamage");
+    const poison = document.getElementById("poison");
+    const curse = document.getElementById("curse");
+    const weakness = document.getElementById("weakness");
+    const fire = document.getElementById("fire");
+    const attack = document.getElementById("attack");
+    const defense = document.getElementById("defense");
 
-    function createStatusParagraph(text) {
-        const statusParagraph = createParagraph(text);
-        statusParagraph.classList.add("statusParagraph");
-        return statusParagraph;
-    }
+    attack.textContent = `ATK: ${totalDamage}`;
+    defense.textContent = `DEF: 0`;
 
-    function appendIfNonzero(value, string) {
-        if (value > 0)
-            statDiv.append(createStatusParagraph(string));
+    poison.querySelector("span").textContent = player.currentStatuses.poison + "";
+    curse.querySelector("span").textContent = player.currentStatuses.cursed + "";
+    weakness.querySelector("span").textContent = player.currentStatuses.weakened + "";
+    fire.querySelector("span").textContent = player.currentStatuses.fire + "";
+
+    disableIfZero(poison, curse, weakness, fire);
+
+    function disableIfZero(...elements) {
+        for (const element of elements) {
+            if (parseInt(element.textContent) < 1) {
+                element.classList.add("disabled");
+            } else {
+                element.classList.remove("disabled");
+            }
+        }
     }
 }
 

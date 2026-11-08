@@ -105,13 +105,49 @@ button {
 }
 
 #statusInformation {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+#statsEffects {
+    display: flex;
+    height: 1.5rem;
+    gap: 1rem;
+}
+
+#stats, #effects {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+}
+
+#effects span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#effects img {
+    height: 1.5rem;
+}
+
+#effects {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+}
+
+#grid {
     display: grid;
     grid-template-columns: 8% 72% 20%;
     gap: 0.5rem;
     align-items: center;
 }
 
-#statusInformation span {
+#grid span {
     text-wrap: nowrap;
     overflow: clip;
     text-overflow: ellipsis;
@@ -273,6 +309,10 @@ button.disabled {
     width: 100%;
     position: relative;
     flex-basis: 100%;
+}
+
+#effects span.disabled {
+    display: none;
 }
 
 .inventorySubContainer.disabled {

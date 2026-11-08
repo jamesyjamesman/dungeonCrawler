@@ -27,25 +27,51 @@
                 </div>
             </div>
             <div id="statusInformation">
-                <div id="gold">
-                    <img id="goldImage" src="textures/torch.png">
-                    <span id="goldAmount">0</span>
+                <div id="statsEffects">
+                    <div id="stats">
+                        <span id="attack">ATK 1</span>
+                        <span id="defense">DEF 1</span>
+                    </div>
+                    <div id="effects">
+                        <span id="curse" class="disabled">
+                            <img src="textures/torch.png">
+                            <span></span>
+                        </span>
+                        <span id="poison" class="disabled">
+                            <img src="textures/torch.png">
+                            <span></span>
+                        </span>
+                        <span id="weakness" class="disabled">
+                            <img src="textures/torch.png">
+                            <span></span>
+                        </span>
+                        <span id="fire" class="disabled">
+                            <img src="textures/torch.png">
+                            <span></span>
+                        </span>
+                    </div>
                 </div>
-                <div id="health">
-                    <div id="absorptionBar" class="bar" style="width:0"></div>
-                    <div id="healthBar" class="bar"></div>
-                    <div id="emptyHealthBar" class="bar"></div>
+                <div id="grid">
+                    <div id="gold">
+                        <img id="goldImage" src="textures/torch.png">
+                        <span id="goldAmount">0</span>
+                    </div>
+                    <div id="health">
+                        <div id="absorptionBar" class="bar" style="width:0"></div>
+                        <div id="healthBar" class="bar"></div>
+                        <div id="emptyHealthBar" class="bar"></div>
+                    </div>
+                    <span id="healthNumber">20/20</span>
+                    <div id="promptContainer">
+                        <label for="prompt">&gt; </label>
+                        <input id="prompt">
+                    </div>
+                    <div id="experience">
+                        <div id="experienceBar" class="bar" style="width: 0"></div>
+                        <div id="emptyExperienceBar" class="bar"></div>
+                    </div>
+                    <span id="experienceNumber">L1 (0/10)</span>
                 </div>
-                <span id="healthNumber">20/20</span>
-                <div id="promptContainer">
-                    <label for="prompt">&gt; </label>
-                    <input id="prompt">
-                </div>
-                <div id="experience">
-                    <div id="experienceBar" class="bar" style="width: 0"></div>
-                    <div id="emptyExperienceBar" class="bar"></div>
-                </div>
-                <span id="experienceNumber">L1 (0/10)</span>
             </div>
         </div>
         <div id="right">
