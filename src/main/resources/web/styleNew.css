@@ -93,32 +93,16 @@ button {
 }
 
 #statusInformation {
-    display: flex;
-}
-
-#bars {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+    display: grid;
+    grid-template-columns: 8% 72% 20%;
     gap: 0.5rem;
+    align-items: center;
 }
 
-#healthNumber, #experienceNumber {
-    flex-grow: 2;
-}
-
-.barContainer {
-    position: relative;
-    height: 100%;
-    flex-grow: 8;
-}
-
-.barContainer:has(#experienceBar) {
-    height: 50%;
-}
-
-.barContainer:has(#experienceBar) > * {
-    border-radius: 0.7rem;
+#statusInformation span {
+    text-wrap: nowrap;
+    overflow: clip;
+    text-overflow: ellipsis;
 }
 
 .bar {
@@ -130,8 +114,17 @@ button {
 
 #health, #experience {
     display: flex;
-    flex-grow: 1;
     gap: 0.4rem;
+    position: relative;
+    height: 100%;
+}
+
+#experience {
+    height: 50%;
+}
+
+#experience > * {
+    border-radius: 0.7rem;
 }
 
 #healthBar, #experienceBar {
@@ -173,7 +166,7 @@ button {
 }
 
 #prompt {
-    width: 2rem;
+    width: 1rem;
     border: none;
     color: white;
 }
