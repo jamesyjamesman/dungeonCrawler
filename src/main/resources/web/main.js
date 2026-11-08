@@ -69,7 +69,7 @@ function createPopup(textValue) {
 function hidePopup() {
     popup.classList.add("invisible");
     popupText.innerText = "";
-    document.getElementById("textInput").focus();
+    textInput.focus();
 }
 
 function showInventory() {

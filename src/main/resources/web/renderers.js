@@ -1,11 +1,11 @@
 async function renderStats() {
     const player = await getHelper("/player/getPlayer");
     updateBars(player);
+    await updateItemCounts(player);
     document.getElementById("goldAmount").textContent = player.gold;
 
     // todo
     // const totalDamage = await getHelper("/player/getTotalDamage");
-    // const inventorySize = await getHelper("/player/getInventorySize");
     // statDiv.append(createStatusParagraph(`Attack damage: ${totalDamage}`));
     // statDiv.append(createStatusParagraph(`Rooms traveled: ${player.roomsTraversed}`));
     // appendIfNonzero(player.currentStatuses.cursed, `Cursed: Level ${player.currentStatuses.cursed}`);
@@ -54,6 +54,8 @@ function updateBars(player) {
 
     healthText.textContent = healthString + (player.absorption > 0 ? absorptionString : "");
 
+    // todo hide after transition end (so absorption doesn't just pop out)
+    // bonus points if health only animates after absorption goes away
     function hideIfEmpty(bar) {
         if (parseInt(bar.style.width) < 1) {
             bar.classList.add("invisible");
@@ -61,6 +63,19 @@ function updateBars(player) {
             bar.classList.remove("invisible");
         }
     }
+}
+
+async function updateItemCounts(player) {
+    const inventorySize = await getHelper("/player/getInventorySize");
+    const equippedRelics = await getHelper("/player/getEquippedRelics");
+    const mainCapacity = document.getElementById("capacity");
+    mainCapacity.textContent = `${inventorySize}/${player.inventoryCap}`;
+    const relicCapacity = document.querySelector(".inventorySubContainer:has(#relicItems) .capacity");
+    relicCapacity.textContent = `Equipped: ${equippedRelics.length}/${player.relicCap}`;
+    const weaponCapacity = document.querySelector(".inventorySubContainer:has(#weaponItems) .capacity");
+    weaponCapacity.textContent = `Equipped: ${+(player.equippedWeapon !== null)}/1`;
+    const armorCapacity = document.querySelector(".inventorySubContainer:has(#armorItems) .capacity");
+    armorCapacity.textContent = `Equipped: ${+(player.equippedArmor !== null)}/1`;
 }
 
 async function printRooms(rooms) {

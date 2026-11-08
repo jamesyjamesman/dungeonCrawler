@@ -94,7 +94,7 @@ button {
 
 #statusTicker {
     flex-basis: 40%;
-    overflow-y: clip;
+    overflow-y: hidden;
 }
 
 #inventoryContainer {
@@ -283,4 +283,8 @@ button.disabled {
     display: flex;
     flex-direction: column;
     flex-basis: 100%;
+}
+
+.purple {
+    color: purple;
 }

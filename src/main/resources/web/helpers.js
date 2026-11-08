@@ -57,7 +57,6 @@ function errorMessage(text) {
     setTimeout(() => errorDiv.style.left = 0 + "px", 10);
     setTimeout(() => {
         errorDiv.style.left = -errorDiv.getBoundingClientRect().width + "px";
-        console.log("ending");
         errorDiv.addEventListener("transitionend", () => {
             errorDiv.remove();
             errors[errorIndex] = undefined;
