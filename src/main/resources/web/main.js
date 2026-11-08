@@ -8,13 +8,13 @@ const relics = document.getElementById("relicItems");
 const mainDiv = document.getElementById("navigation");
 const descriptionDiv = document.getElementById("description");
 const inventoryButton = document.getElementById("genericButton");
-inventoryButton.addEventListener("click", showInventory);
+inventoryButton.parentElement.addEventListener("click", showInventory);
 const relicButton = document.getElementById("relicButton");
-relicButton.addEventListener("click", showRelics);
+relicButton.parentElement.addEventListener("click", showRelics);
 const armorButton = document.getElementById("armorButton");
-armorButton.addEventListener("click", showArmor);
+armorButton.parentElement.addEventListener("click", showArmor);
 const weaponButton = document.getElementById("weaponButton");
-weaponButton.addEventListener("click", showWeapons);
+weaponButton.parentElement.addEventListener("click", showWeapons);
 
 initiate().then();
 

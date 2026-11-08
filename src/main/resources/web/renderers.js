@@ -92,22 +92,38 @@ async function printRooms(rooms) {
 }
 
 async function renderInventory() {
-    await renderInventoryPane(inventory, await getHelper("/player/getInventory"));
+    await Promise.all([
+        renderGenericItems(),
+        renderRelics(),
+        renderWeapons(),
+        renderArmor()
+    ])
+}
+
+async function renderGenericItems() {
+    await renderInventoryPane(inventory, await getHelper("/player/getGenericItems"));
 }
 
 async function renderRelics() {
-    await renderInventoryPane(relics, await getHelper("/player/getRelics"));
+    await renderInventoryPane(relics, await getHelper("/player/getRelicItems"));
+}
+
+async function renderWeapons() {
+    await renderInventoryPane(weapons, await getHelper("/player/getWeaponItems"));
+}
+
+async function renderArmor() {
+    await renderInventoryPane(armor, await getHelper("/player/getArmorItems"));
 }
 
 async function renderInventoryPane(pane, data) {
-    const isRelics = pane === relics; // Only used for different data structures and cursed rendering
     const room = await getHelper("/player/getCurrentRoom");
     const dummyPane = document.createElement("div");
     const curseDetectionEquipped = await postHelper("/player/relicEquipped", {id: "CURSE_DETECTION"})
 
     for (let i = 0; i < data.length; i++) {
-        const item = (isRelics) ? data[i] : data[i][0];
-        const outputParagraph = createItemText(item, (isRelics) ? 0 : data[i].length);
+        const item = data[i][0];
+        const outputParagraph = createItemText(item, data[i].length);
         const elementSpan = document.createElement("span");
         elementSpan.classList.add("listSpan");
         dummyPane.append(elementSpan);
@@ -140,7 +156,7 @@ async function renderInventoryPane(pane, data) {
         }
 
         // Drop/Sell button
-        if (!isRelics) {
+        if (!item.equipped) {
             if (room.type === "SHOP" && room.open) {
                 const valueSpan = document.createElement("span");
                 valueSpan.textContent = `(${item.value} G) `;
@@ -165,7 +181,7 @@ async function renderInventoryPane(pane, data) {
                 });
             }
         }
-        if (item.cursed && (isRelics || curseDetectionEquipped)) {
+        if (item.cursed && (item.equipped || curseDetectionEquipped)) {
             outputParagraph.classList.add("purple");
         }
         elementSpan.append(outputParagraph);
@@ -317,7 +333,6 @@ function appendStatusTicker(text) {
 async function render() {
     await Promise.all([
         renderInventory(),
-        renderRelics(),
         renderStats()
     ]);
 }

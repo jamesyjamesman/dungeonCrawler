@@ -5,6 +5,7 @@ import main.App;
 import main.entity.Player;
 import main.item.Equippable;
 import main.item.Item;
+import main.item.ItemType;
 import main.item.buff.BuffItem;
 import main.item.health.HealthItem;
 import main.item.relic.Relic;
@@ -59,7 +60,27 @@ public class PlayerRequests {
         ctx.json(App.INSTANCE.getPlayer().getInventory());
     }
 
-    @GetRequestHandler(endpoint = "/player/getRelics")
+    @GetRequestHandler(endpoint="/player/getGenericItems")
+    public static void getGenericItems(Context ctx) {
+        ctx.json(App.INSTANCE.getPlayer().getItemsOfType(ItemType.BUFF, ItemType.HEALTH));
+    }
+
+    @GetRequestHandler(endpoint="/player/getRelicItems")
+    public static void getRelicItems(Context ctx) {
+        ctx.json(App.INSTANCE.getPlayer().getItemsOfType(ItemType.RELIC));
+    }
+
+    @GetRequestHandler(endpoint="/player/getWeaponItems")
+    public static void getWeaponItems(Context ctx) {
+        ctx.json(App.INSTANCE.getPlayer().getItemsOfType(ItemType.WEAPON));
+    }
+
+    @GetRequestHandler(endpoint="/player/getArmorItems")
+    public static void getArmorItems(Context ctx) {
+        ctx.json(App.INSTANCE.getPlayer().getItemsOfType(ItemType.ARMOR));
+    }
+
+    @GetRequestHandler(endpoint = "/player/getEquippedRelics")
     public static void getRelics(Context ctx) {
         ctx.json(App.INSTANCE.getPlayer().getEquippedRelics());
     }
