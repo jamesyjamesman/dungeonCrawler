@@ -108,6 +108,8 @@ button {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    background-color: #0008;
+    padding: 0.5rem;
 }
 
 #statsEffects {
@@ -155,6 +157,7 @@ button {
 
 #gold {
     display: flex;
+    gap: 0.2rem;
 }
 
 #goldImage {
