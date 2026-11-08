@@ -4,6 +4,7 @@ import main.Statuses;
 import main.entity.enemy.Enemy;
 import main.item.Equippable;
 import main.item.Item;
+import main.item.ItemType;
 import main.item.Loot;
 import main.item.armor.Armor;
 import main.item.relic.DamageRelic;
@@ -17,6 +18,7 @@ import main.room.Room;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
+import java.util.stream.Stream;
 
 //potentially make a "stats" object for player -- would cut this in about half
 public class Player extends Entity {
@@ -200,8 +202,6 @@ public class Player extends Entity {
             return false;
         }
         this.equippedRelics.add(relic);
-        int relicIndex = this.findItemInInventory(relic);
-        this.inventory.remove(relicIndex);
         if (relic.isCursed()) {
             this.currentStatuses.addCursed(1);
         }
@@ -212,11 +212,15 @@ public class Player extends Entity {
         if (relic.isCursed()) {
             return ItemUseCase.RELIC_CURSED;
         }
-        if (addItemToInventory(relic)) {
-            return ItemUseCase.INVENTORY_FULL;
-        }
         getEquippedRelics().remove(relic);
         return ItemUseCase.UNEQUIPPED;
+    }
+
+    public ArrayList<ArrayList<Item>> getItemsOfType(ItemType... types) {
+        ArrayList<ItemType> typesArray = new ArrayList<>(Stream.of(types).toList());
+        return new ArrayList<>(inventory.stream()
+                .filter(itemList -> typesArray.contains(itemList.getFirst().getType()))
+                .toList());
     }
 
     @Override
