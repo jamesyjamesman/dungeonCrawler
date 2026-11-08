@@ -10,6 +10,10 @@ body {
     height: 100vh;
 }
 
+p {
+    margin: 0;
+}
+
 button {
     background-color: black;
     color: inherit;
@@ -28,18 +32,17 @@ button {
 
 #left, #right {
     margin: 2rem;
-    flex-grow: 1;
     flex-direction: column;
     justify-content: space-around;
     gap: 1rem;
 }
 
 #left {
-    flex-grow: 2;
+    flex-basis: 70%;
 }
 
 #right {
-    flex-grow: 1;
+    flex-basis: 30%;
 }
 
 .bordered {
@@ -53,28 +56,32 @@ button {
     background-color: #000b;
 }
 
-#error {
+.error {
     position: fixed;
-    right: 0;
+    left: -200px;
+    transition: left 0.5s ease-out;
+    background-color: black;
+    color: red;
 }
 
 #info {
-    flex-grow: 2
+    flex-basis: 20%;
 }
 
 #descriptionNavigation {
-    flex-grow: 8;
+    flex-basis: 80%;
     display: flex;
     flex-direction: column;
 }
 
 #description {
-    flex-grow: 3;
+    flex-basis: 30%;
     border-bottom: 2px dashed white;
+    overflow-y: auto;
 }
 
 #navigation {
-    flex-grow: 7;
+    flex-basis: 70%;
     position: relative;
     overflow-y: auto;
 }
@@ -86,11 +93,13 @@ button {
 }
 
 #statusTicker {
-    flex-grow: 4
+    flex-basis: 40%;
+    overflow-y: clip;
 }
 
 #inventoryContainer {
-    flex-grow: 7;
+    flex-basis: 70%;
+    overflow-y: auto;
 }
 
 #statusInformation {
@@ -119,7 +128,7 @@ button {
     height: 100%;
     width: 100%;
     border: 3px solid white;
-    transition: ease-in-out width 1s;
+    transition: ease-out width 1s;
 }
 
 #health, #experience {
@@ -212,7 +221,7 @@ button {
     top: 0;
     height: 100%;
     width: 100%;
-    z-index: 1;
+    z-index: 10;
     text-align: center;
 }
 
@@ -233,6 +242,7 @@ button {
 
 .listSpan {
     display: list-item;
+    list-style-type: none;
 }
 
 .listParagraph {

@@ -151,7 +151,7 @@ async function renderInventoryPane(pane, data) {
                     if (itemSold) {
                         await render();
                     } else {
-                        getFreshErrorDiv().append(createParagraph(`The item couldn't be sold!`));
+                        errorMessage(`The item couldn't be sold!`);
                     }
                 });
             } else {
@@ -160,7 +160,7 @@ async function renderInventoryPane(pane, data) {
                     if (itemDropped) {
                         await render();
                     } else {
-                        getFreshErrorDiv().append(createParagraph(`The item couldn't be dropped!`));
+                        errorMessage(`The item couldn't be dropped!`);
                     }
                 });
             }
@@ -177,7 +177,7 @@ async function renderInventoryPane(pane, data) {
 async function inventoryButtonHelper(item, func) {
     const response = await func(item);
     if (response.error) {
-        getFreshErrorDiv().append(createParagraph(response.output));
+        errorMessage(response.output);
     } else {
         appendStatusTicker(response.output);
     }
@@ -232,7 +232,7 @@ async function shopRenderer(room) {
                 await shopRenderer(await getHelper("/player/getCurrentRoom"));
             } else {
                 // todo more advanced error message? e.g. inv full, can't afford
-                getFreshErrorDiv().append(createParagraph("You can't buy that right now!"));
+                errorMessage("You can't buy that right now!");
             }
         });
         const itemParagraph = createParagraph(`${item.name} (${item.value} G): ${item.description}`);

@@ -36,36 +36,25 @@ let numberInputOptions = [];
 
 function userSelectOption() {
     //todo post request that sends input to debug command checker. if successful, rerender stuff (if possible) and return
-    const input = document.getElementById("textInput");
-    const error = getFreshErrorDiv();
-    if (input.value === "") {
+    if (textInput.value === "") {
         if (numberInputOptions.length <= 1) {
             numberInputOptions[0]();
             return;
         }
-        error.innerHTML = "";
-        const response = document.createElement("p");
-        response.textContent = "You can only execute a default with one button available!";
-        error.append(response);
+        errorMessage("You can only execute a default with one button available!");
         return;
     }
-    const selectedOption = parseInt(input.value) - 1;
+    const selectedOption = parseInt(textInput.value) - 1;
     if (selectedOption < 0 || selectedOption > numberInputOptions.length - 1) {
-        error.innerHTML = "";
-        const errorText = document.createElement("p");
-        errorText.textContent = "Out of range!";
-        error.append(errorText);
+        errorMessage("Selection out of range!");
         return;
     }
     if (isNaN(selectedOption)) {
-        error.innerHTML = "";
-        const errorText = document.createElement("p");
-        errorText.textContent = "Enter a number!";
-        error.append(errorText);
+        errorMessage("Enter a number!");
         return;
     }
     numberInputOptions[selectedOption]();
-    input.value = "";
+    textInput.value = "";
 }
 
 function createPopup(textValue) {

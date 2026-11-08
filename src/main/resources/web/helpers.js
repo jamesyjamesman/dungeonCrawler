@@ -43,9 +43,33 @@ function getFreshMainDiv() {
     return mainDiv;
 }
 
-function getFreshErrorDiv() {
-    errorDiv.innerHTML = "";
-    return errorDiv;
+let errors = [];
+
+function errorMessage(text) {
+    const errorIndex = findFirstOpenError();
+    const errorDiv = document.createElement("div");
+    errorDiv.classList.add("error", "bordered");
+    errorDiv.append(createParagraph(text));
+    errorDiv.style.top = (errorIndex * 5) + "%";
+    errorDiv.style.zIndex = errorIndex + "";
+    document.body.append(errorDiv);
+    // Stops left from updating immediately so it animates
+    setTimeout(() => errorDiv.style.left = 0 + "px", 10);
+    setTimeout(() => {
+        errorDiv.style.left = -errorDiv.getBoundingClientRect().width + "px";
+        console.log("ending");
+        errorDiv.addEventListener("transitionend", () => {
+            errorDiv.remove();
+            errors[errorIndex] = undefined;
+        });
+    }, 3000);
+}
+
+function findFirstOpenError() {
+    let i = 0;
+    while (errors[i] !== undefined) i++;
+    errors[i] = 1;
+    return i;
 }
 
 function capitalize(string) {
