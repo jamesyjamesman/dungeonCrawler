@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="styleNew.css">
+</head>
+<body>
+    <div id="all">
+        <div id="left">
+            <div id="info" class="bordered">
+                Additional information goes here
+            </div>
+            <div id="descriptionNavigation" class="bordered">
+                <div id="description"></div>
+                <div id="navigation">
+                    <button id="continue">Continue</button>
+                </div>
+            </div>
+            <div id="statusInformation">
+                <div id="goldPrompt">
+                    <div id="gold">
+                        30G
+                    </div>
+                    <div id="promptContainer">
+                        <label for="prompt">&gt; </label>
+                        <input id="prompt">
+                    </div>
+                </div>
+                <div id="bars">
+                    <div id="health">
+                        <div class="barContainer">
+                            <div id="absorptionBar" class="bar"></div>
+                            <div id="healthBar" class="bar"></div>
+                            <div id="emptyHealthBar" class="bar"></div>
+                        </div>
+                        <span id="healthNumber">9/10 (+0)</span>
+                    </div>
+                    <div id="experience">
+                        <div class="barContainer">
+                            <div id="experienceBar" class="bar"></div>
+                            <div id="emptyExperienceBar" class="bar"></div>
+                        </div>
+                        <span id="experienceNumber">3/10</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="right">
+            <div id="statusTicker" class="bordered"></div>
+            <div id="inventoryContainer" class="bordered">
+                <span id="capacity">Capacity: 8/10</span>
+                <div id="inventoryButtons">
+                    <button id="genericButton">Item</button>
+                    <button id="relicButton">Relic</button>
+                    <button id="weaponButton">Weapon</button>
+                    <button id="armorButton">Armor</button>
+                </div>
+                <div id="genericItems"></div>
+                <div id="relicItems"></div>
+                <div id="weaponItems"></div>
+                <div id="armorItems"></div>
+            </div>
+        </div>
+    </div>
+    <div id="error" class="bordered">
+        I'm error text!
+    </div>
+</body>
+</html>

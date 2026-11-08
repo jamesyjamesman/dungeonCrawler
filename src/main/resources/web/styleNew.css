@@ -1,0 +1,183 @@
+body {
+    font-family: sans-serif;
+    background-image: url("textures/default_background.png");
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    background-color: black;
+    color: white;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+button {
+    background-color: black;
+    color: inherit;
+    border-color: white;
+}
+
+#all {
+    width: 100%;
+    height: 100%;
+    justify-content: space-around;
+}
+
+#all, #left, #right {
+    display: flex;
+}
+
+#left, #right {
+    margin: 2rem;
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 1rem;
+}
+
+#left {
+    flex-grow: 2;
+}
+
+#right {
+    flex-grow: 1;
+}
+
+.bordered {
+    border: 3px solid white;
+    border-radius: 0.2rem;
+    background-color: #000b;
+    padding: 0.2rem;
+}
+
+.darkened {
+    background-color: #000b;
+}
+
+#error {
+    position: fixed;
+    right: 0;
+}
+
+#info {
+    flex-grow: 2
+}
+
+#descriptionNavigation {
+    flex-grow: 8;
+    display: flex;
+    flex-direction: column;
+}
+
+#description {
+    flex-grow: 3;
+    border-bottom: 2px dashed white;
+}
+
+#navigation {
+    flex-grow: 7;
+    position: relative;
+}
+
+#continue {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+#statusTicker {
+    flex-grow: 4
+}
+
+#inventoryContainer {
+    flex-grow: 7;
+}
+
+#statusInformation {
+    display: flex;
+}
+
+#bars {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+}
+
+#healthNumber, #experienceNumber {
+    flex-grow: 2;
+}
+
+.barContainer {
+    position: relative;
+    height: 100%;
+    flex-grow: 8;
+}
+
+.barContainer:has(#experienceBar) {
+    height: 50%;
+}
+
+.barContainer:has(#experienceBar) > * {
+    border-radius: 0.7rem;
+}
+
+.bar {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border: 3px solid white;
+}
+
+#health, #experience {
+    display: flex;
+    flex-grow: 1;
+    gap: 0.4rem;
+}
+
+#healthBar, #experienceBar {
+    z-index: 1;
+}
+
+#healthBar {
+    background-color: crimson;
+    width: 80%;
+}
+
+#emptyHealthBar {
+    background-color: #300;
+    width: 100%;
+}
+
+#experienceBar {
+    background-color: deepskyblue;
+    width: 50%;
+}
+
+#emptyExperienceBar {
+    background-color: #248
+}
+
+#absorptionBar {
+    width: 50%;
+    background-color: gold;
+    z-index: 2;
+}
+
+#promptContainer {
+    display: flex;
+}
+
+#promptContainer, #promptContainer > * {
+    background-color: #000b;
+    white-space: pre;
+}
+
+#prompt {
+    width: 2rem;
+    border: none;
+    color: white;
+}
+
+#prompt:focus {
+    outline: none;
+}
