@@ -17,6 +17,9 @@ armorButton.parentElement.addEventListener("click", showArmor);
 const weaponButton = document.getElementById("weaponButton");
 weaponButton.parentElement.addEventListener("click", showWeapons);
 
+//todo buffer class that has an add and flush method for any particular div
+// store and do them all at once to reduce screen flashes in a slightly more organized way
+
 initiate().then();
 
 async function initiate() {

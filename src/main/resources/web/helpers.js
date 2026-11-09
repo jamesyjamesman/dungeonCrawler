@@ -52,7 +52,7 @@ function errorMessage(text) {
     errorDiv.style.zIndex = errorIndex + "";
     document.body.append(errorDiv);
     // Stops left from updating immediately so it animates
-    setTimeout(() => errorDiv.style.left = 0 + "px", 10);
+    setTimeout(() => errorDiv.style.left = 0 + "px", 100);
     setTimeout(() => {
         errorDiv.style.left = -errorDiv.getBoundingClientRect().width + "px";
         errorDiv.addEventListener("transitionend", () => {

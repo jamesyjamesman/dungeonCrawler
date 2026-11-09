@@ -85,13 +85,14 @@ button {
     flex-basis: 70%;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
 }
 
 #navigation {
     flex-basis: 100%;
     position: relative;
     overflow-y: auto;
-    padding: 0.2rem;
+    padding: 0.2rem 0;
 }
 
 #statusTicker {
@@ -103,6 +104,7 @@ button {
     flex-basis: 70%;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
 }
 
 #statusInformation {
@@ -146,7 +148,7 @@ button {
 
 #grid {
     display: grid;
-    grid-template-columns: 2.5rem auto 4.5rem;
+    grid-template-columns: 2.5rem auto 5.5rem;
     gap: 0.5rem;
     align-items: center;
 }
@@ -316,6 +318,7 @@ button.disabled {
     position: relative;
     flex-basis: 100%;
     overflow-y: auto;
+    padding: 0.2rem 0;
 }
 
 #effects span.disabled {
@@ -330,6 +333,7 @@ button.disabled {
     display: flex;
     flex-direction: column;
     flex-basis: 100%;
+    overflow-y: auto;
 }
 
 .purple {

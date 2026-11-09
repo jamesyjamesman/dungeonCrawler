@@ -1,4 +1,5 @@
 async function goToRoom(id) {
+    infoDiv.innerHTML = ""; // Don't want it hanging around forever
     const changeInfo = await postHelper("/rooms/change", { id: id });
     if (!changeInfo.playerAlive) {
         playerDeath();
@@ -10,9 +11,9 @@ async function goToRoom(id) {
     document.body.style.backgroundImage = `url("textures/${newRoom.backgroundFileName}")`;
     const descriptionParagraph = document.createElement("p");
     descriptionParagraph.innerHTML = parseTextAsHTML(newRoom.description);
-    await roomSwitch(newRoom);
     descriptionDiv.innerHTML = "";
     descriptionDiv.append(descriptionParagraph);
+    await roomSwitch(newRoom);
 }
 
 async function roomSwitch(newRoom) {
@@ -21,7 +22,7 @@ async function roomSwitch(newRoom) {
         case "TRAP": return await trapHandler(newRoom);
         case "BOSS":
         case "ENEMY": return await enemyHandler(newRoom);
-        case "RELIC": return await relicHandler(newRoom);
+        case "RELIC":
         case "ITEM": return await itemHandler(newRoom);
         case "FOUNTAIN": return await fountainHandler(newRoom);
         case "SHOP": return await shopHandler(newRoom);
@@ -64,20 +65,7 @@ async function itemHandler(room) {
         tryButton.addEventListener("click", async () => {
             await itemHandler(room);
         });
-        mainDiv.append(tryButton);
-    }
-}
-
-async function relicHandler(room) {
-    let pickupSuccess = await itemPickup(room, "relic");
-    if (!pickupSuccess) {
-        const tryButton = document.createElement("button");
-        tryButton.classList.add("clickableButton");
-        tryButton.textContent = "Try Again";
-        tryButton.addEventListener("click", async () => {
-            await relicHandler(room);
-        });
-        mainDiv.append(tryButton);
+        descriptionDiv.append(tryButton);
     }
 }
 
@@ -92,7 +80,7 @@ async function itemPickup(room) {
     }
     getFreshMainDiv();
     descriptionDiv.append(pickupParagraph);
-    await setRoomContinue(room.id);
+    await printNewRooms(room.id);
     await render();
     return pickupSuccess;
 }
@@ -103,8 +91,7 @@ async function trapHandler(room) {
     const damageDealt = trapRoomDamageInfo.damageDealt;
     const damageParagraph = document.createElement("p");
     damageParagraph.textContent = `You took ${damageDealt} damage!`;
-    infoDiv.innerHTML = "";
-    infoDiv.append(damageParagraph);
+    descriptionDiv.append(damageParagraph);
     if (playerDead) {
         playerDeath();
         return;
@@ -160,8 +147,8 @@ async function battleSequence(room, enemy) {
         }
 
         if (enemyInfo.lastEnemy) {
-            getFreshMainDiv().append(createParagraph("You win!"));
-            await setRoomContinue(room.id);
+            infoDiv.append(createParagraph("You win!"));
+            await printNewRooms(room.id);
             return;
         }
     }
@@ -218,14 +205,12 @@ async function fountainHandler(room) {
 }
 
 function playerDeath() {
-    render().then(() => {
-        const mainDiv = getFreshMainDiv();
+    const mainDiv = getFreshMainDiv();
 
-        const deathParagraph = document.createElement("p");
-        deathParagraph.textContent = "You died! Reset the game to try again. Or try to cheat and heal yourself.";
-        mainDiv.append(deathParagraph);
-        // Todo: actually implement resetting the game.
-    });
+    const deathParagraph = document.createElement("p");
+    deathParagraph.textContent = "You died! Reset the game to try again. Or try to cheat and heal yourself.";
+    mainDiv.append(deathParagraph);
+    // Todo: actually implement resetting the game.
 }
 
 async function endingHandler(room) {
